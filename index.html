@@ -1,104 +1,71 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
->
-
-<meta
-  name="theme-color"
-  content="#111827"
->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>Admin Panel</title>
 
-
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent
 }
 
-html,
-body{
+html,body{
   width:100%;
-  min-width:0;
-  max-width:100%;
   min-height:100%;
-  overflow-x:hidden;
+  overflow-x:hidden
 }
 
 body{
   background:#f4f6f8;
   color:#111827;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
-  font-size:16px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:16px
 }
 
-button,
-input,
-select,
-textarea{
+button,input,select,textarea{
   font:inherit;
-  max-width:100%;
+  max-width:100%
 }
 
 button{
   appearance:none;
-  -webkit-appearance:none;
+  -webkit-appearance:none
 }
 
 .hidden{
-  display:none!important;
+  display:none!important
 }
 
 .app{
   width:100%;
   min-height:100vh;
   min-height:100dvh;
-  padding-bottom:
-    calc(
-      20px +
-      env(safe-area-inset-bottom)
-    );
+  padding-bottom:25px
 }
+
+
+/* ==============================
+   TOPBAR
+============================== */
 
 .topbar{
   width:100%;
-  padding:
-    calc(
-      14px +
-      env(safe-area-inset-top)
-    )
-    15px
-    16px;
-
+  padding:18px 15px 16px;
   background:#111827;
   color:#fff;
-
-  box-shadow:
-    0 4px 18px
-    rgba(0,0,0,.14);
+  box-shadow:0 4px 18px rgba(0,0,0,.14)
 }
 
 .topbar-inner{
   width:100%;
   display:flex;
   align-items:center;
-  gap:11px;
+  gap:11px
 }
 
 .app-icon{
@@ -107,29 +74,27 @@ button{
   flex:0 0 44px;
   border-radius:14px;
   background:rgba(255,255,255,.12);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:21px;
+  font-size:21px
 }
 
 .app-title{
   flex:1;
-  min-width:0;
+  min-width:0
 }
 
 .app-title h1{
   font-size:18px;
   line-height:1.2;
-  font-weight:800;
+  font-weight:800
 }
 
 .app-title p{
   margin-top:3px;
   color:#cbd5e1;
-  font-size:10px;
+  font-size:10px
 }
 
 .online{
@@ -137,44 +102,17 @@ button{
   height:9px;
   flex:0 0 9px;
   border-radius:50%;
-  background:#34d399;
+  background:#34d399
 }
+
+
+/* ==============================
+   CONTENT
+============================== */
 
 .content{
   width:100%;
-  padding:11px;
-}
-
-.tab-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:12px;
-}
-
-.tab-btn{
-  height:53px;
-  border:1px solid #e0e4e9;
-  border-radius:15px;
-  background:#fff;
-  color:#4b5563;
-
-  font-size:14px;
-  font-weight:800;
-
-  box-shadow:
-    0 3px 12px
-    rgba(15,23,42,.04);
-}
-
-.tab-btn.active{
-  background:#111827;
-  color:#fff;
-  border-color:#111827;
-
-  box-shadow:
-    0 6px 16px
-    rgba(17,24,39,.14);
+  padding:11px
 }
 
 .card{
@@ -183,19 +121,49 @@ button{
   border-radius:20px;
   padding:15px;
   margin-bottom:12px;
-
   border:1px solid #edf0f3;
-
-  box-shadow:
-    0 4px 18px
-    rgba(15,23,42,.055);
+  box-shadow:0 4px 18px rgba(15,23,42,.055)
 }
+
+
+/* ==============================
+   TABS
+============================== */
+
+.tab-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:12px
+}
+
+.tab-btn{
+  height:53px;
+  border:1px solid #e0e4e9;
+  border-radius:15px;
+  background:#fff;
+  color:#4b5563;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 3px 12px rgba(15,23,42,.04)
+}
+
+.tab-btn.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827
+}
+
+
+/* ==============================
+   CARD HEADER
+============================== */
 
 .card-head{
   display:flex;
   align-items:center;
   gap:10px;
-  margin-bottom:5px;
+  margin-bottom:5px
 }
 
 .card-icon{
@@ -204,17 +172,15 @@ button{
   flex:0 0 38px;
   border-radius:12px;
   background:#f1f3f6;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
-  font-size:18px;
+  font-size:18px
 }
 
 .card-title{
   font-size:16px;
-  font-weight:800;
+  font-weight:800
 }
 
 .card-subtitle{
@@ -222,16 +188,21 @@ button{
   font-size:11px;
   line-height:1.5;
   margin-left:48px;
-  margin-bottom:15px;
+  margin-bottom:15px
 }
+
+
+/* ==============================
+   FIELD
+============================== */
 
 .field{
   width:100%;
-  margin-top:15px;
+  margin-top:15px
 }
 
 .field:first-child{
-  margin-top:0;
+  margin-top:0
 }
 
 label{
@@ -239,7 +210,7 @@ label{
   margin-bottom:7px;
   color:#374151;
   font-size:12px;
-  font-weight:700;
+  font-weight:700
 }
 
 input,
@@ -250,21 +221,21 @@ textarea{
   background:#fafbfc;
   color:#111827;
   border-radius:14px;
-  outline:none;
+  outline:none
 }
 
 input,
 select{
   height:52px;
   padding:0 13px;
-  font-size:14px;
+  font-size:14px
 }
 
 textarea{
   min-height:110px;
   padding:12px 13px;
   line-height:1.5;
-  resize:vertical;
+  resize:vertical
 }
 
 input:focus,
@@ -272,15 +243,17 @@ select:focus,
 textarea:focus{
   background:#fff;
   border-color:#64748b;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(100,116,139,.1);
+  box-shadow:0 0 0 3px rgba(100,116,139,.1)
 }
+
+
+/* ==============================
+   AMOUNT
+============================== */
 
 .amount-wrap{
   position:relative;
-  width:100%;
+  width:100%
 }
 
 .amount-wrap input{
@@ -288,7 +261,7 @@ textarea:focus{
   padding:0 55px 0 14px;
   font-size:24px;
   font-weight:800;
-  background:#f8fafc;
+  background:#f8fafc
 }
 
 .amount-unit{
@@ -296,305 +269,255 @@ textarea:focus{
   right:14px;
   top:50%;
   transform:translateY(-50%);
-
   color:#9aa1ab;
   font-size:12px;
-  font-weight:700;
+  font-weight:700
 }
+
+
+/* ==============================
+   TYPE
+============================== */
 
 .type-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
+  gap:9px
 }
 
 .type-option{
-  position:relative;
+  position:relative
 }
 
 .type-option input{
   position:absolute;
   opacity:0;
-  pointer-events:none;
+  pointer-events:none
 }
 
 .type-label{
   width:100%;
   height:53px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   border-radius:14px;
   border:1px solid #e0e4e9;
-
   background:#fafbfc;
   color:#4b5563;
-
   font-size:14px;
-  font-weight:750;
+  font-weight:750
 }
 
 .type-option input:checked+.type-label{
   background:#111827;
   color:#fff;
-  border-color:#111827;
+  border-color:#111827
 }
+
+
+/* ==============================
+   BUTTON
+============================== */
 
 .primary-btn{
   width:100%;
   height:55px;
   margin-top:17px;
-
   border:0;
   border-radius:15px;
-
   background:#111827;
   color:#fff;
-
   font-size:14px;
   font-weight:800;
-
-  box-shadow:
-    0 7px 17px
-    rgba(17,24,39,.15);
+  box-shadow:0 7px 17px rgba(17,24,39,.15)
 }
 
 .primary-btn:disabled{
-  opacity:.55;
+  opacity:.55
 }
 
 .secondary-btn{
   width:100%;
   height:50px;
   margin-top:10px;
-
   border:1px solid #e0e4e9;
   border-radius:14px;
-
   background:#fff;
   color:#374151;
-
   font-size:13px;
-  font-weight:750;
+  font-weight:750
 }
+
+.logout{
+  width:100%;
+  height:50px;
+  border:1px solid #e1e5ea;
+  border-radius:14px;
+  background:#fff;
+  color:#374151;
+  font-size:13px;
+  font-weight:750
+}
+
+
+/* ==============================
+   CUSTOMER INFO
+============================== */
 
 .customer-info{
   width:100%;
   margin-top:8px;
   padding:9px 11px;
-
   background:#f8fafc;
   border:1px solid #edf0f3;
   border-radius:12px;
-
   color:#64748b;
-  font-size:11px;
+  font-size:11px
 }
+
+
+/* ==============================
+   DUE
+============================== */
 
 .due-box{
   width:100%;
   margin-top:15px;
   padding:18px 15px;
-
   border-radius:18px;
-
   background:#111827;
   color:#fff;
-
   text-align:center;
-
-  box-shadow:
-    0 8px 22px
-    rgba(17,24,39,.16);
+  box-shadow:0 8px 22px rgba(17,24,39,.16)
 }
 
 .due-label{
   color:#cbd5e1;
   font-size:11px;
-  font-weight:650;
+  font-weight:650
 }
 
 .due-value{
   margin-top:5px;
   font-size:31px;
   line-height:1.1;
-  font-weight:850;
+  font-weight:850
 }
 
 .due-unit{
   margin-left:3px;
   font-size:13px;
-  color:#cbd5e1;
+  color:#cbd5e1
 }
+
+
+/* ==============================
+   HISTORY
+============================== */
 
 .history-title{
   margin-top:18px;
   margin-bottom:9px;
-
   font-size:13px;
-  font-weight:800;
+  font-weight:800
 }
 
 .history-scroll{
   max-height:430px;
-
   overflow-y:auto;
   overflow-x:hidden;
-
   padding-right:2px;
-
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling:touch
 }
 
 .history-scroll::-webkit-scrollbar{
-  width:5px;
+  width:5px
 }
 
 .history-scroll::-webkit-scrollbar-thumb{
   background:#cbd5e1;
-  border-radius:10px;
+  border-radius:10px
 }
 
 .history-item{
   width:100%;
   padding:12px;
   margin-top:8px;
-
   border:1px solid #edf0f3;
   border-radius:14px;
-
-  background:#fafbfc;
+  background:#fafbfc
 }
 
 .history-top{
   display:flex;
   justify-content:space-between;
-  gap:10px;
+  gap:10px
 }
 
 .history-date{
   color:#89919d;
-  font-size:10px;
+  font-size:10px
 }
 
 .history-type{
   font-size:11px;
-  font-weight:800;
+  font-weight:800
 }
 
 .history-amount{
   margin-top:5px;
   font-size:18px;
-  font-weight:850;
+  font-weight:850
 }
 
 .history-note{
   margin-top:4px;
   color:#64748b;
-  font-size:11px;
+  font-size:11px
 }
+
+
+/* ==============================
+   MESSAGE
+============================== */
 
 .message{
   min-height:18px;
   margin-top:9px;
-
   text-align:center;
-
   font-size:11px;
-  font-weight:650;
+  font-weight:650
 }
 
 .success{
-  color:#16a34a;
+  color:#16a34a
 }
 
 .error{
-  color:#dc2626;
+  color:#dc2626
 }
 
 .empty{
   padding:20px 10px;
-
   text-align:center;
-
   color:#9aa1ab;
-  font-size:12px;
+  font-size:12px
 }
 
-.notice-help{
-  color:#89919d;
-  font-size:11px;
-  line-height:1.5;
-  margin-bottom:11px;
-}
 
-.notice-message{
-  min-height:18px;
-  margin-top:9px;
-
-  text-align:center;
-
-  font-size:11px;
-}
-
-.logout{
-  width:100%;
-  height:50px;
-
-  border:1px solid #e1e5ea;
-  border-radius:14px;
-
-  background:#fff;
-  color:#374151;
-
-  font-size:13px;
-  font-weight:750;
-}
-
-.login-content{
-  padding-top:25px;
-}
-
-.login-icon{
-  width:61px;
-  height:61px;
-
-  border-radius:19px;
-
-  background:#111827;
-  color:#fff;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:25px;
-
-  margin-bottom:15px;
-}
-
-.login-title{
-  font-size:24px;
-  font-weight:850;
-}
-
-.login-subtitle{
-  margin-top:6px;
-  color:#89919d;
-  font-size:12px;
-  line-height:1.5;
-}
+/* ==============================
+   SEARCH
+============================== */
 
 .search-wrap{
   position:relative;
-  width:100%;
+  width:100%
 }
 
 .search-wrap input{
   padding-left:42px;
-  padding-right:40px;
+  padding-right:40px
 }
 
 .search-icon{
@@ -602,100 +525,114 @@ textarea:focus{
   left:14px;
   top:50%;
   transform:translateY(-50%);
-
   color:#89919d;
   font-size:16px;
-
-  pointer-events:none;
+  pointer-events:none
 }
 
 .clear-search{
   position:absolute;
   right:9px;
   top:50%;
-
   transform:translateY(-50%);
-
   width:32px;
   height:32px;
-
   border:0;
   border-radius:10px;
-
   background:transparent;
   color:#89919d;
-
   font-size:17px;
-
-  display:none;
+  display:none
 }
 
 .search-result-count{
   margin-top:7px;
   color:#89919d;
   font-size:10px;
-  min-height:15px;
+  min-height:15px
+}
+
+
+/* ==============================
+   LOGIN
+============================== */
+
+.login-content{
+  padding-top:25px
+}
+
+.login-icon{
+  width:61px;
+  height:61px;
+  border-radius:19px;
+  background:#111827;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  margin-bottom:15px
+}
+
+.login-title{
+  font-size:24px;
+  font-weight:850
+}
+
+.login-subtitle{
+  margin-top:6px;
+  color:#89919d;
+  font-size:12px;
+  line-height:1.5
 }
 
 .viewer-badge{
   display:inline-flex;
   align-items:center;
-
   padding:5px 9px;
   margin-top:6px;
-
   border-radius:9px;
-
   background:rgba(255,255,255,.12);
   color:#e2e8f0;
-
   font-size:9px;
-  font-weight:700;
+  font-weight:700
 }
 
-.loading{
-  padding:20px 10px;
-  text-align:center;
-  color:#89919d;
-  font-size:12px;
-}
+
+/* ==============================
+   MOBILE
+============================== */
 
 @media(max-width:360px){
 
   .content{
-    padding:9px;
+    padding:9px
   }
 
   .card{
-    padding:14px;
+    padding:14px
   }
 
   .due-value{
-    font-size:28px;
+    font-size:28px
   }
 
   .history-scroll{
-    max-height:380px;
+    max-height:380px
   }
 
 }
-
 </style>
-
 </head>
-
 
 <body>
 
 
-<!-- ==================================================
+<!-- ==============================
      LOGIN
-================================================== -->
+============================== -->
 
-<div
-  id="loginPage"
-  class="app"
->
+<div id="loginPage" class="app">
 
   <div class="topbar">
 
@@ -794,9 +731,10 @@ textarea:focus{
 </div>
 
 
-<!-- ==================================================
-     ADMIN / VIEWER
-================================================== -->
+
+<!-- ==============================
+     ADMIN
+============================== -->
 
 <div
   id="adminPage"
@@ -855,7 +793,6 @@ textarea:focus{
         ➕ Add Transaction
       </button>
 
-
       <button
         id="dueTab"
         class="tab-btn"
@@ -867,9 +804,9 @@ textarea:focus{
     </div>
 
 
-    <!-- ==================================================
-         ADD TRANSACTION
-    ================================================== -->
+    <!-- ==============================
+         ADD
+    ============================== -->
 
     <div
       id="addSection"
@@ -1073,9 +1010,10 @@ textarea:focus{
     </div>
 
 
-    <!-- ==================================================
+
+    <!-- ==============================
          DUE
-    ================================================== -->
+    ============================== -->
 
     <div
       id="dueSection"
@@ -1132,7 +1070,6 @@ textarea:focus{
           </button>
 
         </div>
-
 
         <div
           id="searchResultCount"
@@ -1226,9 +1163,10 @@ textarea:focus{
     </div>
 
 
-    <!-- ==================================================
+
+    <!-- ==============================
          NOTICE
-    ================================================== -->
+    ============================== -->
 
     <div
       id="noticeCard"
@@ -1253,11 +1191,6 @@ textarea:focus{
       </div>
 
 
-      <div class="notice-help">
-        এখানে লিখলে Customer-এর account page-এ Notice হিসেবে দেখাবে।
-      </div>
-
-
       <textarea
         id="notice"
         placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে..."
@@ -1275,7 +1208,7 @@ textarea:focus{
 
       <div
         id="noticeMessage"
-        class="notice-message"
+        class="message"
       ></div>
 
     </div>
@@ -1295,14 +1228,15 @@ textarea:focus{
 </div>
 
 
+
 <script>
 
 /* ==================================================
-   API URL
+   APPS SCRIPT WEB APP URL
 ================================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
+"https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
 
 
 /* ==================================================
@@ -1310,14 +1244,10 @@ const API_URL =
 ================================================== */
 
 let TOKEN =
-  localStorage.getItem(
-    "adminToken"
-  ) || "";
+  localStorage.getItem("adminToken") || "";
 
 let ROLE =
-  localStorage.getItem(
-    "adminRole"
-  ) || "";
+  localStorage.getItem("adminRole") || "";
 
 let OPTIONS = {
   due: [],
@@ -1327,8 +1257,6 @@ let OPTIONS = {
 let ALL_CUSTOMERS = [];
 
 let DUE_CUSTOMERS = [];
-
-let sessionTimer = null;
 
 
 /* ==================================================
@@ -1341,173 +1269,79 @@ function el(id){
 
 
 /* ==================================================
-   JSONP API
+   MESSAGE
 ================================================== */
 
-function api(action, params = {}) {
+function msg(id,text,type){
 
-  return new Promise(
-    function(resolve, reject) {
+  const e = el(id);
 
-      const callbackName =
-        "apiCallback_" +
-        Date.now() +
-        "_" +
-        Math.floor(
-          Math.random() * 100000
-        );
+  if(!e) return;
 
+  e.textContent = text || "";
 
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      const query =
-        new URLSearchParams();
-
-
-      query.set(
-        "action",
-        action
-      );
-
-
-      query.set(
-        "callback",
-        callbackName
-      );
-
-
-      Object.keys(params)
-        .forEach(
-          function(key){
-
-            if(
-              params[key] !== undefined &&
-              params[key] !== null
-            ){
-
-              query.set(
-                key,
-                String(params[key])
-              );
-
-            }
-
-          }
-        );
-
-
-      const timer =
-        setTimeout(
-          function(){
-
-            cleanup();
-
-            reject(
-              new Error(
-                "Request timeout"
-              )
-            );
-
-          },
-          30000
-        );
-
-
-      function cleanup(){
-
-        clearTimeout(
-          timer
-        );
-
-        if(script.parentNode){
-          script.parentNode.removeChild(
-            script
-          );
-        }
-
-        try{
-          delete window[
-            callbackName
-          ];
-        }catch(e){}
-
-      }
-
-
-      window[callbackName] =
-        function(data){
-
-          cleanup();
-
-          resolve(
-            data
-          );
-
-        };
-
-
-      script.onerror =
-        function(){
-
-          cleanup();
-
-          reject(
-            new Error(
-              "API connection failed"
-            )
-          );
-
-        };
-
-
-      script.src =
-        API_URL +
-        "?" +
-        query.toString();
-
-
-      document
-        .head
-        .appendChild(script);
-
-    }
-  );
+  e.className =
+    "message " +
+    (type || "");
 
 }
 
 
 /* ==================================================
-   MESSAGE
+   API CALL
 ================================================== */
 
-function msg(
-  id,
-  text,
-  type
-){
+async function api(action,params={}){
 
-  const e =
-    el(id);
+  const query =
+    new URLSearchParams();
 
-  if(!e) return;
-
-
-  e.textContent =
-    text || "";
+  query.append(
+    "action",
+    action
+  );
 
 
-  e.className =
-    (
-      id === "noticeMessage"
-      ? "notice-message"
-      : "message"
-    )
-    + " "
-    + (type || "");
+  Object.keys(params)
+    .forEach(function(key){
+
+      if(
+        params[key] !== undefined &&
+        params[key] !== null
+      ){
+
+        query.append(
+          key,
+          params[key]
+        );
+
+      }
+
+    });
+
+
+  const response =
+    await fetch(
+      API_URL +
+      "?" +
+      query.toString(),
+      {
+        method:"GET",
+        cache:"no-store"
+      }
+    );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Server/API Error"
+    );
+
+  }
+
+
+  return await response.json();
 
 }
 
@@ -1518,15 +1352,13 @@ function msg(
 
 function today(){
 
-  const d =
-    new Date();
+  const d = new Date();
 
-
-  const value =
+  const v =
     d.getFullYear()
     + "-"
     + String(
-        d.getMonth() + 1
+        d.getMonth()+1
       ).padStart(2,"0")
     + "-"
     + String(
@@ -1534,19 +1366,16 @@ function today(){
       ).padStart(2,"0");
 
 
-  const input =
+  const e =
     el("transactionDate");
 
 
-  if(!input)
-    return;
+  if(!e) return;
 
 
-  input.value =
-    value;
+  e.value = v;
 
-  input.max =
-    value;
+  e.max = v;
 
 }
 
@@ -1569,10 +1398,7 @@ async function loginUser(){
       .trim();
 
 
-  if(
-    !username ||
-    !password
-  ){
+  if(!username || !password){
 
     msg(
       "loginMessage",
@@ -1589,8 +1415,7 @@ async function loginUser(){
     el("loginButton");
 
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
   button.textContent =
     "Login হচ্ছে...";
@@ -1602,11 +1427,8 @@ async function loginUser(){
       await api(
         "login",
         {
-          username:
-            username,
-
-          password:
-            password
+          username:username,
+          password:password
         }
       );
 
@@ -1621,15 +1443,13 @@ async function loginUser(){
         r.token;
 
       ROLE =
-        r.role ||
-        "admin";
+        r.role || "admin";
 
 
       localStorage.setItem(
         "adminToken",
         TOKEN
       );
-
 
       localStorage.setItem(
         "adminRole",
@@ -1660,15 +1480,14 @@ async function loginUser(){
 
     msg(
       "loginMessage",
-      "Server/API connection সমস্যা হয়েছে",
+      "Server/API সমস্যা হয়েছে",
       "error"
     );
 
   }
 
 
-  button.disabled =
-    false;
+  button.disabled = false;
 
   button.textContent =
     "Login";
@@ -1709,9 +1528,6 @@ function showAdmin(){
 
   }
 
-
-  startSessionCheck();
-
 }
 
 
@@ -1742,11 +1558,6 @@ function setupAdmin(){
 
 
   el("noticeCard")
-    .classList
-    .remove("hidden");
-
-
-  el("dueTab")
     .classList
     .remove("hidden");
 
@@ -1791,11 +1602,6 @@ function setupViewer(){
     .add("hidden");
 
 
-  el("dueTab")
-    .classList
-    .add("active");
-
-
   showTab("due");
 
 }
@@ -1805,7 +1611,7 @@ function setupViewer(){
    TAB
 ================================================== */
 
-function showTab(tab){
+function showTab(t){
 
   const add =
     el("addSection");
@@ -1821,15 +1627,12 @@ function showTab(tab){
     add.classList
       .add("hidden");
 
-
     due.classList
       .remove("hidden");
-
 
     el("dueTab")
       .classList
       .add("active");
-
 
     loadDueCustomers();
 
@@ -1840,13 +1643,13 @@ function showTab(tab){
 
   add.classList.toggle(
     "hidden",
-    tab !== "add"
+    t !== "add"
   );
 
 
   due.classList.toggle(
     "hidden",
-    tab === "add"
+    t === "add"
   );
 
 
@@ -1854,7 +1657,7 @@ function showTab(tab){
     .classList
     .toggle(
       "active",
-      tab === "add"
+      t === "add"
     );
 
 
@@ -1862,12 +1665,12 @@ function showTab(tab){
     .classList
     .toggle(
       "active",
-      tab !== "add"
+      t !== "add"
     );
 
 
   if(
-    tab === "due"
+    t === "due"
   ){
 
     loadDueCustomers();
@@ -1889,8 +1692,7 @@ async function loadCustomers(){
       await api(
         "customers",
         {
-          token:
-            TOKEN
+          token:TOKEN
         }
       );
 
@@ -1900,20 +1702,7 @@ async function loadCustomers(){
       !r.success
     ){
 
-      if(
-        handleSession(r)
-      )
-        return;
-
-
-      msg(
-        "saveMessage",
-        r &&
-        r.message
-          ? r.message
-          : "Customer list পাওয়া যায়নি",
-        "error"
-      );
+      handleSession(r);
 
       return;
 
@@ -1933,31 +1722,27 @@ async function loadCustomers(){
 
 
     ALL_CUSTOMERS
-      .forEach(
-        function(c){
+      .forEach(function(c){
 
-          const option =
-            document.createElement(
-              "option"
-            );
-
-
-          option.value =
-            c.id;
-
-
-          option.textContent =
-            c.name +
-            " • " +
-            c.phone;
-
-
-          select.appendChild(
-            option
+        const o =
+          document.createElement(
+            "option"
           );
 
-        }
-      );
+
+        o.value =
+          c.id;
+
+
+        o.textContent =
+          c.name
+          + " • "
+          + c.phone;
+
+
+        select.appendChild(o);
+
+      });
 
   }
 
@@ -1998,7 +1783,8 @@ el("customer")
 
 
       info.textContent =
-        "Selected: " +
+        "Selected: "
+        +
         this.options[
           this.selectedIndex
         ].text;
@@ -2021,7 +1807,10 @@ async function loadOptions(){
 
     const r =
       await api(
-        "options"
+        "options",
+        {
+          token:TOKEN
+        }
       );
 
 
@@ -2037,11 +1826,15 @@ async function loadOptions(){
     }
 
 
-    OPTIONS =
-      r || {
-        due:[],
-        deposit:[]
-      };
+    OPTIONS = {
+
+      due:
+        r.due || [],
+
+      deposit:
+        r.deposit || []
+
+    };
 
 
     loadNotes();
@@ -2050,16 +1843,16 @@ async function loadOptions(){
 
   catch(err){
 
-    msg(
-      "saveMessage",
-      "Note options পাওয়া যায়নি",
-      "error"
-    );
+    console.log(err);
 
   }
 
 }
 
+
+/* ==================================================
+   NOTES
+================================================== */
 
 function loadNotes(){
 
@@ -2091,29 +1884,21 @@ function loadNotes(){
     '<option value="">Note নির্বাচন করুন</option>';
 
 
-  list.forEach(
-    function(item){
+  list.forEach(function(x){
 
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        item;
-
-
-      option.textContent =
-        item;
-
-
-      note.appendChild(
-        option
+    const o =
+      document.createElement(
+        "option"
       );
 
-    }
-  );
+
+    o.value = x;
+
+    o.textContent = x;
+
+    note.appendChild(o);
+
+  });
 
 }
 
@@ -2152,8 +1937,7 @@ async function loadDueCustomers(){
 
 
   el("searchResultCount")
-    .textContent =
-    "";
+    .textContent = "";
 
 
   DUE_CUSTOMERS = [];
@@ -2161,24 +1945,21 @@ async function loadDueCustomers(){
 
   try{
 
-    const customerResponse =
+    const r =
       await api(
         "customers",
         {
-          token:
-            TOKEN
+          token:TOKEN
         }
       );
 
 
     if(
-      !customerResponse ||
-      !customerResponse.success
+      !r ||
+      !r.success
     ){
 
-      handleSession(
-        customerResponse
-      );
+      handleSession(r);
 
       return;
 
@@ -2186,12 +1967,10 @@ async function loadDueCustomers(){
 
 
     const customers =
-      customerResponse.customers || [];
+      r.customers || [];
 
 
-    if(
-      !customers.length
-    ){
+    if(!customers.length){
 
       el("dueMessage")
         .textContent =
@@ -2202,13 +1981,9 @@ async function loadDueCustomers(){
     }
 
 
-    /*
-      Customer-দের Due একসাথে
-      API call করা হচ্ছে।
-    */
-
     const results =
       await Promise.all(
+
         customers.map(
           async function(c){
 
@@ -2218,11 +1993,8 @@ async function loadDueCustomers(){
                 await api(
                   "due",
                   {
-                    token:
-                      TOKEN,
-
-                    customerId:
-                      c.id
+                    token:TOKEN,
+                    customerId:c.id
                   }
                 );
 
@@ -2235,51 +2007,44 @@ async function loadDueCustomers(){
 
                 return {
 
-                  id:
-                    c.id,
+                  id:c.id,
 
-                  name:
-                    c.name,
+                  name:c.name,
 
-                  phone:
-                    c.phone,
+                  phone:c.phone,
 
-                  due:
-                    Number(x.due)
+                  due:Number(x.due)
 
                 };
 
               }
 
             }
-            catch(e){}
+
+            catch(err){}
+
 
             return null;
 
           }
         )
+
       );
 
 
     DUE_CUSTOMERS =
       results
-        .filter(
-          function(x){
-            return !!x;
+        .filter(Boolean)
+        .sort(
+          function(a,b){
+
+            return a.name
+              .localeCompare(
+                b.name
+              );
+
           }
         );
-
-
-    DUE_CUSTOMERS.sort(
-      function(a,b){
-
-        return a.name
-          .localeCompare(
-            b.name
-          );
-
-      }
-    );
 
 
     renderDueCustomers(
@@ -2287,23 +2052,11 @@ async function loadDueCustomers(){
     );
 
 
-    if(
+    el("dueMessage")
+      .textContent =
       DUE_CUSTOMERS.length
-    ){
-
-      el("dueMessage")
-        .textContent =
-        "";
-
-    }
-
-    else{
-
-      el("dueMessage")
-        .textContent =
-        "বর্তমানে কোনো Due Customer নেই";
-
-    }
+        ? ""
+        : "বর্তমানে কোনো Due Customer নেই";
 
   }
 
@@ -2311,7 +2064,7 @@ async function loadDueCustomers(){
 
     el("dueMessage")
       .textContent =
-      "Due list load করা যায়নি";
+      "Server/API সমস্যা হয়েছে";
 
   }
 
@@ -2319,12 +2072,10 @@ async function loadDueCustomers(){
 
 
 /* ==================================================
-   RENDER DUE
+   RENDER DUE CUSTOMERS
 ================================================== */
 
-function renderDueCustomers(
-  list
-){
+function renderDueCustomers(list){
 
   const select =
     el("dueCustomer");
@@ -2334,43 +2085,38 @@ function renderDueCustomers(
     '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
 
 
-  list.forEach(
-    function(c){
+  list.forEach(function(c){
 
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        c.id;
-
-
-      option.textContent =
-        c.name +
-        " • " +
-        c.phone +
-        " • " +
-        Number(
-          c.due
-        ).toFixed(3) +
-        " KD";
-
-
-      select.appendChild(
-        option
+    const o =
+      document.createElement(
+        "option"
       );
 
-    }
-  );
+
+    o.value =
+      c.id;
+
+
+    o.textContent =
+      c.name
+      + " • "
+      + c.phone
+      + " • "
+      + Number(c.due)
+          .toFixed(3)
+      + " KD";
+
+
+    select.appendChild(o);
+
+  });
 
 
   el("searchResultCount")
     .textContent =
     list.length
-      ? list.length +
-        " জন Due Customer"
+      ? list.length
+        + " জন Due Customer"
       : "";
 
 }
@@ -2391,9 +2137,9 @@ function filterDueCustomers(){
 
   el("clearSearch")
     .style.display =
-      search
-        ? "block"
-        : "none";
+    search
+      ? "block"
+      : "none";
 
 
   const filtered =
@@ -2427,8 +2173,8 @@ function filterDueCustomers(){
 
     el("searchResultCount")
       .textContent =
-      filtered.length +
-      " জন পাওয়া গেছে";
+      filtered.length
+      + " জন পাওয়া গেছে";
 
   }
 
@@ -2488,11 +2234,8 @@ async function checkDue(){
       await api(
         "due",
         {
-          token:
-            TOKEN,
-
-          customerId:
-            id
+          token:TOKEN,
+          customerId:id
         }
       );
 
@@ -2502,18 +2245,19 @@ async function checkDue(){
       !r.success
     ){
 
+      handleSession(r);
+
       if(
-        handleSession(r)
-      )
-        return;
-
-
-      el("dueMessage")
-        .textContent =
         r &&
-        r.message
-          ? r.message
-          : "Due পাওয়া যায়নি";
+        !r.expired
+      ){
+
+        el("dueMessage")
+          .textContent =
+          r.message ||
+          "Due পাওয়া যায়নি";
+
+      }
 
       return;
 
@@ -2532,17 +2276,15 @@ async function checkDue(){
 
     el("dueAmount")
       .textContent =
-      Number(
-        r.due
-      ).toFixed(3);
+      Number(r.due)
+        .toFixed(3);
 
 
     const history =
       el("historyList");
 
 
-    history.innerHTML =
-      "";
+    history.innerHTML = "";
 
 
     if(
@@ -2558,115 +2300,104 @@ async function checkDue(){
     else{
 
       r.transactions
-        .forEach(
-          function(x){
+        .forEach(function(x){
 
-            const item =
-              document.createElement(
-                "div"
-              );
-
-
-            item.className =
-              "history-item";
-
-
-            const tk =
-              x.amountTk
-                ? Math.round(
-                    Number(
-                      x.amountTk
-                    )
-                  ).toLocaleString(
-                    "en-IN"
-                  ) + " Tk"
-                : "";
-
-
-            const sign =
-              x.type === "বাকি"
-                ? "+"
-                : "-";
-
-
-            const noteText =
-              x.note || "";
-
-
-            const extra =
-              noteText &&
-              tk
-                ? noteText +
-                  " • " +
-                  tk
-
-                : noteText ||
-                  tk;
-
-
-            item.innerHTML =
-
-              '<div class="history-top">'
-              +
-
-              '<span class="history-date">'
-              +
-              esc(x.date)
-              +
-              '</span>'
-
-              +
-
-              '<span class="history-type">'
-              +
-              esc(x.type)
-              +
-              '</span>'
-
-              +
-
-              '</div>'
-
-              +
-
-              '<div class="history-amount">'
-              +
-              sign
-              +
-              Number(
-                x.amount
-              ).toFixed(3)
-              +
-              ' KD'
-              +
-              '</div>'
-
-              +
-
-              (
-                extra
-                  ? '<div class="history-note">'
-                    +
-                    esc(extra)
-                    +
-                    '</div>'
-                  : ""
-              );
-
-
-            history.appendChild(
-              item
+          const d =
+            document.createElement(
+              "div"
             );
 
-          }
-        );
+
+          d.className =
+            "history-item";
+
+
+          const tk =
+            x.amountTk
+              ? Math.round(
+                  Number(x.amountTk)
+                ).toLocaleString(
+                  "en-IN"
+                )
+                + " Tk"
+              : "";
+
+
+          const sign =
+            x.type === "বাকি"
+              ? "+"
+              : "-";
+
+
+          const noteText =
+            x.note || "";
+
+
+          const extra =
+            noteText && tk
+              ? noteText
+                + " • "
+                + tk
+              : noteText || tk;
+
+
+          d.innerHTML =
+
+            '<div class="history-top">'
+            +
+
+            '<span class="history-date">'
+            +
+            esc(x.date)
+            +
+            '</span>'
+
+            +
+
+            '<span class="history-type">'
+            +
+            esc(x.type)
+            +
+            '</span>'
+
+            +
+            '</div>'
+
+            +
+
+            '<div class="history-amount">'
+            +
+            sign
+            +
+            Number(x.amount)
+              .toFixed(3)
+            +
+            ' KD'
+            +
+            '</div>'
+
+            +
+
+            (
+              extra
+                ? '<div class="history-note">'
+                  +
+                  esc(extra)
+                  +
+                  '</div>'
+                : ""
+            );
+
+
+          history.appendChild(d);
+
+        });
 
     }
 
 
     el("dueMessage")
-      .textContent =
-      "";
+      .textContent = "";
 
 
     el("dueResult")
@@ -2675,8 +2406,7 @@ async function checkDue(){
 
 
     el("historyScroll")
-      .scrollTop =
-      0;
+      .scrollTop = 0;
 
   }
 
@@ -2684,7 +2414,7 @@ async function checkDue(){
 
     el("dueMessage")
       .textContent =
-      "Server/API Error";
+      "Server/API সমস্যা হয়েছে";
 
   }
 
@@ -2769,9 +2499,7 @@ async function saveTransaction(){
     el("saveButton");
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.textContent =
     "Saving...";
@@ -2783,30 +2511,21 @@ async function saveTransaction(){
       await api(
         "add",
         {
+          token:TOKEN,
 
-          token:
-            TOKEN,
+          customerId:id,
 
-          customerId:
-            id,
+          amount:amount,
 
-          amount:
-            amount,
+          type:type,
 
-          type:
-            type,
+          note:note,
 
-          note:
-            note,
-
-          amountTk:
-            tk,
+          amountTk:tk,
 
           transactionDate:
-            el(
-              "transactionDate"
-            ).value
-
+            el("transactionDate")
+              .value
         }
       );
 
@@ -2841,20 +2560,24 @@ async function saveTransaction(){
 
     else{
 
+      handleSession(r);
+
+
       if(
-        handleSession(r)
-      )
-        return;
+        !r ||
+        !r.expired
+      ){
 
+        msg(
+          "saveMessage",
+          r &&
+          r.message
+            ? r.message
+            : "Save করা যায়নি",
+          "error"
+        );
 
-      msg(
-        "saveMessage",
-        r &&
-        r.message
-          ? r.message
-          : "Save করা যায়নি",
-        "error"
-      );
+      }
 
     }
 
@@ -2864,16 +2587,14 @@ async function saveTransaction(){
 
     msg(
       "saveMessage",
-      "Server/API Error",
+      "Server/API সমস্যা হয়েছে",
       "error"
     );
 
   }
 
 
-  button.disabled =
-    false;
-
+  button.disabled = false;
 
   button.textContent =
     "Save Transaction";
@@ -2882,7 +2603,7 @@ async function saveTransaction(){
 
 
 /* ==================================================
-   NOTICE LOAD
+   LOAD NOTICE
 ================================================== */
 
 async function loadNotice(){
@@ -2897,21 +2618,24 @@ async function loadNotice(){
 
     if(r){
 
-      el("notice")
-        .value =
+      el("notice").value =
         r.notice || "";
 
     }
 
   }
 
-  catch(err){}
+  catch(err){
+
+    console.log(err);
+
+  }
 
 }
 
 
 /* ==================================================
-   NOTICE SAVE
+   SAVE NOTICE
 ================================================== */
 
 async function saveNotice(){
@@ -2920,9 +2644,7 @@ async function saveNotice(){
     el("noticeButton");
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   button.textContent =
     "Saving...";
@@ -2934,13 +2656,10 @@ async function saveNotice(){
       await api(
         "saveNotice",
         {
-
-          token:
-            TOKEN,
+          token:TOKEN,
 
           notice:
             el("notice").value
-
         }
       );
 
@@ -2960,20 +2679,24 @@ async function saveNotice(){
 
     else{
 
+      handleSession(r);
+
+
       if(
-        handleSession(r)
-      )
-        return;
+        !r ||
+        !r.expired
+      ){
 
+        msg(
+          "noticeMessage",
+          r &&
+          r.message
+            ? r.message
+            : "Notice Save হয়নি",
+          "error"
+        );
 
-      msg(
-        "noticeMessage",
-        r &&
-        r.message
-          ? r.message
-          : "Notice Save হয়নি",
-        "error"
-      );
+      }
 
     }
 
@@ -2983,16 +2706,14 @@ async function saveNotice(){
 
     msg(
       "noticeMessage",
-      "Server/API Error",
+      "Server/API সমস্যা হয়েছে",
       "error"
     );
 
   }
 
 
-  button.disabled =
-    false;
-
+  button.disabled = false;
 
   button.textContent =
     "Save Notice";
@@ -3022,35 +2743,16 @@ function handleSession(r){
 }
 
 
-/* ==================================================
-   CLEAR LOGIN
-================================================== */
-
 function clearLoginAndShow(){
 
-  if(sessionTimer){
+  TOKEN = "";
 
-    clearInterval(
-      sessionTimer
-    );
-
-    sessionTimer =
-      null;
-
-  }
-
-
-  TOKEN =
-    "";
-
-  ROLE =
-    "";
+  ROLE = "";
 
 
   localStorage.removeItem(
     "adminToken"
   );
-
 
   localStorage.removeItem(
     "adminRole"
@@ -3085,68 +2787,6 @@ function clearLoginAndShow(){
 
 
 /* ==================================================
-   SESSION CHECK
-================================================== */
-
-function startSessionCheck(){
-
-  if(sessionTimer){
-
-    clearInterval(
-      sessionTimer
-    );
-
-  }
-
-
-  sessionTimer =
-    setInterval(
-      async function(){
-
-        if(!TOKEN)
-          return;
-
-
-        try{
-
-          const r =
-            await api(
-              "checkSession",
-              {
-                token:
-                  TOKEN
-              }
-            );
-
-
-          if(
-            !r ||
-            !r.success
-          ){
-
-            clearLoginAndShow();
-
-          }
-
-        }
-
-        catch(err){
-
-          /*
-            Network error হলে
-            সঙ্গে সঙ্গে logout করা হবে না।
-          */
-
-        }
-
-      },
-      120000
-    );
-
-}
-
-
-/* ==================================================
    LOGOUT
 ================================================== */
 
@@ -3156,33 +2796,18 @@ async function logout(){
     TOKEN;
 
 
-  TOKEN =
-    "";
+  TOKEN = "";
 
-  ROLE =
-    "";
+  ROLE = "";
 
 
   localStorage.removeItem(
     "adminToken"
   );
 
-
   localStorage.removeItem(
     "adminRole"
   );
-
-
-  if(sessionTimer){
-
-    clearInterval(
-      sessionTimer
-    );
-
-    sessionTimer =
-      null;
-
-  }
 
 
   try{
@@ -3190,12 +2815,12 @@ async function logout(){
     await api(
       "logout",
       {
-        token:
-          oldToken
+        token:oldToken
       }
     );
 
   }
+
   catch(err){}
 
 
@@ -3208,36 +2833,34 @@ async function logout(){
    ESCAPE HTML
 ================================================== */
 
-function esc(value){
+function esc(v){
 
-  return String(
-    value || ""
-  )
+  return String(v || "")
 
-  .replace(
-    /&/g,
-    "&amp;"
-  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-  .replace(
-    /</g,
-    "&lt;"
-  )
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-  .replace(
-    />/g,
-    "&gt;"
-  )
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-  .replace(
-    /"/g,
-    "&quot;"
-  )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -3264,16 +2887,13 @@ el("password")
 
 
 /* ==================================================
-   RESTORE SESSION
+   RESTORE LOGIN
 ================================================== */
 
 async function restoreSession(){
 
-  if(!TOKEN){
-
+  if(!TOKEN)
     return;
-
-  }
 
 
   try{
@@ -3282,8 +2902,7 @@ async function restoreSession(){
       await api(
         "checkSession",
         {
-          token:
-            TOKEN
+          token:TOKEN
         }
       );
 
@@ -3320,8 +2939,8 @@ async function restoreSession(){
   catch(err){
 
     /*
-      Server temporarily unavailable হলে
-      Login information delete করা হবে না।
+      Internet/API সাময়িক সমস্যা হলে
+      Login information মুছে দেওয়া হবে না।
     */
 
   }
@@ -3334,4 +2953,4 @@ restoreSession();
 </script>
 
 </body>
-  </html>
+              </html>
