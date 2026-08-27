@@ -3,529 +3,480 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>Admin Panel</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  -webkit-tap-highlight-color:transparent
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 html,body{
-  width:100%;
-  min-height:100%;
-  overflow-x:hidden
+ width:100%;
+ min-height:100%;
+ overflow-x:hidden
 }
 
 body{
-  background:#f4f6f8;
-  color:#111827;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-size:16px
+ background:#f4f6f8;
+ color:#111827;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ font-size:16px
 }
 
 button,input,select,textarea{
-  font:inherit;
-  max-width:100%
+ font:inherit;
+ max-width:100%
 }
 
 button{
-  appearance:none;
-  -webkit-appearance:none
+ appearance:none;
+ -webkit-appearance:none
 }
 
-.hidden{
-  display:none!important
-}
+.hidden{display:none!important}
 
 .app{
-  width:100%;
-  min-height:100vh;
-  min-height:100dvh;
-  padding-bottom:25px
+ width:100%;
+ min-height:100vh;
+ min-height:100dvh;
+ padding-bottom:25px
 }
 
-/* TOPBAR */
-
+/* TOP */
 .topbar{
-  width:100%;
-  padding:18px 15px 16px;
-  background:#111827;
-  color:#fff;
-  box-shadow:0 4px 18px rgba(0,0,0,.14)
+ width:100%;
+ padding:18px 15px 16px;
+ background:#111827;
+ color:#fff;
+ box-shadow:0 4px 18px rgba(0,0,0,.14)
 }
 
 .topbar-inner{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:11px
+ width:100%;
+ display:flex;
+ align-items:center;
+ gap:11px
 }
 
 .app-icon{
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
-  border-radius:14px;
-  background:rgba(255,255,255,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:21px
+ width:44px;
+ height:44px;
+ flex:0 0 44px;
+ border-radius:14px;
+ background:rgba(255,255,255,.12);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:21px
 }
 
 .app-title{
-  flex:1;
-  min-width:0
+ flex:1;
+ min-width:0
 }
 
 .app-title h1{
-  font-size:18px;
-  line-height:1.2;
-  font-weight:800
+ font-size:18px;
+ line-height:1.2;
+ font-weight:800
 }
 
 .app-title p{
-  margin-top:3px;
-  color:#cbd5e1;
-  font-size:10px
+ margin-top:3px;
+ color:#cbd5e1;
+ font-size:10px
 }
 
 .online{
-  width:9px;
-  height:9px;
-  flex:0 0 9px;
-  border-radius:50%;
-  background:#34d399
+ width:9px;
+ height:9px;
+ flex:0 0 9px;
+ border-radius:50%;
+ background:#34d399
 }
 
 /* CONTENT */
-
 .content{
-  width:100%;
-  padding:11px
+ width:100%;
+ padding:11px
 }
 
 .card{
-  width:100%;
-  background:#fff;
-  border-radius:20px;
-  padding:15px;
-  margin-bottom:12px;
-  border:1px solid #edf0f3;
-  box-shadow:0 4px 18px rgba(15,23,42,.055)
+ width:100%;
+ background:#fff;
+ border-radius:20px;
+ padding:15px;
+ margin-bottom:12px;
+ border:1px solid #edf0f3;
+ box-shadow:0 4px 18px rgba(15,23,42,.055)
 }
 
 /* TABS */
-
 .tab-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:12px
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+ margin-bottom:12px
 }
 
 .tab-btn{
-  height:53px;
-  border:1px solid #e0e4e9;
-  border-radius:15px;
-  background:#fff;
-  color:#4b5563;
-  font-size:14px;
-  font-weight:800;
-  box-shadow:0 3px 12px rgba(15,23,42,.04)
+ height:53px;
+ border:1px solid #e0e4e9;
+ border-radius:15px;
+ background:#fff;
+ color:#4b5563;
+ font-size:14px;
+ font-weight:800;
+ box-shadow:0 3px 12px rgba(15,23,42,.04)
 }
 
 .tab-btn.active{
-  background:#111827;
-  color:#fff;
-  border-color:#111827
+ background:#111827;
+ color:#fff;
+ border-color:#111827
 }
 
 /* FIELD */
-
 .field{
-  width:100%;
-  margin-top:15px
+ width:100%;
+ margin-top:15px
 }
 
-.field:first-child{
-  margin-top:0
-}
+.field:first-child{margin-top:0}
 
 label{
-  display:block;
-  margin-bottom:7px;
-  color:#374151;
-  font-size:12px;
-  font-weight:700
+ display:block;
+ margin-bottom:7px;
+ color:#374151;
+ font-size:12px;
+ font-weight:700
 }
 
-input,
-select,
-textarea{
-  width:100%;
-  border:1px solid #e0e4e9;
-  background:#fafbfc;
-  color:#111827;
-  border-radius:14px;
-  outline:none
+input,select,textarea{
+ width:100%;
+ border:1px solid #e0e4e9;
+ background:#fafbfc;
+ color:#111827;
+ border-radius:14px;
+ outline:none
 }
 
-input,
-select{
-  height:52px;
-  padding:0 13px;
-  font-size:14px
+input,select{
+ height:52px;
+ padding:0 13px;
+ font-size:14px
 }
 
 textarea{
-  min-height:110px;
-  padding:12px 13px;
-  line-height:1.5;
-  resize:vertical
+ min-height:110px;
+ padding:12px 13px;
+ line-height:1.5;
+ resize:vertical
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  background:#fff;
-  border-color:#64748b;
-  box-shadow:0 0 0 3px rgba(100,116,139,.1)
+input:focus,select:focus,textarea:focus{
+ background:#fff;
+ border-color:#64748b;
+ box-shadow:0 0 0 3px rgba(100,116,139,.1)
 }
 
 /* AMOUNT */
-
 .amount-wrap{
-  position:relative;
-  width:100%
+ position:relative;
+ width:100%
 }
 
 .amount-wrap input{
-  height:62px;
-  padding:0 55px 0 14px;
-  font-size:24px;
-  font-weight:800;
-  background:#f8fafc
+ height:62px;
+ padding:0 55px 0 14px;
+ font-size:24px;
+ font-weight:800;
+ background:#f8fafc
 }
 
 .amount-unit{
-  position:absolute;
-  right:14px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#9aa1ab;
-  font-size:12px;
-  font-weight:700
+ position:absolute;
+ right:14px;
+ top:50%;
+ transform:translateY(-50%);
+ color:#9aa1ab;
+ font-size:12px;
+ font-weight:700
 }
 
 /* TYPE */
-
 .type-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px
 }
 
 .type-option{
-  position:relative
+ position:relative
 }
 
 .type-option input{
-  position:absolute;
-  opacity:0;
-  pointer-events:none
+ position:absolute;
+ opacity:0;
+ pointer-events:none
 }
 
 .type-label{
-  width:100%;
-  height:53px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:14px;
-  border:1px solid #e0e4e9;
-  background:#fafbfc;
-  color:#4b5563;
-  font-size:14px;
-  font-weight:750
+ width:100%;
+ height:53px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:14px;
+ border:1px solid #e0e4e9;
+ background:#fafbfc;
+ color:#4b5563;
+ font-size:14px;
+ font-weight:750
 }
 
 .type-option input:checked+.type-label{
-  background:#111827;
-  color:#fff;
-  border-color:#111827
+ background:#111827;
+ color:#fff;
+ border-color:#111827
 }
 
 /* BUTTON */
-
 .primary-btn{
-  width:100%;
-  height:55px;
-  margin-top:17px;
-  border:0;
-  border-radius:15px;
-  background:#111827;
-  color:#fff;
-  font-size:14px;
-  font-weight:800;
-  box-shadow:0 7px 17px rgba(17,24,39,.15)
+ width:100%;
+ height:55px;
+ margin-top:17px;
+ border:0;
+ border-radius:15px;
+ background:#111827;
+ color:#fff;
+ font-size:14px;
+ font-weight:800;
+ box-shadow:0 7px 17px rgba(17,24,39,.15)
 }
 
-.primary-btn:disabled{
-  opacity:.55
-}
+.primary-btn:disabled{opacity:.55}
 
 .logout{
-  width:100%;
-  height:50px;
-  border:1px solid #e1e5ea;
-  border-radius:14px;
-  background:#fff;
-  color:#374151;
-  font-size:13px;
-  font-weight:750
+ width:100%;
+ height:50px;
+ border:1px solid #e1e5ea;
+ border-radius:14px;
+ background:#fff;
+ color:#374151;
+ font-size:13px;
+ font-weight:750
 }
 
-/* CUSTOMER INFO */
-
+/* CUSTOMER */
 .customer-info{
-  width:100%;
-  margin-top:8px;
-  padding:9px 11px;
-  background:#f8fafc;
-  border:1px solid #edf0f3;
-  border-radius:12px;
-  color:#64748b;
-  font-size:11px
+ width:100%;
+ margin-top:8px;
+ padding:9px 11px;
+ background:#f8fafc;
+ border:1px solid #edf0f3;
+ border-radius:12px;
+ color:#64748b;
+ font-size:11px
 }
 
 /* DUE */
-
 .due-box{
-  width:100%;
-  margin-top:15px;
-  padding:18px 15px;
-  border-radius:18px;
-  background:#111827;
-  color:#fff;
-  text-align:center;
-  box-shadow:0 8px 22px rgba(17,24,39,.16)
+ width:100%;
+ margin-top:15px;
+ padding:18px 15px;
+ border-radius:18px;
+ background:#111827;
+ color:#fff;
+ text-align:center;
+ box-shadow:0 8px 22px rgba(17,24,39,.16)
 }
 
 .due-label{
-  color:#cbd5e1;
-  font-size:11px;
-  font-weight:650
+ color:#cbd5e1;
+ font-size:11px;
+ font-weight:650
 }
 
 .due-value{
-  margin-top:5px;
-  font-size:31px;
-  line-height:1.1;
-  font-weight:850
+ margin-top:5px;
+ font-size:31px;
+ line-height:1.1;
+ font-weight:850
 }
 
 .due-unit{
-  margin-left:3px;
-  font-size:13px;
-  color:#cbd5e1
+ margin-left:3px;
+ font-size:13px;
+ color:#cbd5e1
 }
 
 /* HISTORY */
-
 .history-title{
-  margin-top:18px;
-  margin-bottom:9px;
-  font-size:13px;
-  font-weight:800
+ margin-top:18px;
+ margin-bottom:9px;
+ font-size:13px;
+ font-weight:800
 }
 
 .history-scroll{
-  max-height:430px;
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding-right:2px;
-  -webkit-overflow-scrolling:touch
+ max-height:430px;
+ overflow-y:auto;
+ overflow-x:hidden;
+ padding-right:2px;
+ -webkit-overflow-scrolling:touch
 }
 
-.history-scroll::-webkit-scrollbar{
-  width:5px
-}
+.history-scroll::-webkit-scrollbar{width:5px}
 
 .history-scroll::-webkit-scrollbar-thumb{
-  background:#cbd5e1;
-  border-radius:10px
+ background:#cbd5e1;
+ border-radius:10px
 }
 
 .history-item{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border:1px solid #edf0f3;
-  border-radius:14px;
-  background:#fafbfc
+ width:100%;
+ padding:12px;
+ margin-top:8px;
+ border:1px solid #edf0f3;
+ border-radius:14px;
+ background:#fafbfc
 }
 
 .history-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px
+ display:flex;
+ justify-content:space-between;
+ gap:10px
 }
 
 .history-date{
-  color:#89919d;
-  font-size:10px
+ color:#89919d;
+ font-size:10px
 }
 
 .history-type{
-  font-size:11px;
-  font-weight:800
+ font-size:11px;
+ font-weight:800
 }
 
 .history-amount{
-  margin-top:5px;
-  font-size:18px;
-  font-weight:850
+ margin-top:5px;
+ font-size:18px;
+ font-weight:850
 }
 
 .history-note{
-  margin-top:4px;
-  color:#64748b;
-  font-size:11px
+ margin-top:4px;
+ color:#64748b;
+ font-size:11px
 }
 
 /* MESSAGE */
-
 .message{
-  min-height:18px;
-  margin-top:9px;
-  text-align:center;
-  font-size:11px;
-  font-weight:650
+ min-height:18px;
+ margin-top:9px;
+ text-align:center;
+ font-size:11px;
+ font-weight:650
 }
 
-.success{
-  color:#16a34a
-}
-
-.error{
-  color:#dc2626
-}
+.success{color:#16a34a}
+.error{color:#dc2626}
 
 .empty{
-  padding:20px 10px;
-  text-align:center;
-  color:#9aa1ab;
-  font-size:12px
+ padding:20px 10px;
+ text-align:center;
+ color:#9aa1ab;
+ font-size:12px
 }
 
 /* SEARCH */
-
 .search-wrap{
-  position:relative;
-  width:100%
+ position:relative;
+ width:100%
 }
 
 .search-wrap input{
-  padding-left:42px;
-  padding-right:40px
+ padding-left:42px;
+ padding-right:40px
 }
 
 .search-icon{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#89919d;
-  font-size:16px;
-  pointer-events:none
+ position:absolute;
+ left:14px;
+ top:50%;
+ transform:translateY(-50%);
+ color:#89919d;
+ font-size:16px;
+ pointer-events:none
 }
 
 .clear-search{
-  position:absolute;
-  right:9px;
-  top:50%;
-  transform:translateY(-50%);
-  width:32px;
-  height:32px;
-  border:0;
-  border-radius:10px;
-  background:transparent;
-  color:#89919d;
-  font-size:17px;
-  display:none
+ position:absolute;
+ right:9px;
+ top:50%;
+ transform:translateY(-50%);
+ width:32px;
+ height:32px;
+ border:0;
+ border-radius:10px;
+ background:transparent;
+ color:#89919d;
+ font-size:17px;
+ display:none
 }
 
 .search-result-count{
-  margin-top:7px;
-  color:#89919d;
-  font-size:10px;
-  min-height:15px
+ margin-top:7px;
+ color:#89919d;
+ font-size:10px;
+ min-height:15px
 }
 
 /* LOGIN */
-
-.login-content{
-  padding-top:25px
-}
+.login-content{padding-top:25px}
 
 .login-icon{
-  width:61px;
-  height:61px;
-  border-radius:19px;
-  background:#111827;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:25px;
-  margin-bottom:15px
+ width:61px;
+ height:61px;
+ border-radius:19px;
+ background:#111827;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:25px;
+ margin-bottom:15px
 }
 
 .login-title{
-  font-size:24px;
-  font-weight:850
+ font-size:24px;
+ font-weight:850
 }
 
 .login-subtitle{
-  margin-top:6px;
-  color:#89919d;
-  font-size:12px;
-  line-height:1.5
+ margin-top:6px;
+ color:#89919d;
+ font-size:12px;
+ line-height:1.5
 }
 
 .viewer-badge{
-  display:inline-flex;
-  align-items:center;
-  padding:5px 9px;
-  margin-top:6px;
-  border-radius:9px;
-  background:rgba(255,255,255,.12);
-  color:#e2e8f0;
-  font-size:9px;
-  font-weight:700
+ display:inline-flex;
+ align-items:center;
+ padding:5px 9px;
+ margin-top:6px;
+ border-radius:9px;
+ background:rgba(255,255,255,.12);
+ color:#e2e8f0;
+ font-size:9px;
+ font-weight:700
 }
 
 @media(max-width:360px){
-
-  .content{
-    padding:9px
-  }
-
-  .card{
-    padding:14px
-  }
-
-  .due-value{
-    font-size:28px
-  }
-
-  .history-scroll{
-    max-height:380px
-  }
+ .content{padding:9px}
+ .card{padding:14px}
+ .due-value{font-size:28px}
+ .history-scroll{max-height:380px}
 }
 </style>
 </head>
@@ -533,504 +484,361 @@ textarea:focus{
 <body>
 
 <!-- LOGIN -->
-
 <div id="loginPage" class="app">
 
-  <div class="topbar">
-    <div class="topbar-inner">
+ <div class="topbar">
+  <div class="topbar-inner">
 
-      <div class="app-icon">⚙️</div>
+   <div class="app-icon">⚙️</div>
 
-      <div class="app-title">
-        <h1>Admin Panel</h1>
-        <p>Customer Due Management</p>
-      </div>
+   <div class="app-title">
+    <h1>Admin Panel</h1>
+    <p>Customer Due Management</p>
+   </div>
 
-      <span class="online"></span>
+   <span class="online"></span>
 
-    </div>
   </div>
+ </div>
 
-  <div class="content login-content">
+ <div class="content login-content">
 
-    <div class="card">
+  <div class="card">
 
-      <div class="login-icon">🔐</div>
+   <div class="login-icon">🔐</div>
 
-      <div class="login-title">
-        Welcome Back
-      </div>
+   <div class="login-title">
+    Welcome Back
+   </div>
 
-      <div class="login-subtitle">
-        Username এবং Password দিয়ে Login করুন।
-      </div>
+   <div class="login-subtitle">
+    Username এবং Password দিয়ে Login করুন।
+   </div>
 
-      <div class="field">
-        <label>Username</label>
+   <div class="field">
+    <label>Username</label>
+    <input id="username" type="text" autocomplete="username" placeholder="Username">
+   </div>
 
-        <input
-          id="username"
-          type="text"
-          autocomplete="username"
-          placeholder="Username"
-        >
-      </div>
+   <div class="field">
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Password">
+   </div>
 
-      <div class="field">
-        <label>Password</label>
+   <button id="loginButton" class="primary-btn" onclick="loginUser()">
+    Login
+   </button>
 
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Password"
-        >
-      </div>
-
-      <button
-        id="loginButton"
-        class="primary-btn"
-        onclick="loginUser()"
-      >
-        Login
-      </button>
-
-      <div id="loginMessage" class="message"></div>
-
-    </div>
+   <div id="loginMessage" class="message"></div>
 
   </div>
 
+ </div>
 </div>
 
 
 <!-- ADMIN -->
-
 <div id="adminPage" class="app hidden">
 
-  <div class="topbar">
+ <div class="topbar">
 
-    <div class="topbar-inner">
+  <div class="topbar-inner">
 
-      <div class="app-icon">
-        👨‍💼
-      </div>
+   <div class="app-icon">👨‍💼</div>
 
-      <div class="app-title">
+   <div class="app-title">
+    <h1 id="panelTitle">Admin Dashboard</h1>
+    <p>Customer Due Management</p>
 
-        <h1 id="panelTitle">
-          Admin Dashboard
-        </h1>
+    <span id="viewerBadge" class="viewer-badge hidden">
+     👁️ View Only
+    </span>
+   </div>
 
-        <p>
-          Customer Due Management
-        </p>
+   <span class="online"></span>
 
-        <span
-          id="viewerBadge"
-          class="viewer-badge hidden"
-        >
-          👁️ View Only
-        </span>
+  </div>
 
-      </div>
+ </div>
 
-      <span class="online"></span>
 
-    </div>
+ <div class="content">
+
+  <!-- TABS -->
+  <div id="tabGrid" class="tab-grid">
+
+   <button id="addTab" class="tab-btn active" onclick="showTab('add')">
+    Add Transaction
+   </button>
+
+   <button id="dueTab" class="tab-btn" onclick="showTab('due')">
+    Check Due
+   </button>
 
   </div>
 
 
-  <div class="content">
+  <!-- ADD TRANSACTION -->
+  <div id="addSection" class="card">
 
-    <!-- TABS -->
+   <div class="field">
 
-    <div id="tabGrid" class="tab-grid">
+    <label>Customer</label>
 
-      <button
-        id="addTab"
-        class="tab-btn active"
-        onclick="showTab('add')"
+    <select id="customer">
+     <option value="">Customer নির্বাচন করুন</option>
+    </select>
+
+    <div id="customerInfo" class="customer-info hidden"></div>
+
+   </div>
+
+
+   <div class="field">
+
+    <label>Transaction Date</label>
+
+    <input id="transactionDate" type="date">
+
+   </div>
+
+
+   <div class="field">
+
+    <label>KD Amount</label>
+
+    <div class="amount-wrap">
+
+     <input
+      id="amount"
+      type="number"
+      step="0.001"
+      inputmode="decimal"
+      placeholder="10.000"
+     >
+
+     <span class="amount-unit">KD</span>
+
+    </div>
+
+   </div>
+
+
+   <div class="field">
+
+    <label>বাংলা টাকা</label>
+
+    <div class="amount-wrap">
+
+     <input
+      id="amountTk"
+      type="number"
+      step="1"
+      min="0"
+      inputmode="numeric"
+      placeholder="1,000"
+     >
+
+     <span class="amount-unit">Tk</span>
+
+    </div>
+
+   </div>
+
+
+   <div class="field">
+
+    <label>ধরণ</label>
+
+    <div class="type-grid">
+
+     <label class="type-option">
+
+      <input
+       type="radio"
+       name="transactionType"
+       value="বাকি"
+       checked
+       onchange="loadNotes()"
       >
-        ➕ Add Transaction
-      </button>
 
-      <button
-        id="dueTab"
-        class="tab-btn"
-        onclick="showTab('due')"
+      <span class="type-label">
+       + বাকি
+      </span>
+
+     </label>
+
+
+     <label class="type-option">
+
+      <input
+       type="radio"
+       name="transactionType"
+       value="জমা"
+       onchange="loadNotes()"
       >
-        🔍 Check Due
-      </button>
+
+      <span class="type-label">
+       − জমা
+      </span>
+
+     </label>
+
+    </div>
+
+   </div>
+
+
+   <div class="field">
+
+    <label>Note</label>
+
+    <select id="note">
+     <option value="">Note নির্বাচন করুন</option>
+    </select>
+
+   </div>
+
+
+   <button
+    id="saveButton"
+    class="primary-btn"
+    onclick="saveTransaction()"
+   >
+    Save Transaction
+   </button>
+
+   <div id="saveMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- CHECK DUE -->
+  <div id="dueSection" class="card hidden">
+
+   <div class="field">
+
+    <label>Search Customer</label>
+
+    <div class="search-wrap">
+
+     <span class="search-icon">🔍</span>
+
+     <input
+      id="customerSearch"
+      type="search"
+      autocomplete="off"
+      placeholder="নাম অথবা ফোন নম্বর লিখুন"
+      oninput="filterDueCustomers()"
+     >
+
+     <button
+      id="clearSearch"
+      class="clear-search"
+      onclick="clearCustomerSearch()"
+      type="button"
+     >
+      ×
+     </button>
+
+    </div>
+
+    <div id="searchResultCount" class="search-result-count"></div>
+
+   </div>
+
+
+   <div class="field">
+
+    <label>Customer</label>
+
+    <select id="dueCustomer" onchange="checkDue()">
+     <option value="">
+      Due থাকা Customer নির্বাচন করুন
+     </option>
+    </select>
+
+   </div>
+
+
+   <div id="dueResult" class="hidden">
+
+    <div class="customer-info">
+     <b id="dueCustomerName"></b>
+     <br>
+     <span id="dueCustomerPhone"></span>
+    </div>
+
+
+    <div class="due-box">
+
+     <div class="due-label">
+      TOTAL DUE
+     </div>
+
+     <div class="due-value">
+
+      <span id="dueAmount">0.000</span>
+
+      <span class="due-unit">
+       KD
+      </span>
+
+     </div>
 
     </div>
 
 
-    <!-- ADD -->
-
-    <div
-      id="addSection"
-      class="card"
-    >
-
-      <!-- Customer -->
-
-      <div class="field">
-
-        <label>
-          Customer
-        </label>
-
-        <select id="customer">
-
-          <option value="">
-            Customer নির্বাচন করুন
-          </option>
-
-        </select>
-
-        <div
-          id="customerInfo"
-          class="customer-info hidden"
-        ></div>
-
-      </div>
-
-
-      <!-- Date -->
-
-      <div class="field">
-
-        <label>
-          Transaction Date
-        </label>
-
-        <input
-          id="transactionDate"
-          type="date"
-        >
-
-      </div>
-
-
-      <!-- KD -->
-
-      <div class="field">
-
-        <label>
-          KD Amount
-        </label>
-
-        <div class="amount-wrap">
-
-          <input
-            id="amount"
-            type="number"
-            step="0.001"
-            inputmode="decimal"
-            placeholder="10.000"
-          >
-
-          <span class="amount-unit">
-            KD
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- TK -->
-
-      <div class="field">
-
-        <label>
-          বাংলা টাকা
-        </label>
-
-        <div class="amount-wrap">
-
-          <input
-            id="amountTk"
-            type="number"
-            step="1"
-            min="0"
-            inputmode="numeric"
-            placeholder="1,000"
-          >
-
-          <span class="amount-unit">
-            Tk
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <!-- TYPE -->
-
-      <div class="field">
-
-        <label>
-          ধরণ
-        </label>
-
-        <div class="type-grid">
-
-          <label class="type-option">
-
-            <input
-              type="radio"
-              name="transactionType"
-              value="বাকি"
-              checked
-              onchange="loadNotes()"
-            >
-
-            <span class="type-label">
-              + বাকি
-            </span>
-
-          </label>
-
-          <label class="type-option">
-
-            <input
-              type="radio"
-              name="transactionType"
-              value="জমা"
-              onchange="loadNotes()"
-            >
-
-            <span class="type-label">
-              − জমা
-            </span>
-
-          </label>
-
-        </div>
-
-      </div>
-
-
-      <!-- NOTE -->
-
-      <div class="field">
-
-        <label>
-          Note
-        </label>
-
-        <select id="note">
-
-          <option value="">
-            Note নির্বাচন করুন
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <button
-        id="saveButton"
-        class="primary-btn"
-        onclick="saveTransaction()"
-      >
-        Save Transaction
-      </button>
-
-      <div
-        id="saveMessage"
-        class="message"
-      ></div>
-
+    <div class="history-title">
+     Transaction History
     </div>
 
 
-    <!-- DUE -->
-
-    <div
-      id="dueSection"
-      class="card hidden"
-    >
-
-      <!-- Search -->
-
-      <div class="field">
-
-        <label>
-          Search Customer
-        </label>
-
-        <div class="search-wrap">
-
-          <span class="search-icon">
-            🔍
-          </span>
-
-          <input
-            id="customerSearch"
-            type="search"
-            autocomplete="off"
-            placeholder="নাম অথবা ফোন নম্বর লিখুন"
-            oninput="filterDueCustomers()"
-          >
-
-          <button
-            id="clearSearch"
-            class="clear-search"
-            onclick="clearCustomerSearch()"
-            type="button"
-          >
-            ×
-          </button>
-
-        </div>
-
-        <div
-          id="searchResultCount"
-          class="search-result-count"
-        ></div>
-
-      </div>
-
-
-      <!-- Customer -->
-
-      <div class="field">
-
-        <label>
-          Customer
-        </label>
-
-        <select
-          id="dueCustomer"
-          onchange="checkDue()"
-        >
-
-          <option value="">
-            Due থাকা Customer নির্বাচন করুন
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div
-        id="dueResult"
-        class="hidden"
-      >
-
-        <div class="customer-info">
-
-          <b id="dueCustomerName"></b>
-
-        </div>
-
-
-        <div class="due-box">
-
-          <div class="due-label">
-            TOTAL DUE
-          </div>
-
-          <div class="due-value">
-
-            <span id="dueAmount">
-              0.000
-            </span>
-
-            <span class="due-unit">
-              KD
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <div class="history-title">
-          Transaction History
-        </div>
-
-
-        <div
-          id="historyScroll"
-          class="history-scroll"
-        >
-
-          <div id="historyList"></div>
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="dueMessage"
-        class="message"
-      ></div>
-
+    <div id="historyScroll" class="history-scroll">
+     <div id="historyList"></div>
     </div>
 
-
-    <!-- NOTICE -->
-
-    <div
-      id="noticeCard"
-      class="card"
-    >
-
-      <div class="card-head">
-
-        <div class="card-icon">
-          📢
-        </div>
-
-        <div class="card-title">
-          Notice / Offer
-        </div>
-
-      </div>
+   </div>
 
 
-      <textarea
-        id="notice"
-        placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে..."
-      ></textarea>
+   <div id="dueMessage" class="message"></div>
 
 
-      <button
-        id="noticeButton"
-        class="primary-btn"
-        onclick="saveNotice()"
-      >
-        Save Notice
-      </button>
+   <!-- NOTICE ONLY IN CHECK DUE -->
+   <div id="noticeCard">
 
+    <div class="field">
 
-      <div
-        id="noticeMessage"
-        class="message"
-      ></div>
+     <label>Notice / Offer</label>
+
+     <textarea
+      id="notice"
+      placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে..."
+     ></textarea>
 
     </div>
-
-
-    <!-- LOGOUT -->
 
     <button
-      class="logout"
-      onclick="logout()"
+     id="noticeButton"
+     class="primary-btn"
+     onclick="saveNotice()"
     >
-      Logout
+     Save Notice
     </button>
 
+    <div id="noticeMessage" class="message"></div>
+
+   </div>
+
   </div>
+
+
+  <!-- LOGOUT -->
+  <button class="logout" onclick="logout()">
+   Logout
+  </button>
+
+ </div>
 
 </div>
 
@@ -1040,1196 +848,878 @@ textarea:focus{
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
 
-let TOKEN =
-  localStorage.getItem("adminToken") || "";
+let TOKEN=localStorage.getItem("adminToken")||"";
+let ROLE=localStorage.getItem("adminRole")||"";
 
-let ROLE =
-  localStorage.getItem("adminRole") || "";
+let OPTIONS={due:[],deposit:[]};
+let ALL_CUSTOMERS=[];
+let DUE_CUSTOMERS=[];
 
-let OPTIONS = {
-  due: [],
-  deposit: []
-};
-
-let ALL_CUSTOMERS = [];
-let DUE_CUSTOMERS = [];
-
-
-function el(id){
-  return document.getElementById(id);
-}
-
+const el=id=>document.getElementById(id);
 
 function msg(id,text,type){
-
-  const e = el(id);
-
-  if(!e) return;
-
-  e.textContent = text || "";
-
-  e.className =
-    "message " + (type || "");
-
+ const e=el(id);
+ if(!e)return;
+ e.textContent=text||"";
+ e.className="message "+(type||"");
 }
 
 
+/* API */
 async function api(action,params={}){
 
-  const query =
-    new URLSearchParams();
+ const query=new URLSearchParams();
+ query.append("action",action);
 
-  query.append("action",action);
-
-  Object.keys(params).forEach(function(key){
-
-    if(
-      params[key] !== undefined &&
-      params[key] !== null
-    ){
-
-      query.append(
-        key,
-        params[key]
-      );
-
-    }
-
-  });
-
-  const response =
-    await fetch(
-      API_URL +
-      "?" +
-      query.toString(),
-      {
-        method:"GET",
-        cache:"no-store"
-      }
-    );
-
-  if(!response.ok){
-    throw new Error("Server/API Error");
+ for(const key in params){
+  if(params[key]!==undefined&&params[key]!==null){
+   query.append(key,params[key]);
   }
+ }
 
-  return await response.json();
+ const response=await fetch(
+  API_URL+"?"+query.toString(),
+  {method:"GET",cache:"no-store"}
+ );
 
+ if(!response.ok)
+  throw new Error("Server/API Error");
+
+ return response.json();
 }
 
 
+/* DATE */
 function today(){
 
-  const d = new Date();
+ const d=new Date();
 
-  const v =
-    d.getFullYear()
-    + "-"
-    + String(
-        d.getMonth()+1
-      ).padStart(2,"0")
-    + "-"
-    + String(
-        d.getDate()
-      ).padStart(2,"0");
+ const value=
+  d.getFullYear()+"-"+
+  String(d.getMonth()+1).padStart(2,"0")+"-"+
+  String(d.getDate()).padStart(2,"0");
 
-  const e =
-    el("transactionDate");
+ const input=el("transactionDate");
 
-  if(!e) return;
-
-  e.value = v;
-  e.max = v;
-
+ input.value=value;
+ input.max=value;
 }
 
 
+/* LOGIN */
 async function loginUser(){
 
-  const username =
-    el("username").value.trim();
+ const username=el("username").value.trim();
+ const password=el("password").value.trim();
 
-  const password =
-    el("password").value.trim();
+ if(!username||!password){
+  msg("loginMessage","Username এবং Password দিন","error");
+  return;
+ }
 
-  if(!username || !password){
+ const button=el("loginButton");
 
-    msg(
-      "loginMessage",
-      "Username এবং Password দিন",
-      "error"
-    );
+ button.disabled=true;
+ button.textContent="Login হচ্ছে...";
 
-    return;
-  }
+ try{
 
-  const button =
-    el("loginButton");
+  const r=await api("login",{username,password});
 
-  button.disabled = true;
-  button.textContent = "Login হচ্ছে...";
+  if(r&&r.success&&r.token){
 
-  try{
+   TOKEN=r.token;
+   ROLE=r.role||"admin";
 
-    const r =
-      await api(
-        "login",
-        {
-          username:username,
-          password:password
-        }
-      );
+   localStorage.setItem("adminToken",TOKEN);
+   localStorage.setItem("adminRole",ROLE);
 
-    if(
-      r &&
-      r.success &&
-      r.token
-    ){
+   showAdmin();
 
-      TOKEN = r.token;
-      ROLE = r.role || "admin";
+  }else{
 
-      localStorage.setItem(
-        "adminToken",
-        TOKEN
-      );
-
-      localStorage.setItem(
-        "adminRole",
-        ROLE
-      );
-
-      showAdmin();
-
-    }
-    else{
-
-      msg(
-        "loginMessage",
-        r && r.message
-          ? r.message
-          : "Login করা যায়নি",
-        "error"
-      );
-
-    }
-
-  }
-  catch(err){
-
-    msg(
-      "loginMessage",
-      "Server/API সমস্যা হয়েছে",
-      "error"
-    );
+   msg(
+    "loginMessage",
+    r?.message||"Login করা যায়নি",
+    "error"
+   );
 
   }
 
-  button.disabled = false;
-  button.textContent = "Login";
+ }catch(e){
 
+  msg(
+   "loginMessage",
+   "Server/API সমস্যা হয়েছে",
+   "error"
+  );
+
+ }
+
+ button.disabled=false;
+ button.textContent="Login";
 }
 
 
+/* SHOW ADMIN */
 function showAdmin(){
 
-  el("loginPage").classList.add("hidden");
+ el("loginPage").classList.add("hidden");
+ el("adminPage").classList.remove("hidden");
 
-  el("adminPage").classList.remove("hidden");
+ today();
 
-  today();
-
-  if(ROLE === "viewer"){
-    setupViewer();
-  }
-  else{
-    setupAdmin();
-  }
-
+ if(ROLE==="viewer")
+  setupViewer();
+ else
+  setupAdmin();
 }
 
 
+/* ADMIN */
 function setupAdmin(){
 
-  el("panelTitle").textContent =
-    "Admin Dashboard";
+ el("panelTitle").textContent="Admin Dashboard";
+ el("viewerBadge").classList.add("hidden");
 
-  el("viewerBadge").classList.add("hidden");
+ el("addTab").classList.remove("hidden");
+ el("addSection").classList.remove("hidden");
 
-  el("addTab").classList.remove("hidden");
-
-  el("addSection").classList.remove("hidden");
-
-  el("noticeCard").classList.remove("hidden");
-
-  loadCustomers();
-  loadOptions();
-  loadNotice();
-
+ loadCustomers();
+ loadOptions();
+ loadNotice();
 }
 
 
+/* VIEWER */
 function setupViewer(){
 
-  el("panelTitle").textContent =
-    "Viewer Dashboard";
+ el("panelTitle").textContent="Viewer Dashboard";
+ el("viewerBadge").classList.remove("hidden");
 
-  el("viewerBadge").classList.remove("hidden");
+ el("addTab").classList.add("hidden");
+ el("addSection").classList.add("hidden");
 
-  el("addTab").classList.add("hidden");
-
-  el("addSection").classList.add("hidden");
-
-  el("noticeCard").classList.add("hidden");
-
-  showTab("due");
-
+ showTab("due");
 }
 
 
-function showTab(t){
+/* TAB */
+function showTab(type){
 
-  const add = el("addSection");
-  const due = el("dueSection");
+ const add=el("addSection");
+ const due=el("dueSection");
 
-  if(ROLE === "viewer"){
+ if(ROLE==="viewer"){
 
-    add.classList.add("hidden");
-    due.classList.remove("hidden");
+  add.classList.add("hidden");
+  due.classList.remove("hidden");
 
-    el("dueTab").classList.add("active");
+  el("dueTab").classList.add("active");
 
-    loadDueCustomers();
+  loadDueCustomers();
 
-    return;
+  return;
+ }
 
-  }
+ add.classList.toggle("hidden",type!=="add");
+ due.classList.toggle("hidden",type==="add");
 
-  add.classList.toggle(
-    "hidden",
-    t !== "add"
-  );
+ el("addTab").classList.toggle("active",type==="add");
+ el("dueTab").classList.toggle("active",type!=="add");
 
-  due.classList.toggle(
-    "hidden",
-    t === "add"
-  );
-
-  el("addTab").classList.toggle(
-    "active",
-    t === "add"
-  );
-
-  el("dueTab").classList.toggle(
-    "active",
-    t !== "add"
-  );
-
-  if(t === "due"){
-    loadDueCustomers();
-  }
-
+ if(type==="due")
+  loadDueCustomers();
 }
 
 
+/* CUSTOMERS */
 async function loadCustomers(){
 
-  try{
+ try{
 
-    const r =
-      await api(
-        "customers",
-        {
-          token:TOKEN
-        }
-      );
+  const r=await api("customers",{token:TOKEN});
 
-    if(!r || !r.success){
-
-      handleSession(r);
-      return;
-
-    }
-
-    ALL_CUSTOMERS =
-      r.customers || [];
-
-    const select =
-      el("customer");
-
-    select.innerHTML =
-      '<option value="">Customer নির্বাচন করুন</option>';
-
-    ALL_CUSTOMERS.forEach(function(c){
-
-      const o =
-        document.createElement("option");
-
-      o.value = c.id;
-
-      o.textContent =
-        c.name + " • " + c.phone;
-
-      select.appendChild(o);
-
-    });
-
-  }
-  catch(err){
-
-    msg(
-      "saveMessage",
-      "Customer list পাওয়া যায়নি",
-      "error"
-    );
-
+  if(!r?.success){
+   handleSession(r);
+   return;
   }
 
-}
+  ALL_CUSTOMERS=r.customers||[];
 
+  const select=el("customer");
 
-el("customer")
-.addEventListener(
-  "change",
-  function(){
+  select.innerHTML=
+   '<option value="">Customer নির্বাচন করুন</option>';
 
-    const info =
-      el("customerInfo");
+  ALL_CUSTOMERS.forEach(c=>{
 
-    if(!this.value){
+   const option=document.createElement("option");
 
-      info.classList.add("hidden");
-      return;
+   option.value=c.id;
+   option.textContent=c.name+" • "+c.phone;
 
-    }
-
-    info.textContent =
-      "Selected: " +
-      this.options[
-        this.selectedIndex
-      ].text;
-
-    info.classList.remove("hidden");
-
-  }
-);
-
-
-async function loadOptions(){
-
-  try{
-
-    const r =
-      await api(
-        "options",
-        {
-          token:TOKEN
-        }
-      );
-
-    if(!r || !r.success){
-
-      handleSession(r);
-      return;
-
-    }
-
-    OPTIONS = {
-      due:r.due || [],
-      deposit:r.deposit || []
-    };
-
-    loadNotes();
-
-  }
-  catch(err){
-
-    console.log(err);
-
-  }
-
-}
-
-
-function loadNotes(){
-
-  const checked =
-    document.querySelector(
-      'input[name="transactionType"]:checked'
-    );
-
-  if(!checked) return;
-
-  const type =
-    checked.value;
-
-  const list =
-    type === "জমা"
-      ? OPTIONS.deposit
-      : OPTIONS.due;
-
-  const note =
-    el("note");
-
-  note.innerHTML =
-    '<option value="">Note নির্বাচন করুন</option>';
-
-  list.forEach(function(x){
-
-    const o =
-      document.createElement("option");
-
-    o.value = x;
-    o.textContent = x;
-
-    note.appendChild(o);
+   select.appendChild(option);
 
   });
 
-}
-
-
-async function loadDueCustomers(){
-
-  const select =
-    el("dueCustomer");
-
-  select.innerHTML =
-    '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
-
-  el("dueResult")
-    .classList
-    .add("hidden");
-
-  el("dueMessage")
-    .textContent =
-    "Due list তৈরি হচ্ছে...";
-
-  el("customerSearch").value = "";
-
-  el("clearSearch").style.display =
-    "none";
-
-  el("searchResultCount").textContent =
-    "";
-
-  DUE_CUSTOMERS = [];
-
-  try{
-
-    const r =
-      await api(
-        "customers",
-        {
-          token:TOKEN
-        }
-      );
-
-    if(!r || !r.success){
-
-      handleSession(r);
-      return;
-
-    }
-
-    const customers =
-      r.customers || [];
-
-    if(!customers.length){
-
-      el("dueMessage").textContent =
-        "বর্তমানে কোনো Customer নেই";
-
-      return;
-
-    }
-
-    const results =
-      await Promise.all(
-
-        customers.map(
-          async function(c){
-
-            try{
-
-              const x =
-                await api(
-                  "due",
-                  {
-                    token:TOKEN,
-                    customerId:c.id
-                  }
-                );
-
-              if(
-                x &&
-                x.success &&
-                Number(x.due) > 0
-              ){
-
-                return {
-                  id:c.id,
-                  name:c.name,
-                  phone:c.phone,
-                  due:Number(x.due)
-                };
-
-              }
-
-            }
-            catch(err){}
-
-            return null;
-
-          }
-        )
-
-      );
-
-    DUE_CUSTOMERS =
-      results
-        .filter(Boolean)
-        .sort(function(a,b){
-
-          return a.name.localeCompare(
-            b.name
-          );
-
-        });
-
-    renderDueCustomers(
-      DUE_CUSTOMERS
-    );
-
-    el("dueMessage").textContent =
-      DUE_CUSTOMERS.length
-        ? ""
-        : "বর্তমানে কোনো Due Customer নেই";
-
-  }
-  catch(err){
-
-    el("dueMessage").textContent =
-      "Server/API সমস্যা হয়েছে";
-
-  }
-
-}
-
-
-function renderDueCustomers(list){
-
-  const select =
-    el("dueCustomer");
-
-  select.innerHTML =
-    '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
-
-  list.forEach(function(c){
-
-    const o =
-      document.createElement("option");
-
-    o.value = c.id;
-
-    /* শুধু নাম + Due amount */
-
-    o.textContent =
-      c.name
-      + " • "
-      + Number(c.due).toFixed(3)
-      + " KD";
-
-    select.appendChild(o);
-
-  });
-
-  el("searchResultCount").textContent =
-    list.length
-      ? list.length + " জন Due Customer"
-      : "";
-
-}
-
-
-function filterDueCustomers(){
-
-  const search =
-    el("customerSearch")
-      .value
-      .trim()
-      .toLowerCase();
-
-  el("clearSearch").style.display =
-    search ? "block" : "none";
-
-  const filtered =
-    DUE_CUSTOMERS.filter(
-      function(c){
-
-        return (
-          c.name
-            .toLowerCase()
-            .includes(search)
-          ||
-          c.phone
-            .toLowerCase()
-            .includes(search)
-        );
-
-      }
-    );
-
-  renderDueCustomers(filtered);
-
-  if(search){
-
-    el("searchResultCount").textContent =
-      filtered.length + " জন পাওয়া গেছে";
-
-  }
-
-}
-
-
-function clearCustomerSearch(){
-
-  el("customerSearch").value = "";
-
-  el("clearSearch").style.display =
-    "none";
-
-  renderDueCustomers(
-    DUE_CUSTOMERS
+ }catch(e){
+
+  msg(
+   "saveMessage",
+   "Customer list পাওয়া যায়নি",
+   "error"
   );
 
+ }
 }
 
 
+/* CUSTOMER SELECT */
+el("customer").addEventListener("change",function(){
+
+ const info=el("customerInfo");
+
+ if(!this.value){
+  info.classList.add("hidden");
+  return;
+ }
+
+ info.textContent=
+  "Selected: "+this.options[this.selectedIndex].text;
+
+ info.classList.remove("hidden");
+});
+
+
+/* OPTIONS */
+async function loadOptions(){
+
+ try{
+
+  const r=await api("options",{token:TOKEN});
+
+  if(!r?.success){
+   handleSession(r);
+   return;
+  }
+
+  OPTIONS={
+   due:r.due||[],
+   deposit:r.deposit||[]
+  };
+
+  loadNotes();
+
+ }catch(e){}
+
+}
+
+
+/* NOTES */
+function loadNotes(){
+
+ const checked=
+  document.querySelector(
+   'input[name="transactionType"]:checked'
+  );
+
+ if(!checked)return;
+
+ const list=
+  checked.value==="জমা"
+   ? OPTIONS.deposit
+   : OPTIONS.due;
+
+ const note=el("note");
+
+ note.innerHTML=
+  '<option value="">Note নির্বাচন করুন</option>';
+
+ list.forEach(x=>{
+
+  const option=document.createElement("option");
+
+  option.value=x;
+  option.textContent=x;
+
+  note.appendChild(option);
+ });
+}
+
+
+/* DUE CUSTOMERS */
+async function loadDueCustomers(){
+
+ const select=el("dueCustomer");
+
+ select.innerHTML=
+  '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
+
+ el("dueResult").classList.add("hidden");
+ el("dueMessage").textContent="Due list তৈরি হচ্ছে...";
+
+ el("customerSearch").value="";
+ el("clearSearch").style.display="none";
+ el("searchResultCount").textContent="";
+
+ DUE_CUSTOMERS=[];
+
+ try{
+
+  const r=await api("customers",{token:TOKEN});
+
+  if(!r?.success){
+   handleSession(r);
+   return;
+  }
+
+  const customers=r.customers||[];
+
+  if(!customers.length){
+   el("dueMessage").textContent="বর্তমানে কোনো Customer নেই";
+   return;
+  }
+
+  const results=await Promise.all(
+
+   customers.map(async c=>{
+
+    try{
+
+     const x=await api(
+      "due",
+      {
+       token:TOKEN,
+       customerId:c.id
+      }
+     );
+
+     if(
+      x?.success&&
+      Number(x.due)>0
+     ){
+
+      return{
+       id:c.id,
+       name:c.name,
+       phone:c.phone,
+       due:Number(x.due)
+      };
+
+     }
+
+    }catch(e){}
+
+    return null;
+
+   })
+
+  );
+
+  DUE_CUSTOMERS=
+   results
+   .filter(Boolean)
+   .sort((a,b)=>
+    a.name.localeCompare(b.name)
+   );
+
+  renderDueCustomers(DUE_CUSTOMERS);
+
+  el("dueMessage").textContent=
+   DUE_CUSTOMERS.length
+    ? ""
+    : "বর্তমানে কোনো Due Customer নেই";
+
+ }catch(e){
+
+  el("dueMessage").textContent=
+   "Server/API সমস্যা হয়েছে";
+
+ }
+}
+
+
+/* RENDER DUE */
+function renderDueCustomers(list){
+
+ const select=el("dueCustomer");
+
+ select.innerHTML=
+  '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
+
+ list.forEach(c=>{
+
+  const option=document.createElement("option");
+
+  option.value=c.id;
+
+  /*
+   Dropdown:
+   Sajib • 40.500 KD
+  */
+  option.textContent=
+   c.name+" • "+Number(c.due).toFixed(3)+" KD";
+
+  select.appendChild(option);
+
+ });
+
+ el("searchResultCount").textContent=
+  list.length
+   ? list.length+" জন Due Customer"
+   : "";
+}
+
+
+/* SEARCH */
+function filterDueCustomers(){
+
+ const search=
+  el("customerSearch")
+   .value
+   .trim()
+   .toLowerCase();
+
+ el("clearSearch").style.display=
+  search?"block":"none";
+
+ const filtered=
+  DUE_CUSTOMERS.filter(c=>
+   c.name.toLowerCase().includes(search)||
+   c.phone.toLowerCase().includes(search)
+  );
+
+ renderDueCustomers(filtered);
+
+ if(search){
+
+  el("searchResultCount").textContent=
+   filtered.length+" জন পাওয়া গেছে";
+
+ }
+}
+
+
+/* CLEAR SEARCH */
+function clearCustomerSearch(){
+
+ el("customerSearch").value="";
+ el("clearSearch").style.display="none";
+
+ renderDueCustomers(DUE_CUSTOMERS);
+}
+
+
+/* CHECK DUE */
 async function checkDue(){
 
-  const id =
-    el("dueCustomer").value;
+ const id=el("dueCustomer").value;
 
-  el("dueResult")
-    .classList
-    .add("hidden");
+ el("dueResult").classList.add("hidden");
 
-  if(!id) return;
+ if(!id)return;
 
-  el("dueMessage").textContent =
-    "Due loading...";
+ el("dueMessage").textContent="Due loading...";
 
-  try{
+ try{
 
-    const r =
-      await api(
-        "due",
-        {
-          token:TOKEN,
-          customerId:id
-        }
-      );
+  const r=await api(
+   "due",
+   {
+    token:TOKEN,
+    customerId:id
+   }
+  );
 
-    if(!r || !r.success){
+  if(!r?.success){
 
-      handleSession(r);
+   handleSession(r);
 
-      if(
-        r &&
-        !r.expired
-      ){
+   if(!r?.expired)
+    el("dueMessage").textContent=
+     r?.message||"Due পাওয়া যায়নি";
 
-        el("dueMessage").textContent =
-          r.message ||
-          "Due পাওয়া যায়নি";
-
-      }
-
-      return;
-
-    }
-
-    el("dueCustomerName")
-      .textContent =
-      r.customer.name;
-
-    el("dueAmount")
-      .textContent =
-      Number(r.due).toFixed(3);
-
-    const history =
-      el("historyList");
-
-    history.innerHTML = "";
-
-    if(
-      !r.transactions ||
-      !r.transactions.length
-    ){
-
-      history.innerHTML =
-        '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
-
-    }
-    else{
-
-      r.transactions.forEach(function(x){
-
-        const d =
-          document.createElement("div");
-
-        d.className =
-          "history-item";
-
-        const tk =
-          x.amountTk
-            ? Math.round(
-                Number(x.amountTk)
-              ).toLocaleString("en-IN")
-              + " Tk"
-            : "";
-
-        const sign =
-          x.type === "বাকি"
-            ? "+"
-            : "-";
-
-        const noteText =
-          x.note || "";
-
-        const extra =
-          noteText && tk
-            ? noteText + " • " + tk
-            : noteText || tk;
-
-        d.innerHTML =
-          '<div class="history-top">'
-          +
-          '<span class="history-date">'
-          +
-          esc(x.date)
-          +
-          '</span>'
-          +
-          '<span class="history-type">'
-          +
-          esc(x.type)
-          +
-          '</span>'
-          +
-          '</div>'
-          +
-          '<div class="history-amount">'
-          +
-          sign
-          +
-          Number(x.amount).toFixed(3)
-          +
-          ' KD'
-          +
-          '</div>'
-          +
-          (
-            extra
-              ? '<div class="history-note">'
-                +
-                esc(extra)
-                +
-                '</div>'
-              : ""
-          );
-
-        history.appendChild(d);
-
-      });
-
-    }
-
-    el("dueMessage").textContent = "";
-
-    el("dueResult")
-      .classList
-      .remove("hidden");
-
-    el("historyScroll").scrollTop = 0;
-
+   return;
   }
-  catch(err){
 
-    el("dueMessage").textContent =
-      "Server/API সমস্যা হয়েছে";
+  /*
+   Selected customer:
+   Sajib • 985727353
+  */
+  el("dueCustomerName").textContent=
+   r.customer.name;
+
+  el("dueCustomerPhone").textContent=
+   r.customer.phone;
+
+
+  el("dueAmount").textContent=
+   Number(r.due).toFixed(3);
+
+
+  const history=el("historyList");
+
+  history.innerHTML="";
+
+
+  if(!r.transactions?.length){
+
+   history.innerHTML=
+    '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
+
+  }else{
+
+   r.transactions.forEach(x=>{
+
+    const d=document.createElement("div");
+
+    d.className="history-item";
+
+    const tk=
+     x.amountTk
+      ? Math.round(Number(x.amountTk))
+       .toLocaleString("en-IN")+" Tk"
+      : "";
+
+    const sign=
+     x.type==="বাকি"?"+":"-";
+
+    const noteText=x.note||"";
+
+    const extra=
+     noteText&&tk
+      ? noteText+" • "+tk
+      : noteText||tk;
+
+    d.innerHTML=
+     '<div class="history-top">'+
+      '<span class="history-date">'+
+       esc(x.date)+
+      '</span>'+
+      '<span class="history-type">'+
+       esc(x.type)+
+      '</span>'+
+     '</div>'+
+     '<div class="history-amount">'+
+      sign+
+      Number(x.amount).toFixed(3)+
+      ' KD'+
+     '</div>'+
+     (
+      extra
+       ? '<div class="history-note">'+
+          esc(extra)+
+         '</div>'
+       :""
+     );
+
+    history.appendChild(d);
+
+   });
 
   }
 
+  el("dueMessage").textContent="";
+  el("dueResult").classList.remove("hidden");
+  el("historyScroll").scrollTop=0;
+
+ }catch(e){
+
+  el("dueMessage").textContent=
+   "Server/API সমস্যা হয়েছে";
+
+ }
 }
 
 
+/* SAVE TRANSACTION */
 async function saveTransaction(){
 
-  const id =
-    el("customer").value;
+ const id=el("customer").value;
+ const date=el("transactionDate").value;
+ const amount=el("amount").value;
+ const tk=el("amountTk").value;
 
-  const amount =
-    el("amount").value;
+ const checked=
+  document.querySelector(
+   'input[name="transactionType"]:checked'
+  );
 
-  const tk =
-    el("amountTk").value;
+ const type=checked?checked.value:"";
+ const note=el("note").value;
 
-  const checked =
-    document.querySelector(
-      'input[name="transactionType"]:checked'
-    );
+ if(!id){
+  msg("saveMessage","Customer নির্বাচন করুন","error");
+  return;
+ }
 
-  const type =
-    checked ? checked.value : "";
+ if(!date)today();
 
-  const note =
-    el("note").value;
+ if(!amount||Number(amount)<=0){
+  msg("saveMessage","Amount দিন","error");
+  return;
+ }
 
-  if(!id){
+ const button=el("saveButton");
 
-    msg(
-      "saveMessage",
-      "Customer নির্বাচন করুন",
-      "error"
-    );
+ button.disabled=true;
+ button.textContent="Saving...";
 
-    return;
+ try{
 
-  }
+  const r=await api(
+   "add",
+   {
+    token:TOKEN,
+    customerId:id,
+    amount,
+    type,
+    note,
+    amountTk:tk,
+    transactionDate:el("transactionDate").value
+   }
+  );
 
-  if(
-    !amount ||
-    Number(amount) <= 0
-  ){
+  if(r?.success){
 
-    msg(
-      "saveMessage",
-      "Amount দিন",
-      "error"
-    );
+   msg(
+    "saveMessage",
+    "✓ Transaction সফলভাবে Save হয়েছে",
+    "success"
+   );
 
-    return;
+   el("amount").value="";
+   el("amountTk").value="";
+   el("note").value="";
 
-  }
+   today();
 
-  const button =
-    el("saveButton");
+  }else{
 
-  button.disabled = true;
-  button.textContent = "Saving...";
+   handleSession(r);
 
-  try{
-
-    const r =
-      await api(
-        "add",
-        {
-          token:TOKEN,
-          customerId:id,
-          amount:amount,
-          type:type,
-          note:note,
-          amountTk:tk,
-          transactionDate:
-            el("transactionDate").value
-        }
-      );
-
-    if(r && r.success){
-
-      msg(
-        "saveMessage",
-        "✓ Transaction সফলভাবে Save হয়েছে",
-        "success"
-      );
-
-      el("amount").value = "";
-      el("amountTk").value = "";
-      el("note").value = "";
-
-      today();
-
-    }
-    else{
-
-      handleSession(r);
-
-      if(!r || !r.expired){
-
-        msg(
-          "saveMessage",
-          r && r.message
-            ? r.message
-            : "Save করা যায়নি",
-          "error"
-        );
-
-      }
-
-    }
-
-  }
-  catch(err){
+   if(!r?.expired){
 
     msg(
-      "saveMessage",
-      "Server/API সমস্যা হয়েছে",
-      "error"
+     "saveMessage",
+     r?.message||"Save করা যায়নি",
+     "error"
     );
+
+   }
 
   }
 
-  button.disabled = false;
-  button.textContent = "Save Transaction";
+ }catch(e){
 
+  msg(
+   "saveMessage",
+   "Server/API সমস্যা হয়েছে",
+   "error"
+  );
+
+ }
+
+ button.disabled=false;
+ button.textContent="Save Transaction";
 }
 
 
+/* NOTICE */
 async function loadNotice(){
 
-  try{
+ try{
 
-    const r =
-      await api("notice");
+  const r=await api("notice");
 
-    if(r){
+  if(r)
+   el("notice").value=r.notice||"";
 
-      el("notice").value =
-        r.notice || "";
-
-    }
-
-  }
-  catch(err){
-
-    console.log(err);
-
-  }
-
+ }catch(e){}
 }
 
 
 async function saveNotice(){
 
-  const button =
-    el("noticeButton");
+ const button=el("noticeButton");
 
-  button.disabled = true;
-  button.textContent = "Saving...";
+ button.disabled=true;
+ button.textContent="Saving...";
 
-  try{
+ try{
 
-    const r =
-      await api(
-        "saveNotice",
-        {
-          token:TOKEN,
-          notice:el("notice").value
-        }
-      );
+  const r=await api(
+   "saveNotice",
+   {
+    token:TOKEN,
+    notice:el("notice").value
+   }
+  );
 
-    if(r && r.success){
+  if(r?.success){
 
-      msg(
-        "noticeMessage",
-        "✓ Notice আপডেট হয়েছে",
-        "success"
-      );
+   msg(
+    "noticeMessage",
+    "✓ Notice আপডেট হয়েছে",
+    "success"
+   );
 
-    }
-    else{
+  }else{
 
-      handleSession(r);
+   handleSession(r);
 
-      if(!r || !r.expired){
-
-        msg(
-          "noticeMessage",
-          r && r.message
-            ? r.message
-            : "Notice Save হয়নি",
-          "error"
-        );
-
-      }
-
-    }
-
-  }
-  catch(err){
+   if(!r?.expired){
 
     msg(
-      "noticeMessage",
-      "Server/API সমস্যা হয়েছে",
-      "error"
+     "noticeMessage",
+     r?.message||"Notice Save হয়নি",
+     "error"
     );
+
+   }
 
   }
 
-  button.disabled = false;
-  button.textContent = "Save Notice";
+ }catch(e){
 
+  msg(
+   "noticeMessage",
+   "Server/API সমস্যা হয়েছে",
+   "error"
+  );
+
+ }
+
+ button.disabled=false;
+ button.textContent="Save Notice";
 }
 
 
+/* SESSION */
 function handleSession(r){
 
-  if(r && r.expired){
+ if(r?.expired){
 
-    clearLoginAndShow();
+  clearLoginAndShow();
+  return true;
 
-    return true;
+ }
 
-  }
-
-  return false;
-
+ return false;
 }
 
 
 function clearLoginAndShow(){
 
-  TOKEN = "";
-  ROLE = "";
+ TOKEN="";
+ ROLE="";
 
-  localStorage.removeItem(
-    "adminToken"
-  );
+ localStorage.removeItem("adminToken");
+ localStorage.removeItem("adminRole");
 
-  localStorage.removeItem(
-    "adminRole"
-  );
+ el("adminPage").classList.add("hidden");
+ el("loginPage").classList.remove("hidden");
 
-  el("adminPage")
-    .classList
-    .add("hidden");
+ el("username").value="";
+ el("password").value="";
 
-  el("loginPage")
-    .classList
-    .remove("hidden");
-
-  el("username").value = "";
-  el("password").value = "";
-
-  msg(
-    "loginMessage",
-    "Session expired। আবার Login করুন।",
-    "error"
-  );
-
+ msg(
+  "loginMessage",
+  "Session expired। আবার Login করুন।",
+  "error"
+ );
 }
 
 
+/* LOGOUT */
 async function logout(){
 
-  const oldToken =
-    TOKEN;
+ const oldToken=TOKEN;
 
-  TOKEN = "";
-  ROLE = "";
+ TOKEN="";
+ ROLE="";
 
-  localStorage.removeItem(
-    "adminToken"
+ localStorage.removeItem("adminToken");
+ localStorage.removeItem("adminRole");
+
+ try{
+
+  await api(
+   "logout",
+   {token:oldToken}
   );
 
-  localStorage.removeItem(
-    "adminRole"
-  );
+ }catch(e){}
 
-  try{
-
-    await api(
-      "logout",
-      {
-        token:oldToken
-      }
-    );
-
-  }
-  catch(err){}
-
-  location.reload();
-
+ location.reload();
 }
 
 
+/* ESCAPE */
 function esc(v){
 
-  return String(v || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
+ return String(v||"")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
 }
 
 
-el("password")
-.addEventListener(
-  "keydown",
-  function(e){
-
-    if(e.key === "Enter"){
-      loginUser();
-    }
-
-  }
+/* ENTER LOGIN */
+el("password").addEventListener(
+ "keydown",
+ e=>{
+  if(e.key==="Enter")
+   loginUser();
+ }
 );
 
 
+/* RESTORE */
 async function restoreSession(){
 
-  if(!TOKEN) return;
+ if(!TOKEN)return;
 
-  try{
+ try{
 
-    const r =
-      await api(
-        "checkSession",
-        {
-          token:TOKEN
-        }
-      );
+  const r=await api(
+   "checkSession",
+   {token:TOKEN}
+  );
 
-    if(r && r.success){
+  if(r?.success){
 
-      ROLE =
-        r.role ||
-        ROLE ||
-        "admin";
+   ROLE=r.role||ROLE||"admin";
 
-      localStorage.setItem(
-        "adminRole",
-        ROLE
-      );
+   localStorage.setItem(
+    "adminRole",
+    ROLE
+   );
 
-      showAdmin();
+   showAdmin();
 
-    }
-    else{
+  }else{
 
-      clearLoginAndShow();
-
-    }
-
-  }
-  catch(err){
-
-    /*
-      Internet/API সাময়িক সমস্যা হলে
-      Login information মুছে দেওয়া হবে না।
-    */
+   clearLoginAndShow();
 
   }
 
+ }catch(e){
+
+  /*
+   Temporary internet problem হলে
+   token মুছে ফেলা হবে না।
+  */
+
+ }
 }
-
 
 restoreSession();
 
 </script>
 
 </body>
-</html>
+  </html>
