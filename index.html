@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Account Panel</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent
+}
+
+html,body{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  min-height:100%;
+  overflow-x:hidden
+}
+
+body{
+  background:#f4f6f8;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:16px
+}
+
+button,input,select,textarea{
+  font:inherit;
+  max-width:100%
+}
+
+button{
+  appearance:none;
+  -webkit-appearance:none
+}
+
+.hidden{
+  display:none!important
+}
+
+.app{
+  width:100%;
+  min-height:100vh;
+  min-height:100dvh;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom))
+}
+
+.topbar{
+  width:100%;
+  padding:calc(14px + env(safe-area-inset-top)) 15px 16px;
+  background:#111827;
+  color:#fff;
+  box-shadow:0 4px 18px rgba(0,0,0,.14)
+}
+
+.topbar-inner{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px
+}
+
+.app-icon{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border-radius:14px;
+  background:rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px
+}
+
+.app-title{
+  flex:1;
+  min-width:0
+}
+
+.app-title h1{
+  font-size:18px;
+  line-height:1.2;
+  font-weight:800
+}
+
+.app-title p{
+  margin-top:3px;
+  color:#cbd5e1;
+  font-size:10px
+}
+
+.online{
+  width:9px;
+  height:9px;
+  flex:0 0 9px;
+  border-radius:50%;
+  background:#34d399
+}
+
+.content{
+  width:100%;
+  padding:11px
+}
+
+.tab-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:12px
+}
+
+.tab-btn{
+  height:53px;
+  border:1px solid #e0e4e9;
+  border-radius:15px;
+  background:#fff;
+  color:#4b5563;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 3px 12px rgba(15,23,42,.04)
+}
+
+.tab-btn.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+  box-shadow:0 6px 16px rgba(17,24,39,.14)
+}
+
+.card{
+  width:100%;
+  background:#fff;
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:12px;
+  border:1px solid #edf0f3;
+  box-shadow:0 4px 18px rgba(15,23,42,.055)
+}
+
+.card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:5px
+}
+
+.card-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border-radius:12px;
+  background:#f1f3f6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px
+}
+
+.card-title{
+  font-size:16px;
+  font-weight:800
+}
+
+.card-subtitle{
+  color:#89919d;
+  font-size:11px;
+  line-height:1.5;
+  margin-left:48px;
+  margin-bottom:15px
+}
+
+.field{
+  width:100%;
+  margin-top:15px
+}
+
+.field:first-child{
+  margin-top:0
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  color:#374151;
+  font-size:12px;
+  font-weight:700
+}
+
+input,select,textarea{
+  width:100%;
+  border:1px solid #e0e4e9;
+  background:#fafbfc;
+  color:#111827;
+  border-radius:14px;
+  outline:none
+}
+
+input,select{
+  height:52px;
+  padding:0 13px;
+  font-size:14px
+}
+
+textarea{
+  min-height:110px;
+  padding:12px 13px;
+  line-height:1.5;
+  resize:vertical
+}
+
+input:focus,select:focus,textarea:focus{
+  background:#fff;
+  border-color:#64748b;
+  box-shadow:0 0 0 3px rgba(100,116,139,.1)
+}
+
+.search-wrap{
+  position:relative;
+  width:100%
+}
+
+.search-wrap input{
+  padding-left:43px
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9aa1ab;
+  font-size:17px;
+  pointer-events:none
+}
+
+.search-info{
+  margin-top:7px;
+  color:#89919d;
+  font-size:10px
+}
+
+.amount-wrap{
+  position:relative;
+  width:100%
+}
+
+.amount-wrap input{
+  height:62px;
+  padding:0 55px 0 14px;
+  font-size:24px;
+  font-weight:800;
+  background:#f8fafc
+}
+
+.amount-unit{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9aa1ab;
+  font-size:12px;
+  font-weight:700
+}
+
+.type-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px
+}
+
+.type-option{
+  position:relative
+}
+
+.type-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none
+}
+
+.type-label{
+  width:100%;
+  height:53px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  border:1px solid #e0e4e9;
+  background:#fafbfc;
+  color:#4b5563;
+  font-size:14px;
+  font-weight:750
+}
+
+.type-option input:checked+.type-label{
+  background:#111827;
+  color:#fff;
+  border-color:#111827
+}
+
+.primary-btn{
+  width:100%;
+  height:55px;
+  margin-top:17px;
+  border:0;
+  border-radius:15px;
+  background:#111827;
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 7px 17px rgba(17,24,39,.15)
+}
+
+.primary-btn:disabled{
+  opacity:.55
+}
+
+.secondary-btn{
+  width:100%;
+  height:50px;
+  margin-top:10px;
+  border:1px solid #e0e4e9;
+  border-radius:14px;
+  background:#fff;
+  color:#374151;
+  font-size:13px;
+  font-weight:750
+}
+
+.customer-info{
+  width:100%;
+  margin-top:8px;
+  padding:9px 11px;
+  background:#f8fafc;
+  border:1px solid #edf0f3;
+  border-radius:12px;
+  color:#64748b;
+  font-size:11px
+}
+
+.due-box{
+  width:100%;
+  margin-top:15px;
+  padding:18px 15px;
+  border-radius:18px;
+  background:#111827;
+  color:#fff;
+  text-align:center;
+  box-shadow:0 8px 22px rgba(17,24,39,.16)
+}
+
+.due-label{
+  color:#cbd5e1;
+  font-size:11px;
+  font-weight:650
+}
+
+.due-value{
+  margin-top:5px;
+  font-size:31px;
+  line-height:1.1;
+  font-weight:850
+}
+
+.due-unit{
+  margin-left:3px;
+  font-size:13px;
+  color:#cbd5e1
+}
+
+.history-title{
+  margin-top:18px;
+  margin-bottom:9px;
+  font-size:13px;
+  font-weight:800
+}
+
+.history-scroll{
+  max-height:430px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding-right:2px
+}
+
+.history-item{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border:1px solid #edf0f3;
+  border-radius:14px;
+  background:#fafbfc
+}
+
+.history-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px
+}
+
+.history-date{
+  color:#89919d;
+  font-size:10px
+}
+
+.history-type{
+  font-size:11px;
+  font-weight:800
+}
+
+.history-amount{
+  margin-top:5px;
+  font-size:18px;
+  font-weight:850
+}
+
+.history-note{
+  margin-top:4px;
+  color:#64748b;
+  font-size:11px
+}
+
+.message{
+  min-height:18px;
+  margin-top:9px;
+  text-align:center;
+  font-size:11px;
+  font-weight:650
+}
+
+.success{
+  color:#16a34a
+}
+
+.error{
+  color:#dc2626
+}
+
+.empty{
+  padding:20px 10px;
+  text-align:center;
+  color:#9aa1ab;
+  font-size:12px
+}
+
+.notice-help{
+  color:#89919d;
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:11px
+}
+
+.notice-message{
+  min-height:18px;
+  margin-top:9px;
+  text-align:center;
+  font-size:11px
+}
+
+.logout{
+  width:100%;
+  height:50px;
+  border:1px solid #e1e5ea;
+  border-radius:14px;
+  background:#fff;
+  color:#374151;
+  font-size:13px;
+  font-weight:750
+}
+
+.viewer-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  margin-top:5px;
+  border-radius:8px;
+  background:#f1f5f9;
+  color:#64748b;
+  font-size:9px;
+  font-weight:800
+}
+
+.login-content{
+  padding-top:25px
+}
+
+.login-icon{
+  width:61px;
+  height:61px;
+  border-radius:19px;
+  background:#111827;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  margin-bottom:15px
+}
+
+.login-title{
+  font-size:24px;
+  font-weight:850
+}
+
+.login-subtitle{
+  margin-top:6px;
+  color:#89919d;
+  font-size:12px;
+  line-height:1.5
+}
+
+.role-info{
+  margin-top:12px;
+  padding:10px 11px;
+  border-radius:12px;
+  background:#f8fafc;
+  color:#64748b;
+  font-size:11px;
+  line-height:1.5
+}
+
+@media(max-width:360px){
+  .content{
+    padding:9px
+  }
+
+  .card{
+    padding:14px
+  }
+
+  .due-value{
+    font-size:28px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div id="loginPage" class="app">
+
+  <div class="topbar">
+    <div class="topbar-inner">
+
+      <div class="app-icon">⚙️</div>
+
+      <div class="app-title">
+        <h1>Account Panel</h1>
+        <p>Admin & Viewer</p>
+      </div>
+
+      <span class="online"></span>
+
+    </div>
+  </div>
+
+  <div class="content login-content">
+
+    <div class="card">
+
+      <div class="login-icon">🔐</div>
+
+      <div class="login-title">
+        Welcome Back
+      </div>
+
+      <div class="login-subtitle">
+        Username এবং Password দিয়ে Login করুন।
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="username"
+          type="text"
+          autocomplete="username"
+          placeholder="Username">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Password">
+      </div>
+
+      <button
+        id="loginButton"
+        class="primary-btn"
+        onclick="doLogin()">
+        Login
+      </button>
+
+      <div id="loginMessage" class="message"></div>
+
+      <div class="role-info">
+        Admin হলে সম্পূর্ণ Panel ব্যবহার করতে পারবেন।
+        Viewer হলে শুধু Check Due দেখতে পারবেন।
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ADMIN / VIEWER -->
+
+<div id="mainPage" class="app hidden">
+
+  <div class="topbar">
+
+    <div class="topbar-inner">
+
+      <div class="app-icon" id="topIcon">👨‍💼</div>
+
+      <div class="app-title">
+
+        <h1 id="topTitle">
+          Admin Dashboard
+        </h1>
+
+        <p id="topSubtitle">
+          Customer Due Management
+        </p>
+
+        <span id="roleBadge" class="viewer-badge">
+          ADMIN
+        </span>
+
+      </div>
+
+      <span class="online"></span>
+
+    </div>
+
+  </div>
+
+
+  <div class="content">
+
+
+    <!-- TABS -->
+
+    <div id="tabs" class="tab-grid">
+
+      <button
+        id="addTab"
+        class="tab-btn active"
+        onclick="showTab('add')">
+        ➕ Add Transaction
+      </button>
+
+      <button
+        id="dueTab"
+        class="tab-btn"
+        onclick="showTab('due')">
+        🔍 Check Due
+      </button>
+
+    </div>
+
+
+    <!-- ADD TRANSACTION -->
+
+    <div id="addSection" class="card">
+
+      <div class="card-head">
+
+        <div class="card-icon">
+          💳
+        </div>
+
+        <div class="card-title">
+          Add Transaction
+        </div>
+
+      </div>
+
+      <div class="card-subtitle">
+        Active Customer-এর বাকি বা জমা যোগ করুন
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Customer
+        </label>
+
+        <select id="customer">
+
+          <option value="">
+            Customer নির্বাচন করুন
+          </option>
+
+        </select>
+
+        <div
+          id="customerInfo"
+          class="customer-info hidden">
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Transaction Date
+        </label>
+
+        <input
+          id="transactionDate"
+          type="date">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          KD Amount
+        </label>
+
+        <div class="amount-wrap">
+
+          <input
+            id="amount"
+            type="number"
+            step="0.001"
+            inputmode="decimal"
+            placeholder="10.000">
+
+          <span class="amount-unit">
+            KD
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          বাংলা টাকা
+        </label>
+
+        <div class="amount-wrap">
+
+          <input
+            id="amountTk"
+            type="number"
+            step="1"
+            min="0"
+            inputmode="numeric"
+            placeholder="1,000">
+
+          <span class="amount-unit">
+            Tk
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          ধরণ
+        </label>
+
+        <div class="type-grid">
+
+          <label class="type-option">
+
+            <input
+              type="radio"
+              name="transactionType"
+              value="বাকি"
+              checked
+              onchange="loadNotes()">
+
+            <span class="type-label">
+              + বাকি
+            </span>
+
+          </label>
+
+
+          <label class="type-option">
+
+            <input
+              type="radio"
+              name="transactionType"
+              value="জমা"
+              onchange="loadNotes()">
+
+            <span class="type-label">
+              − জমা
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Note
+        </label>
+
+        <select id="note">
+
+          <option value="">
+            Note নির্বাচন করুন
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          মাধ্যম
+        </label>
+
+        <select id="method">
+
+          <option value="">
+            মাধ্যম নির্বাচন করুন
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        id="saveButton"
+        class="primary-btn"
+        onclick="saveTransaction()">
+
+        Save Transaction
+
+      </button>
+
+      <div
+        id="saveMessage"
+        class="message">
+      </div>
+
+    </div>
+
+
+    <!-- CHECK DUE -->
+
+    <div id="dueSection" class="card hidden">
+
+      <div class="card-head">
+
+        <div class="card-icon">
+          🔍
+        </div>
+
+        <div class="card-title">
+          Check Due
+        </div>
+
+      </div>
+
+      <div class="card-subtitle">
+        Customer-এর বর্তমান বাকি এবং Transaction History দেখুন
+      </div>
+
+
+      <!-- SEARCH -->
+
+      <div class="field">
+
+        <label>
+          Customer Search
+        </label>
+
+        <div class="search-wrap">
+
+          <span class="search-icon">
+            🔎
+          </span>
+
+          <input
+            id="customerSearch"
+            type="search"
+            autocomplete="off"
+            placeholder="নাম অথবা ফোন নম্বর লিখুন">
+
+        </div>
+
+        <div id="searchInfo" class="search-info">
+          নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন
+        </div>
+
+      </div>
+
+
+      <!-- DROPDOWN -->
+
+      <div class="field">
+
+        <label>
+          Customer
+        </label>
+
+        <select
+          id="dueCustomer"
+          onchange="checkDue()">
+
+          <option value="">
+            Customer নির্বাচন করুন
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="dueResult"
+        class="hidden">
+
+
+        <div class="customer-info">
+
+          <b id="dueCustomerName"></b>
+
+          <br>
+
+          <span id="dueCustomerPhone"></span>
+
+        </div>
+
+
+        <div class="due-box">
+
+          <div class="due-label">
+            TOTAL DUE
+          </div>
+
+          <div class="due-value">
+
+            <span id="dueAmount">
+              0.000
+            </span>
+
+            <span class="due-unit">
+              KD
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="history-title">
+          Transaction History
+        </div>
+
+
+        <div
+          id="historyList"
+          class="history-scroll">
+        </div>
+
+
+      </div>
+
+
+      <div
+        id="dueMessage"
+        class="message">
+      </div>
+
+    </div>
+
+
+    <!-- NOTICE -->
+
+    <div
+      id="noticeSection"
+      class="card">
+
+      <div class="card-head">
+
+        <div class="card-icon">
+          📢
+        </div>
+
+        <div class="card-title">
+          Notice / Offer
+        </div>
+
+      </div>
+
+      <div class="card-subtitle">
+        সব Customer-এর জন্য Notice বা Offer
+      </div>
+
+      <div class="notice-help">
+        এখানে লিখলে Customer account page-এ Notice হিসেবে দেখাবে।
+      </div>
+
+      <textarea
+        id="notice"
+        placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে...">
+      </textarea>
+
+      <button
+        class="primary-btn"
+        onclick="saveNotice()">
+
+        Save Notice
+
+      </button>
+
+      <div
+        id="noticeMessage"
+        class="notice-message">
+      </div>
+
+    </div>
+
+
+    <button
+      class="logout"
+      onclick="logout()">
+
+      Logout
+
+    </button>
+
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==============================
+   BACKEND URL
+============================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
+
+
+/* ==============================
+   STORAGE
+============================== */
+
+let TOKEN =
+localStorage.getItem("githubPanelToken") || "";
+
+let ROLE =
+localStorage.getItem("githubPanelRole") || "";
+
+let CUSTOMERS = [];
+
+let OPTIONS = {
+  due: [],
+  deposit: [],
+  methods: []
+};
+
+
+/* ==============================
+   ELEMENTS
+============================== */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+/* ==============================
+   MESSAGE
+============================== */
+
+function msg(id,text,type){
+
+  const e = $(id);
+
+  if(!e)return;
+
+  e.textContent = text || "";
+
+  if(id === "noticeMessage"){
+
+    e.className =
+      "notice-message " + (type || "");
+
+  }else{
+
+    e.className =
+      "message " + (type || "");
+
+  }
+
+}
+
+
+/* ==============================
+   API
+============================== */
+
+async function api(action,params={}){
+
+  const query =
+    new URLSearchParams();
+
+  query.set("action",action);
+
+  Object.keys(params).forEach(function(k){
+
+    if(params[k] !== undefined &&
+       params[k] !== null){
+
+      query.set(k,String(params[k]));
+
+    }
+
+  });
+
+
+  const response =
+    await fetch(
+      API_URL + "?" + query.toString(),
+      {
+        method:"GET",
+        cache:"no-store"
+      }
+    );
+
+
+  if(!response.ok)
+    throw new Error("Network Error");
+
+
+  return await response.json();
+
+}
+
+
+/* ==============================
+   LOGIN
+============================== */
+
+async function doLogin(){
+
+  const u =
+    $("username").value.trim();
+
+  const p =
+    $("password").value.trim();
+
+  if(!u || !p){
+
+    msg(
+      "loginMessage",
+      "Username এবং Password দিন",
+      "error"
+    );
+
+    return;
+  }
+
+
+  $("loginButton").disabled = true;
+
+  $("loginButton").textContent =
+    "Login হচ্ছে...";
+
+
+  try{
+
+    const r =
+      await api(
+        "login",
+        {
+          username:u,
+          password:p
+        }
+      );
+
+
+    if(r && r.success){
+
+      TOKEN = r.token;
+
+      ROLE = r.role;
+
+
+      localStorage.setItem(
+        "githubPanelToken",
+        TOKEN
+      );
+
+      localStorage.setItem(
+        "githubPanelRole",
+        ROLE
+      );
+
+
+      showMain();
+
+    }else{
+
+      msg(
+        "loginMessage",
+        r && r.message
+          ? r.message
+          : "Login করা যায়নি",
+        "error"
+      );
+
+    }
+
+
+  }catch(e){
+
+    msg(
+      "loginMessage",
+      "Server Error",
+      "error"
+    );
+
+  }
+
+
+  $("loginButton").disabled = false;
+
+  $("loginButton").textContent =
+    "Login";
+
+}
+
+
+/* ==============================
+   SESSION EXPIRED
+============================== */
+
+function sessionExpired(){
+
+  localStorage.removeItem(
+    "githubPanelToken"
+  );
+
+  localStorage.removeItem(
+    "githubPanelRole"
+  );
+
+  TOKEN = "";
+  ROLE = "";
+
+  $("mainPage")
+    .classList.add("hidden");
+
+  $("loginPage")
+    .classList.remove("hidden");
+
+  $("username").value = "";
+  $("password").value = "";
+
+  msg(
+    "loginMessage",
+    "Session শেষ হয়েছে। আবার Login করুন।",
+    "error"
+  );
+
+}
+
+
+/* ==============================
+   SHOW MAIN
+============================== */
+
+async function showMain(){
+
+  $("loginPage")
+    .classList.add("hidden");
+
+  $("mainPage")
+    .classList.remove("hidden");
+
+
+  if(ROLE === "viewer"){
+
+    $("topIcon").textContent =
+      "👁️";
+
+    $("topTitle").textContent =
+      "Viewer Dashboard";
+
+    $("topSubtitle").textContent =
+      "Customer Due View";
+
+    $("roleBadge").textContent =
+      "VIEWER";
+
+
+    $("tabs").classList.add(
+      "hidden"
+    );
+
+    $("addSection").classList.add(
+      "hidden"
+    );
+
+    $("noticeSection").classList.add(
+      "hidden"
+    );
+
+    $("dueSection").classList.remove(
+      "hidden"
+    );
+
+
+    await loadCustomers();
+
+    await loadOptions();
+
+    fillDueDropdown(
+      CUSTOMERS
+    );
+
+
+  }else{
+
+    $("topIcon").textContent =
+      "👨‍💼";
+
+    $("topTitle").textContent =
+      "Admin Dashboard";
+
+    $("topSubtitle").textContent =
+      "Customer Due Management";
+
+    $("roleBadge").textContent =
+      "ADMIN";
+
+
+    $("tabs").classList.remove(
+      "hidden"
+    );
+
+    $("addSection").classList.remove(
+      "hidden"
+    );
+
+    $("noticeSection").classList.remove(
+      "hidden"
+    );
+
+    $("dueSection").classList.add(
+      "hidden"
+    );
+
+
+    today();
+
+    await loadCustomers();
+
+    await loadOptions();
+
+    await loadNotice();
+
+    showTab("add");
+
+  }
+
+}
+
+
+/* ==============================
+   DATE
+============================== */
+
+function today(){
+
+  const d = new Date();
+
+  const v =
+    d.getFullYear() +
+    "-" +
+    String(
+      d.getMonth()+1
+    ).padStart(2,"0") +
+    "-" +
+    String(
+      d.getDate()
+    ).padStart(2,"0");
+
+
+  $("transactionDate").value =
+    v;
+
+  $("transactionDate").max =
+    v;
+
+}
+
+
+/* ==============================
+   CUSTOMERS
+============================== */
+
+async function loadCustomers(){
+
+  try{
+
+    const r =
+      await api(
+        "customers",
+        {
+          token:TOKEN
+        }
+      );
+
+
+    if(r && r.expired){
+
+      sessionExpired();
+
+      return false;
+
+    }
+
+
+    if(!r || !r.success){
+
+      msg(
+        "dueMessage",
+        r && r.message
+          ? r.message
+          : "Customer list পাওয়া যায়নি",
+        "error"
+      );
+
+      return false;
+
+    }
+
+
+    CUSTOMERS =
+      r.customers || [];
+
+
+    if(ROLE === "admin"){
+
+      $("customer").innerHTML =
+        '<option value="">Customer নির্বাচন করুন</option>';
+
+
+      CUSTOMERS.forEach(function(c){
+
+        const o =
+          document.createElement(
+            "option"
+          );
+
+        o.value = c.id;
+
+        o.textContent =
+          c.name +
+          " • " +
+          c.phone;
+
+        $("customer")
+          .appendChild(o);
+
+      });
+
+    }
+
+
+    return true;
+
+
+  }catch(e){
+
+    msg(
+      "dueMessage",
+      "Customer list loading error",
+      "error"
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ==============================
+   CUSTOMER SELECT
+============================== */
+
+$("customer").addEventListener(
+  "change",
+  function(){
+
+    const id =
+      this.value;
+
+    if(!id){
+
+      $("customerInfo")
+        .classList.add("hidden");
+
+      return;
+    }
+
+
+    const c =
+      CUSTOMERS.find(
+        x => String(x.id) ===
+             String(id)
+      );
+
+
+    if(c){
+
+      $("customerInfo").textContent =
+        "Selected: " +
+        c.name +
+        " • " +
+        c.phone;
+
+      $("customerInfo")
+        .classList.remove(
+          "hidden"
+        );
+
+    }
+
+  }
+);
+
+
+/* ==============================
+   OPTIONS
+============================== */
+
+async function loadOptions(){
+
+  try{
+
+    const r =
+      await api(
+        "options",
+        {
+          token:TOKEN
+        }
+      );
+
+
+    if(r && r.expired){
+
+      sessionExpired();
+
+      return;
+
+    }
+
+
+    if(!r)return;
+
+
+    OPTIONS = {
+
+      due:r.due || [],
+
+      deposit:r.deposit || [],
+
+      methods:r.methods || []
+
+    };
+
+
+    if(ROLE === "admin"){
+
+      loadNotes();
+
+      loadMethods();
+
+    }
+
+
+  }catch(e){
+
+    console.log(e);
+
+  }
+
+}
+
+
+/* ==============================
+   NOTES
+============================== */
+
+function loadNotes(){
+
+  const selected =
+    document.querySelector(
+      'input[name="transactionType"]:checked'
+    );
+
+
+  if(!selected)return;
+
+
+  const type =
+    selected.value;
+
+
+  const list =
+    type === "জমা"
+      ? OPTIONS.deposit
+      : OPTIONS.due;
+
+
+  $("note").innerHTML =
+    '<option value="">Note নির্বাচন করুন</option>';
+
+
+  list.forEach(function(x){
+
+    const o =
+      document.createElement(
+        "option"
+      );
+
+    o.value = x;
+
+    o.textContent = x;
+
+    $("note").appendChild(o);
+
+  });
+
+}
+
+
+/* ==============================
+   METHODS
+============================== */
+
+function loadMethods(){
+
+  $("method").innerHTML =
+    '<option value="">মাধ্যম নির্বাচন করুন</option>';
+
+
+  (OPTIONS.methods || [])
+    .forEach(function(x){
+
+      const o =
+        document.createElement(
+          "option"
+        );
+
+      o.value = x;
+
+      o.textContent = x;
+
+      $("method")
+        .appendChild(o);
+
+    });
+
+}
+
+
+/* ==============================
+   TABS
+============================== */
+
+function showTab(t){
+
+  if(ROLE !== "admin")
+    return;
+
+
+  $("addSection")
+    .classList.toggle(
+      "hidden",
+      t !== "add"
+    );
+
+
+  $("dueSection")
+    .classList.toggle(
+      "hidden",
+      t === "add"
+    );
+
+
+  $("addTab")
+    .classList.toggle(
+      "active",
+      t === "add"
+    );
+
+
+  $("dueTab")
+    .classList.toggle(
+      "active",
+      t === "due"
+    );
+
+
+  if(t === "due"){
+
+    $("customerSearch").value =
+      "";
+
+    $("searchInfo").textContent =
+      "নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন";
+
+    fillDueDropdown(
+      CUSTOMERS
+    );
+
+  }
+
+}
+
+
+/* ==============================
+   DUE DROPDOWN
+============================== */
+
+function fillDueDropdown(list){
+
+  $("dueCustomer").innerHTML =
+    '<option value="">Customer নির্বাচন করুন</option>';
+
+
+  list.forEach(function(c){
+
+    const o =
+      document.createElement(
+        "option"
+      );
+
+    o.value = c.id;
+
+    o.textContent =
+      c.name +
+      " • " +
+      c.phone;
+
+    $("dueCustomer")
+      .appendChild(o);
+
+  });
+
+}
+
+
+/* ==============================
+   SEARCH
+============================== */
+
+$("customerSearch")
+.addEventListener(
+  "input",
+  function(){
+
+    const q =
+      this.value
+        .trim()
+        .toLowerCase();
+
+
+    if(!q){
+
+      fillDueDropdown(
+        CUSTOMERS
+      );
+
+      $("searchInfo").textContent =
+        "নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন";
+
+      return;
+
+    }
+
+
+    const result =
+      CUSTOMERS.filter(
+        function(c){
+
+          const name =
+            String(c.name || "")
+              .toLowerCase();
+
+          const phone =
+            String(c.phone || "")
+              .toLowerCase();
+
+          return (
+            name.includes(q) ||
+            phone.includes(q)
+          );
+
+        }
+      );
+
+
+    fillDueDropdown(
+      result
+    );
+
+
+    if(result.length){
+
+      $("searchInfo").textContent =
+        result.length +
+        " জন Customer পাওয়া গেছে";
+
+    }else{
+
+      $("searchInfo").textContent =
+        "কোনো Customer পাওয়া যায়নি";
+
+    }
+
+  }
+);
+
+
+/* ==============================
+   CHECK DUE
+============================== */
+
+async function checkDue(){
+
+  const id =
+    $("dueCustomer").value;
+
+
+  $("dueResult")
+    .classList.add(
+      "hidden"
+    );
+
+
+  if(!id){
+
+    $("dueMessage").textContent =
+      "";
+
+    return;
+
+  }
+
+
+  $("dueMessage").textContent =
+    "Due loading...";
+
+
+  try{
+
+    const r =
+      await api(
+        "transactions",
+        {
+          token:TOKEN,
+          customerId:id
+        }
+      );
+
+
+    if(r && r.expired){
+
+      sessionExpired();
+
+      return;
+
+    }
+
+
+    if(!r || !r.success){
+
+      $("dueMessage").textContent =
+        r && r.message
+          ? r.message
+          : "Due পাওয়া যায়নি";
+
+      return;
+
+    }
+
+
+    const c =
+      CUSTOMERS.find(
+        x => String(x.id) ===
+             String(id)
+      );
+
+
+    if(c){
+
+      $("dueCustomerName")
+        .textContent =
+        c.name;
+
+      $("dueCustomerPhone")
+        .textContent =
+        c.phone;
+
+    }
+
+
+    $("dueAmount")
+      .textContent =
+      Number(
+        r.currentDue || 0
+      ).toFixed(3);
+
+
+    $("historyList").innerHTML =
+      "";
+
+
+    const rows =
+      r.transactions || [];
+
+
+    if(!rows.length){
+
+      $("historyList").innerHTML =
+        '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
+
+    }else{
+
+      rows.forEach(function(x){
+
+        const d =
+          document.createElement(
+            "div"
+          );
+
+        d.className =
+          "history-item";
+
+
+        const tk =
+          x.amountTk
+            ? Math.round(
+                Number(
+                  x.amountTk
+                )
+              ).toLocaleString(
+                "en-IN"
+              ) + " Tk"
+            : "";
+
+
+        const sign =
+          x.type === "বাকি"
+            ? "+"
+            : "-";
+
+
+        const noteText =
+          x.note || "";
+
+
+        const extra =
+          noteText && tk
+            ? noteText +
+              " • " +
+              tk
+            : noteText || tk;
+
+
+        d.innerHTML =
+
+          '<div class="history-top">' +
+
+            '<span class="history-date">' +
+              esc(x.date) +
+            '</span>' +
+
+            '<span class="history-type">' +
+              esc(x.type) +
+            '</span>' +
+
+          '</div>' +
+
+          '<div class="history-amount">' +
+            sign +
+            Number(
+              x.amount || 0
+            ).toFixed(3) +
+            ' KD' +
+          '</div>' +
+
+          (
+            extra
+              ? '<div class="history-note">' +
+                  esc(extra) +
+                '</div>'
+              : ""
+          );
+
+
+        $("historyList")
+          .appendChild(d);
+
+      });
+
+    }
+
+
+    $("dueMessage").textContent =
+      "";
+
+    $("dueResult")
+      .classList.remove(
+        "hidden"
+      );
+
+
+  }catch(e){
+
+    $("dueMessage").textContent =
+      "Server Error";
+
+  }
+
+}
+
+
+/* ==============================
+   SAVE TRANSACTION
+============================== */
+
+async function saveTransaction(){
+
+  if(ROLE !== "admin")
+    return;
+
+
+  const id =
+    $("customer").value;
+
+  const date =
+    $("transactionDate").value;
+
+  const amount =
+    $("amount").value;
+
+  const tk =
+    $("amountTk").value;
+
+  const type =
+    document.querySelector(
+      'input[name="transactionType"]:checked'
+    ).value;
+
+  const n =
+    $("note").value;
+
+  const method =
+    $("method").value;
+
+
+  if(!id){
+
+    msg(
+      "saveMessage",
+      "Customer নির্বাচন করুন",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!date){
+
+    today();
+
+  }
+
+
+  if(
+    !amount ||
+    Number(amount) <= 0
+  ){
+
+    msg(
+      "saveMessage",
+      "Amount দিন",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  $("saveButton").disabled =
+    true;
+
+  $("saveButton").textContent =
+    "Saving...";
+
+
+  try{
+
+    const r =
+      await api(
+        "addTransaction",
+        {
+          token:TOKEN,
+          customerId:id,
+          amount:amount,
+          type:type,
+          note:n,
+          amountTk:tk,
+          transactionDate:
+            $("transactionDate").value,
+          method:method
+        }
+      );
+
+
+    if(r && r.expired){
+
+      sessionExpired();
+
+      return;
+
+    }
+
+
+    if(r && r.success){
+
+      msg(
+        "saveMessage",
+        "✓ Transaction সফলভাবে Save হয়েছে",
+        "success"
+      );
+
+
+      $("amount").value =
+        "";
+
+      $("amountTk").value =
+        "";
+
+      $("note").value =
+        "";
+
+      $("method").value =
+        "";
+
+
+      today();
+
+
+    }else{
+
+      msg(
+        "saveMessage",
+        r && r.message
+          ? r.message
+          : "Save করা যায়নি",
+        "error"
+      );
+
+    }
+
+
+  }catch(e){
+
+    msg(
+      "saveMessage",
+      "Server Error",
+      "error"
+    );
+
+  }
+
+
+  $("saveButton").disabled =
+    false;
+
+  $("saveButton").textContent =
+    "Save Transaction";
+
+}
+
+
+/* ==============================
+   NOTICE
+============================== */
+
+async function loadNotice(){
+
+  try{
+
+    const r =
+      await api(
+        "notice",
+        {}
+      );
+
+
+    if(r && r.notice !== undefined){
+
+      $("notice").value =
+        r.notice || "";
+
+    }
+
+  }catch(e){
+
+    console.log(e);
+
+  }
+
+}
+
+
+/* ==============================
+   SAVE NOTICE
+============================== */
+
+async function saveNotice(){
+
+  if(ROLE !== "admin")
+    return;
+
+
+  try{
+
+    const r =
+      await api(
+        "saveNotice",
+        {
+          token:TOKEN,
+          notice:$("notice").value
+        }
+      );
+
+
+    if(r && r.expired){
+
+      sessionExpired();
+
+      return;
+
+    }
+
+
+    msg(
+      "noticeMessage",
+      r && r.success
+        ? "✓ Notice আপডেট হয়েছে"
+        : r && r.message
+          ? r.message
+          : "Notice Save হয়নি",
+      r && r.success
+        ? "success"
+        : "error"
+    );
+
+
+  }catch(e){
+
+    msg(
+      "noticeMessage",
+      "Server Error",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ==============================
+   LOGOUT
+============================== */
+
+async function logout(){
+
+  try{
+
+    if(TOKEN){
+
+      await api(
+        "logout",
+        {
+          token:TOKEN
+        }
+      );
+
+    }
+
+  }catch(e){
+
+  }
+
+
+  localStorage.removeItem(
+    "githubPanelToken"
+  );
+
+  localStorage.removeItem(
+    "githubPanelRole"
+  );
+
+
+  TOKEN = "";
+  ROLE = "";
+
+
+  location.reload();
+
+}
+
+
+/* ==============================
+   ESCAPE HTML
+============================== */
+
+function esc(v){
+
+  return String(v || "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ==============================
+   PASSWORD ENTER
+============================== */
+
+$("password")
+.addEventListener(
+  "keydown",
+  function(e){
+
+    if(e.key === "Enter")
+      doLogin();
+
+  }
+);
+
+
+/* ==============================
+   START
+============================== */
+
+async function start(){
+
+  if(!TOKEN){
+
+    $("loginPage")
+      .classList.remove(
+        "hidden"
+      );
+
+    $("mainPage")
+      .classList.add(
+        "hidden"
+      );
+
+    return;
+
+  }
+
+
+  $("loginPage")
+    .classList.add(
+      "hidden"
+    );
+
+  $("mainPage")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  try{
+
+    await showMain();
+
+  }catch(e){
+
+    sessionExpired();
+
+  }
+
+}
+
+
+start();
+
+</script>
+
+</body>
+        </html>
