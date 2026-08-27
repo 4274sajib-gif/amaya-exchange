@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-<title>Account Panel</title>
+<title>Admin Panel</title>
 
 <style>
 *{
@@ -219,31 +219,6 @@ input:focus,select:focus,textarea:focus{
   box-shadow:0 0 0 3px rgba(100,116,139,.1)
 }
 
-.search-wrap{
-  position:relative;
-  width:100%
-}
-
-.search-wrap input{
-  padding-left:43px
-}
-
-.search-icon{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#9aa1ab;
-  font-size:17px;
-  pointer-events:none
-}
-
-.search-info{
-  margin-top:7px;
-  color:#89919d;
-  font-size:10px
-}
-
 .amount-wrap{
   position:relative;
   width:100%
@@ -380,11 +355,23 @@ input:focus,select:focus,textarea:focus{
   font-weight:800
 }
 
+/* Transaction History Scroll */
+
 .history-scroll{
   max-height:430px;
   overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  padding-right:2px
+  overflow-x:hidden;
+  padding-right:2px;
+  -webkit-overflow-scrolling:touch
+}
+
+.history-scroll::-webkit-scrollbar{
+  width:5px
+}
+
+.history-scroll::-webkit-scrollbar-thumb{
+  background:#cbd5e1;
+  border-radius:10px
 }
 
 .history-item{
@@ -472,18 +459,6 @@ input:focus,select:focus,textarea:focus{
   font-weight:750
 }
 
-.viewer-badge{
-  display:inline-flex;
-  align-items:center;
-  padding:4px 8px;
-  margin-top:5px;
-  border-radius:8px;
-  background:#f1f5f9;
-  color:#64748b;
-  font-size:9px;
-  font-weight:800
-}
-
 .login-content{
   padding-top:25px
 }
@@ -513,17 +488,64 @@ input:focus,select:focus,textarea:focus{
   line-height:1.5
 }
 
-.role-info{
-  margin-top:12px;
-  padding:10px 11px;
-  border-radius:12px;
-  background:#f8fafc;
-  color:#64748b;
-  font-size:11px;
-  line-height:1.5
+/* Search */
+
+.search-wrap{
+  position:relative;
+  width:100%
+}
+
+.search-wrap input{
+  padding-left:42px;
+  padding-right:40px
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#89919d;
+  font-size:16px;
+  pointer-events:none
+}
+
+.clear-search{
+  position:absolute;
+  right:9px;
+  top:50%;
+  transform:translateY(-50%);
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:#89919d;
+  font-size:17px;
+  display:none
+}
+
+.search-result-count{
+  margin-top:7px;
+  color:#89919d;
+  font-size:10px;
+  min-height:15px
+}
+
+.viewer-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  margin-top:6px;
+  border-radius:9px;
+  background:rgba(255,255,255,.12);
+  color:#e2e8f0;
+  font-size:9px;
+  font-weight:700
 }
 
 @media(max-width:360px){
+
   .content{
     padding:9px
   }
@@ -535,36 +557,52 @@ input:focus,select:focus,textarea:focus{
   .due-value{
     font-size:28px
   }
+
+  .history-scroll{
+    max-height:380px
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+
+<!-- ==============================
+     LOGIN PAGE
+============================== -->
 
 <div id="loginPage" class="app">
 
   <div class="topbar">
+
     <div class="topbar-inner">
 
       <div class="app-icon">⚙️</div>
 
       <div class="app-title">
-        <h1>Account Panel</h1>
-        <p>Admin & Viewer</p>
+
+        <h1>Admin Panel</h1>
+
+        <p>Customer Due Management</p>
+
       </div>
 
       <span class="online"></span>
 
     </div>
+
   </div>
+
 
   <div class="content login-content">
 
     <div class="card">
 
-      <div class="login-icon">🔐</div>
+      <div class="login-icon">
+        🔐
+      </div>
 
       <div class="login-title">
         Welcome Back
@@ -574,37 +612,52 @@ input:focus,select:focus,textarea:focus{
         Username এবং Password দিয়ে Login করুন।
       </div>
 
+
       <div class="field">
-        <label>Username</label>
+
+        <label>
+          Username
+        </label>
+
         <input
           id="username"
           type="text"
           autocomplete="username"
-          placeholder="Username">
+          placeholder="Username"
+        >
+
       </div>
 
+
       <div class="field">
-        <label>Password</label>
+
+        <label>
+          Password
+        </label>
+
         <input
           id="password"
           type="password"
           autocomplete="current-password"
-          placeholder="Password">
+          placeholder="Password"
+        >
+
       </div>
+
 
       <button
         id="loginButton"
         class="primary-btn"
-        onclick="doLogin()">
+        onclick="loginUser()"
+      >
         Login
       </button>
 
-      <div id="loginMessage" class="message"></div>
 
-      <div class="role-info">
-        Admin হলে সম্পূর্ণ Panel ব্যবহার করতে পারবেন।
-        Viewer হলে শুধু Check Due দেখতে পারবেন।
-      </div>
+      <div
+        id="loginMessage"
+        class="message"
+      ></div>
 
     </div>
 
@@ -613,28 +666,39 @@ input:focus,select:focus,textarea:focus{
 </div>
 
 
-<!-- ADMIN / VIEWER -->
 
-<div id="mainPage" class="app hidden">
+<!-- ==============================
+     ADMIN PAGE
+============================== -->
+
+<div
+  id="adminPage"
+  class="app hidden"
+>
 
   <div class="topbar">
 
     <div class="topbar-inner">
 
-      <div class="app-icon" id="topIcon">👨‍💼</div>
+      <div class="app-icon">
+        👨‍💼
+      </div>
 
       <div class="app-title">
 
-        <h1 id="topTitle">
+        <h1 id="panelTitle">
           Admin Dashboard
         </h1>
 
-        <p id="topSubtitle">
+        <p>
           Customer Due Management
         </p>
 
-        <span id="roleBadge" class="viewer-badge">
-          ADMIN
+        <span
+          id="viewerBadge"
+          class="viewer-badge hidden"
+        >
+          👁️ View Only
         </span>
 
       </div>
@@ -651,28 +715,39 @@ input:focus,select:focus,textarea:focus{
 
     <!-- TABS -->
 
-    <div id="tabs" class="tab-grid">
+    <div
+      id="tabGrid"
+      class="tab-grid"
+    >
 
       <button
         id="addTab"
         class="tab-btn active"
-        onclick="showTab('add')">
+        onclick="showTab('add')"
+      >
         ➕ Add Transaction
       </button>
 
       <button
         id="dueTab"
         class="tab-btn"
-        onclick="showTab('due')">
+        onclick="showTab('due')"
+      >
         🔍 Check Due
       </button>
 
     </div>
 
 
-    <!-- ADD TRANSACTION -->
 
-    <div id="addSection" class="card">
+    <!-- ==============================
+         ADD TRANSACTION
+    ============================== -->
+
+    <div
+      id="addSection"
+      class="card"
+    >
 
       <div class="card-head">
 
@@ -686,10 +761,13 @@ input:focus,select:focus,textarea:focus{
 
       </div>
 
+
       <div class="card-subtitle">
         Active Customer-এর বাকি বা জমা যোগ করুন
       </div>
 
+
+      <!-- CUSTOMER -->
 
       <div class="field">
 
@@ -705,13 +783,16 @@ input:focus,select:focus,textarea:focus{
 
         </select>
 
+
         <div
           id="customerInfo"
-          class="customer-info hidden">
-        </div>
+          class="customer-info hidden"
+        ></div>
 
       </div>
 
+
+      <!-- DATE -->
 
       <div class="field">
 
@@ -721,10 +802,13 @@ input:focus,select:focus,textarea:focus{
 
         <input
           id="transactionDate"
-          type="date">
+          type="date"
+        >
 
       </div>
 
+
+      <!-- KD -->
 
       <div class="field">
 
@@ -739,7 +823,8 @@ input:focus,select:focus,textarea:focus{
             type="number"
             step="0.001"
             inputmode="decimal"
-            placeholder="10.000">
+            placeholder="10.000"
+          >
 
           <span class="amount-unit">
             KD
@@ -749,6 +834,8 @@ input:focus,select:focus,textarea:focus{
 
       </div>
 
+
+      <!-- TK -->
 
       <div class="field">
 
@@ -764,7 +851,8 @@ input:focus,select:focus,textarea:focus{
             step="1"
             min="0"
             inputmode="numeric"
-            placeholder="1,000">
+            placeholder="1,000"
+          >
 
           <span class="amount-unit">
             Tk
@@ -775,6 +863,8 @@ input:focus,select:focus,textarea:focus{
       </div>
 
 
+      <!-- TYPE -->
+
       <div class="field">
 
         <label>
@@ -783,6 +873,7 @@ input:focus,select:focus,textarea:focus{
 
         <div class="type-grid">
 
+
           <label class="type-option">
 
             <input
@@ -790,7 +881,8 @@ input:focus,select:focus,textarea:focus{
               name="transactionType"
               value="বাকি"
               checked
-              onchange="loadNotes()">
+              onchange="loadNotes()"
+            >
 
             <span class="type-label">
               + বাকি
@@ -805,7 +897,8 @@ input:focus,select:focus,textarea:focus{
               type="radio"
               name="transactionType"
               value="জমা"
-              onchange="loadNotes()">
+              onchange="loadNotes()"
+            >
 
             <span class="type-label">
               − জমা
@@ -813,10 +906,13 @@ input:focus,select:focus,textarea:focus{
 
           </label>
 
+
         </div>
 
       </div>
 
+
+      <!-- NOTE -->
 
       <div class="field">
 
@@ -835,16 +931,26 @@ input:focus,select:focus,textarea:focus{
       </div>
 
 
+      <!-- METHOD -->
+
       <div class="field">
 
         <label>
-          মাধ্যম
+          Method
         </label>
 
         <select id="method">
 
           <option value="">
             মাধ্যম নির্বাচন করুন
+          </option>
+
+          <option value="হারুন">
+            হারুন
+          </option>
+
+          <option value="সজীব">
+            সজীব
           </option>
 
         </select>
@@ -855,23 +961,29 @@ input:focus,select:focus,textarea:focus{
       <button
         id="saveButton"
         class="primary-btn"
-        onclick="saveTransaction()">
-
+        onclick="saveTransaction()"
+      >
         Save Transaction
-
       </button>
+
 
       <div
         id="saveMessage"
-        class="message">
-      </div>
+        class="message"
+      ></div>
 
     </div>
 
 
-    <!-- CHECK DUE -->
 
-    <div id="dueSection" class="card hidden">
+    <!-- ==============================
+         CHECK DUE
+    ============================== -->
+
+    <div
+      id="dueSection"
+      class="card hidden"
+    >
 
       <div class="card-head">
 
@@ -885,8 +997,9 @@ input:focus,select:focus,textarea:focus{
 
       </div>
 
+
       <div class="card-subtitle">
-        Customer-এর বর্তমান বাকি এবং Transaction History দেখুন
+        যাদের বর্তমানে বাকি আছে তাদের Due ও Transaction History দেখুন
       </div>
 
 
@@ -895,26 +1008,38 @@ input:focus,select:focus,textarea:focus{
       <div class="field">
 
         <label>
-          Customer Search
+          Search Customer
         </label>
 
         <div class="search-wrap">
 
           <span class="search-icon">
-            🔎
+            🔍
           </span>
 
           <input
             id="customerSearch"
             type="search"
             autocomplete="off"
-            placeholder="নাম অথবা ফোন নম্বর লিখুন">
+            placeholder="নাম অথবা ফোন নম্বর লিখুন"
+            oninput="filterDueCustomers()"
+          >
+
+          <button
+            id="clearSearch"
+            class="clear-search"
+            onclick="clearCustomerSearch()"
+            type="button"
+          >
+            ×
+          </button>
 
         </div>
 
-        <div id="searchInfo" class="search-info">
-          নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন
-        </div>
+        <div
+          id="searchResultCount"
+          class="search-result-count"
+        ></div>
 
       </div>
 
@@ -929,10 +1054,11 @@ input:focus,select:focus,textarea:focus{
 
         <select
           id="dueCustomer"
-          onchange="checkDue()">
+          onchange="checkDue()"
+        >
 
           <option value="">
-            Customer নির্বাচন করুন
+            Due থাকা Customer নির্বাচন করুন
           </option>
 
         </select>
@@ -942,7 +1068,8 @@ input:focus,select:focus,textarea:focus{
 
       <div
         id="dueResult"
-        class="hidden">
+        class="hidden"
+      >
 
 
         <div class="customer-info">
@@ -983,8 +1110,12 @@ input:focus,select:focus,textarea:focus{
 
 
         <div
-          id="historyList"
-          class="history-scroll">
+          id="historyScroll"
+          class="history-scroll"
+        >
+
+          <div id="historyList"></div>
+
         </div>
 
 
@@ -993,17 +1124,21 @@ input:focus,select:focus,textarea:focus{
 
       <div
         id="dueMessage"
-        class="message">
-      </div>
+        class="message"
+      ></div>
 
     </div>
 
 
-    <!-- NOTICE -->
+
+    <!-- ==============================
+         NOTICE
+    ============================== -->
 
     <div
-      id="noticeSection"
-      class="card">
+      id="noticeCard"
+      class="card"
+    >
 
       <div class="card-head">
 
@@ -1017,41 +1152,47 @@ input:focus,select:focus,textarea:focus{
 
       </div>
 
+
       <div class="card-subtitle">
         সব Customer-এর জন্য Notice বা Offer
       </div>
 
+
       <div class="notice-help">
-        এখানে লিখলে Customer account page-এ Notice হিসেবে দেখাবে।
+        এখানে লিখলে Customer-এর account page-এ Notice হিসেবে দেখাবে।
       </div>
+
 
       <textarea
         id="notice"
-        placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে...">
-      </textarea>
+        placeholder="যেমন: আজ Internet Package-এ বিশেষ অফার চলছে..."
+      ></textarea>
+
 
       <button
+        id="noticeButton"
         class="primary-btn"
-        onclick="saveNotice()">
-
+        onclick="saveNotice()"
+      >
         Save Notice
-
       </button>
+
 
       <div
         id="noticeMessage"
-        class="notice-message">
-      </div>
+        class="notice-message"
+      ></div>
 
     </div>
 
 
+    <!-- LOGOUT -->
+
     <button
       class="logout"
-      onclick="logout()">
-
+      onclick="logout()"
+    >
       Logout
-
     </button>
 
 
@@ -1060,338 +1201,70 @@ input:focus,select:focus,textarea:focus{
 </div>
 
 
+
 <script>
 
 /* ==============================
-   BACKEND URL
-============================== */
-
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
-
-
-/* ==============================
-   STORAGE
+   GLOBAL
 ============================== */
 
 let TOKEN =
-localStorage.getItem("githubPanelToken") || "";
+  localStorage.getItem(
+    "adminToken"
+  );
 
 let ROLE =
-localStorage.getItem("githubPanelRole") || "";
-
-let CUSTOMERS = [];
+  localStorage.getItem(
+    "adminRole"
+  ) || "";
 
 let OPTIONS = {
   due: [],
-  deposit: [],
-  methods: []
+  deposit: []
 };
+
+let ALL_CUSTOMERS = [];
+
+let DUE_CUSTOMERS = [];
+
+let sessionTimer = null;
 
 
 /* ==============================
-   ELEMENTS
+   ELEMENT HELPER
 ============================== */
 
-const $ = id =>
-  document.getElementById(id);
+function el(id){
+  return document.getElementById(id);
+}
 
 
 /* ==============================
    MESSAGE
 ============================== */
 
-function msg(id,text,type){
-
-  const e = $(id);
-
-  if(!e)return;
-
-  e.textContent = text || "";
-
-  if(id === "noticeMessage"){
-
-    e.className =
-      "notice-message " + (type || "");
-
-  }else{
-
-    e.className =
-      "message " + (type || "");
-
-  }
-
-}
-
-
-/* ==============================
-   API
-============================== */
-
-async function api(action,params={}){
-
-  const query =
-    new URLSearchParams();
-
-  query.set("action",action);
-
-  Object.keys(params).forEach(function(k){
-
-    if(params[k] !== undefined &&
-       params[k] !== null){
-
-      query.set(k,String(params[k]));
-
-    }
-
-  });
-
-
-  const response =
-    await fetch(
-      API_URL + "?" + query.toString(),
-      {
-        method:"GET",
-        cache:"no-store"
-      }
-    );
-
-
-  if(!response.ok)
-    throw new Error("Network Error");
-
-
-  return await response.json();
-
-}
-
-
-/* ==============================
-   LOGIN
-============================== */
-
-async function doLogin(){
-
-  const u =
-    $("username").value.trim();
-
-  const p =
-    $("password").value.trim();
-
-  if(!u || !p){
-
-    msg(
-      "loginMessage",
-      "Username এবং Password দিন",
-      "error"
-    );
-
-    return;
-  }
-
-
-  $("loginButton").disabled = true;
-
-  $("loginButton").textContent =
-    "Login হচ্ছে...";
-
-
-  try{
-
-    const r =
-      await api(
-        "login",
-        {
-          username:u,
-          password:p
-        }
-      );
-
-
-    if(r && r.success){
-
-      TOKEN = r.token;
-
-      ROLE = r.role;
-
-
-      localStorage.setItem(
-        "githubPanelToken",
-        TOKEN
-      );
-
-      localStorage.setItem(
-        "githubPanelRole",
-        ROLE
-      );
-
-
-      showMain();
-
-    }else{
-
-      msg(
-        "loginMessage",
-        r && r.message
-          ? r.message
-          : "Login করা যায়নি",
-        "error"
-      );
-
-    }
-
-
-  }catch(e){
-
-    msg(
-      "loginMessage",
-      "Server Error",
-      "error"
-    );
-
-  }
-
-
-  $("loginButton").disabled = false;
-
-  $("loginButton").textContent =
-    "Login";
-
-}
-
-
-/* ==============================
-   SESSION EXPIRED
-============================== */
-
-function sessionExpired(){
-
-  localStorage.removeItem(
-    "githubPanelToken"
-  );
-
-  localStorage.removeItem(
-    "githubPanelRole"
-  );
-
-  TOKEN = "";
-  ROLE = "";
-
-  $("mainPage")
-    .classList.add("hidden");
-
-  $("loginPage")
-    .classList.remove("hidden");
-
-  $("username").value = "";
-  $("password").value = "";
-
-  msg(
-    "loginMessage",
-    "Session শেষ হয়েছে। আবার Login করুন।",
-    "error"
-  );
-
-}
-
-
-/* ==============================
-   SHOW MAIN
-============================== */
-
-async function showMain(){
-
-  $("loginPage")
-    .classList.add("hidden");
-
-  $("mainPage")
-    .classList.remove("hidden");
-
-
-  if(ROLE === "viewer"){
-
-    $("topIcon").textContent =
-      "👁️";
-
-    $("topTitle").textContent =
-      "Viewer Dashboard";
-
-    $("topSubtitle").textContent =
-      "Customer Due View";
-
-    $("roleBadge").textContent =
-      "VIEWER";
-
-
-    $("tabs").classList.add(
-      "hidden"
-    );
-
-    $("addSection").classList.add(
-      "hidden"
-    );
-
-    $("noticeSection").classList.add(
-      "hidden"
-    );
-
-    $("dueSection").classList.remove(
-      "hidden"
-    );
-
-
-    await loadCustomers();
-
-    await loadOptions();
-
-    fillDueDropdown(
-      CUSTOMERS
-    );
-
-
-  }else{
-
-    $("topIcon").textContent =
-      "👨‍💼";
-
-    $("topTitle").textContent =
-      "Admin Dashboard";
-
-    $("topSubtitle").textContent =
-      "Customer Due Management";
-
-    $("roleBadge").textContent =
-      "ADMIN";
-
-
-    $("tabs").classList.remove(
-      "hidden"
-    );
-
-    $("addSection").classList.remove(
-      "hidden"
-    );
-
-    $("noticeSection").classList.remove(
-      "hidden"
-    );
-
-    $("dueSection").classList.add(
-      "hidden"
-    );
-
-
-    today();
-
-    await loadCustomers();
-
-    await loadOptions();
-
-    await loadNotice();
-
-    showTab("add");
-
-  }
+function msg(
+  id,
+  text,
+  type
+){
+
+  const e =
+    el(id);
+
+  if(!e) return;
+
+  e.textContent =
+    text || "";
+
+  e.className =
+    (
+      id === "noticeMessage"
+      ? "notice-message"
+      : "message"
+    )
+    + " "
+    + (type || "");
 
 }
 
@@ -1402,25 +1275,343 @@ async function showMain(){
 
 function today(){
 
-  const d = new Date();
+  const d =
+    new Date();
 
   const v =
-    d.getFullYear() +
-    "-" +
-    String(
-      d.getMonth()+1
-    ).padStart(2,"0") +
-    "-" +
-    String(
-      d.getDate()
-    ).padStart(2,"0");
+    d.getFullYear()
+    + "-"
+    + String(
+        d.getMonth()+1
+      ).padStart(2,"0")
+    + "-"
+    + String(
+        d.getDate()
+      ).padStart(2,"0");
 
 
-  $("transactionDate").value =
-    v;
+  const e =
+    el("transactionDate");
 
-  $("transactionDate").max =
-    v;
+  if(!e) return;
+
+  e.value = v;
+
+  e.max = v;
+
+}
+
+
+/* ==============================
+   LOGIN
+============================== */
+
+function loginUser(){
+
+  const u =
+    el("username")
+      .value
+      .trim();
+
+  const p =
+    el("password")
+      .value
+      .trim();
+
+
+  if(!u || !p){
+
+    msg(
+      "loginMessage",
+      "Username এবং Password দিন",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  el("loginButton").disabled =
+    true;
+
+  el("loginButton").textContent =
+    "Login হচ্ছে...";
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          r &&
+          r.success &&
+          r.token
+        ){
+
+          TOKEN =
+            r.token;
+
+          ROLE =
+            r.role || "admin";
+
+
+          localStorage.setItem(
+            "adminToken",
+            TOKEN
+          );
+
+          localStorage.setItem(
+            "adminRole",
+            ROLE
+          );
+
+
+          showAdmin();
+
+        }
+
+        else {
+
+          msg(
+            "loginMessage",
+            r &&
+            r.message
+              ? r.message
+              : "Login করা যায়নি",
+            "error"
+          );
+
+        }
+
+
+        el("loginButton")
+          .disabled = false;
+
+        el("loginButton")
+          .textContent = "Login";
+
+      }
+    )
+
+    .withFailureHandler(
+      function(){
+
+        msg(
+          "loginMessage",
+          "Server Error",
+          "error"
+        );
+
+        el("loginButton")
+          .disabled = false;
+
+        el("loginButton")
+          .textContent = "Login";
+
+      }
+    )
+
+    .loginUser(
+      u,
+      p
+    );
+
+}
+
+
+/* ==============================
+   SHOW ADMIN
+============================== */
+
+function showAdmin(){
+
+  el("loginPage")
+    .classList
+    .add("hidden");
+
+  el("adminPage")
+    .classList
+    .remove("hidden");
+
+
+  today();
+
+
+  if(
+    ROLE === "viewer"
+  ){
+
+    setupViewer();
+
+  }
+
+  else {
+
+    setupAdmin();
+
+  }
+
+
+  startSessionCheck();
+
+}
+
+
+/* ==============================
+   ADMIN SETUP
+============================== */
+
+function setupAdmin(){
+
+  el("panelTitle")
+    .textContent =
+    "Admin Dashboard";
+
+
+  el("viewerBadge")
+    .classList
+    .add("hidden");
+
+
+  el("addTab")
+    .classList
+    .remove("hidden");
+
+
+  el("addSection")
+    .classList
+    .remove("hidden");
+
+
+  el("noticeCard")
+    .classList
+    .remove("hidden");
+
+
+  el("dueTab")
+    .classList
+    .remove("hidden");
+
+
+  loadCustomers();
+
+  loadOptions();
+
+  loadNotice();
+
+}
+
+
+/* ==============================
+   VIEWER SETUP
+============================== */
+
+function setupViewer(){
+
+  el("panelTitle")
+    .textContent =
+    "Viewer Dashboard";
+
+
+  el("viewerBadge")
+    .classList
+    .remove("hidden");
+
+
+  el("addTab")
+    .classList
+    .add("hidden");
+
+
+  el("addSection")
+    .classList
+    .add("hidden");
+
+
+  el("noticeCard")
+    .classList
+    .add("hidden");
+
+
+  el("dueTab")
+    .classList
+    .add("active");
+
+
+  showTab("due");
+
+}
+
+
+/* ==============================
+   TAB
+============================== */
+
+function showTab(t){
+
+  const add =
+    el("addSection");
+
+  const due =
+    el("dueSection");
+
+
+  if(ROLE === "viewer"){
+
+    add.classList
+      .add("hidden");
+
+    due.classList
+      .remove("hidden");
+
+    el("dueTab")
+      .classList
+      .add("active");
+
+    loadDueCustomers();
+
+    return;
+
+  }
+
+
+  add.classList
+    .toggle(
+      "hidden",
+      t !== "add"
+    );
+
+
+  due.classList
+    .toggle(
+      "hidden",
+      t === "add"
+    );
+
+
+  el("addTab")
+    .classList
+    .toggle(
+      "active",
+      t === "add"
+    );
+
+
+  el("dueTab")
+    .classList
+    .toggle(
+      "active",
+      t !== "add"
+    );
+
+
+  if(t === "due"){
+
+    loadDueCustomers();
+
+  }
 
 }
 
@@ -1429,89 +1620,79 @@ function today(){
    CUSTOMERS
 ============================== */
 
-async function loadCustomers(){
+function loadCustomers(){
 
-  try{
+  google.script.run
 
-    const r =
-      await api(
-        "customers",
-        {
-          token:TOKEN
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          !r ||
+          !r.success
+        ){
+
+          handleSession(r);
+
+          return;
+
         }
-      );
 
 
-    if(r && r.expired){
-
-      sessionExpired();
-
-      return false;
-
-    }
+        ALL_CUSTOMERS =
+          r.customers || [];
 
 
-    if(!r || !r.success){
-
-      msg(
-        "dueMessage",
-        r && r.message
-          ? r.message
-          : "Customer list পাওয়া যায়নি",
-        "error"
-      );
-
-      return false;
-
-    }
+        const select =
+          el("customer");
 
 
-    CUSTOMERS =
-      r.customers || [];
+        select.innerHTML =
+          '<option value="">Customer নির্বাচন করুন</option>';
 
 
-    if(ROLE === "admin"){
+        ALL_CUSTOMERS
+          .forEach(
+            function(c){
 
-      $("customer").innerHTML =
-        '<option value="">Customer নির্বাচন করুন</option>';
+              const o =
+                document
+                .createElement(
+                  "option"
+                );
 
+              o.value =
+                c.id;
 
-      CUSTOMERS.forEach(function(c){
+              o.textContent =
+                c.name
+                + " • "
+                + c.phone;
 
-        const o =
-          document.createElement(
-            "option"
+              select
+                .appendChild(o);
+
+            }
           );
 
-        o.value = c.id;
+      }
+    )
 
-        o.textContent =
-          c.name +
-          " • " +
-          c.phone;
+    .withFailureHandler(
+      function(){
 
-        $("customer")
-          .appendChild(o);
+        msg(
+          "saveMessage",
+          "Customer list পাওয়া যায়নি",
+          "error"
+        );
 
-      });
+      }
+    )
 
-    }
-
-
-    return true;
-
-
-  }catch(e){
-
-    msg(
-      "dueMessage",
-      "Customer list loading error",
-      "error"
+    .getCustomers(
+      TOKEN
     );
-
-    return false;
-
-  }
 
 }
 
@@ -1520,123 +1701,96 @@ async function loadCustomers(){
    CUSTOMER SELECT
 ============================== */
 
-$("customer").addEventListener(
-  "change",
-  function(){
+el("customer")
+  .addEventListener(
+    "change",
+    function(){
 
-    const id =
-      this.value;
-
-    if(!id){
-
-      $("customerInfo")
-        .classList.add("hidden");
-
-      return;
-    }
+      const info =
+        el("customerInfo");
 
 
-    const c =
-      CUSTOMERS.find(
-        x => String(x.id) ===
-             String(id)
-      );
+      if(!this.value){
+
+        info.classList
+          .add("hidden");
+
+        return;
+
+      }
 
 
-    if(c){
+      info.textContent =
+        "Selected: "
+        +
+        this.options[
+          this.selectedIndex
+        ].text;
 
-      $("customerInfo").textContent =
-        "Selected: " +
-        c.name +
-        " • " +
-        c.phone;
 
-      $("customerInfo")
-        .classList.remove(
-          "hidden"
-        );
+      info.classList
+        .remove("hidden");
 
     }
-
-  }
-);
+  );
 
 
 /* ==============================
    OPTIONS
 ============================== */
 
-async function loadOptions(){
+function loadOptions(){
 
-  try{
+  google.script.run
 
-    const r =
-      await api(
-        "options",
-        {
-          token:TOKEN
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          !r ||
+          !r.success
+        ){
+
+          handleSession(r);
+
+          return;
+
         }
-      );
 
 
-    if(r && r.expired){
-
-      sessionExpired();
-
-      return;
-
-    }
+        OPTIONS =
+          r || {
+            due:[],
+            deposit:[]
+          };
 
 
-    if(!r)return;
+        loadNotes();
 
+      }
+    )
 
-    OPTIONS = {
-
-      due:r.due || [],
-
-      deposit:r.deposit || [],
-
-      methods:r.methods || []
-
-    };
-
-
-    if(ROLE === "admin"){
-
-      loadNotes();
-
-      loadMethods();
-
-    }
-
-
-  }catch(e){
-
-    console.log(e);
-
-  }
+    .getOptions(
+      TOKEN
+    );
 
 }
 
 
-/* ==============================
-   NOTES
-============================== */
-
 function loadNotes(){
 
-  const selected =
+  const checked =
     document.querySelector(
       'input[name="transactionType"]:checked'
     );
 
 
-  if(!selected)return;
+  if(!checked)
+    return;
 
 
   const type =
-    selected.value;
+    checked.value;
 
 
   const list =
@@ -1645,141 +1799,320 @@ function loadNotes(){
       : OPTIONS.due;
 
 
-  $("note").innerHTML =
+  const note =
+    el("note");
+
+
+  note.innerHTML =
     '<option value="">Note নির্বাচন করুন</option>';
 
 
-  list.forEach(function(x){
-
-    const o =
-      document.createElement(
-        "option"
-      );
-
-    o.value = x;
-
-    o.textContent = x;
-
-    $("note").appendChild(o);
-
-  });
-
-}
-
-
-/* ==============================
-   METHODS
-============================== */
-
-function loadMethods(){
-
-  $("method").innerHTML =
-    '<option value="">মাধ্যম নির্বাচন করুন</option>';
-
-
-  (OPTIONS.methods || [])
-    .forEach(function(x){
+  list.forEach(
+    function(x){
 
       const o =
-        document.createElement(
+        document
+        .createElement(
           "option"
         );
 
-      o.value = x;
+      o.value =
+        x;
 
-      o.textContent = x;
+      o.textContent =
+        x;
 
-      $("method")
-        .appendChild(o);
+      note.appendChild(o);
 
-    });
-
-}
-
-
-/* ==============================
-   TABS
-============================== */
-
-function showTab(t){
-
-  if(ROLE !== "admin")
-    return;
-
-
-  $("addSection")
-    .classList.toggle(
-      "hidden",
-      t !== "add"
-    );
-
-
-  $("dueSection")
-    .classList.toggle(
-      "hidden",
-      t === "add"
-    );
-
-
-  $("addTab")
-    .classList.toggle(
-      "active",
-      t === "add"
-    );
-
-
-  $("dueTab")
-    .classList.toggle(
-      "active",
-      t === "due"
-    );
-
-
-  if(t === "due"){
-
-    $("customerSearch").value =
-      "";
-
-    $("searchInfo").textContent =
-      "নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন";
-
-    fillDueDropdown(
-      CUSTOMERS
-    );
-
-  }
+    }
+  );
 
 }
 
 
 /* ==============================
-   DUE DROPDOWN
+   DUE CUSTOMERS
 ============================== */
 
-function fillDueDropdown(list){
+function loadDueCustomers(){
 
-  $("dueCustomer").innerHTML =
-    '<option value="">Customer নির্বাচন করুন</option>';
+  const select =
+    el("dueCustomer");
 
 
-  list.forEach(function(c){
+  select.innerHTML =
+    '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
 
-    const o =
-      document.createElement(
-        "option"
-      );
 
-    o.value = c.id;
+  el("dueResult")
+    .classList
+    .add("hidden");
 
-    o.textContent =
-      c.name +
-      " • " +
-      c.phone;
 
-    $("dueCustomer")
-      .appendChild(o);
+  el("dueMessage")
+    .textContent =
+    "Due list তৈরি হচ্ছে...";
 
-  });
+
+  el("customerSearch")
+    .value = "";
+
+
+  el("clearSearch")
+    .style.display =
+    "none";
+
+
+  el("searchResultCount")
+    .textContent = "";
+
+
+  DUE_CUSTOMERS = [];
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          !r ||
+          !r.success
+        ){
+
+          handleSession(r);
+
+          return;
+
+        }
+
+
+        const customers =
+          r.customers || [];
+
+
+        if(!customers.length){
+
+          el("dueMessage")
+            .textContent =
+            "বর্তমানে কোনো Customer নেই";
+
+          return;
+
+        }
+
+
+        let pending =
+          customers.length;
+
+
+        customers.forEach(
+          function(c){
+
+            google.script.run
+
+              .withSuccessHandler(
+                function(x){
+
+                  pending--;
+
+
+                  if(
+                    x &&
+                    x.success &&
+                    Number(x.due) > 0
+                  ){
+
+                    DUE_CUSTOMERS
+                      .push({
+
+                        id:
+                          c.id,
+
+                        name:
+                          c.name,
+
+                        phone:
+                          c.phone,
+
+                        due:
+                          Number(
+                            x.due
+                          )
+
+                      });
+
+                  }
+
+
+                  if(
+                    pending === 0
+                  ){
+
+                    DUE_CUSTOMERS
+                      .sort(
+                        function(a,b){
+
+                          return a.name
+                            .localeCompare(
+                              b.name
+                            );
+
+                        }
+                      );
+
+
+                    renderDueCustomers(
+                      DUE_CUSTOMERS
+                    );
+
+
+                    if(
+                      DUE_CUSTOMERS.length
+                    ){
+
+                      el("dueMessage")
+                        .textContent =
+                        "";
+
+                    }
+
+                    else {
+
+                      el("dueMessage")
+                        .textContent =
+                        "বর্তমানে কোনো Due Customer নেই";
+
+                    }
+
+                  }
+
+                }
+              )
+
+              .withFailureHandler(
+                function(){
+
+                  pending--;
+
+                  if(
+                    pending === 0
+                  ){
+
+                    DUE_CUSTOMERS
+                      .sort(
+                        function(a,b){
+
+                          return a.name
+                            .localeCompare(
+                              b.name
+                            );
+
+                        }
+                      );
+
+
+                    renderDueCustomers(
+                      DUE_CUSTOMERS
+                    );
+
+
+                    if(
+                      !DUE_CUSTOMERS.length
+                    ){
+
+                      el("dueMessage")
+                        .textContent =
+                        "বর্তমানে কোনো Due Customer নেই";
+
+                    }
+
+                  }
+
+                }
+              )
+
+              .getCustomerDue(
+                TOKEN,
+                c.id
+              );
+
+          }
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(){
+
+        el("dueMessage")
+          .textContent =
+          "Server Error";
+
+      }
+    )
+
+    .getCustomers(
+      TOKEN
+    );
+
+}
+
+
+/* ==============================
+   RENDER DUE CUSTOMERS
+============================== */
+
+function renderDueCustomers(
+  list
+){
+
+  const select =
+    el("dueCustomer");
+
+
+  select.innerHTML =
+    '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
+
+
+  list.forEach(
+    function(c){
+
+      const o =
+        document
+        .createElement(
+          "option"
+        );
+
+
+      o.value =
+        c.id;
+
+
+      o.textContent =
+        c.name
+        + " • "
+        + c.phone
+        + " • "
+        + Number(
+            c.due
+          ).toFixed(3)
+        + " KD";
+
+
+      select.appendChild(o);
+
+    }
+  );
+
+
+  el("searchResultCount")
+    .textContent =
+    list.length
+    ? list.length
+      + " জন Due Customer"
+    : "";
 
 }
 
@@ -1788,274 +2121,311 @@ function fillDueDropdown(list){
    SEARCH
 ============================== */
 
-$("customerSearch")
-.addEventListener(
-  "input",
-  function(){
+function filterDueCustomers(){
 
-    const q =
-      this.value
-        .trim()
-        .toLowerCase();
+  const search =
+    el("customerSearch")
+      .value
+      .trim()
+      .toLowerCase();
 
 
-    if(!q){
-
-      fillDueDropdown(
-        CUSTOMERS
-      );
-
-      $("searchInfo").textContent =
-        "নাম অথবা ফোন নম্বর দিয়ে Search করতে পারবেন";
-
-      return;
-
-    }
+  el("clearSearch")
+    .style.display =
+    search
+      ? "block"
+      : "none";
 
 
-    const result =
-      CUSTOMERS.filter(
-        function(c){
+  const filtered =
+    DUE_CUSTOMERS.filter(
+      function(c){
 
-          const name =
-            String(c.name || "")
-              .toLowerCase();
+        return (
 
-          const phone =
-            String(c.phone || "")
-              .toLowerCase();
+          c.name
+            .toLowerCase()
+            .includes(search)
 
-          return (
-            name.includes(q) ||
-            phone.includes(q)
-          );
+          ||
 
-        }
-      );
+          c.phone
+            .toLowerCase()
+            .includes(search)
 
+        );
 
-    fillDueDropdown(
-      result
+      }
     );
 
 
-    if(result.length){
+  renderDueCustomers(
+    filtered
+  );
 
-      $("searchInfo").textContent =
-        result.length +
-        " জন Customer পাওয়া গেছে";
 
-    }else{
+  if(search){
 
-      $("searchInfo").textContent =
-        "কোনো Customer পাওয়া যায়নি";
-
-    }
+    el("searchResultCount")
+      .textContent =
+      filtered.length
+      + " জন পাওয়া গেছে";
 
   }
-);
+
+}
+
+
+/* ==============================
+   CLEAR SEARCH
+============================== */
+
+function clearCustomerSearch(){
+
+  el("customerSearch")
+    .value = "";
+
+  el("clearSearch")
+    .style.display =
+    "none";
+
+
+  renderDueCustomers(
+    DUE_CUSTOMERS
+  );
+
+}
 
 
 /* ==============================
    CHECK DUE
 ============================== */
 
-async function checkDue(){
+function checkDue(){
 
   const id =
-    $("dueCustomer").value;
+    el("dueCustomer")
+      .value;
 
 
-  $("dueResult")
-    .classList.add(
-      "hidden"
-    );
+  el("dueResult")
+    .classList
+    .add("hidden");
 
 
-  if(!id){
-
-    $("dueMessage").textContent =
-      "";
-
+  if(!id)
     return;
 
-  }
 
-
-  $("dueMessage").textContent =
+  el("dueMessage")
+    .textContent =
     "Due loading...";
 
 
-  try{
+  google.script.run
 
-    const r =
-      await api(
-        "transactions",
-        {
-          token:TOKEN,
-          customerId:id
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          !r ||
+          !r.success
+        ){
+
+          handleSession(r);
+
+          if(
+            r &&
+            !r.expired
+          ){
+
+            el("dueMessage")
+              .textContent =
+              r.message ||
+              "Due পাওয়া যায়নি";
+
+          }
+
+          return;
+
         }
-      );
 
 
-    if(r && r.expired){
-
-      sessionExpired();
-
-      return;
-
-    }
+        el("dueCustomerName")
+          .textContent =
+          r.customer.name;
 
 
-    if(!r || !r.success){
-
-      $("dueMessage").textContent =
-        r && r.message
-          ? r.message
-          : "Due পাওয়া যায়নি";
-
-      return;
-
-    }
+        el("dueCustomerPhone")
+          .textContent =
+          r.customer.phone;
 
 
-    const c =
-      CUSTOMERS.find(
-        x => String(x.id) ===
-             String(id)
-      );
+        el("dueAmount")
+          .textContent =
+          Number(
+            r.due
+          ).toFixed(3);
 
 
-    if(c){
-
-      $("dueCustomerName")
-        .textContent =
-        c.name;
-
-      $("dueCustomerPhone")
-        .textContent =
-        c.phone;
-
-    }
+        const history =
+          el("historyList");
 
 
-    $("dueAmount")
-      .textContent =
-      Number(
-        r.currentDue || 0
-      ).toFixed(3);
+        history.innerHTML =
+          "";
 
 
-    $("historyList").innerHTML =
-      "";
+        if(
+          !r.transactions ||
+          !r.transactions.length
+        ){
+
+          history.innerHTML =
+            '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
+
+        }
+
+        else {
+
+          r.transactions
+            .forEach(
+              function(x){
+
+                const d =
+                  document
+                  .createElement(
+                    "div"
+                  );
 
 
-    const rows =
-      r.transactions || [];
+                d.className =
+                  "history-item";
 
 
-    if(!rows.length){
-
-      $("historyList").innerHTML =
-        '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
-
-    }else{
-
-      rows.forEach(function(x){
-
-        const d =
-          document.createElement(
-            "div"
-          );
-
-        d.className =
-          "history-item";
-
-
-        const tk =
-          x.amountTk
-            ? Math.round(
-                Number(
+                const tk =
                   x.amountTk
-                )
-              ).toLocaleString(
-                "en-IN"
-              ) + " Tk"
-            : "";
+                    ? Math.round(
+                        Number(
+                          x.amountTk
+                        )
+                      ).toLocaleString(
+                        "en-IN"
+                      )
+                      + " Tk"
+                    : "";
 
 
-        const sign =
-          x.type === "বাকি"
-            ? "+"
-            : "-";
+                const sign =
+                  x.type === "বাকি"
+                    ? "+"
+                    : "-";
 
 
-        const noteText =
-          x.note || "";
+                const noteText =
+                  x.note || "";
 
 
-        const extra =
-          noteText && tk
-            ? noteText +
-              " • " +
-              tk
-            : noteText || tk;
+                const extra =
+                  noteText &&
+                  tk
+                    ? noteText
+                      + " • "
+                      + tk
+
+                    : noteText ||
+                      tk;
 
 
-        d.innerHTML =
+                d.innerHTML =
 
-          '<div class="history-top">' +
+                  '<div class="history-top">'
+                  +
 
-            '<span class="history-date">' +
-              esc(x.date) +
-            '</span>' +
+                  '<span class="history-date">'
+                  +
+                  esc(x.date)
+                  +
+                  '</span>'
 
-            '<span class="history-type">' +
-              esc(x.type) +
-            '</span>' +
+                  +
 
-          '</div>' +
+                  '<span class="history-type">'
+                  +
+                  esc(x.type)
+                  +
+                  '</span>'
 
-          '<div class="history-amount">' +
-            sign +
-            Number(
-              x.amount || 0
-            ).toFixed(3) +
-            ' KD' +
-          '</div>' +
+                  +
+                  '</div>'
 
-          (
-            extra
-              ? '<div class="history-note">' +
-                  esc(extra) +
-                '</div>'
-              : ""
-          );
+                  +
 
+                  '<div class="history-amount">'
+                  +
+                  sign
+                  +
+                  Number(
+                    x.amount
+                  ).toFixed(3)
+                  +
+                  ' KD'
+                  +
+                  '</div>'
 
-        $("historyList")
-          .appendChild(d);
+                  +
 
-      });
+                  (
+                    extra
+                      ? '<div class="history-note">'
+                        +
+                        esc(extra)
+                        +
+                        '</div>'
 
-    }
-
-
-    $("dueMessage").textContent =
-      "";
-
-    $("dueResult")
-      .classList.remove(
-        "hidden"
-      );
+                      : ""
+                  );
 
 
-  }catch(e){
+                history
+                  .appendChild(d);
 
-    $("dueMessage").textContent =
-      "Server Error";
+              }
+            );
 
-  }
+        }
+
+
+        el("dueMessage")
+          .textContent =
+          "";
+
+
+        el("dueResult")
+          .classList
+          .remove("hidden");
+
+
+        el("historyScroll")
+          .scrollTop = 0;
+
+      }
+    )
+
+    .withFailureHandler(
+      function(){
+
+        el("dueMessage")
+          .textContent =
+          "Server Error";
+
+      }
+    )
+
+    .getCustomerDue(
+      TOKEN,
+      id
+    );
 
 }
 
@@ -2064,34 +2434,42 @@ async function checkDue(){
    SAVE TRANSACTION
 ============================== */
 
-async function saveTransaction(){
-
-  if(ROLE !== "admin")
-    return;
-
+function saveTransaction(){
 
   const id =
-    $("customer").value;
+    el("customer").value;
+
 
   const date =
-    $("transactionDate").value;
+    el("transactionDate").value;
+
 
   const amount =
-    $("amount").value;
+    el("amount").value;
+
 
   const tk =
-    $("amountTk").value;
+    el("amountTk").value;
 
-  const type =
+
+  const checked =
     document.querySelector(
       'input[name="transactionType"]:checked'
-    ).value;
+    );
+
+
+  const type =
+    checked
+      ? checked.value
+      : "";
+
 
   const n =
-    $("note").value;
+    el("note").value;
+
 
   const method =
-    $("method").value;
+    el("method").value;
 
 
   if(!id){
@@ -2130,95 +2508,127 @@ async function saveTransaction(){
   }
 
 
-  $("saveButton").disabled =
-    true;
+  el("saveButton")
+    .disabled = true;
 
-  $("saveButton").textContent =
+
+  el("saveButton")
+    .textContent =
     "Saving...";
 
 
-  try{
+  google.script.run
 
-    const r =
-      await api(
-        "addTransaction",
-        {
-          token:TOKEN,
-          customerId:id,
-          amount:amount,
-          type:type,
-          note:n,
-          amountTk:tk,
-          transactionDate:
-            $("transactionDate").value,
-          method:method
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          r &&
+          r.success
+        ){
+
+          msg(
+            "saveMessage",
+            "✓ Transaction সফলভাবে Save হয়েছে",
+            "success"
+          );
+
+
+          el("amount")
+            .value = "";
+
+
+          el("amountTk")
+            .value = "";
+
+
+          el("note")
+            .value = "";
+
+
+          el("method")
+            .value = "";
+
+
+          today();
+
         }
-      );
+
+        else {
+
+          handleSession(r);
 
 
-    if(r && r.expired){
+          if(
+            !r ||
+            !r.expired
+          ){
 
-      sessionExpired();
+            msg(
+              "saveMessage",
+              r &&
+              r.message
+                ? r.message
+                : "Save করা যায়নি",
+              "error"
+            );
 
-      return;
+          }
 
-    }
-
-
-    if(r && r.success){
-
-      msg(
-        "saveMessage",
-        "✓ Transaction সফলভাবে Save হয়েছে",
-        "success"
-      );
-
-
-      $("amount").value =
-        "";
-
-      $("amountTk").value =
-        "";
-
-      $("note").value =
-        "";
-
-      $("method").value =
-        "";
+        }
 
 
-      today();
+        el("saveButton")
+          .disabled = false;
 
 
-    }else{
+        el("saveButton")
+          .textContent =
+          "Save Transaction";
 
-      msg(
-        "saveMessage",
-        r && r.message
-          ? r.message
-          : "Save করা যায়নি",
-        "error"
-      );
+      }
+    )
 
-    }
+    .withFailureHandler(
+      function(){
+
+        msg(
+          "saveMessage",
+          "Server Error",
+          "error"
+        );
 
 
-  }catch(e){
+        el("saveButton")
+          .disabled = false;
 
-    msg(
-      "saveMessage",
-      "Server Error",
-      "error"
+
+        el("saveButton")
+          .textContent =
+          "Save Transaction";
+
+      }
+    )
+
+    .addTransaction(
+
+      TOKEN,
+
+      id,
+
+      amount,
+
+      type,
+
+      n,
+
+      tk,
+
+      el("transactionDate").value,
+
+      method
+
     );
-
-  }
-
-
-  $("saveButton").disabled =
-    false;
-
-  $("saveButton").textContent =
-    "Save Transaction";
 
 }
 
@@ -2227,86 +2637,255 @@ async function saveTransaction(){
    NOTICE
 ============================== */
 
-async function loadNotice(){
+function loadNotice(){
 
-  try{
+  google.script.run
 
-    const r =
-      await api(
-        "notice",
-        {}
-      );
+    .withSuccessHandler(
+      function(r){
+
+        if(r){
+
+          el("notice").value =
+            r.notice || "";
+
+        }
+
+      }
+    )
+
+    .getNotice();
+
+}
 
 
-    if(r && r.notice !== undefined){
+function saveNotice(){
 
-      $("notice").value =
-        r.notice || "";
+  const button =
+    el("noticeButton");
 
-    }
 
-  }catch(e){
+  button.disabled =
+    true;
 
-    console.log(e);
 
-  }
+  button.textContent =
+    "Saving...";
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(r){
+
+        if(
+          r &&
+          r.success
+        ){
+
+          msg(
+            "noticeMessage",
+            "✓ Notice আপডেট হয়েছে",
+            "success"
+          );
+
+        }
+
+        else {
+
+          handleSession(r);
+
+
+          if(
+            !r ||
+            !r.expired
+          ){
+
+            msg(
+              "noticeMessage",
+              r &&
+              r.message
+                ? r.message
+                : "Notice Save হয়নি",
+              "error"
+            );
+
+          }
+
+        }
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Save Notice";
+
+      }
+    )
+
+    .withFailureHandler(
+      function(){
+
+        msg(
+          "noticeMessage",
+          "Server Error",
+          "error"
+        );
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Save Notice";
+
+      }
+    )
+
+    .saveNotice(
+      TOKEN,
+      el("notice").value
+    );
 
 }
 
 
 /* ==============================
-   SAVE NOTICE
+   SESSION EXPIRED
 ============================== */
 
-async function saveNotice(){
+function handleSession(r){
 
-  if(ROLE !== "admin")
-    return;
+  if(
+    r &&
+    r.expired
+  ){
 
+    clearLoginAndShow();
 
-  try{
+    return true;
 
-    const r =
-      await api(
-        "saveNotice",
-        {
-          token:TOKEN,
-          notice:$("notice").value
-        }
-      );
+  }
 
+  return false;
 
-    if(r && r.expired){
-
-      sessionExpired();
-
-      return;
-
-    }
+}
 
 
-    msg(
-      "noticeMessage",
-      r && r.success
-        ? "✓ Notice আপডেট হয়েছে"
-        : r && r.message
-          ? r.message
-          : "Notice Save হয়নি",
-      r && r.success
-        ? "success"
-        : "error"
+function clearLoginAndShow(){
+
+  if(sessionTimer){
+
+    clearInterval(
+      sessionTimer
     );
 
+    sessionTimer = null;
 
-  }catch(e){
+  }
 
-    msg(
-      "noticeMessage",
-      "Server Error",
-      "error"
+
+  TOKEN = "";
+
+  ROLE = "";
+
+
+  localStorage.removeItem(
+    "adminToken"
+  );
+
+  localStorage.removeItem(
+    "adminRole"
+  );
+
+
+  el("adminPage")
+    .classList
+    .add("hidden");
+
+
+  el("loginPage")
+    .classList
+    .remove("hidden");
+
+
+  el("username")
+    .value = "";
+
+
+  el("password")
+    .value = "";
+
+
+  msg(
+    "loginMessage",
+    "Session expired। আবার Login করুন।",
+    "error"
+  );
+
+}
+
+
+/* ==============================
+   SESSION CHECK
+============================== */
+
+function startSessionCheck(){
+
+  if(sessionTimer){
+
+    clearInterval(
+      sessionTimer
     );
 
   }
+
+
+  sessionTimer =
+    setInterval(
+      function(){
+
+        if(!TOKEN)
+          return;
+
+
+        google.script.run
+
+          .withSuccessHandler(
+            function(r){
+
+              if(
+                !r ||
+                !r.success
+              ){
+
+                clearLoginAndShow();
+
+              }
+
+            }
+          )
+
+          .withFailureHandler(
+            function(){
+
+              /*
+                Network error হলে
+                সঙ্গে সঙ্গে logout নয়।
+                পরের check-এ আবার চেষ্টা করবে।
+              */
+
+            }
+          )
+
+          .checkSession(
+            TOKEN
+          );
+
+      },
+      120000
+    );
 
 }
 
@@ -2315,40 +2894,58 @@ async function saveNotice(){
    LOGOUT
 ============================== */
 
-async function logout(){
+function logout(){
 
-  try{
+  const oldToken =
+    TOKEN;
 
-    if(TOKEN){
 
-      await api(
-        "logout",
-        {
-          token:TOKEN
-        }
-      );
+  TOKEN = "";
 
-    }
+  ROLE = "";
 
-  }catch(e){
+
+  localStorage.removeItem(
+    "adminToken"
+  );
+
+  localStorage.removeItem(
+    "adminRole"
+  );
+
+
+  if(sessionTimer){
+
+    clearInterval(
+      sessionTimer
+    );
+
+    sessionTimer = null;
 
   }
 
 
-  localStorage.removeItem(
-    "githubPanelToken"
-  );
+  google.script.run
 
-  localStorage.removeItem(
-    "githubPanelRole"
-  );
+    .withSuccessHandler(
+      function(){
 
+        location.reload();
 
-  TOKEN = "";
-  ROLE = "";
+      }
+    )
 
+    .withFailureHandler(
+      function(){
 
-  location.reload();
+        location.reload();
+
+      }
+    )
+
+    .logoutUser(
+      oldToken
+    );
 
 }
 
@@ -2359,97 +2956,127 @@ async function logout(){
 
 function esc(v){
 
-  return String(v || "")
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(
+    v || ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
 
 /* ==============================
-   PASSWORD ENTER
+   ENTER LOGIN
 ============================== */
 
-$("password")
-.addEventListener(
-  "keydown",
-  function(e){
+el("password")
+  .addEventListener(
+    "keydown",
+    function(e){
 
-    if(e.key === "Enter")
-      doLogin();
+      if(
+        e.key === "Enter"
+      ){
 
-  }
-);
+        loginUser();
+
+      }
+
+    }
+  );
 
 
 /* ==============================
-   START
+   RESTORE SESSION
 ============================== */
 
-async function start(){
+if(TOKEN){
 
-  if(!TOKEN){
+  google.script.run
 
-    $("loginPage")
-      .classList.remove(
-        "hidden"
-      );
+    .withSuccessHandler(
+      function(r){
 
-    $("mainPage")
-      .classList.add(
-        "hidden"
-      );
+        if(
+          r &&
+          r.success
+        ){
 
-    return;
+          ROLE =
+            r.role ||
+            ROLE ||
+            "admin";
 
-  }
+
+          localStorage.setItem(
+            "adminRole",
+            ROLE
+          );
 
 
-  $("loginPage")
-    .classList.add(
-      "hidden"
+          showAdmin();
+
+        }
+
+        else {
+
+          clearLoginAndShow();
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(){
+
+        /*
+          Server সাময়িক unavailable হলে
+          পুরোনো session সরানো হবে না।
+          User চাইলে পরে আবার চেষ্টা করতে পারবে।
+        */
+
+        el("loginPage")
+          .classList
+          .remove("hidden");
+
+        el("adminPage")
+          .classList
+          .add("hidden");
+
+      }
+    )
+
+    .checkSession(
+      TOKEN
     );
-
-  $("mainPage")
-    .classList.remove(
-      "hidden"
-    );
-
-
-  try{
-
-    await showMain();
-
-  }catch(e){
-
-    sessionExpired();
-
-  }
 
 }
-
-
-start();
 
 </script>
 
 </body>
-        </html>
+</html>
