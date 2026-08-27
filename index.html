@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
 <title>Admin Panel</title>
 
 <style>
@@ -48,10 +47,7 @@ button{
   padding-bottom:25px
 }
 
-
-/* ==============================
-   TOPBAR
-============================== */
+/* TOPBAR */
 
 .topbar{
   width:100%;
@@ -105,10 +101,7 @@ button{
   background:#34d399
 }
 
-
-/* ==============================
-   CONTENT
-============================== */
+/* CONTENT */
 
 .content{
   width:100%;
@@ -125,10 +118,7 @@ button{
   box-shadow:0 4px 18px rgba(15,23,42,.055)
 }
 
-
-/* ==============================
-   TABS
-============================== */
+/* TABS */
 
 .tab-grid{
   display:grid;
@@ -154,47 +144,7 @@ button{
   border-color:#111827
 }
 
-
-/* ==============================
-   CARD HEADER
-============================== */
-
-.card-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:5px
-}
-
-.card-icon{
-  width:38px;
-  height:38px;
-  flex:0 0 38px;
-  border-radius:12px;
-  background:#f1f3f6;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px
-}
-
-.card-title{
-  font-size:16px;
-  font-weight:800
-}
-
-.card-subtitle{
-  color:#89919d;
-  font-size:11px;
-  line-height:1.5;
-  margin-left:48px;
-  margin-bottom:15px
-}
-
-
-/* ==============================
-   FIELD
-============================== */
+/* FIELD */
 
 .field{
   width:100%;
@@ -246,10 +196,7 @@ textarea:focus{
   box-shadow:0 0 0 3px rgba(100,116,139,.1)
 }
 
-
-/* ==============================
-   AMOUNT
-============================== */
+/* AMOUNT */
 
 .amount-wrap{
   position:relative;
@@ -274,10 +221,7 @@ textarea:focus{
   font-weight:700
 }
 
-
-/* ==============================
-   TYPE
-============================== */
+/* TYPE */
 
 .type-grid{
   display:grid;
@@ -315,10 +259,7 @@ textarea:focus{
   border-color:#111827
 }
 
-
-/* ==============================
-   BUTTON
-============================== */
+/* BUTTON */
 
 .primary-btn{
   width:100%;
@@ -337,18 +278,6 @@ textarea:focus{
   opacity:.55
 }
 
-.secondary-btn{
-  width:100%;
-  height:50px;
-  margin-top:10px;
-  border:1px solid #e0e4e9;
-  border-radius:14px;
-  background:#fff;
-  color:#374151;
-  font-size:13px;
-  font-weight:750
-}
-
 .logout{
   width:100%;
   height:50px;
@@ -360,10 +289,7 @@ textarea:focus{
   font-weight:750
 }
 
-
-/* ==============================
-   CUSTOMER INFO
-============================== */
+/* CUSTOMER INFO */
 
 .customer-info{
   width:100%;
@@ -376,10 +302,7 @@ textarea:focus{
   font-size:11px
 }
 
-
-/* ==============================
-   DUE
-============================== */
+/* DUE */
 
 .due-box{
   width:100%;
@@ -411,10 +334,7 @@ textarea:focus{
   color:#cbd5e1
 }
 
-
-/* ==============================
-   HISTORY
-============================== */
+/* HISTORY */
 
 .history-title{
   margin-top:18px;
@@ -477,10 +397,7 @@ textarea:focus{
   font-size:11px
 }
 
-
-/* ==============================
-   MESSAGE
-============================== */
+/* MESSAGE */
 
 .message{
   min-height:18px;
@@ -505,10 +422,7 @@ textarea:focus{
   font-size:12px
 }
 
-
-/* ==============================
-   SEARCH
-============================== */
+/* SEARCH */
 
 .search-wrap{
   position:relative;
@@ -552,10 +466,7 @@ textarea:focus{
   min-height:15px
 }
 
-
-/* ==============================
-   LOGIN
-============================== */
+/* LOGIN */
 
 .login-content{
   padding-top:25px
@@ -598,11 +509,6 @@ textarea:focus{
   font-weight:700
 }
 
-
-/* ==============================
-   MOBILE
-============================== */
-
 @media(max-width:360px){
 
   .content{
@@ -620,54 +526,36 @@ textarea:focus{
   .history-scroll{
     max-height:380px
   }
-
 }
 </style>
 </head>
 
 <body>
 
-
-<!-- ==============================
-     LOGIN
-============================== -->
+<!-- LOGIN -->
 
 <div id="loginPage" class="app">
 
   <div class="topbar">
-
     <div class="topbar-inner">
 
-      <div class="app-icon">
-        ⚙️
-      </div>
+      <div class="app-icon">⚙️</div>
 
       <div class="app-title">
-
-        <h1>
-          Admin Panel
-        </h1>
-
-        <p>
-          Customer Due Management
-        </p>
-
+        <h1>Admin Panel</h1>
+        <p>Customer Due Management</p>
       </div>
 
       <span class="online"></span>
 
     </div>
-
   </div>
-
 
   <div class="content login-content">
 
     <div class="card">
 
-      <div class="login-icon">
-        🔐
-      </div>
+      <div class="login-icon">🔐</div>
 
       <div class="login-title">
         Welcome Back
@@ -677,12 +565,8 @@ textarea:focus{
         Username এবং Password দিয়ে Login করুন।
       </div>
 
-
       <div class="field">
-
-        <label>
-          Username
-        </label>
+        <label>Username</label>
 
         <input
           id="username"
@@ -690,15 +574,10 @@ textarea:focus{
           autocomplete="username"
           placeholder="Username"
         >
-
       </div>
 
-
       <div class="field">
-
-        <label>
-          Password
-        </label>
+        <label>Password</label>
 
         <input
           id="password"
@@ -706,9 +585,7 @@ textarea:focus{
           autocomplete="current-password"
           placeholder="Password"
         >
-
       </div>
-
 
       <button
         id="loginButton"
@@ -718,11 +595,7 @@ textarea:focus{
         Login
       </button>
 
-
-      <div
-        id="loginMessage"
-        class="message"
-      ></div>
+      <div id="loginMessage" class="message"></div>
 
     </div>
 
@@ -731,15 +604,9 @@ textarea:focus{
 </div>
 
 
+<!-- ADMIN -->
 
-<!-- ==============================
-     ADMIN
-============================== -->
-
-<div
-  id="adminPage"
-  class="app hidden"
->
+<div id="adminPage" class="app hidden">
 
   <div class="topbar">
 
@@ -777,13 +644,9 @@ textarea:focus{
 
   <div class="content">
 
-
     <!-- TABS -->
 
-    <div
-      id="tabGrid"
-      class="tab-grid"
-    >
+    <div id="tabGrid" class="tab-grid">
 
       <button
         id="addTab"
@@ -804,34 +667,14 @@ textarea:focus{
     </div>
 
 
-    <!-- ==============================
-         ADD
-    ============================== -->
+    <!-- ADD -->
 
     <div
       id="addSection"
       class="card"
     >
 
-      <div class="card-head">
-
-        <div class="card-icon">
-          💳
-        </div>
-
-        <div class="card-title">
-          Add Transaction
-        </div>
-
-      </div>
-
-
-      <div class="card-subtitle">
-        Active Customer-এর বাকি বা জমা যোগ করুন
-      </div>
-
-
-      <!-- CUSTOMER -->
+      <!-- Customer -->
 
       <div class="field">
 
@@ -847,7 +690,6 @@ textarea:focus{
 
         </select>
 
-
         <div
           id="customerInfo"
           class="customer-info hidden"
@@ -856,7 +698,7 @@ textarea:focus{
       </div>
 
 
-      <!-- DATE -->
+      <!-- Date -->
 
       <div class="field">
 
@@ -953,7 +795,6 @@ textarea:focus{
 
           </label>
 
-
           <label class="type-option">
 
             <input
@@ -1001,7 +842,6 @@ textarea:focus{
         Save Transaction
       </button>
 
-
       <div
         id="saveMessage"
         class="message"
@@ -1010,35 +850,14 @@ textarea:focus{
     </div>
 
 
-
-    <!-- ==============================
-         DUE
-    ============================== -->
+    <!-- DUE -->
 
     <div
       id="dueSection"
       class="card hidden"
     >
 
-      <div class="card-head">
-
-        <div class="card-icon">
-          🔍
-        </div>
-
-        <div class="card-title">
-          Check Due
-        </div>
-
-      </div>
-
-
-      <div class="card-subtitle">
-        যাদের বর্তমানে বাকি আছে তাদের Due ও Transaction History দেখুন
-      </div>
-
-
-      <!-- SEARCH -->
+      <!-- Search -->
 
       <div class="field">
 
@@ -1079,7 +898,7 @@ textarea:focus{
       </div>
 
 
-      <!-- CUSTOMER -->
+      <!-- Customer -->
 
       <div class="field">
 
@@ -1109,10 +928,6 @@ textarea:focus{
         <div class="customer-info">
 
           <b id="dueCustomerName"></b>
-
-          <br>
-
-          <span id="dueCustomerPhone"></span>
 
         </div>
 
@@ -1163,10 +978,7 @@ textarea:focus{
     </div>
 
 
-
-    <!-- ==============================
-         NOTICE
-    ============================== -->
+    <!-- NOTICE -->
 
     <div
       id="noticeCard"
@@ -1183,11 +995,6 @@ textarea:focus{
           Notice / Offer
         </div>
 
-      </div>
-
-
-      <div class="card-subtitle">
-        সব Customer-এর জন্য Notice বা Offer
       </div>
 
 
@@ -1228,20 +1035,10 @@ textarea:focus{
 </div>
 
 
-
 <script>
-
-/* ==================================================
-   APPS SCRIPT WEB APP URL
-================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
-
-
-/* ==================================================
-   GLOBAL
-================================================== */
 
 let TOKEN =
   localStorage.getItem("adminToken") || "";
@@ -1255,22 +1052,13 @@ let OPTIONS = {
 };
 
 let ALL_CUSTOMERS = [];
-
 let DUE_CUSTOMERS = [];
 
-
-/* ==================================================
-   ELEMENT
-================================================== */
 
 function el(id){
   return document.getElementById(id);
 }
 
-
-/* ==================================================
-   MESSAGE
-================================================== */
 
 function msg(id,text,type){
 
@@ -1281,44 +1069,33 @@ function msg(id,text,type){
   e.textContent = text || "";
 
   e.className =
-    "message " +
-    (type || "");
+    "message " + (type || "");
 
 }
 
-
-/* ==================================================
-   API CALL
-================================================== */
 
 async function api(action,params={}){
 
   const query =
     new URLSearchParams();
 
-  query.append(
-    "action",
-    action
-  );
+  query.append("action",action);
 
+  Object.keys(params).forEach(function(key){
 
-  Object.keys(params)
-    .forEach(function(key){
+    if(
+      params[key] !== undefined &&
+      params[key] !== null
+    ){
 
-      if(
-        params[key] !== undefined &&
-        params[key] !== null
-      ){
+      query.append(
+        key,
+        params[key]
+      );
 
-        query.append(
-          key,
-          params[key]
-        );
+    }
 
-      }
-
-    });
-
+  });
 
   const response =
     await fetch(
@@ -1331,24 +1108,14 @@ async function api(action,params={}){
       }
     );
 
-
   if(!response.ok){
-
-    throw new Error(
-      "Server/API Error"
-    );
-
+    throw new Error("Server/API Error");
   }
-
 
   return await response.json();
 
 }
 
-
-/* ==================================================
-   DATE
-================================================== */
 
 function today(){
 
@@ -1365,38 +1132,24 @@ function today(){
         d.getDate()
       ).padStart(2,"0");
 
-
   const e =
     el("transactionDate");
 
-
   if(!e) return;
 
-
   e.value = v;
-
   e.max = v;
 
 }
 
 
-/* ==================================================
-   LOGIN
-================================================== */
-
 async function loginUser(){
 
   const username =
-    el("username")
-      .value
-      .trim();
-
+    el("username").value.trim();
 
   const password =
-    el("password")
-      .value
-      .trim();
-
+    el("password").value.trim();
 
   if(!username || !password){
 
@@ -1407,19 +1160,13 @@ async function loginUser(){
     );
 
     return;
-
   }
-
 
   const button =
     el("loginButton");
 
-
   button.disabled = true;
-
-  button.textContent =
-    "Login হচ্ছে...";
-
+  button.textContent = "Login হচ্ছে...";
 
   try{
 
@@ -1432,19 +1179,14 @@ async function loginUser(){
         }
       );
 
-
     if(
       r &&
       r.success &&
       r.token
     ){
 
-      TOKEN =
-        r.token;
-
-      ROLE =
-        r.role || "admin";
-
+      TOKEN = r.token;
+      ROLE = r.role || "admin";
 
       localStorage.setItem(
         "adminToken",
@@ -1456,17 +1198,14 @@ async function loginUser(){
         ROLE
       );
 
-
       showAdmin();
 
     }
-
     else{
 
       msg(
         "loginMessage",
-        r &&
-        r.message
+        r && r.message
           ? r.message
           : "Login করা যায়নি",
         "error"
@@ -1475,7 +1214,6 @@ async function loginUser(){
     }
 
   }
-
   catch(err){
 
     msg(
@@ -1486,153 +1224,79 @@ async function loginUser(){
 
   }
 
-
   button.disabled = false;
-
-  button.textContent =
-    "Login";
+  button.textContent = "Login";
 
 }
 
-
-/* ==================================================
-   SHOW ADMIN
-================================================== */
 
 function showAdmin(){
 
-  el("loginPage")
-    .classList
-    .add("hidden");
+  el("loginPage").classList.add("hidden");
 
-
-  el("adminPage")
-    .classList
-    .remove("hidden");
-
+  el("adminPage").classList.remove("hidden");
 
   today();
 
-
-  if(
-    ROLE === "viewer"
-  ){
-
+  if(ROLE === "viewer"){
     setupViewer();
-
   }
-
   else{
-
     setupAdmin();
-
   }
 
 }
 
 
-/* ==================================================
-   ADMIN SETUP
-================================================== */
-
 function setupAdmin(){
 
-  el("panelTitle")
-    .textContent =
+  el("panelTitle").textContent =
     "Admin Dashboard";
 
+  el("viewerBadge").classList.add("hidden");
 
-  el("viewerBadge")
-    .classList
-    .add("hidden");
+  el("addTab").classList.remove("hidden");
 
+  el("addSection").classList.remove("hidden");
 
-  el("addTab")
-    .classList
-    .remove("hidden");
-
-
-  el("addSection")
-    .classList
-    .remove("hidden");
-
-
-  el("noticeCard")
-    .classList
-    .remove("hidden");
-
+  el("noticeCard").classList.remove("hidden");
 
   loadCustomers();
-
   loadOptions();
-
   loadNotice();
 
 }
 
 
-/* ==================================================
-   VIEWER SETUP
-================================================== */
-
 function setupViewer(){
 
-  el("panelTitle")
-    .textContent =
+  el("panelTitle").textContent =
     "Viewer Dashboard";
 
+  el("viewerBadge").classList.remove("hidden");
 
-  el("viewerBadge")
-    .classList
-    .remove("hidden");
+  el("addTab").classList.add("hidden");
 
+  el("addSection").classList.add("hidden");
 
-  el("addTab")
-    .classList
-    .add("hidden");
-
-
-  el("addSection")
-    .classList
-    .add("hidden");
-
-
-  el("noticeCard")
-    .classList
-    .add("hidden");
-
+  el("noticeCard").classList.add("hidden");
 
   showTab("due");
 
 }
 
 
-/* ==================================================
-   TAB
-================================================== */
-
 function showTab(t){
 
-  const add =
-    el("addSection");
+  const add = el("addSection");
+  const due = el("dueSection");
 
-  const due =
-    el("dueSection");
+  if(ROLE === "viewer"){
 
+    add.classList.add("hidden");
+    due.classList.remove("hidden");
 
-  if(
-    ROLE === "viewer"
-  ){
-
-    add.classList
-      .add("hidden");
-
-    due.classList
-      .remove("hidden");
-
-    el("dueTab")
-      .classList
-      .add("active");
+    el("dueTab").classList.add("active");
 
     loadDueCustomers();
 
@@ -1640,49 +1304,32 @@ function showTab(t){
 
   }
 
-
   add.classList.toggle(
     "hidden",
     t !== "add"
   );
-
 
   due.classList.toggle(
     "hidden",
     t === "add"
   );
 
+  el("addTab").classList.toggle(
+    "active",
+    t === "add"
+  );
 
-  el("addTab")
-    .classList
-    .toggle(
-      "active",
-      t === "add"
-    );
+  el("dueTab").classList.toggle(
+    "active",
+    t !== "add"
+  );
 
-
-  el("dueTab")
-    .classList
-    .toggle(
-      "active",
-      t !== "add"
-    );
-
-
-  if(
-    t === "due"
-  ){
-
+  if(t === "due"){
     loadDueCustomers();
-
   }
 
 }
 
-
-/* ==================================================
-   CUSTOMERS
-================================================== */
 
 async function loadCustomers(){
 
@@ -1696,56 +1343,37 @@ async function loadCustomers(){
         }
       );
 
-
-    if(
-      !r ||
-      !r.success
-    ){
+    if(!r || !r.success){
 
       handleSession(r);
-
       return;
 
     }
 
-
     ALL_CUSTOMERS =
       r.customers || [];
-
 
     const select =
       el("customer");
 
-
     select.innerHTML =
       '<option value="">Customer নির্বাচন করুন</option>';
 
+    ALL_CUSTOMERS.forEach(function(c){
 
-    ALL_CUSTOMERS
-      .forEach(function(c){
+      const o =
+        document.createElement("option");
 
-        const o =
-          document.createElement(
-            "option"
-          );
+      o.value = c.id;
 
+      o.textContent =
+        c.name + " • " + c.phone;
 
-        o.value =
-          c.id;
+      select.appendChild(o);
 
-
-        o.textContent =
-          c.name
-          + " • "
-          + c.phone;
-
-
-        select.appendChild(o);
-
-      });
+    });
 
   }
-
   catch(err){
 
     msg(
@@ -1759,47 +1387,32 @@ async function loadCustomers(){
 }
 
 
-/* ==================================================
-   CUSTOMER SELECT
-================================================== */
-
 el("customer")
-  .addEventListener(
-    "change",
-    function(){
+.addEventListener(
+  "change",
+  function(){
 
-      const info =
-        el("customerInfo");
+    const info =
+      el("customerInfo");
 
+    if(!this.value){
 
-      if(!this.value){
-
-        info.classList
-          .add("hidden");
-
-        return;
-
-      }
-
-
-      info.textContent =
-        "Selected: "
-        +
-        this.options[
-          this.selectedIndex
-        ].text;
-
-
-      info.classList
-        .remove("hidden");
+      info.classList.add("hidden");
+      return;
 
     }
-  );
 
+    info.textContent =
+      "Selected: " +
+      this.options[
+        this.selectedIndex
+      ].text;
 
-/* ==================================================
-   OPTIONS
-================================================== */
+    info.classList.remove("hidden");
+
+  }
+);
+
 
 async function loadOptions(){
 
@@ -1813,34 +1426,21 @@ async function loadOptions(){
         }
       );
 
-
-    if(
-      !r ||
-      !r.success
-    ){
+    if(!r || !r.success){
 
       handleSession(r);
-
       return;
 
     }
 
-
     OPTIONS = {
-
-      due:
-        r.due || [],
-
-      deposit:
-        r.deposit || []
-
+      due:r.due || [],
+      deposit:r.deposit || []
     };
-
 
     loadNotes();
 
   }
-
   catch(err){
 
     console.log(err);
@@ -1850,10 +1450,6 @@ async function loadOptions(){
 }
 
 
-/* ==================================================
-   NOTES
-================================================== */
-
 function loadNotes(){
 
   const checked =
@@ -1861,39 +1457,28 @@ function loadNotes(){
       'input[name="transactionType"]:checked'
     );
 
-
-  if(!checked)
-    return;
-
+  if(!checked) return;
 
   const type =
     checked.value;
-
 
   const list =
     type === "জমা"
       ? OPTIONS.deposit
       : OPTIONS.due;
 
-
   const note =
     el("note");
-
 
   note.innerHTML =
     '<option value="">Note নির্বাচন করুন</option>';
 
-
   list.forEach(function(x){
 
     const o =
-      document.createElement(
-        "option"
-      );
-
+      document.createElement("option");
 
     o.value = x;
-
     o.textContent = x;
 
     note.appendChild(o);
@@ -1903,45 +1488,31 @@ function loadNotes(){
 }
 
 
-/* ==================================================
-   DUE CUSTOMERS
-================================================== */
-
 async function loadDueCustomers(){
 
   const select =
     el("dueCustomer");
 
-
   select.innerHTML =
     '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
-
 
   el("dueResult")
     .classList
     .add("hidden");
 
-
   el("dueMessage")
     .textContent =
     "Due list তৈরি হচ্ছে...";
 
+  el("customerSearch").value = "";
 
-  el("customerSearch")
-    .value = "";
-
-
-  el("clearSearch")
-    .style.display =
+  el("clearSearch").style.display =
     "none";
 
-
-  el("searchResultCount")
-    .textContent = "";
-
+  el("searchResultCount").textContent =
+    "";
 
   DUE_CUSTOMERS = [];
-
 
   try{
 
@@ -1953,33 +1524,24 @@ async function loadDueCustomers(){
         }
       );
 
-
-    if(
-      !r ||
-      !r.success
-    ){
+    if(!r || !r.success){
 
       handleSession(r);
-
       return;
 
     }
 
-
     const customers =
       r.customers || [];
 
-
     if(!customers.length){
 
-      el("dueMessage")
-        .textContent =
+      el("dueMessage").textContent =
         "বর্তমানে কোনো Customer নেই";
 
       return;
 
     }
-
 
     const results =
       await Promise.all(
@@ -1998,7 +1560,6 @@ async function loadDueCustomers(){
                   }
                 );
 
-
               if(
                 x &&
                 x.success &&
@@ -2006,23 +1567,16 @@ async function loadDueCustomers(){
               ){
 
                 return {
-
                   id:c.id,
-
                   name:c.name,
-
                   phone:c.phone,
-
                   due:Number(x.due)
-
                 };
 
               }
 
             }
-
             catch(err){}
-
 
             return null;
 
@@ -2031,39 +1585,30 @@ async function loadDueCustomers(){
 
       );
 
-
     DUE_CUSTOMERS =
       results
         .filter(Boolean)
-        .sort(
-          function(a,b){
+        .sort(function(a,b){
 
-            return a.name
-              .localeCompare(
-                b.name
-              );
+          return a.name.localeCompare(
+            b.name
+          );
 
-          }
-        );
-
+        });
 
     renderDueCustomers(
       DUE_CUSTOMERS
     );
 
-
-    el("dueMessage")
-      .textContent =
+    el("dueMessage").textContent =
       DUE_CUSTOMERS.length
         ? ""
         : "বর্তমানে কোনো Due Customer নেই";
 
   }
-
   catch(err){
 
-    el("dueMessage")
-      .textContent =
+    el("dueMessage").textContent =
       "Server/API সমস্যা হয়েছে";
 
   }
@@ -2071,60 +1616,40 @@ async function loadDueCustomers(){
 }
 
 
-/* ==================================================
-   RENDER DUE CUSTOMERS
-================================================== */
-
 function renderDueCustomers(list){
 
   const select =
     el("dueCustomer");
 
-
   select.innerHTML =
     '<option value="">Due থাকা Customer নির্বাচন করুন</option>';
-
 
   list.forEach(function(c){
 
     const o =
-      document.createElement(
-        "option"
-      );
+      document.createElement("option");
 
+    o.value = c.id;
 
-    o.value =
-      c.id;
-
+    /* শুধু নাম + Due amount */
 
     o.textContent =
       c.name
       + " • "
-      + c.phone
-      + " • "
-      + Number(c.due)
-          .toFixed(3)
+      + Number(c.due).toFixed(3)
       + " KD";
-
 
     select.appendChild(o);
 
   });
 
-
-  el("searchResultCount")
-    .textContent =
+  el("searchResultCount").textContent =
     list.length
-      ? list.length
-        + " জন Due Customer"
+      ? list.length + " জন Due Customer"
       : "";
 
 }
 
-
-/* ==================================================
-   SEARCH
-================================================== */
 
 function filterDueCustomers(){
 
@@ -2134,67 +1659,44 @@ function filterDueCustomers(){
       .trim()
       .toLowerCase();
 
-
-  el("clearSearch")
-    .style.display =
-    search
-      ? "block"
-      : "none";
-
+  el("clearSearch").style.display =
+    search ? "block" : "none";
 
   const filtered =
     DUE_CUSTOMERS.filter(
       function(c){
 
         return (
-
           c.name
             .toLowerCase()
             .includes(search)
-
           ||
-
           c.phone
             .toLowerCase()
             .includes(search)
-
         );
 
       }
     );
 
-
-  renderDueCustomers(
-    filtered
-  );
-
+  renderDueCustomers(filtered);
 
   if(search){
 
-    el("searchResultCount")
-      .textContent =
-      filtered.length
-      + " জন পাওয়া গেছে";
+    el("searchResultCount").textContent =
+      filtered.length + " জন পাওয়া গেছে";
 
   }
 
 }
 
 
-/* ==================================================
-   CLEAR SEARCH
-================================================== */
-
 function clearCustomerSearch(){
 
-  el("customerSearch")
-    .value = "";
+  el("customerSearch").value = "";
 
-
-  el("clearSearch")
-    .style.display =
+  el("clearSearch").style.display =
     "none";
-
 
   renderDueCustomers(
     DUE_CUSTOMERS
@@ -2203,30 +1705,19 @@ function clearCustomerSearch(){
 }
 
 
-/* ==================================================
-   CHECK DUE
-================================================== */
-
 async function checkDue(){
 
   const id =
-    el("dueCustomer")
-      .value;
-
+    el("dueCustomer").value;
 
   el("dueResult")
     .classList
     .add("hidden");
 
+  if(!id) return;
 
-  if(!id)
-    return;
-
-
-  el("dueMessage")
-    .textContent =
+  el("dueMessage").textContent =
     "Due loading...";
-
 
   try{
 
@@ -2239,11 +1730,7 @@ async function checkDue(){
         }
       );
 
-
-    if(
-      !r ||
-      !r.success
-    ){
+    if(!r || !r.success){
 
       handleSession(r);
 
@@ -2252,8 +1739,7 @@ async function checkDue(){
         !r.expired
       ){
 
-        el("dueMessage")
-          .textContent =
+        el("dueMessage").textContent =
           r.message ||
           "Due পাওয়া যায়নি";
 
@@ -2263,29 +1749,18 @@ async function checkDue(){
 
     }
 
-
     el("dueCustomerName")
       .textContent =
       r.customer.name;
 
-
-    el("dueCustomerPhone")
-      .textContent =
-      r.customer.phone;
-
-
     el("dueAmount")
       .textContent =
-      Number(r.due)
-        .toFixed(3);
-
+      Number(r.due).toFixed(3);
 
     const history =
       el("historyList");
 
-
     history.innerHTML = "";
-
 
     if(
       !r.transactions ||
@@ -2296,124 +1771,92 @@ async function checkDue(){
         '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
 
     }
-
     else{
 
-      r.transactions
-        .forEach(function(x){
+      r.transactions.forEach(function(x){
 
-          const d =
-            document.createElement(
-              "div"
-            );
+        const d =
+          document.createElement("div");
 
+        d.className =
+          "history-item";
 
-          d.className =
-            "history-item";
+        const tk =
+          x.amountTk
+            ? Math.round(
+                Number(x.amountTk)
+              ).toLocaleString("en-IN")
+              + " Tk"
+            : "";
 
+        const sign =
+          x.type === "বাকি"
+            ? "+"
+            : "-";
 
-          const tk =
-            x.amountTk
-              ? Math.round(
-                  Number(x.amountTk)
-                ).toLocaleString(
-                  "en-IN"
-                )
-                + " Tk"
-              : "";
+        const noteText =
+          x.note || "";
 
+        const extra =
+          noteText && tk
+            ? noteText + " • " + tk
+            : noteText || tk;
 
-          const sign =
-            x.type === "বাকি"
-              ? "+"
-              : "-";
+        d.innerHTML =
+          '<div class="history-top">'
+          +
+          '<span class="history-date">'
+          +
+          esc(x.date)
+          +
+          '</span>'
+          +
+          '<span class="history-type">'
+          +
+          esc(x.type)
+          +
+          '</span>'
+          +
+          '</div>'
+          +
+          '<div class="history-amount">'
+          +
+          sign
+          +
+          Number(x.amount).toFixed(3)
+          +
+          ' KD'
+          +
+          '</div>'
+          +
+          (
+            extra
+              ? '<div class="history-note">'
+                +
+                esc(extra)
+                +
+                '</div>'
+              : ""
+          );
 
+        history.appendChild(d);
 
-          const noteText =
-            x.note || "";
-
-
-          const extra =
-            noteText && tk
-              ? noteText
-                + " • "
-                + tk
-              : noteText || tk;
-
-
-          d.innerHTML =
-
-            '<div class="history-top">'
-            +
-
-            '<span class="history-date">'
-            +
-            esc(x.date)
-            +
-            '</span>'
-
-            +
-
-            '<span class="history-type">'
-            +
-            esc(x.type)
-            +
-            '</span>'
-
-            +
-            '</div>'
-
-            +
-
-            '<div class="history-amount">'
-            +
-            sign
-            +
-            Number(x.amount)
-              .toFixed(3)
-            +
-            ' KD'
-            +
-            '</div>'
-
-            +
-
-            (
-              extra
-                ? '<div class="history-note">'
-                  +
-                  esc(extra)
-                  +
-                  '</div>'
-                : ""
-            );
-
-
-          history.appendChild(d);
-
-        });
+      });
 
     }
 
-
-    el("dueMessage")
-      .textContent = "";
-
+    el("dueMessage").textContent = "";
 
     el("dueResult")
       .classList
       .remove("hidden");
 
-
-    el("historyScroll")
-      .scrollTop = 0;
+    el("historyScroll").scrollTop = 0;
 
   }
-
   catch(err){
 
-    el("dueMessage")
-      .textContent =
+    el("dueMessage").textContent =
       "Server/API সমস্যা হয়েছে";
 
   }
@@ -2421,43 +1864,27 @@ async function checkDue(){
 }
 
 
-/* ==================================================
-   SAVE TRANSACTION
-================================================== */
-
 async function saveTransaction(){
 
   const id =
     el("customer").value;
 
-
-  const date =
-    el("transactionDate").value;
-
-
   const amount =
     el("amount").value;
 
-
   const tk =
     el("amountTk").value;
-
 
   const checked =
     document.querySelector(
       'input[name="transactionType"]:checked'
     );
 
-
   const type =
-    checked
-      ? checked.value
-      : "";
-
+    checked ? checked.value : "";
 
   const note =
     el("note").value;
-
 
   if(!id){
 
@@ -2470,14 +1897,6 @@ async function saveTransaction(){
     return;
 
   }
-
-
-  if(!date){
-
-    today();
-
-  }
-
 
   if(
     !amount ||
@@ -2494,16 +1913,11 @@ async function saveTransaction(){
 
   }
 
-
   const button =
     el("saveButton");
 
-
   button.disabled = true;
-
-  button.textContent =
-    "Saving...";
-
+  button.textContent = "Saving...";
 
   try{
 
@@ -2512,28 +1926,17 @@ async function saveTransaction(){
         "add",
         {
           token:TOKEN,
-
           customerId:id,
-
           amount:amount,
-
           type:type,
-
           note:note,
-
           amountTk:tk,
-
           transactionDate:
-            el("transactionDate")
-              .value
+            el("transactionDate").value
         }
       );
 
-
-    if(
-      r &&
-      r.success
-    ){
+    if(r && r.success){
 
       msg(
         "saveMessage",
@@ -2541,37 +1944,22 @@ async function saveTransaction(){
         "success"
       );
 
-
-      el("amount")
-        .value = "";
-
-
-      el("amountTk")
-        .value = "";
-
-
-      el("note")
-        .value = "";
-
+      el("amount").value = "";
+      el("amountTk").value = "";
+      el("note").value = "";
 
       today();
 
     }
-
     else{
 
       handleSession(r);
 
-
-      if(
-        !r ||
-        !r.expired
-      ){
+      if(!r || !r.expired){
 
         msg(
           "saveMessage",
-          r &&
-          r.message
+          r && r.message
             ? r.message
             : "Save করা যায়নি",
           "error"
@@ -2582,7 +1970,6 @@ async function saveTransaction(){
     }
 
   }
-
   catch(err){
 
     msg(
@@ -2593,28 +1980,18 @@ async function saveTransaction(){
 
   }
 
-
   button.disabled = false;
-
-  button.textContent =
-    "Save Transaction";
+  button.textContent = "Save Transaction";
 
 }
 
-
-/* ==================================================
-   LOAD NOTICE
-================================================== */
 
 async function loadNotice(){
 
   try{
 
     const r =
-      await api(
-        "notice"
-      );
-
+      await api("notice");
 
     if(r){
 
@@ -2624,7 +2001,6 @@ async function loadNotice(){
     }
 
   }
-
   catch(err){
 
     console.log(err);
@@ -2634,21 +2010,13 @@ async function loadNotice(){
 }
 
 
-/* ==================================================
-   SAVE NOTICE
-================================================== */
-
 async function saveNotice(){
 
   const button =
     el("noticeButton");
 
-
   button.disabled = true;
-
-  button.textContent =
-    "Saving...";
-
+  button.textContent = "Saving...";
 
   try{
 
@@ -2657,17 +2025,11 @@ async function saveNotice(){
         "saveNotice",
         {
           token:TOKEN,
-
-          notice:
-            el("notice").value
+          notice:el("notice").value
         }
       );
 
-
-    if(
-      r &&
-      r.success
-    ){
+    if(r && r.success){
 
       msg(
         "noticeMessage",
@@ -2676,21 +2038,15 @@ async function saveNotice(){
       );
 
     }
-
     else{
 
       handleSession(r);
 
-
-      if(
-        !r ||
-        !r.expired
-      ){
+      if(!r || !r.expired){
 
         msg(
           "noticeMessage",
-          r &&
-          r.message
+          r && r.message
             ? r.message
             : "Notice Save হয়নি",
           "error"
@@ -2701,7 +2057,6 @@ async function saveNotice(){
     }
 
   }
-
   catch(err){
 
     msg(
@@ -2712,25 +2067,15 @@ async function saveNotice(){
 
   }
 
-
   button.disabled = false;
-
-  button.textContent =
-    "Save Notice";
+  button.textContent = "Save Notice";
 
 }
 
 
-/* ==================================================
-   SESSION
-================================================== */
-
 function handleSession(r){
 
-  if(
-    r &&
-    r.expired
-  ){
+  if(r && r.expired){
 
     clearLoginAndShow();
 
@@ -2746,9 +2091,7 @@ function handleSession(r){
 function clearLoginAndShow(){
 
   TOKEN = "";
-
   ROLE = "";
-
 
   localStorage.removeItem(
     "adminToken"
@@ -2758,24 +2101,16 @@ function clearLoginAndShow(){
     "adminRole"
   );
 
-
   el("adminPage")
     .classList
     .add("hidden");
-
 
   el("loginPage")
     .classList
     .remove("hidden");
 
-
-  el("username")
-    .value = "";
-
-
-  el("password")
-    .value = "";
-
+  el("username").value = "";
+  el("password").value = "";
 
   msg(
     "loginMessage",
@@ -2786,20 +2121,13 @@ function clearLoginAndShow(){
 }
 
 
-/* ==================================================
-   LOGOUT
-================================================== */
-
 async function logout(){
 
   const oldToken =
     TOKEN;
 
-
   TOKEN = "";
-
   ROLE = "";
-
 
   localStorage.removeItem(
     "adminToken"
@@ -2808,7 +2136,6 @@ async function logout(){
   localStorage.removeItem(
     "adminRole"
   );
-
 
   try{
 
@@ -2820,81 +2147,41 @@ async function logout(){
     );
 
   }
-
   catch(err){}
-
 
   location.reload();
 
 }
 
 
-/* ==================================================
-   ESCAPE HTML
-================================================== */
-
 function esc(v){
 
   return String(v || "")
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* ==================================================
-   ENTER LOGIN
-================================================== */
-
 el("password")
-  .addEventListener(
-    "keydown",
-    function(e){
+.addEventListener(
+  "keydown",
+  function(e){
 
-      if(
-        e.key === "Enter"
-      ){
-
-        loginUser();
-
-      }
-
+    if(e.key === "Enter"){
+      loginUser();
     }
-  );
 
+  }
+);
 
-/* ==================================================
-   RESTORE LOGIN
-================================================== */
 
 async function restoreSession(){
 
-  if(!TOKEN)
-    return;
-
+  if(!TOKEN) return;
 
   try{
 
@@ -2906,28 +2193,21 @@ async function restoreSession(){
         }
       );
 
-
-    if(
-      r &&
-      r.success
-    ){
+    if(r && r.success){
 
       ROLE =
         r.role ||
         ROLE ||
         "admin";
 
-
       localStorage.setItem(
         "adminRole",
         ROLE
       );
 
-
       showAdmin();
 
     }
-
     else{
 
       clearLoginAndShow();
@@ -2935,7 +2215,6 @@ async function restoreSession(){
     }
 
   }
-
   catch(err){
 
     /*
@@ -2953,4 +2232,4 @@ restoreSession();
 </script>
 
 </body>
-              </html>
+</html>
