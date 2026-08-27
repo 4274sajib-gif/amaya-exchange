@@ -547,8 +547,8 @@ input:focus,select:focus,textarea:focus{
    <div class="app-icon">👨‍💼</div>
 
    <div class="app-title">
-    <h1 id="panelTitle">Admin Dashboard</h1>
-    <p>Customer Due Management</p>
+    <h1 id="panelTitle">Amaya Exchange Admin Dashboard</h1>
+    <p>লেনদেনে আস্থা, সেবায় নির্ভরতা</p>
 
     <span id="viewerBadge" class="viewer-badge hidden">
      👁️ View Only
@@ -994,7 +994,7 @@ function setupAdmin(){
 /* VIEWER */
 function setupViewer(){
 
- el("panelTitle").textContent="Viewer Dashboard";
+ el("panelTitle").textContent="Amaya Exchange Viewer Dashboard";
  el("viewerBadge").classList.remove("hidden");
 
  el("addTab").classList.add("hidden");
@@ -1295,7 +1295,7 @@ function filterDueCustomers(){
  if(search){
 
   el("searchResultCount").textContent=
-   filtered.length+" জন পাওয়া গেছে";
+   filtered.length+" Customers found";
 
  }
 }
