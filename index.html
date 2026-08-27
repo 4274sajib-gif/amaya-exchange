@@ -1,68 +1,104 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+>
+
+<meta
+  name="theme-color"
+  content="#111827"
+>
+
 <title>Admin Panel</title>
 
+
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  -webkit-tap-highlight-color:transparent
+  -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   width:100%;
   min-width:0;
   max-width:100%;
   min-height:100%;
-  overflow-x:hidden
+  overflow-x:hidden;
 }
 
 body{
   background:#f4f6f8;
   color:#111827;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  font-size:16px
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  font-size:16px;
 }
 
-button,input,select,textarea{
+button,
+input,
+select,
+textarea{
   font:inherit;
-  max-width:100%
+  max-width:100%;
 }
 
 button{
   appearance:none;
-  -webkit-appearance:none
+  -webkit-appearance:none;
 }
 
 .hidden{
-  display:none!important
+  display:none!important;
 }
 
 .app{
   width:100%;
   min-height:100vh;
   min-height:100dvh;
-  padding-bottom:calc(20px + env(safe-area-inset-bottom))
+  padding-bottom:
+    calc(
+      20px +
+      env(safe-area-inset-bottom)
+    );
 }
 
 .topbar{
   width:100%;
-  padding:calc(14px + env(safe-area-inset-top)) 15px 16px;
+  padding:
+    calc(
+      14px +
+      env(safe-area-inset-top)
+    )
+    15px
+    16px;
+
   background:#111827;
   color:#fff;
-  box-shadow:0 4px 18px rgba(0,0,0,.14)
+
+  box-shadow:
+    0 4px 18px
+    rgba(0,0,0,.14);
 }
 
 .topbar-inner{
   width:100%;
   display:flex;
   align-items:center;
-  gap:11px
+  gap:11px;
 }
 
 .app-icon{
@@ -71,27 +107,29 @@ button{
   flex:0 0 44px;
   border-radius:14px;
   background:rgba(255,255,255,.12);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:21px
+
+  font-size:21px;
 }
 
 .app-title{
   flex:1;
-  min-width:0
+  min-width:0;
 }
 
 .app-title h1{
   font-size:18px;
   line-height:1.2;
-  font-weight:800
+  font-weight:800;
 }
 
 .app-title p{
   margin-top:3px;
   color:#cbd5e1;
-  font-size:10px
+  font-size:10px;
 }
 
 .online{
@@ -99,19 +137,19 @@ button{
   height:9px;
   flex:0 0 9px;
   border-radius:50%;
-  background:#34d399
+  background:#34d399;
 }
 
 .content{
   width:100%;
-  padding:11px
+  padding:11px;
 }
 
 .tab-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
-  margin-bottom:12px
+  margin-bottom:12px;
 }
 
 .tab-btn{
@@ -120,16 +158,23 @@ button{
   border-radius:15px;
   background:#fff;
   color:#4b5563;
+
   font-size:14px;
   font-weight:800;
-  box-shadow:0 3px 12px rgba(15,23,42,.04)
+
+  box-shadow:
+    0 3px 12px
+    rgba(15,23,42,.04);
 }
 
 .tab-btn.active{
   background:#111827;
   color:#fff;
   border-color:#111827;
-  box-shadow:0 6px 16px rgba(17,24,39,.14)
+
+  box-shadow:
+    0 6px 16px
+    rgba(17,24,39,.14);
 }
 
 .card{
@@ -138,15 +183,19 @@ button{
   border-radius:20px;
   padding:15px;
   margin-bottom:12px;
+
   border:1px solid #edf0f3;
-  box-shadow:0 4px 18px rgba(15,23,42,.055)
+
+  box-shadow:
+    0 4px 18px
+    rgba(15,23,42,.055);
 }
 
 .card-head{
   display:flex;
   align-items:center;
   gap:10px;
-  margin-bottom:5px
+  margin-bottom:5px;
 }
 
 .card-icon{
@@ -155,15 +204,17 @@ button{
   flex:0 0 38px;
   border-radius:12px;
   background:#f1f3f6;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px
+
+  font-size:18px;
 }
 
 .card-title{
   font-size:16px;
-  font-weight:800
+  font-weight:800;
 }
 
 .card-subtitle{
@@ -171,16 +222,16 @@ button{
   font-size:11px;
   line-height:1.5;
   margin-left:48px;
-  margin-bottom:15px
+  margin-bottom:15px;
 }
 
 .field{
   width:100%;
-  margin-top:15px
+  margin-top:15px;
 }
 
 .field:first-child{
-  margin-top:0
+  margin-top:0;
 }
 
 label{
@@ -188,40 +239,48 @@ label{
   margin-bottom:7px;
   color:#374151;
   font-size:12px;
-  font-weight:700
+  font-weight:700;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   border:1px solid #e0e4e9;
   background:#fafbfc;
   color:#111827;
   border-radius:14px;
-  outline:none
+  outline:none;
 }
 
-input,select{
+input,
+select{
   height:52px;
   padding:0 13px;
-  font-size:14px
+  font-size:14px;
 }
 
 textarea{
   min-height:110px;
   padding:12px 13px;
   line-height:1.5;
-  resize:vertical
+  resize:vertical;
 }
 
-input:focus,select:focus,textarea:focus{
+input:focus,
+select:focus,
+textarea:focus{
   background:#fff;
   border-color:#64748b;
-  box-shadow:0 0 0 3px rgba(100,116,139,.1)
+
+  box-shadow:
+    0 0 0 3px
+    rgba(100,116,139,.1);
 }
 
 .amount-wrap{
   position:relative;
-  width:100%
+  width:100%;
 }
 
 .amount-wrap input{
@@ -229,7 +288,7 @@ input:focus,select:focus,textarea:focus{
   padding:0 55px 0 14px;
   font-size:24px;
   font-weight:800;
-  background:#f8fafc
+  background:#f8fafc;
 }
 
 .amount-unit{
@@ -237,267 +296,305 @@ input:focus,select:focus,textarea:focus{
   right:14px;
   top:50%;
   transform:translateY(-50%);
+
   color:#9aa1ab;
   font-size:12px;
-  font-weight:700
+  font-weight:700;
 }
 
 .type-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px
+  gap:9px;
 }
 
 .type-option{
-  position:relative
+  position:relative;
 }
 
 .type-option input{
   position:absolute;
   opacity:0;
-  pointer-events:none
+  pointer-events:none;
 }
 
 .type-label{
   width:100%;
   height:53px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   border-radius:14px;
   border:1px solid #e0e4e9;
+
   background:#fafbfc;
   color:#4b5563;
+
   font-size:14px;
-  font-weight:750
+  font-weight:750;
 }
 
 .type-option input:checked+.type-label{
   background:#111827;
   color:#fff;
-  border-color:#111827
+  border-color:#111827;
 }
 
 .primary-btn{
   width:100%;
   height:55px;
   margin-top:17px;
+
   border:0;
   border-radius:15px;
+
   background:#111827;
   color:#fff;
+
   font-size:14px;
   font-weight:800;
-  box-shadow:0 7px 17px rgba(17,24,39,.15)
+
+  box-shadow:
+    0 7px 17px
+    rgba(17,24,39,.15);
 }
 
 .primary-btn:disabled{
-  opacity:.55
+  opacity:.55;
 }
 
 .secondary-btn{
   width:100%;
   height:50px;
   margin-top:10px;
+
   border:1px solid #e0e4e9;
   border-radius:14px;
+
   background:#fff;
   color:#374151;
+
   font-size:13px;
-  font-weight:750
+  font-weight:750;
 }
 
 .customer-info{
   width:100%;
   margin-top:8px;
   padding:9px 11px;
+
   background:#f8fafc;
   border:1px solid #edf0f3;
   border-radius:12px;
+
   color:#64748b;
-  font-size:11px
+  font-size:11px;
 }
 
 .due-box{
   width:100%;
   margin-top:15px;
   padding:18px 15px;
+
   border-radius:18px;
+
   background:#111827;
   color:#fff;
+
   text-align:center;
-  box-shadow:0 8px 22px rgba(17,24,39,.16)
+
+  box-shadow:
+    0 8px 22px
+    rgba(17,24,39,.16);
 }
 
 .due-label{
   color:#cbd5e1;
   font-size:11px;
-  font-weight:650
+  font-weight:650;
 }
 
 .due-value{
   margin-top:5px;
   font-size:31px;
   line-height:1.1;
-  font-weight:850
+  font-weight:850;
 }
 
 .due-unit{
   margin-left:3px;
   font-size:13px;
-  color:#cbd5e1
+  color:#cbd5e1;
 }
 
 .history-title{
   margin-top:18px;
   margin-bottom:9px;
-  font-size:13px;
-  font-weight:800
-}
 
-/* Transaction History Scroll */
+  font-size:13px;
+  font-weight:800;
+}
 
 .history-scroll{
   max-height:430px;
+
   overflow-y:auto;
   overflow-x:hidden;
+
   padding-right:2px;
-  -webkit-overflow-scrolling:touch
+
+  -webkit-overflow-scrolling:touch;
 }
 
 .history-scroll::-webkit-scrollbar{
-  width:5px
+  width:5px;
 }
 
 .history-scroll::-webkit-scrollbar-thumb{
   background:#cbd5e1;
-  border-radius:10px
+  border-radius:10px;
 }
 
 .history-item{
   width:100%;
   padding:12px;
   margin-top:8px;
+
   border:1px solid #edf0f3;
   border-radius:14px;
-  background:#fafbfc
+
+  background:#fafbfc;
 }
 
 .history-top{
   display:flex;
   justify-content:space-between;
-  gap:10px
+  gap:10px;
 }
 
 .history-date{
   color:#89919d;
-  font-size:10px
+  font-size:10px;
 }
 
 .history-type{
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
 
 .history-amount{
   margin-top:5px;
   font-size:18px;
-  font-weight:850
+  font-weight:850;
 }
 
 .history-note{
   margin-top:4px;
   color:#64748b;
-  font-size:11px
+  font-size:11px;
 }
 
 .message{
   min-height:18px;
   margin-top:9px;
+
   text-align:center;
+
   font-size:11px;
-  font-weight:650
+  font-weight:650;
 }
 
 .success{
-  color:#16a34a
+  color:#16a34a;
 }
 
 .error{
-  color:#dc2626
+  color:#dc2626;
 }
 
 .empty{
   padding:20px 10px;
+
   text-align:center;
+
   color:#9aa1ab;
-  font-size:12px
+  font-size:12px;
 }
 
 .notice-help{
   color:#89919d;
   font-size:11px;
   line-height:1.5;
-  margin-bottom:11px
+  margin-bottom:11px;
 }
 
 .notice-message{
   min-height:18px;
   margin-top:9px;
+
   text-align:center;
-  font-size:11px
+
+  font-size:11px;
 }
 
 .logout{
   width:100%;
   height:50px;
+
   border:1px solid #e1e5ea;
   border-radius:14px;
+
   background:#fff;
   color:#374151;
+
   font-size:13px;
-  font-weight:750
+  font-weight:750;
 }
 
 .login-content{
-  padding-top:25px
+  padding-top:25px;
 }
 
 .login-icon{
   width:61px;
   height:61px;
+
   border-radius:19px;
+
   background:#111827;
   color:#fff;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   font-size:25px;
-  margin-bottom:15px
+
+  margin-bottom:15px;
 }
 
 .login-title{
   font-size:24px;
-  font-weight:850
+  font-weight:850;
 }
 
 .login-subtitle{
   margin-top:6px;
   color:#89919d;
   font-size:12px;
-  line-height:1.5
+  line-height:1.5;
 }
-
-/* Search */
 
 .search-wrap{
   position:relative;
-  width:100%
+  width:100%;
 }
 
 .search-wrap input{
   padding-left:42px;
-  padding-right:40px
+  padding-right:40px;
 }
 
 .search-icon{
@@ -505,87 +602,118 @@ input:focus,select:focus,textarea:focus{
   left:14px;
   top:50%;
   transform:translateY(-50%);
+
   color:#89919d;
   font-size:16px;
-  pointer-events:none
+
+  pointer-events:none;
 }
 
 .clear-search{
   position:absolute;
   right:9px;
   top:50%;
+
   transform:translateY(-50%);
+
   width:32px;
   height:32px;
+
   border:0;
   border-radius:10px;
+
   background:transparent;
   color:#89919d;
+
   font-size:17px;
-  display:none
+
+  display:none;
 }
 
 .search-result-count{
   margin-top:7px;
   color:#89919d;
   font-size:10px;
-  min-height:15px
+  min-height:15px;
 }
 
 .viewer-badge{
   display:inline-flex;
   align-items:center;
+
   padding:5px 9px;
   margin-top:6px;
+
   border-radius:9px;
+
   background:rgba(255,255,255,.12);
   color:#e2e8f0;
+
   font-size:9px;
-  font-weight:700
+  font-weight:700;
+}
+
+.loading{
+  padding:20px 10px;
+  text-align:center;
+  color:#89919d;
+  font-size:12px;
 }
 
 @media(max-width:360px){
 
   .content{
-    padding:9px
+    padding:9px;
   }
 
   .card{
-    padding:14px
+    padding:14px;
   }
 
   .due-value{
-    font-size:28px
+    font-size:28px;
   }
 
   .history-scroll{
-    max-height:380px
+    max-height:380px;
   }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 
-<!-- ==============================
-     LOGIN PAGE
-============================== -->
+<!-- ==================================================
+     LOGIN
+================================================== -->
 
-<div id="loginPage" class="app">
+<div
+  id="loginPage"
+  class="app"
+>
 
   <div class="topbar">
 
     <div class="topbar-inner">
 
-      <div class="app-icon">⚙️</div>
+      <div class="app-icon">
+        ⚙️
+      </div>
 
       <div class="app-title">
 
-        <h1>Admin Panel</h1>
+        <h1>
+          Admin Panel
+        </h1>
 
-        <p>Customer Due Management</p>
+        <p>
+          Customer Due Management
+        </p>
 
       </div>
 
@@ -666,10 +794,9 @@ input:focus,select:focus,textarea:focus{
 </div>
 
 
-
-<!-- ==============================
-     ADMIN PAGE
-============================== -->
+<!-- ==================================================
+     ADMIN / VIEWER
+================================================== -->
 
 <div
   id="adminPage"
@@ -728,6 +855,7 @@ input:focus,select:focus,textarea:focus{
         ➕ Add Transaction
       </button>
 
+
       <button
         id="dueTab"
         class="tab-btn"
@@ -739,10 +867,9 @@ input:focus,select:focus,textarea:focus{
     </div>
 
 
-
-    <!-- ==============================
+    <!-- ==================================================
          ADD TRANSACTION
-    ============================== -->
+    ================================================== -->
 
     <div
       id="addSection"
@@ -873,7 +1000,6 @@ input:focus,select:focus,textarea:focus{
 
         <div class="type-grid">
 
-
           <label class="type-option">
 
             <input
@@ -906,7 +1032,6 @@ input:focus,select:focus,textarea:focus{
 
           </label>
 
-
         </div>
 
       </div>
@@ -931,33 +1056,6 @@ input:focus,select:focus,textarea:focus{
       </div>
 
 
-      <!-- METHOD -->
-
-      <div class="field">
-
-        <label>
-          Method
-        </label>
-
-        <select id="method">
-
-          <option value="">
-            মাধ্যম নির্বাচন করুন
-          </option>
-
-          <option value="হারুন">
-            হারুন
-          </option>
-
-          <option value="সজীব">
-            সজীব
-          </option>
-
-        </select>
-
-      </div>
-
-
       <button
         id="saveButton"
         class="primary-btn"
@@ -975,10 +1073,9 @@ input:focus,select:focus,textarea:focus{
     </div>
 
 
-
-    <!-- ==============================
-         CHECK DUE
-    ============================== -->
+    <!-- ==================================================
+         DUE
+    ================================================== -->
 
     <div
       id="dueSection"
@@ -1036,6 +1133,7 @@ input:focus,select:focus,textarea:focus{
 
         </div>
 
+
         <div
           id="searchResultCount"
           class="search-result-count"
@@ -1044,7 +1142,7 @@ input:focus,select:focus,textarea:focus{
       </div>
 
 
-      <!-- DROPDOWN -->
+      <!-- CUSTOMER -->
 
       <div class="field">
 
@@ -1070,7 +1168,6 @@ input:focus,select:focus,textarea:focus{
         id="dueResult"
         class="hidden"
       >
-
 
         <div class="customer-info">
 
@@ -1118,7 +1215,6 @@ input:focus,select:focus,textarea:focus{
 
         </div>
 
-
       </div>
 
 
@@ -1130,10 +1226,9 @@ input:focus,select:focus,textarea:focus{
     </div>
 
 
-
-    <!-- ==============================
+    <!-- ==================================================
          NOTICE
-    ============================== -->
+    ================================================== -->
 
     <div
       id="noticeCard"
@@ -1195,23 +1290,29 @@ input:focus,select:focus,textarea:focus{
       Logout
     </button>
 
-
   </div>
 
 </div>
 
 
-
 <script>
 
-/* ==============================
+/* ==================================================
+   API URL
+================================================== */
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzB4zNUpx_yJlTD3AWej2R1OWRY-l27TprmltmjO2pDT0gtwls3RnMcl0S01xHNGTms/exec";
+
+
+/* ==================================================
    GLOBAL
-============================== */
+================================================== */
 
 let TOKEN =
   localStorage.getItem(
     "adminToken"
-  );
+  ) || "";
 
 let ROLE =
   localStorage.getItem(
@@ -1230,18 +1331,158 @@ let DUE_CUSTOMERS = [];
 let sessionTimer = null;
 
 
-/* ==============================
-   ELEMENT HELPER
-============================== */
+/* ==================================================
+   ELEMENT
+================================================== */
 
 function el(id){
   return document.getElementById(id);
 }
 
 
-/* ==============================
+/* ==================================================
+   JSONP API
+================================================== */
+
+function api(action, params = {}) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const callbackName =
+        "apiCallback_" +
+        Date.now() +
+        "_" +
+        Math.floor(
+          Math.random() * 100000
+        );
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+
+      const query =
+        new URLSearchParams();
+
+
+      query.set(
+        "action",
+        action
+      );
+
+
+      query.set(
+        "callback",
+        callbackName
+      );
+
+
+      Object.keys(params)
+        .forEach(
+          function(key){
+
+            if(
+              params[key] !== undefined &&
+              params[key] !== null
+            ){
+
+              query.set(
+                key,
+                String(params[key])
+              );
+
+            }
+
+          }
+        );
+
+
+      const timer =
+        setTimeout(
+          function(){
+
+            cleanup();
+
+            reject(
+              new Error(
+                "Request timeout"
+              )
+            );
+
+          },
+          30000
+        );
+
+
+      function cleanup(){
+
+        clearTimeout(
+          timer
+        );
+
+        if(script.parentNode){
+          script.parentNode.removeChild(
+            script
+          );
+        }
+
+        try{
+          delete window[
+            callbackName
+          ];
+        }catch(e){}
+
+      }
+
+
+      window[callbackName] =
+        function(data){
+
+          cleanup();
+
+          resolve(
+            data
+          );
+
+        };
+
+
+      script.onerror =
+        function(){
+
+          cleanup();
+
+          reject(
+            new Error(
+              "API connection failed"
+            )
+          );
+
+        };
+
+
+      script.src =
+        API_URL +
+        "?" +
+        query.toString();
+
+
+      document
+        .head
+        .appendChild(script);
+
+    }
+  );
+
+}
+
+
+/* ==================================================
    MESSAGE
-============================== */
+================================================== */
 
 function msg(
   id,
@@ -1254,8 +1495,10 @@ function msg(
 
   if(!e) return;
 
+
   e.textContent =
     text || "";
+
 
   e.className =
     (
@@ -1269,20 +1512,21 @@ function msg(
 }
 
 
-/* ==============================
+/* ==================================================
    DATE
-============================== */
+================================================== */
 
 function today(){
 
   const d =
     new Date();
 
-  const v =
+
+  const value =
     d.getFullYear()
     + "-"
     + String(
-        d.getMonth()+1
+        d.getMonth() + 1
       ).padStart(2,"0")
     + "-"
     + String(
@@ -1290,36 +1534,45 @@ function today(){
       ).padStart(2,"0");
 
 
-  const e =
+  const input =
     el("transactionDate");
 
-  if(!e) return;
 
-  e.value = v;
+  if(!input)
+    return;
 
-  e.max = v;
+
+  input.value =
+    value;
+
+  input.max =
+    value;
 
 }
 
 
-/* ==============================
+/* ==================================================
    LOGIN
-============================== */
+================================================== */
 
-function loginUser(){
+async function loginUser(){
 
-  const u =
+  const username =
     el("username")
       .value
       .trim();
 
-  const p =
+
+  const password =
     el("password")
       .value
       .trim();
 
 
-  if(!u || !p){
+  if(
+    !username ||
+    !password
+  ){
 
     msg(
       "loginMessage",
@@ -1332,104 +1585,107 @@ function loginUser(){
   }
 
 
-  el("loginButton").disabled =
+  const button =
+    el("loginButton");
+
+
+  button.disabled =
     true;
 
-  el("loginButton").textContent =
+  button.textContent =
     "Login হচ্ছে...";
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
+    const r =
+      await api(
+        "login",
+        {
+          username:
+            username,
 
-        if(
-          r &&
-          r.success &&
-          r.token
-        ){
-
-          TOKEN =
-            r.token;
-
-          ROLE =
-            r.role || "admin";
-
-
-          localStorage.setItem(
-            "adminToken",
-            TOKEN
-          );
-
-          localStorage.setItem(
-            "adminRole",
-            ROLE
-          );
-
-
-          showAdmin();
-
+          password:
+            password
         }
-
-        else {
-
-          msg(
-            "loginMessage",
-            r &&
-            r.message
-              ? r.message
-              : "Login করা যায়নি",
-            "error"
-          );
-
-        }
+      );
 
 
-        el("loginButton")
-          .disabled = false;
+    if(
+      r &&
+      r.success &&
+      r.token
+    ){
 
-        el("loginButton")
-          .textContent = "Login";
+      TOKEN =
+        r.token;
 
-      }
-    )
+      ROLE =
+        r.role ||
+        "admin";
 
-    .withFailureHandler(
-      function(){
 
-        msg(
-          "loginMessage",
-          "Server Error",
-          "error"
-        );
+      localStorage.setItem(
+        "adminToken",
+        TOKEN
+      );
 
-        el("loginButton")
-          .disabled = false;
 
-        el("loginButton")
-          .textContent = "Login";
+      localStorage.setItem(
+        "adminRole",
+        ROLE
+      );
 
-      }
-    )
 
-    .loginUser(
-      u,
-      p
+      showAdmin();
+
+    }
+
+    else{
+
+      msg(
+        "loginMessage",
+        r &&
+        r.message
+          ? r.message
+          : "Login করা যায়নি",
+        "error"
+      );
+
+    }
+
+  }
+
+  catch(err){
+
+    msg(
+      "loginMessage",
+      "Server/API connection সমস্যা হয়েছে",
+      "error"
     );
+
+  }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "Login";
 
 }
 
 
-/* ==============================
+/* ==================================================
    SHOW ADMIN
-============================== */
+================================================== */
 
 function showAdmin(){
 
   el("loginPage")
     .classList
     .add("hidden");
+
 
   el("adminPage")
     .classList
@@ -1447,7 +1703,7 @@ function showAdmin(){
 
   }
 
-  else {
+  else{
 
     setupAdmin();
 
@@ -1459,9 +1715,9 @@ function showAdmin(){
 }
 
 
-/* ==============================
+/* ==================================================
    ADMIN SETUP
-============================== */
+================================================== */
 
 function setupAdmin(){
 
@@ -1504,9 +1760,9 @@ function setupAdmin(){
 }
 
 
-/* ==============================
+/* ==================================================
    VIEWER SETUP
-============================== */
+================================================== */
 
 function setupViewer(){
 
@@ -1545,11 +1801,11 @@ function setupViewer(){
 }
 
 
-/* ==============================
+/* ==================================================
    TAB
-============================== */
+================================================== */
 
-function showTab(t){
+function showTab(tab){
 
   const add =
     el("addSection");
@@ -1558,17 +1814,22 @@ function showTab(t){
     el("dueSection");
 
 
-  if(ROLE === "viewer"){
+  if(
+    ROLE === "viewer"
+  ){
 
     add.classList
       .add("hidden");
 
+
     due.classList
       .remove("hidden");
+
 
     el("dueTab")
       .classList
       .add("active");
+
 
     loadDueCustomers();
 
@@ -1577,25 +1838,23 @@ function showTab(t){
   }
 
 
-  add.classList
-    .toggle(
-      "hidden",
-      t !== "add"
-    );
+  add.classList.toggle(
+    "hidden",
+    tab !== "add"
+  );
 
 
-  due.classList
-    .toggle(
-      "hidden",
-      t === "add"
-    );
+  due.classList.toggle(
+    "hidden",
+    tab === "add"
+  );
 
 
   el("addTab")
     .classList
     .toggle(
       "active",
-      t === "add"
+      tab === "add"
     );
 
 
@@ -1603,11 +1862,13 @@ function showTab(t){
     .classList
     .toggle(
       "active",
-      t !== "add"
+      tab !== "add"
     );
 
 
-  if(t === "due"){
+  if(
+    tab === "due"
+  ){
 
     loadDueCustomers();
 
@@ -1616,90 +1877,106 @@ function showTab(t){
 }
 
 
-/* ==============================
+/* ==================================================
    CUSTOMERS
-============================== */
+================================================== */
 
-function loadCustomers(){
+async function loadCustomers(){
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
-
-        if(
-          !r ||
-          !r.success
-        ){
-
-          handleSession(r);
-
-          return;
-
+    const r =
+      await api(
+        "customers",
+        {
+          token:
+            TOKEN
         }
+      );
 
 
-        ALL_CUSTOMERS =
-          r.customers || [];
+    if(
+      !r ||
+      !r.success
+    ){
+
+      if(
+        handleSession(r)
+      )
+        return;
 
 
-        const select =
-          el("customer");
+      msg(
+        "saveMessage",
+        r &&
+        r.message
+          ? r.message
+          : "Customer list পাওয়া যায়নি",
+        "error"
+      );
+
+      return;
+
+    }
 
 
-        select.innerHTML =
-          '<option value="">Customer নির্বাচন করুন</option>';
+    ALL_CUSTOMERS =
+      r.customers || [];
 
 
-        ALL_CUSTOMERS
-          .forEach(
-            function(c){
+    const select =
+      el("customer");
 
-              const o =
-                document
-                .createElement(
-                  "option"
-                );
 
-              o.value =
-                c.id;
+    select.innerHTML =
+      '<option value="">Customer নির্বাচন করুন</option>';
 
-              o.textContent =
-                c.name
-                + " • "
-                + c.phone;
 
-              select
-                .appendChild(o);
+    ALL_CUSTOMERS
+      .forEach(
+        function(c){
 
-            }
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            c.id;
+
+
+          option.textContent =
+            c.name +
+            " • " +
+            c.phone;
+
+
+          select.appendChild(
+            option
           );
 
-      }
-    )
+        }
+      );
 
-    .withFailureHandler(
-      function(){
+  }
 
-        msg(
-          "saveMessage",
-          "Customer list পাওয়া যায়নি",
-          "error"
-        );
+  catch(err){
 
-      }
-    )
-
-    .getCustomers(
-      TOKEN
+    msg(
+      "saveMessage",
+      "Customer list পাওয়া যায়নি",
+      "error"
     );
+
+  }
 
 }
 
 
-/* ==============================
+/* ==================================================
    CUSTOMER SELECT
-============================== */
+================================================== */
 
 el("customer")
   .addEventListener(
@@ -1721,8 +1998,7 @@ el("customer")
 
 
       info.textContent =
-        "Selected: "
-        +
+        "Selected: " +
         this.options[
           this.selectedIndex
         ].text;
@@ -1735,44 +2011,52 @@ el("customer")
   );
 
 
-/* ==============================
+/* ==================================================
    OPTIONS
-============================== */
+================================================== */
 
-function loadOptions(){
+async function loadOptions(){
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
-
-        if(
-          !r ||
-          !r.success
-        ){
-
-          handleSession(r);
-
-          return;
-
-        }
+    const r =
+      await api(
+        "options"
+      );
 
 
-        OPTIONS =
-          r || {
-            due:[],
-            deposit:[]
-          };
+    if(
+      !r ||
+      !r.success
+    ){
+
+      handleSession(r);
+
+      return;
+
+    }
 
 
-        loadNotes();
+    OPTIONS =
+      r || {
+        due:[],
+        deposit:[]
+      };
 
-      }
-    )
 
-    .getOptions(
-      TOKEN
+    loadNotes();
+
+  }
+
+  catch(err){
+
+    msg(
+      "saveMessage",
+      "Note options পাওয়া যায়নি",
+      "error"
     );
+
+  }
 
 }
 
@@ -1808,21 +2092,25 @@ function loadNotes(){
 
 
   list.forEach(
-    function(x){
+    function(item){
 
-      const o =
-        document
-        .createElement(
+      const option =
+        document.createElement(
           "option"
         );
 
-      o.value =
-        x;
 
-      o.textContent =
-        x;
+      option.value =
+        item;
 
-      note.appendChild(o);
+
+      option.textContent =
+        item;
+
+
+      note.appendChild(
+        option
+      );
 
     }
   );
@@ -1830,11 +2118,11 @@ function loadNotes(){
 }
 
 
-/* ==============================
+/* ==================================================
    DUE CUSTOMERS
-============================== */
+================================================== */
 
-function loadDueCustomers(){
+async function loadDueCustomers(){
 
   const select =
     el("dueCustomer");
@@ -1864,205 +2152,175 @@ function loadDueCustomers(){
 
 
   el("searchResultCount")
-    .textContent = "";
+    .textContent =
+    "";
 
 
   DUE_CUSTOMERS = [];
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
-
-        if(
-          !r ||
-          !r.success
-        ){
-
-          handleSession(r);
-
-          return;
-
+    const customerResponse =
+      await api(
+        "customers",
+        {
+          token:
+            TOKEN
         }
+      );
 
 
-        const customers =
-          r.customers || [];
+    if(
+      !customerResponse ||
+      !customerResponse.success
+    ){
+
+      handleSession(
+        customerResponse
+      );
+
+      return;
+
+    }
 
 
-        if(!customers.length){
-
-          el("dueMessage")
-            .textContent =
-            "বর্তমানে কোনো Customer নেই";
-
-          return;
-
-        }
+    const customers =
+      customerResponse.customers || [];
 
 
-        let pending =
-          customers.length;
+    if(
+      !customers.length
+    ){
+
+      el("dueMessage")
+        .textContent =
+        "বর্তমানে কোনো Customer নেই";
+
+      return;
+
+    }
 
 
-        customers.forEach(
-          function(c){
+    /*
+      Customer-দের Due একসাথে
+      API call করা হচ্ছে।
+    */
 
-            google.script.run
+    const results =
+      await Promise.all(
+        customers.map(
+          async function(c){
 
-              .withSuccessHandler(
-                function(x){
+            try{
 
-                  pending--;
+              const x =
+                await api(
+                  "due",
+                  {
+                    token:
+                      TOKEN,
 
-
-                  if(
-                    x &&
-                    x.success &&
-                    Number(x.due) > 0
-                  ){
-
-                    DUE_CUSTOMERS
-                      .push({
-
-                        id:
-                          c.id,
-
-                        name:
-                          c.name,
-
-                        phone:
-                          c.phone,
-
-                        due:
-                          Number(
-                            x.due
-                          )
-
-                      });
-
+                    customerId:
+                      c.id
                   }
+                );
 
 
-                  if(
-                    pending === 0
-                  ){
+              if(
+                x &&
+                x.success &&
+                Number(x.due) > 0
+              ){
 
-                    DUE_CUSTOMERS
-                      .sort(
-                        function(a,b){
+                return {
 
-                          return a.name
-                            .localeCompare(
-                              b.name
-                            );
+                  id:
+                    c.id,
 
-                        }
-                      );
+                  name:
+                    c.name,
 
+                  phone:
+                    c.phone,
 
-                    renderDueCustomers(
-                      DUE_CUSTOMERS
-                    );
+                  due:
+                    Number(x.due)
 
+                };
 
-                    if(
-                      DUE_CUSTOMERS.length
-                    ){
+              }
 
-                      el("dueMessage")
-                        .textContent =
-                        "";
+            }
+            catch(e){}
 
-                    }
+            return null;
 
-                    else {
-
-                      el("dueMessage")
-                        .textContent =
-                        "বর্তমানে কোনো Due Customer নেই";
-
-                    }
-
-                  }
-
-                }
-              )
-
-              .withFailureHandler(
-                function(){
-
-                  pending--;
-
-                  if(
-                    pending === 0
-                  ){
-
-                    DUE_CUSTOMERS
-                      .sort(
-                        function(a,b){
-
-                          return a.name
-                            .localeCompare(
-                              b.name
-                            );
-
-                        }
-                      );
+          }
+        )
+      );
 
 
-                    renderDueCustomers(
-                      DUE_CUSTOMERS
-                    );
-
-
-                    if(
-                      !DUE_CUSTOMERS.length
-                    ){
-
-                      el("dueMessage")
-                        .textContent =
-                        "বর্তমানে কোনো Due Customer নেই";
-
-                    }
-
-                  }
-
-                }
-              )
-
-              .getCustomerDue(
-                TOKEN,
-                c.id
-              );
-
+    DUE_CUSTOMERS =
+      results
+        .filter(
+          function(x){
+            return !!x;
           }
         );
 
+
+    DUE_CUSTOMERS.sort(
+      function(a,b){
+
+        return a.name
+          .localeCompare(
+            b.name
+          );
+
       }
-    )
-
-    .withFailureHandler(
-      function(){
-
-        el("dueMessage")
-          .textContent =
-          "Server Error";
-
-      }
-    )
-
-    .getCustomers(
-      TOKEN
     );
+
+
+    renderDueCustomers(
+      DUE_CUSTOMERS
+    );
+
+
+    if(
+      DUE_CUSTOMERS.length
+    ){
+
+      el("dueMessage")
+        .textContent =
+        "";
+
+    }
+
+    else{
+
+      el("dueMessage")
+        .textContent =
+        "বর্তমানে কোনো Due Customer নেই";
+
+    }
+
+  }
+
+  catch(err){
+
+    el("dueMessage")
+      .textContent =
+      "Due list load করা যায়নি";
+
+  }
 
 }
 
 
-/* ==============================
-   RENDER DUE CUSTOMERS
-============================== */
+/* ==================================================
+   RENDER DUE
+================================================== */
 
 function renderDueCustomers(
   list
@@ -2079,29 +2337,30 @@ function renderDueCustomers(
   list.forEach(
     function(c){
 
-      const o =
-        document
-        .createElement(
+      const option =
+        document.createElement(
           "option"
         );
 
 
-      o.value =
+      option.value =
         c.id;
 
 
-      o.textContent =
-        c.name
-        + " • "
-        + c.phone
-        + " • "
-        + Number(
-            c.due
-          ).toFixed(3)
-        + " KD";
+      option.textContent =
+        c.name +
+        " • " +
+        c.phone +
+        " • " +
+        Number(
+          c.due
+        ).toFixed(3) +
+        " KD";
 
 
-      select.appendChild(o);
+      select.appendChild(
+        option
+      );
 
     }
   );
@@ -2110,16 +2369,16 @@ function renderDueCustomers(
   el("searchResultCount")
     .textContent =
     list.length
-    ? list.length
-      + " জন Due Customer"
-    : "";
+      ? list.length +
+        " জন Due Customer"
+      : "";
 
 }
 
 
-/* ==============================
+/* ==================================================
    SEARCH
-============================== */
+================================================== */
 
 function filterDueCustomers(){
 
@@ -2132,9 +2391,9 @@ function filterDueCustomers(){
 
   el("clearSearch")
     .style.display =
-    search
-      ? "block"
-      : "none";
+      search
+        ? "block"
+        : "none";
 
 
   const filtered =
@@ -2168,22 +2427,23 @@ function filterDueCustomers(){
 
     el("searchResultCount")
       .textContent =
-      filtered.length
-      + " জন পাওয়া গেছে";
+      filtered.length +
+      " জন পাওয়া গেছে";
 
   }
 
 }
 
 
-/* ==============================
+/* ==================================================
    CLEAR SEARCH
-============================== */
+================================================== */
 
 function clearCustomerSearch(){
 
   el("customerSearch")
     .value = "";
+
 
   el("clearSearch")
     .style.display =
@@ -2197,11 +2457,11 @@ function clearCustomerSearch(){
 }
 
 
-/* ==============================
+/* ==================================================
    CHECK DUE
-============================== */
+================================================== */
 
-function checkDue(){
+async function checkDue(){
 
   const id =
     el("dueCustomer")
@@ -2222,219 +2482,220 @@ function checkDue(){
     "Due loading...";
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
+    const r =
+      await api(
+        "due",
+        {
+          token:
+            TOKEN,
 
-        if(
-          !r ||
-          !r.success
-        ){
-
-          handleSession(r);
-
-          if(
-            r &&
-            !r.expired
-          ){
-
-            el("dueMessage")
-              .textContent =
-              r.message ||
-              "Due পাওয়া যায়নি";
-
-          }
-
-          return;
-
+          customerId:
+            id
         }
+      );
 
 
-        el("dueCustomerName")
-          .textContent =
-          r.customer.name;
+    if(
+      !r ||
+      !r.success
+    ){
+
+      if(
+        handleSession(r)
+      )
+        return;
 
 
-        el("dueCustomerPhone")
-          .textContent =
-          r.customer.phone;
+      el("dueMessage")
+        .textContent =
+        r &&
+        r.message
+          ? r.message
+          : "Due পাওয়া যায়নি";
+
+      return;
+
+    }
 
 
-        el("dueAmount")
-          .textContent =
-          Number(
-            r.due
-          ).toFixed(3);
+    el("dueCustomerName")
+      .textContent =
+      r.customer.name;
 
 
-        const history =
-          el("historyList");
+    el("dueCustomerPhone")
+      .textContent =
+      r.customer.phone;
 
 
-        history.innerHTML =
-          "";
+    el("dueAmount")
+      .textContent =
+      Number(
+        r.due
+      ).toFixed(3);
 
 
-        if(
-          !r.transactions ||
-          !r.transactions.length
-        ){
-
-          history.innerHTML =
-            '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
-
-        }
-
-        else {
-
-          r.transactions
-            .forEach(
-              function(x){
-
-                const d =
-                  document
-                  .createElement(
-                    "div"
-                  );
+    const history =
+      el("historyList");
 
 
-                d.className =
-                  "history-item";
+    history.innerHTML =
+      "";
 
 
-                const tk =
-                  x.amountTk
-                    ? Math.round(
-                        Number(
-                          x.amountTk
-                        )
-                      ).toLocaleString(
-                        "en-IN"
-                      )
-                      + " Tk"
-                    : "";
+    if(
+      !r.transactions ||
+      !r.transactions.length
+    ){
+
+      history.innerHTML =
+        '<div class="empty">কোনো Transaction পাওয়া যায়নি</div>';
+
+    }
+
+    else{
+
+      r.transactions
+        .forEach(
+          function(x){
+
+            const item =
+              document.createElement(
+                "div"
+              );
 
 
-                const sign =
-                  x.type === "বাকি"
-                    ? "+"
-                    : "-";
+            item.className =
+              "history-item";
 
 
-                const noteText =
-                  x.note || "";
+            const tk =
+              x.amountTk
+                ? Math.round(
+                    Number(
+                      x.amountTk
+                    )
+                  ).toLocaleString(
+                    "en-IN"
+                  ) + " Tk"
+                : "";
 
 
-                const extra =
-                  noteText &&
+            const sign =
+              x.type === "বাকি"
+                ? "+"
+                : "-";
+
+
+            const noteText =
+              x.note || "";
+
+
+            const extra =
+              noteText &&
+              tk
+                ? noteText +
+                  " • " +
                   tk
-                    ? noteText
-                      + " • "
-                      + tk
 
-                    : noteText ||
-                      tk;
+                : noteText ||
+                  tk;
 
 
-                d.innerHTML =
+            item.innerHTML =
 
-                  '<div class="history-top">'
-                  +
+              '<div class="history-top">'
+              +
 
-                  '<span class="history-date">'
-                  +
-                  esc(x.date)
-                  +
-                  '</span>'
+              '<span class="history-date">'
+              +
+              esc(x.date)
+              +
+              '</span>'
 
-                  +
+              +
 
-                  '<span class="history-type">'
-                  +
-                  esc(x.type)
-                  +
-                  '</span>'
+              '<span class="history-type">'
+              +
+              esc(x.type)
+              +
+              '</span>'
 
-                  +
-                  '</div>'
+              +
 
-                  +
+              '</div>'
 
-                  '<div class="history-amount">'
-                  +
-                  sign
-                  +
-                  Number(
-                    x.amount
-                  ).toFixed(3)
-                  +
-                  ' KD'
-                  +
-                  '</div>'
+              +
 
-                  +
+              '<div class="history-amount">'
+              +
+              sign
+              +
+              Number(
+                x.amount
+              ).toFixed(3)
+              +
+              ' KD'
+              +
+              '</div>'
 
-                  (
-                    extra
-                      ? '<div class="history-note">'
-                        +
-                        esc(extra)
-                        +
-                        '</div>'
+              +
 
-                      : ""
-                  );
+              (
+                extra
+                  ? '<div class="history-note">'
+                    +
+                    esc(extra)
+                    +
+                    '</div>'
+                  : ""
+              );
 
 
-                history
-                  .appendChild(d);
-
-              }
+            history.appendChild(
+              item
             );
 
-        }
+          }
+        );
+
+    }
 
 
-        el("dueMessage")
-          .textContent =
-          "";
+    el("dueMessage")
+      .textContent =
+      "";
 
 
-        el("dueResult")
-          .classList
-          .remove("hidden");
+    el("dueResult")
+      .classList
+      .remove("hidden");
 
 
-        el("historyScroll")
-          .scrollTop = 0;
+    el("historyScroll")
+      .scrollTop =
+      0;
 
-      }
-    )
+  }
 
-    .withFailureHandler(
-      function(){
+  catch(err){
 
-        el("dueMessage")
-          .textContent =
-          "Server Error";
+    el("dueMessage")
+      .textContent =
+      "Server/API Error";
 
-      }
-    )
-
-    .getCustomerDue(
-      TOKEN,
-      id
-    );
+  }
 
 }
 
 
-/* ==============================
+/* ==================================================
    SAVE TRANSACTION
-============================== */
+================================================== */
 
-function saveTransaction(){
+async function saveTransaction(){
 
   const id =
     el("customer").value;
@@ -2464,12 +2725,8 @@ function saveTransaction(){
       : "";
 
 
-  const n =
+  const note =
     el("note").value;
-
-
-  const method =
-    el("method").value;
 
 
   if(!id){
@@ -2508,158 +2765,156 @@ function saveTransaction(){
   }
 
 
-  el("saveButton")
-    .disabled = true;
+  const button =
+    el("saveButton");
 
 
-  el("saveButton")
-    .textContent =
+  button.disabled =
+    true;
+
+
+  button.textContent =
     "Saving...";
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
+    const r =
+      await api(
+        "add",
+        {
 
-        if(
-          r &&
-          r.success
-        ){
+          token:
+            TOKEN,
 
-          msg(
-            "saveMessage",
-            "✓ Transaction সফলভাবে Save হয়েছে",
-            "success"
-          );
+          customerId:
+            id,
 
+          amount:
+            amount,
 
-          el("amount")
-            .value = "";
+          type:
+            type,
 
+          note:
+            note,
 
-          el("amountTk")
-            .value = "";
+          amountTk:
+            tk,
 
-
-          el("note")
-            .value = "";
-
-
-          el("method")
-            .value = "";
-
-
-          today();
+          transactionDate:
+            el(
+              "transactionDate"
+            ).value
 
         }
-
-        else {
-
-          handleSession(r);
+      );
 
 
-          if(
-            !r ||
-            !r.expired
-          ){
+    if(
+      r &&
+      r.success
+    ){
 
-            msg(
-              "saveMessage",
-              r &&
-              r.message
-                ? r.message
-                : "Save করা যায়নি",
-              "error"
-            );
-
-          }
-
-        }
+      msg(
+        "saveMessage",
+        "✓ Transaction সফলভাবে Save হয়েছে",
+        "success"
+      );
 
 
-        el("saveButton")
-          .disabled = false;
+      el("amount")
+        .value = "";
 
 
-        el("saveButton")
-          .textContent =
-          "Save Transaction";
-
-      }
-    )
-
-    .withFailureHandler(
-      function(){
-
-        msg(
-          "saveMessage",
-          "Server Error",
-          "error"
-        );
+      el("amountTk")
+        .value = "";
 
 
-        el("saveButton")
-          .disabled = false;
+      el("note")
+        .value = "";
 
 
-        el("saveButton")
-          .textContent =
-          "Save Transaction";
+      today();
 
-      }
-    )
+    }
 
-    .addTransaction(
+    else{
 
-      TOKEN,
+      if(
+        handleSession(r)
+      )
+        return;
 
-      id,
 
-      amount,
+      msg(
+        "saveMessage",
+        r &&
+        r.message
+          ? r.message
+          : "Save করা যায়নি",
+        "error"
+      );
 
-      type,
+    }
 
-      n,
+  }
 
-      tk,
+  catch(err){
 
-      el("transactionDate").value,
-
-      method
-
+    msg(
+      "saveMessage",
+      "Server/API Error",
+      "error"
     );
 
-}
+  }
 
 
-/* ==============================
-   NOTICE
-============================== */
+  button.disabled =
+    false;
 
-function loadNotice(){
 
-  google.script.run
-
-    .withSuccessHandler(
-      function(r){
-
-        if(r){
-
-          el("notice").value =
-            r.notice || "";
-
-        }
-
-      }
-    )
-
-    .getNotice();
+  button.textContent =
+    "Save Transaction";
 
 }
 
 
-function saveNotice(){
+/* ==================================================
+   NOTICE LOAD
+================================================== */
+
+async function loadNotice(){
+
+  try{
+
+    const r =
+      await api(
+        "notice"
+      );
+
+
+    if(r){
+
+      el("notice")
+        .value =
+        r.notice || "";
+
+    }
+
+  }
+
+  catch(err){}
+
+}
+
+
+/* ==================================================
+   NOTICE SAVE
+================================================== */
+
+async function saveNotice(){
 
   const button =
     el("noticeButton");
@@ -2673,87 +2928,81 @@ function saveNotice(){
     "Saving...";
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(r){
+    const r =
+      await api(
+        "saveNotice",
+        {
 
-        if(
-          r &&
-          r.success
-        ){
+          token:
+            TOKEN,
 
-          msg(
-            "noticeMessage",
-            "✓ Notice আপডেট হয়েছে",
-            "success"
-          );
+          notice:
+            el("notice").value
 
         }
-
-        else {
-
-          handleSession(r);
+      );
 
 
-          if(
-            !r ||
-            !r.expired
-          ){
+    if(
+      r &&
+      r.success
+    ){
 
-            msg(
-              "noticeMessage",
-              r &&
-              r.message
-                ? r.message
-                : "Notice Save হয়নি",
-              "error"
-            );
+      msg(
+        "noticeMessage",
+        "✓ Notice আপডেট হয়েছে",
+        "success"
+      );
 
-          }
+    }
 
-        }
+    else{
 
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Save Notice";
-
-      }
-    )
-
-    .withFailureHandler(
-      function(){
-
-        msg(
-          "noticeMessage",
-          "Server Error",
-          "error"
-        );
+      if(
+        handleSession(r)
+      )
+        return;
 
 
-        button.disabled =
-          false;
+      msg(
+        "noticeMessage",
+        r &&
+        r.message
+          ? r.message
+          : "Notice Save হয়নি",
+        "error"
+      );
 
-        button.textContent =
-          "Save Notice";
+    }
 
-      }
-    )
+  }
 
-    .saveNotice(
-      TOKEN,
-      el("notice").value
+  catch(err){
+
+    msg(
+      "noticeMessage",
+      "Server/API Error",
+      "error"
     );
+
+  }
+
+
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "Save Notice";
 
 }
 
 
-/* ==============================
-   SESSION EXPIRED
-============================== */
+/* ==================================================
+   SESSION
+================================================== */
 
 function handleSession(r){
 
@@ -2773,6 +3022,10 @@ function handleSession(r){
 }
 
 
+/* ==================================================
+   CLEAR LOGIN
+================================================== */
+
 function clearLoginAndShow(){
 
   if(sessionTimer){
@@ -2781,19 +3034,23 @@ function clearLoginAndShow(){
       sessionTimer
     );
 
-    sessionTimer = null;
+    sessionTimer =
+      null;
 
   }
 
 
-  TOKEN = "";
+  TOKEN =
+    "";
 
-  ROLE = "";
+  ROLE =
+    "";
 
 
   localStorage.removeItem(
     "adminToken"
   );
+
 
   localStorage.removeItem(
     "adminRole"
@@ -2827,9 +3084,9 @@ function clearLoginAndShow(){
 }
 
 
-/* ==============================
+/* ==================================================
    SESSION CHECK
-============================== */
+================================================== */
 
 function startSessionCheck(){
 
@@ -2844,44 +3101,43 @@ function startSessionCheck(){
 
   sessionTimer =
     setInterval(
-      function(){
+      async function(){
 
         if(!TOKEN)
           return;
 
 
-        google.script.run
+        try{
 
-          .withSuccessHandler(
-            function(r){
-
-              if(
-                !r ||
-                !r.success
-              ){
-
-                clearLoginAndShow();
-
+          const r =
+            await api(
+              "checkSession",
+              {
+                token:
+                  TOKEN
               }
+            );
 
-            }
-          )
 
-          .withFailureHandler(
-            function(){
+          if(
+            !r ||
+            !r.success
+          ){
 
-              /*
-                Network error হলে
-                সঙ্গে সঙ্গে logout নয়।
-                পরের check-এ আবার চেষ্টা করবে।
-              */
+            clearLoginAndShow();
 
-            }
-          )
+          }
 
-          .checkSession(
-            TOKEN
-          );
+        }
+
+        catch(err){
+
+          /*
+            Network error হলে
+            সঙ্গে সঙ্গে logout করা হবে না।
+          */
+
+        }
 
       },
       120000
@@ -2890,24 +3146,27 @@ function startSessionCheck(){
 }
 
 
-/* ==============================
+/* ==================================================
    LOGOUT
-============================== */
+================================================== */
 
-function logout(){
+async function logout(){
 
   const oldToken =
     TOKEN;
 
 
-  TOKEN = "";
+  TOKEN =
+    "";
 
-  ROLE = "";
+  ROLE =
+    "";
 
 
   localStorage.removeItem(
     "adminToken"
   );
+
 
   localStorage.removeItem(
     "adminRole"
@@ -2920,44 +3179,39 @@ function logout(){
       sessionTimer
     );
 
-    sessionTimer = null;
+    sessionTimer =
+      null;
 
   }
 
 
-  google.script.run
+  try{
 
-    .withSuccessHandler(
-      function(){
-
-        location.reload();
-
+    await api(
+      "logout",
+      {
+        token:
+          oldToken
       }
-    )
-
-    .withFailureHandler(
-      function(){
-
-        location.reload();
-
-      }
-    )
-
-    .logoutUser(
-      oldToken
     );
+
+  }
+  catch(err){}
+
+
+  location.reload();
 
 }
 
 
-/* ==============================
+/* ==================================================
    ESCAPE HTML
-============================== */
+================================================== */
 
-function esc(v){
+function esc(value){
 
   return String(
-    v || ""
+    value || ""
   )
 
   .replace(
@@ -2988,9 +3242,9 @@ function esc(v){
 }
 
 
-/* ==============================
+/* ==================================================
    ENTER LOGIN
-============================== */
+================================================== */
 
 el("password")
   .addEventListener(
@@ -3009,74 +3263,75 @@ el("password")
   );
 
 
-/* ==============================
+/* ==================================================
    RESTORE SESSION
-============================== */
+================================================== */
 
-if(TOKEN){
+async function restoreSession(){
 
-  google.script.run
+  if(!TOKEN){
 
-    .withSuccessHandler(
-      function(r){
+    return;
 
-        if(
-          r &&
-          r.success
-        ){
-
-          ROLE =
-            r.role ||
-            ROLE ||
-            "admin";
+  }
 
 
-          localStorage.setItem(
-            "adminRole",
-            ROLE
-          );
+  try{
 
-
-          showAdmin();
-
+    const r =
+      await api(
+        "checkSession",
+        {
+          token:
+            TOKEN
         }
+      );
 
-        else {
 
-          clearLoginAndShow();
+    if(
+      r &&
+      r.success
+    ){
 
-        }
+      ROLE =
+        r.role ||
+        ROLE ||
+        "admin";
 
-      }
-    )
 
-    .withFailureHandler(
-      function(){
+      localStorage.setItem(
+        "adminRole",
+        ROLE
+      );
 
-        /*
-          Server সাময়িক unavailable হলে
-          পুরোনো session সরানো হবে না।
-          User চাইলে পরে আবার চেষ্টা করতে পারবে।
-        */
 
-        el("loginPage")
-          .classList
-          .remove("hidden");
+      showAdmin();
 
-        el("adminPage")
-          .classList
-          .add("hidden");
+    }
 
-      }
-    )
+    else{
 
-    .checkSession(
-      TOKEN
-    );
+      clearLoginAndShow();
+
+    }
+
+  }
+
+  catch(err){
+
+    /*
+      Server temporarily unavailable হলে
+      Login information delete করা হবে না।
+    */
+
+  }
 
 }
+
+
+restoreSession();
 
 </script>
 
 </body>
-</html>
+  </html>
