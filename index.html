@@ -1,0 +1,4830 @@
+<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Amaya Exchange</title><style>
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
+}
+
+html,body{
+margin:0;
+padding:0;
+background:#f5f7fa;
+color:#172033;
+font-family:Arial,sans-serif
+}
+
+body{
+min-height:100vh
+}
+
+button,input,select{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+.hidden{
+display:none!important
+}
+
+.app{
+width:100%;
+max-width:520px;
+margin:auto;
+min-height:100vh
+}
+
+/* HEADER */
+
+.header{
+background:#fff;
+padding:14px 15px;
+border-bottom:1px solid #e7e9ed;
+position:sticky;
+top:0;
+z-index:20
+}
+
+.header-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.logo{
+font-size:19px;
+font-weight:800
+}
+
+.user-info{
+font-size:11px;
+color:#858e9d;
+margin-top:3px
+}
+
+.logout{
+border:0;
+background:#eef0f3;
+color:#303744;
+border-radius:9px;
+padding:8px 11px;
+font-size:11px;
+font-weight:700
+}
+
+/* TABS */
+
+.tabs{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+padding:11px 14px 5px;
+background:#f5f7fa
+}
+
+.tab{
+border:0;
+height:43px;
+border-radius:11px;
+background:#e7ebf0;
+color:#687284;
+font-size:12px;
+font-weight:800
+}
+
+.tab.active{
+background:#111827;
+color:#fff
+}
+
+/* CONTENT */
+
+.content{
+padding:10px 14px 25px
+}
+
+.panel{
+display:none
+}
+
+.panel.active{
+display:block
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:16px;
+margin-bottom:12px;
+box-shadow:0 3px 15px rgba(0,0,0,.045)
+}
+
+.title{
+font-size:16px;
+font-weight:800;
+margin-bottom:14px
+}
+
+/* FORM */
+
+.field{
+margin-bottom:13px
+}
+
+.label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin-bottom:7px
+}
+
+input,select{
+width:100%;
+height:47px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+padding:0 12px;
+outline:0;
+color:#172033
+}
+
+input:focus,select:focus{
+border-color:#111827
+}
+
+.amount{
+font-size:17px!important;
+font-weight:700
+}
+
+.type-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin:3px 0 13px
+}
+
+.type-btn{
+height:44px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+font-weight:800
+}
+
+.type-btn.active{
+background:#111827;
+color:#fff;
+border-color:#111827
+}
+
+.save{
+width:100%;
+height:49px;
+border:0;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-weight:800
+}
+
+.save:disabled{
+opacity:.55
+}
+
+.msg{
+font-size:12px;
+margin-top:9px;
+text-align:center
+}
+
+.error{
+color:#d33131
+}
+
+.success{
+color:#16824c
+}
+
+/* CUSTOMER */
+
+.search{
+margin-top:0
+}
+
+.customer-select{
+margin-bottom:13px
+}
+
+.total-due-box{
+background:#111827;
+border-radius:14px;
+padding:15px;
+margin-bottom:13px;
+text-align:center
+}
+
+.total-due-label{
+font-size:11px;
+color:#c8ced8;
+margin-bottom:4px
+}
+
+.total-due-value{
+font-size:23px;
+font-weight:800;
+color:#fff
+}
+
+.total-due-value span{
+font-size:11px;
+font-weight:700
+}
+
+.list{
+display:flex;
+flex-direction:column;
+gap:9px
+}
+
+.customer-card{
+background:#fff;
+border-radius:14px;
+padding:14px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.customer-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px
+}
+
+.customer-name{
+font-size:15px;
+font-weight:800
+}
+
+.phone{
+font-size:12px;
+color:#858e9d;
+margin-top:4px
+}
+
+.due{
+text-align:right;
+white-space:nowrap
+}
+
+.due-label{
+font-size:10px;
+color:#8992a0
+}
+
+.due-value{
+font-size:16px;
+font-weight:800;
+margin-top:2px
+}
+
+.kd-small{
+font-size:10px
+}
+
+/* TRANSACTIONS */
+
+.txn{
+background:#fff;
+border-radius:14px;
+padding:13px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.txn-top{
+display:flex;
+justify-content:space-between;
+gap:8px
+}
+
+.txn-date{
+font-size:12px;
+color:#858e9d
+}
+
+.txn-amount{
+font-size:15px;
+font-weight:800
+}
+
+.txn-bottom{
+font-size:12px;
+color:#737d8d;
+margin-top:6px
+}
+
+/* AGENT */
+
+.agent-card{
+background:#fff;
+border-radius:14px;
+padding:14px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.agent-name{
+font-size:15px;
+font-weight:800
+}
+
+.agent-phone{
+font-size:12px;
+color:#858e9d;
+margin-top:4px
+}
+
+/* LOGIN */
+
+.login-page{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px
+}
+
+.login-box{
+width:100%;
+max-width:390px;
+background:#fff;
+border-radius:21px;
+padding:25px 21px;
+box-shadow:0 8px 30px rgba(0,0,0,.06)
+}
+
+.login-title{
+font-size:24px;
+font-weight:800
+}
+
+.login-sub{
+font-size:13px;
+color:#8992a0;
+margin:5px 0 23px
+}
+
+.loading,.empty{
+padding:28px 10px;
+text-align:center;
+color:#8992a0;
+font-size:13px
+}
+
+@media(max-width:360px){
+
+.tabs{
+gap:5px
+}
+
+.tab{
+font-size:11px
+}
+
+}
+
+</style></head><body><!-- LOGIN --><div id="loginPage" class="login-page"><div class="login-box"><div class="login-title">
+Amaya Exchange
+</div><div class="login-sub">
+Admin / Agent Login
+</div><div class="field"><label class="label">
+Username
+</label><input
+id="username"
+type="text"
+autocomplete="username">
+
+</div><div class="field"><label class="label">
+Password
+</label><input
+id="password"
+type="password"
+autocomplete="current-password">
+
+</div><button
+id="loginBtn"
+class="save"
+onclick="login()">
+
+Login
+
+</button><div
+id="loginMsg"
+class="msg">
+</div></div></div><!-- APP --><div id="app" class="app hidden"><!-- HEADER --><div class="header"><div class="header-row"><div><div class="logo">
+Amaya Exchange
+</div><div
+id="userInfo"
+class="user-info">
+</div></div><button
+class="logout"
+onclick="logout()">
+
+Logout
+
+</button></div></div><!-- TABS --><div class="tabs"><button
+type="button"
+class="tab active"
+onclick="openTab('transaction',this)">
+
+Add Transaction
+
+</button><button
+type="button"
+class="tab"
+onclick="openTab('customer',this)">
+
+Customer
+
+</button><button
+type="button"
+class="tab"
+onclick="openTab('agent',this)">
+
+Agent
+
+</button></div><div class="content"><!-- ADD TRANSACTION --><section
+id="panelTransaction"
+class="panel active"><div class="card"><div class="title">
+Add Transaction
+</div><div class="field"><label class="label">
+📅 Date
+</label><input
+id="date"
+type="date">
+
+</div><div class="field"><label class="label">
+◾ Agent
+</label><select id="agentSelect"><option value="">
+Select Agent
+</option></select></div><div class="field"><label class="label">
+🧒 Customer
+</label><select id="customerSelect"><option value="">
+Select Customer
+</option></select></div><div class="field"><label class="label">
+💵 KD Amount
+</label><input
+id="kdAmount"
+class="amount"
+type="text"
+inputmode="decimal"
+placeholder="0.000">
+
+</div><div class="field"><label class="label">
+💳 BD Amount
+</label><input
+id="bdAmount"
+class="amount"
+type="text"
+inputmode="numeric"
+placeholder="0">
+
+</div><div class="type-row"><button
+type="button"
+id="dueBtn"
+class="type-btn active"
+onclick="setType('বাকি')">
+
++ বাকি
+
+</button><button
+type="button"
+id="paymentBtn"
+class="type-btn"
+onclick="setType('পেমেন্ট')">
+
+- পেমেন্ট
+
+</button></div><div class="field"><label class="label">
+Note
+</label><select id="noteSelect"><option value="">
+Select Note
+</option></select></div><button
+type="button"
+id="saveBtn"
+class="save"
+onclick="saveTransaction()">
+
+✅ Save
+
+</button><div
+id="saveMsg"
+class="msg">
+</div></div></section><!-- CUSTOMER --><section
+id="panelCustomer"
+class="panel"><div class="card"><div class="title">
+Customer
+</div><select
+id="customerPageSelect"
+class="customer-select">
+
+<option value="">
+Select Customer
+</option></select><div class="total-due-box"><div class="total-due-label">
+Total Due
+</div><div
+id="allCustomerDue"
+class="total-due-value">0.000 <span>KD</span>
+
+</div></div><input
+id="customerSearch"
+class="search"
+type="search"
+placeholder="Search customer..."
+autocomplete="off">
+
+</div><div
+id="customerList"
+class="list"><div class="empty">
+Select a customer
+</div></div></section><!-- AGENT --><section
+id="panelAgent"
+class="panel"><div class="card"><div class="title">
+Agent
+</div><select
+id="agentView"
+onchange="agentChanged()">
+
+<option value="">
+Select Agent
+</option></select></div><div
+id="agentList"
+class="list"><div class="empty">
+Select an agent
+</div></div></section></div></div><script>
+
+/* =====================================================
+API
+===================================================== */
+
+const API =
+'https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
+
+
+/* =====================================================
+STATE
+===================================================== */
+
+let currentUser=null;
+
+let transactionType='বাকি';
+
+let customerData=[];
+
+let agentData=[];
+
+let notesData={
+dueNotes:[],
+paymentNotes:[]
+};
+
+
+/* =====================================================
+GET API
+===================================================== */
+
+async function getAPI(action,params={}){
+
+const query=new URLSearchParams();
+
+query.set('action',action);
+
+Object.keys(params).forEach(function(key){
+
+const value=params[key];
+
+if(
+value!==undefined &&
+value!==null &&
+value!==''
+){
+
+query.set(key,value);
+
+}
+
+});
+
+const response=
+await fetch(
+API+'?'+query.toString(),
+{
+method:'GET',
+cache:'no-store'
+}
+);
+
+return await response.json();
+
+}
+
+
+/* =====================================================
+POST API
+===================================================== */
+
+async function postAPI(data){
+
+const response=
+await fetch(
+API,
+{
+method:'POST',
+headers:{
+'Content-Type':'text/plain;charset=utf-8'
+},
+body:JSON.stringify(data)
+}
+);
+
+return await response.json();
+
+}
+
+
+/* =====================================================
+TABS
+===================================================== */
+
+function openTab(tab,button){
+
+document
+.querySelectorAll('.panel')
+.forEach(function(panel){
+
+panel.classList.remove('active');
+
+});
+
+
+document
+.querySelectorAll('.tab')
+.forEach(function(btn){
+
+btn.classList.remove('active');
+
+});
+
+
+if(tab==='transaction'){
+
+document
+.getElementById('panelTransaction')
+.classList.add('active');
+
+}
+
+
+if(tab==='customer'){
+
+document
+.getElementById('panelCustomer')
+.classList.add('active');
+
+}
+
+
+if(tab==='agent'){
+
+document
+.getElementById('panelAgent')
+.classList.add('active');
+
+}
+
+
+if(button){
+
+button.classList.add('active');
+
+}
+
+}
+
+
+/* =====================================================
+LOGIN
+===================================================== */
+
+async function login(){
+
+const username=
+document
+.getElementById('username')
+.value
+.trim();
+
+const password=
+document
+.getElementById('password')
+.value;
+
+const msg=
+document
+.getElementById('loginMsg');
+
+const btn=
+document
+.getElementById('loginBtn');
+
+
+if(!username || !password){
+
+msg.className='msg error';
+
+msg.textContent=
+'Username and password required';
+
+return;
+
+}
+
+
+btn.disabled=true;
+
+btn.textContent='Logging in...';
+
+msg.textContent='';
+
+
+try{
+
+const result=
+await getAPI(
+'login',
+{
+username:username,
+password:password
+}
+);
+
+
+if(!result.success){
+
+msg.className='msg error';
+
+msg.textContent=
+result.error ||
+'Login failed';
+
+return;
+
+}
+
+
+currentUser=result.data;
+
+
+localStorage.setItem(
+'amaya_user',
+JSON.stringify(currentUser)
+);
+
+
+showApp();
+
+}
+catch(error){
+
+console.error(error);
+
+msg.className='msg error';
+
+msg.textContent=
+'Connection error';
+
+}
+finally{
+
+btn.disabled=false;
+
+btn.textContent='Login';
+
+}
+
+}
+
+
+/* =====================================================
+RESTORE LOGIN
+===================================================== */
+
+function restoreLogin(){
+
+try{
+
+const saved=
+localStorage.getItem('amaya_user');
+
+if(!saved){
+
+return;
+
+}
+
+
+const user=
+JSON.parse(saved);
+
+if(user && user.loggedIn){
+
+currentUser=user;
+
+showApp();
+
+}
+
+}
+catch(error){
+
+localStorage.removeItem('amaya_user');
+
+}
+
+}
+
+
+/* =====================================================
+SHOW APP
+===================================================== */
+
+function showApp(){
+
+document
+.getElementById('loginPage')
+.classList.add('hidden');
+
+document
+.getElementById('app')
+.classList.remove('hidden');
+
+
+document
+.getElementById('userInfo')
+.textContent=
+(currentUser.username||'User')+
+(
+currentUser.role
+?' • '+currentUser.role
+:''
+);
+
+
+setToday();
+
+loadAllData();
+
+}
+
+
+/* =====================================================
+LOGOUT
+===================================================== */
+
+function logout(){
+
+currentUser=null;
+
+localStorage.removeItem('amaya_user');
+
+
+document
+.getElementById('app')
+.classList.add('hidden');
+
+document
+.getElementById('loginPage')
+.classList.remove('hidden');
+
+
+document
+.getElementById('username')
+.value='';
+
+document
+.getElementById('password')
+.value='';
+
+}
+
+
+/* =====================================================
+TODAY
+===================================================== */
+
+function setToday(){
+
+const input=
+document.getElementById('date');
+
+const d=new Date();
+
+const yyyy=
+d.getFullYear();
+
+const mm=
+String(
+d.getMonth()+1
+).padStart(2,'0');
+
+const dd=
+String(
+d.getDate()
+).padStart(2,'0');
+
+
+const today=
+yyyy+'-'+mm+'-'+dd;
+
+
+input.value=today;
+
+input.max=today;
+
+}
+
+
+/* =====================================================
+LOAD ALL
+===================================================== */
+
+function loadAllData(){
+
+loadCustomers();
+
+loadAgents();
+
+loadNotes();
+
+}
+
+
+/* =====================================================
+CUSTOMERS
+===================================================== */
+
+async function loadCustomers(){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+
+try{
+
+const result=
+await getAPI('customers');
+
+
+console.log(
+'CUSTOMERS',
+result
+);
+
+
+if(!result.success){
+
+list.innerHTML=
+'<div class="empty">'+
+escapeHTML(
+result.error ||
+'Customer loading failed'
+)+
+'</div>';
+
+return;
+
+}
+
+
+customerData=
+Array.isArray(result.data)
+?result.data
+:[];
+
+
+/* =====================================================
+ADD TRANSACTION CUSTOMER DROPDOWN
+ALL ACTIVE CUSTOMERS
+===================================================== */
+
+const transactionSelect=
+document.getElementById(
+'customerSelect'
+);
+
+
+transactionSelect.innerHTML=
+'<option value="">Select Customer</option>';
+
+
+customerData.forEach(function(customer){
+
+const option=
+document.createElement('option');
+
+
+option.value=
+customer.customerId;
+
+
+option.textContent=
+customer.customerName+
+(
+customer.phone
+?' • '+customer.phone
+:''
+);
+
+
+transactionSelect.appendChild(option);
+
+});
+
+
+/* =====================================================
+CUSTOMER PAGE DROPDOWN
+ONLY CUSTOMERS WITH DUE > 0
+===================================================== */
+
+const pageSelect=
+document.getElementById(
+'customerPageSelect'
+);
+
+
+pageSelect.innerHTML=
+'<option value="">Select Customer</option>';
+
+
+customerData.forEach(function(customer){
+
+const due=
+parseFloat(
+String(
+customer.totalDueKD || '0'
+)
+.replace(/,/g,'')
+)||0;
+
+
+if(due<=0){
+
+return;
+
+}
+
+
+const option=
+document.createElement('option');
+
+
+option.value=
+customer.customerId;
+
+
+option.textContent=
+customer.customerName+
+(
+customer.phone
+?' • '+customer.phone
+:''
+);
+
+
+pageSelect.appendChild(option);
+
+});
+
+
+/* =====================================================
+TOTAL CUSTOMER DUE
+===================================================== */
+
+let totalDue=0;
+
+
+customerData.forEach(function(customer){
+
+totalDue+=
+parseFloat(
+String(
+customer.totalDueKD || '0'
+)
+.replace(/,/g,'')
+)||0;
+
+});
+
+
+document
+.getElementById('allCustomerDue')
+.innerHTML=
+totalDue.toLocaleString(
+'en-US',
+{
+minimumFractionDigits:3,
+maximumFractionDigits:3
+}
+)+
+' <span>KD</span>';
+
+
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+}
+catch(error){
+
+console.error(error);
+
+list.innerHTML=
+'<div class="empty">'+
+'Customer loading error'+
+'</div>';
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER SELECT
+===================================================== */
+
+document
+.getElementById('customerPageSelect')
+.addEventListener(
+'change',
+async function(){
+
+const id=
+this.value;
+
+
+/*
+Nothing selected
+*/
+
+if(!id){
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+return;
+
+}
+
+
+const customer=
+customerData.find(function(item){
+
+return String(item.customerId)===
+String(id);
+
+});
+
+
+if(!customer){
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">Customer not found</div>';
+
+return;
+
+}
+
+
+/*
+Render selected customer first.
+*/
+
+renderCustomers([customer]);
+
+});
+
+
+/* =====================================================
+RENDER CUSTOMER
+===================================================== */
+
+function renderCustomers(data){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+if(!data || !data.length){
+
+list.innerHTML=
+'<div class="empty">No customer found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+data.forEach(function(customer){
+
+html+=
+
+'<div class="customer-card">'+
+
+'<div class="customer-row">'+
+
+'<div>'+
+
+'<div class="customer-name">'+
+escapeHTML(
+customer.customerName
+)+
+'</div>'+
+
+'<div class="phone">'+
+escapeHTML(
+customer.phone||''
+)+
+'</div>'+
+
+'</div>'+
+
+'<div class="due">'+
+
+'<div class="due-label">'+
+'Total Due'+
+'</div>'+
+
+'<div class="due-value">'+
+escapeHTML(
+customer.totalDueKD||'0.000'
+)+
+' <span class="kd-small">KD</span>'+
+
+'</div>'+
+
+'</div>'+
+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML=html;
+
+
+/*
+Load selected customer's transactions.
+*/
+
+const customer=
+data[0];
+
+if(customer){
+
+loadCustomerTransactions(
+customer.customerId
+);
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER TRANSACTIONS
+FIXED
+===================================================== */
+
+async function loadCustomerTransactions(customerId){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+const loading=
+document.createElement('div');
+
+loading.id='customerTxnLoading';
+
+loading.className='loading';
+
+loading.textContent='Loading transactions...';
+
+list.appendChild(loading);
+
+
+try{
+
+const result=
+await getAPI(
+'customerTransactions',
+{
+customerId:customerId
+}
+);
+
+
+const currentLoading=
+document.getElementById(
+'customerTxnLoading'
+);
+
+if(currentLoading){
+
+currentLoading.remove();
+
+}
+
+
+if(!result.success){
+
+const errorBox=
+document.createElement('div');
+
+errorBox.className='empty';
+
+errorBox.textContent=
+result.error ||
+'Unable to load transactions';
+
+list.appendChild(errorBox);
+
+return;
+
+}
+
+
+/*
+IMPORTANT
+
+Apps Script returns:
+
+{
+ success:true,
+ data:[
+   transaction,
+   transaction
+ ]
+}
+
+So result.data itself is the array.
+*/
+
+const transactions=
+Array.isArray(result.data)
+?result.data
+:[];
+
+
+if(!transactions.length){
+
+const empty=
+document.createElement('div');
+
+empty.className='empty';
+
+empty.textContent=
+'No Transaction found';
+
+list.appendChild(empty);
+
+return;
+
+}
+
+
+transactions.forEach(function(t){
+
+const txn=
+document.createElement('div');
+
+txn.className='txn';
+
+
+const top=
+document.createElement('div');
+
+top.className='txn-top';
+
+
+const date=
+document.createElement('div');
+
+date.className='txn-date';
+
+date.textContent=
+t.date||'';
+
+
+const amount=
+document.createElement('div');
+
+amount.className='txn-amount';
+
+amount.textContent=
+(t.kdAmount||'0.000')+
+' KD';
+
+
+top.appendChild(date);
+
+top.appendChild(amount);
+
+
+const bottom=
+document.createElement('div');
+
+bottom.className='txn-bottom';
+
+
+let bottomText=
+t.type||'';
+
+
+if(t.note){
+
+bottomText+=
+' • '+
+t.note;
+
+}
+
+
+if(t.bdAmount){
+
+bottomText+=
+' • '+
+t.bdAmount+
+' Tk';
+
+}
+
+
+bottom.textContent=
+bottomText;
+
+
+txn.appendChild(top);
+
+txn.appendChild(bottom);
+
+list.appendChild(txn);
+
+});
+
+}
+catch(error){
+
+console.error(error);
+
+
+const currentLoading=
+document.getElementById(
+'customerTxnLoading'
+);
+
+if(currentLoading){
+
+currentLoading.remove();
+
+}
+
+
+const errorBox=
+document.createElement('div');
+
+errorBox.className='empty';
+
+errorBox.textContent=
+'Connection error';
+
+list.appendChild(errorBox);
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER SEARCH
+===================================================== */
+
+document
+.getElementById('customerSearch')
+.addEventListener(
+'input',
+function(){
+
+const query=
+this.value
+.trim()
+.toLowerCase();
+
+
+const selectedId=
+document
+.getElementById(
+'customerPageSelect'
+)
+.value;
+
+
+if(!selectedId){
+
+return;
+
+}
+
+
+const customer=
+customerData.find(function(item){
+
+return String(item.customerId)===
+String(selectedId);
+
+});
+
+
+if(!customer){
+
+return;
+
+}
+
+
+const matched=
+
+String(
+customer.customerName||''
+)
+.toLowerCase()
+.includes(query)
+
+||
+
+String(
+customer.phone||''
+)
+.toLowerCase()
+.includes(query)
+
+||
+
+String(
+customer.customerId||''
+)
+.toLowerCase()
+.includes(query);
+
+
+if(!query || matched){
+
+renderCustomers([customer]);
+
+}
+else{
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">No customer found</div>';
+
+}
+
+});
+
+
+/* =====================================================
+AGENTS
+===================================================== */
+
+async function loadAgents(){
+
+try{
+
+const result=
+await getAPI('agents');
+
+
+console.log(
+'AGENTS',
+result
+);
+
+
+if(!result.success){
+
+renderAgentError(
+result.error ||
+'Agent loading failed'
+);
+
+return;
+
+}
+
+
+agentData=
+Array.isArray(result.data)
+?result.data
+:[];
+
+
+fillAgentSelect(
+document.getElementById(
+'agentSelect'
+)
+);
+
+
+fillAgentSelect(
+document.getElementById(
+'agentView'
+)
+);
+
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+}
+catch(error){
+
+console.error(error);
+
+renderAgentError(
+'Agent loading error'
+);
+
+}
+
+}
+
+
+/* =====================================================
+FILL AGENT SELECT
+===================================================== */
+
+function fillAgentSelect(select){
+
+select.innerHTML=
+'<option value="">Select Agent</option>';
+
+
+agentData.forEach(function(agent){
+
+const option=
+document.createElement('option');
+
+
+option.value=
+agent.agentId;
+
+
+option.textContent=
+agent.agentName;
+
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+AGENT ERROR
+===================================================== */
+
+function renderAgentError(message){
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">'+
+escapeHTML(message)+
+'</div>';
+
+}
+
+
+/* =====================================================
+AGENT TRANSACTIONS
+===================================================== */
+
+async function agentChanged(){
+
+const agentId=
+document
+.getElementById('agentView')
+.value;
+
+
+const list=
+document.getElementById(
+'agentList'
+);
+
+
+if(!agentId){
+
+list.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+return;
+
+}
+
+
+list.innerHTML=
+'<div class="loading">Loading transactions...</div>';
+
+
+try{
+
+const result=
+await getAPI(
+'agentTransactions',
+{
+linkedId:agentId
+}
+);
+
+
+if(!result.success){
+
+list.innerHTML=
+'<div class="empty">'+
+escapeHTML(
+result.error ||
+'Unable to load transactions'
+)+
+'</div>';
+
+return;
+
+}
+
+
+const transactions=
+result.data &&
+Array.isArray(
+result.data.transactions
+)
+?result.data.transactions
+:[];
+
+
+if(!transactions.length){
+
+list.innerHTML=
+'<div class="empty">No BD transactions found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+transactions.forEach(function(t){
+
+html+=
+
+'<div class="txn">'+
+
+'<div class="txn-top">'+
+
+'<div class="txn-date">'+
+escapeHTML(
+t.date||''
+)+
+'</div>'+
+
+'<div class="txn-amount">'+
+escapeHTML(
+t.bdAmount||'0'
+)+
+' Tk'+
+'</div>'+
+
+'</div>'+
+
+'<div class="txn-bottom">'+
+
+escapeHTML(
+t.type||''
+)+
+
+(
+t.note
+?' • '+escapeHTML(t.note)
+:''
+)+
+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML=html;
+
+}
+catch(error){
+
+console.error(error);
+
+list.innerHTML=
+'<div class="empty">Connection error</div>';
+
+}
+
+}
+
+
+/* =====================================================
+NOTES
+===================================================== */
+
+async function loadNotes(){
+
+try{
+
+const result=
+await getAPI('options');
+
+
+if(!result.success){
+
+return;
+
+}
+
+
+notesData={
+
+dueNotes:
+Array.isArray(
+result.data.dueNotes
+)
+?result.data.dueNotes
+:[],
+
+paymentNotes:
+Array.isArray(
+result.data.paymentNotes
+)
+?result.data.paymentNotes
+:[]
+
+};
+
+
+setNotes(
+transactionType==='বাকি'
+?notesData.dueNotes
+:notesData.paymentNotes
+);
+
+}
+catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+/* =====================================================
+SET NOTES
+===================================================== */
+
+function setNotes(notes){
+
+const select=
+document.getElementById(
+'noteSelect'
+);
+
+
+select.innerHTML=
+'<option value="">Select Note</option>';
+
+
+(notes||[]).forEach(function(note){
+
+const option=
+document.createElement('option');
+
+
+option.value=note;
+
+option.textContent=note;
+
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+TYPE
+===================================================== */
+
+function setType(type){
+
+transactionType=type;
+
+
+document
+.getElementById('dueBtn')
+.classList.toggle(
+'active',
+type==='বাকি'
+);
+
+
+document
+.getElementById('paymentBtn')
+.classList.toggle(
+'active',
+type==='পেমেন্ট'
+);
+
+
+setNotes(
+type==='বাকি'
+?notesData.dueNotes
+:notesData.paymentNotes
+);
+
+}
+
+
+/* =====================================================
+SAVE TRANSACTION
+===================================================== */
+
+async function saveTransaction(){
+
+const date=
+document
+.getElementById('date')
+.value;
+
+
+const agentId=
+document
+.getElementById('agentSelect')
+.value;
+
+
+const customerId=
+document
+.getElementById('customerSelect')
+.value;
+
+
+const kd=
+parseFloat(
+document
+.getElementById('kdAmount')
+.value
+.replace(/,/g,'')
+)||0;
+
+
+const bd=
+parseFloat(
+document
+.getElementById('bdAmount')
+.value
+.replace(/,/g,'')
+)||0;
+
+
+const note=
+document
+.getElementById('noteSelect')
+.value;
+
+
+if(!date){
+
+showSaveError(
+'Date required'
+);
+
+return;
+
+}
+
+
+if(kd>0 && !customerId){
+
+showSaveError(
+'KD Amount দিলে Customer নির্বাচন করুন'
+);
+
+return;
+
+}
+
+
+if(bd>0 && !agentId){
+
+showSaveError(
+'BD Amount দিলে Agent নির্বাচন করুন'
+);
+
+return;
+
+}
+
+
+if(kd<=0 && bd<=0){
+
+showSaveError(
+'KD অথবা BD Amount দিন'
+);
+
+return;
+
+}
+
+
+const selectedDate=
+new Date(
+date+'T00:00:00'
+);
+
+
+const today=
+new Date();
+
+today.setHours(
+0,0,0,0
+);
+
+
+if(selectedDate>today){
+
+showSaveError(
+'Future date দেওয়া যাবে না'
+);
+
+return;
+
+}
+
+
+let agentName='';
+
+
+if(agentId){
+
+const agent=
+agentData.find(function(a){
+
+return String(a.agentId)===
+String(agentId);
+
+});
+
+
+if(agent){
+
+agentName=
+agent.agentName;
+
+}
+
+}
+
+
+let customerName='';
+
+
+if(customerId){
+
+const customer=
+customerData.find(function(c){
+
+return String(c.customerId)===
+String(customerId);
+
+});
+
+
+if(customer){
+
+customerName=
+customer.customerName;
+
+}
+
+}
+
+
+const button=
+document.getElementById(
+'saveBtn'
+);
+
+
+const message=
+document.getElementById(
+'saveMsg'
+);
+
+
+button.disabled=true;
+
+button.textContent='Saving...';
+
+message.textContent='';
+
+message.className='msg';
+
+
+try{
+
+const result=
+await postAPI({
+
+action:'addTransaction',
+
+date:formatDate(date),
+
+customerId:customerId,
+
+customerName:customerName,
+
+agentName:agentName,
+
+kdAmount:kd,
+
+bdAmount:bd,
+
+type:transactionType,
+
+note:note
+
+});
+
+
+if(!result.success){
+
+showSaveError(
+result.error ||
+'Save failed'
+);
+
+return;
+
+}
+
+
+message.className=
+'msg success';
+
+message.textContent=
+'Transaction saved successfully';
+
+
+document
+.getElementById('kdAmount')
+.value='';
+
+
+document
+.getElementById('bdAmount')
+.value='';
+
+
+if(customerId){
+
+await loadCustomers();
+
+}
+
+
+const selectedAgent=
+document
+.getElementById('agentView')
+.value;
+
+
+if(selectedAgent){
+
+agentChanged();
+
+}
+
+
+setTimeout(function(){
+
+message.textContent='';
+
+message.className='msg';
+
+},2500);
+
+
+}
+catch(error){
+
+console.error(error);
+
+showSaveError(
+'Connection error'
+);
+
+}
+finally{
+
+button.disabled=false;
+
+button.textContent='✅ Save';
+
+}
+
+}
+
+
+/* =====================================================
+ERROR
+===================================================== */
+
+function showSaveError(text){
+
+const message=
+document.getElementById(
+'saveMsg'
+);
+
+
+message.className=
+'msg error';
+
+message.textContent=text;
+
+}
+
+
+/* =====================================================
+DATE FORMAT
+===================================================== */
+
+function formatDate(value){
+
+const parts=
+value.split('-');
+
+
+const months=[
+'Jan','Feb','Mar','Apr','May','Jun',
+'Jul','Aug','Sep','Oct','Nov','Dec'
+];
+
+
+return(
+parts[2]+'-'+
+months[
+Number(parts[1])-1
+]+'-'+
+parts[0]
+);
+
+}
+
+
+/* =====================================================
+ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+return String(
+value===null ||
+value===undefined
+?''
+:value
+)
+
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;')
+.replace(/'/g,'&#039;');
+
+}
+
+
+/* =====================================================
+ENTER LOGIN
+===================================================== */
+
+document
+.getElementById('password')
+.addEventListener(
+'keydown',
+function(event){
+
+if(event.key==='Enter'){
+
+login();
+
+}
+
+});
+
+
+/* =====================================================
+START
+===================================================== */
+
+restoreLogin();
+
+</script></body></html><!DOCTYPE html><html lang="bn">
+<head><meta charset="UTF-8"><meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Amaya Exchange</title><style>
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
+}
+
+html,body{
+margin:0;
+padding:0;
+background:#f5f7fa;
+color:#172033;
+font-family:Arial,sans-serif
+}
+
+body{
+min-height:100vh
+}
+
+button,input,select{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+.hidden{
+display:none!important
+}
+
+.app{
+width:100%;
+max-width:520px;
+margin:auto;
+min-height:100vh
+}
+
+/* HEADER */
+
+.header{
+background:#fff;
+padding:14px 15px;
+border-bottom:1px solid #e7e9ed;
+position:sticky;
+top:0;
+z-index:20
+}
+
+.header-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.logo{
+font-size:19px;
+font-weight:800
+}
+
+.user-info{
+font-size:11px;
+color:#858e9d;
+margin-top:3px
+}
+
+.logout{
+border:0;
+background:#eef0f3;
+color:#303744;
+border-radius:9px;
+padding:8px 11px;
+font-size:11px;
+font-weight:700
+}
+
+/* TABS */
+
+.tabs{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+padding:11px 14px 5px;
+background:#f5f7fa
+}
+
+.tab{
+border:0;
+height:43px;
+border-radius:11px;
+background:#e7ebf0;
+color:#687284;
+font-size:12px;
+font-weight:800
+}
+
+.tab.active{
+background:#111827;
+color:#fff
+}
+
+/* CONTENT */
+
+.content{
+padding:10px 14px 25px
+}
+
+.panel{
+display:none
+}
+
+.panel.active{
+display:block
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:16px;
+margin-bottom:12px;
+box-shadow:0 3px 15px rgba(0,0,0,.045)
+}
+
+.title{
+font-size:16px;
+font-weight:800;
+margin-bottom:14px
+}
+
+/* FORM */
+
+.field{
+margin-bottom:13px
+}
+
+.label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin-bottom:7px
+}
+
+input,select{
+width:100%;
+height:47px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+padding:0 12px;
+outline:0;
+color:#172033
+}
+
+input:focus,select:focus{
+border-color:#111827
+}
+
+.amount{
+font-size:17px!important;
+font-weight:700
+}
+
+.type-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin:3px 0 13px
+}
+
+.type-btn{
+height:44px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+font-weight:800
+}
+
+.type-btn.active{
+background:#111827;
+color:#fff;
+border-color:#111827
+}
+
+.save{
+width:100%;
+height:49px;
+border:0;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-weight:800
+}
+
+.save:disabled{
+opacity:.55
+}
+
+.msg{
+font-size:12px;
+margin-top:9px;
+text-align:center
+}
+
+.error{
+color:#d33131
+}
+
+.success{
+color:#16824c
+}
+
+/* CUSTOMER */
+
+.search{
+margin-top:0
+}
+
+.customer-select{
+margin-bottom:13px
+}
+
+.total-due-box{
+background:#111827;
+border-radius:14px;
+padding:15px;
+margin-bottom:13px;
+text-align:center
+}
+
+.total-due-label{
+font-size:11px;
+color:#c8ced8;
+margin-bottom:4px
+}
+
+.total-due-value{
+font-size:23px;
+font-weight:800;
+color:#fff
+}
+
+.total-due-value span{
+font-size:11px;
+font-weight:700
+}
+
+.list{
+display:flex;
+flex-direction:column;
+gap:9px
+}
+
+.customer-card{
+background:#fff;
+border-radius:14px;
+padding:14px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.customer-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px
+}
+
+.customer-name{
+font-size:15px;
+font-weight:800
+}
+
+.phone{
+font-size:12px;
+color:#858e9d;
+margin-top:4px
+}
+
+.due{
+text-align:right;
+white-space:nowrap
+}
+
+.due-label{
+font-size:10px;
+color:#8992a0
+}
+
+.due-value{
+font-size:16px;
+font-weight:800;
+margin-top:2px
+}
+
+.kd-small{
+font-size:10px
+}
+
+/* TRANSACTIONS */
+
+.txn{
+background:#fff;
+border-radius:14px;
+padding:13px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.txn-top{
+display:flex;
+justify-content:space-between;
+gap:8px
+}
+
+.txn-date{
+font-size:12px;
+color:#858e9d
+}
+
+.txn-amount{
+font-size:15px;
+font-weight:800
+}
+
+.txn-bottom{
+font-size:12px;
+color:#737d8d;
+margin-top:6px
+}
+
+/* AGENT */
+
+.agent-card{
+background:#fff;
+border-radius:14px;
+padding:14px;
+box-shadow:0 3px 14px rgba(0,0,0,.04)
+}
+
+.agent-name{
+font-size:15px;
+font-weight:800
+}
+
+.agent-phone{
+font-size:12px;
+color:#858e9d;
+margin-top:4px
+}
+
+/* LOGIN */
+
+.login-page{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px
+}
+
+.login-box{
+width:100%;
+max-width:390px;
+background:#fff;
+border-radius:21px;
+padding:25px 21px;
+box-shadow:0 8px 30px rgba(0,0,0,.06)
+}
+
+.login-title{
+font-size:24px;
+font-weight:800
+}
+
+.login-sub{
+font-size:13px;
+color:#8992a0;
+margin:5px 0 23px
+}
+
+.loading,.empty{
+padding:28px 10px;
+text-align:center;
+color:#8992a0;
+font-size:13px
+}
+
+@media(max-width:360px){
+
+.tabs{
+gap:5px
+}
+
+.tab{
+font-size:11px
+}
+
+}
+
+</style></head><body><!-- LOGIN --><div id="loginPage" class="login-page"><div class="login-box"><div class="login-title">
+Amaya Exchange
+</div><div class="login-sub">
+Admin / Agent Login
+</div><div class="field"><label class="label">
+Username
+</label><input
+id="username"
+type="text"
+autocomplete="username">
+
+</div><div class="field"><label class="label">
+Password
+</label><input
+id="password"
+type="password"
+autocomplete="current-password">
+
+</div><button
+id="loginBtn"
+class="save"
+onclick="login()">
+
+Login
+
+</button><div
+id="loginMsg"
+class="msg">
+</div></div></div><!-- APP --><div id="app" class="app hidden"><!-- HEADER --><div class="header"><div class="header-row"><div><div class="logo">
+Amaya Exchange
+</div><div
+id="userInfo"
+class="user-info">
+</div></div><button
+class="logout"
+onclick="logout()">
+
+Logout
+
+</button></div></div><!-- TABS --><div class="tabs"><button
+type="button"
+class="tab active"
+onclick="openTab('transaction',this)">
+
+Add Transaction
+
+</button><button
+type="button"
+class="tab"
+onclick="openTab('customer',this)">
+
+Customer
+
+</button><button
+type="button"
+class="tab"
+onclick="openTab('agent',this)">
+
+Agent
+
+</button></div><div class="content"><!-- ADD TRANSACTION --><section
+id="panelTransaction"
+class="panel active"><div class="card"><div class="title">
+Add Transaction
+</div><div class="field"><label class="label">
+📅 Date
+</label><input
+id="date"
+type="date">
+
+</div><div class="field"><label class="label">
+◾ Agent
+</label><select id="agentSelect"><option value="">
+Select Agent
+</option></select></div><div class="field"><label class="label">
+🧒 Customer
+</label><select id="customerSelect"><option value="">
+Select Customer
+</option></select></div><div class="field"><label class="label">
+💵 KD Amount
+</label><input
+id="kdAmount"
+class="amount"
+type="text"
+inputmode="decimal"
+placeholder="0.000">
+
+</div><div class="field"><label class="label">
+💳 BD Amount
+</label><input
+id="bdAmount"
+class="amount"
+type="text"
+inputmode="numeric"
+placeholder="0">
+
+</div><div class="type-row"><button
+type="button"
+id="dueBtn"
+class="type-btn active"
+onclick="setType('বাকি')">
+
++ বাকি
+
+</button><button
+type="button"
+id="paymentBtn"
+class="type-btn"
+onclick="setType('পেমেন্ট')">
+
+- পেমেন্ট
+
+</button></div><div class="field"><label class="label">
+Note
+</label><select id="noteSelect"><option value="">
+Select Note
+</option></select></div><button
+type="button"
+id="saveBtn"
+class="save"
+onclick="saveTransaction()">
+
+✅ Save
+
+</button><div
+id="saveMsg"
+class="msg">
+</div></div></section><!-- CUSTOMER --><section
+id="panelCustomer"
+class="panel"><div class="card"><div class="title">
+Customer
+</div><select
+id="customerPageSelect"
+class="customer-select">
+
+<option value="">
+Select Customer
+</option></select><div class="total-due-box"><div class="total-due-label">
+Total Due
+</div><div
+id="allCustomerDue"
+class="total-due-value">0.000 <span>KD</span>
+
+</div></div><input
+id="customerSearch"
+class="search"
+type="search"
+placeholder="Search customer..."
+autocomplete="off">
+
+</div><div
+id="customerList"
+class="list"><div class="empty">
+Select a customer
+</div></div></section><!-- AGENT --><section
+id="panelAgent"
+class="panel"><div class="card"><div class="title">
+Agent
+</div><select
+id="agentView"
+onchange="agentChanged()">
+
+<option value="">
+Select Agent
+</option></select></div><div
+id="agentList"
+class="list"><div class="empty">
+Select an agent
+</div></div></section></div></div><script>
+
+/* =====================================================
+API
+===================================================== */
+
+const API =
+'https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
+
+
+/* =====================================================
+STATE
+===================================================== */
+
+let currentUser=null;
+
+let transactionType='বাকি';
+
+let customerData=[];
+
+let agentData=[];
+
+let notesData={
+dueNotes:[],
+paymentNotes:[]
+};
+
+
+/* =====================================================
+GET API
+===================================================== */
+
+async function getAPI(action,params={}){
+
+const query=new URLSearchParams();
+
+query.set('action',action);
+
+Object.keys(params).forEach(function(key){
+
+const value=params[key];
+
+if(
+value!==undefined &&
+value!==null &&
+value!==''
+){
+
+query.set(key,value);
+
+}
+
+});
+
+const response=
+await fetch(
+API+'?'+query.toString(),
+{
+method:'GET',
+cache:'no-store'
+}
+);
+
+return await response.json();
+
+}
+
+
+/* =====================================================
+POST API
+===================================================== */
+
+async function postAPI(data){
+
+const response=
+await fetch(
+API,
+{
+method:'POST',
+headers:{
+'Content-Type':'text/plain;charset=utf-8'
+},
+body:JSON.stringify(data)
+}
+);
+
+return await response.json();
+
+}
+
+
+/* =====================================================
+TABS
+===================================================== */
+
+function openTab(tab,button){
+
+document
+.querySelectorAll('.panel')
+.forEach(function(panel){
+
+panel.classList.remove('active');
+
+});
+
+
+document
+.querySelectorAll('.tab')
+.forEach(function(btn){
+
+btn.classList.remove('active');
+
+});
+
+
+if(tab==='transaction'){
+
+document
+.getElementById('panelTransaction')
+.classList.add('active');
+
+}
+
+
+if(tab==='customer'){
+
+document
+.getElementById('panelCustomer')
+.classList.add('active');
+
+}
+
+
+if(tab==='agent'){
+
+document
+.getElementById('panelAgent')
+.classList.add('active');
+
+}
+
+
+if(button){
+
+button.classList.add('active');
+
+}
+
+}
+
+
+/* =====================================================
+LOGIN
+===================================================== */
+
+async function login(){
+
+const username=
+document
+.getElementById('username')
+.value
+.trim();
+
+const password=
+document
+.getElementById('password')
+.value;
+
+const msg=
+document
+.getElementById('loginMsg');
+
+const btn=
+document
+.getElementById('loginBtn');
+
+
+if(!username || !password){
+
+msg.className='msg error';
+
+msg.textContent=
+'Username and password required';
+
+return;
+
+}
+
+
+btn.disabled=true;
+
+btn.textContent='Logging in...';
+
+msg.textContent='';
+
+
+try{
+
+const result=
+await getAPI(
+'login',
+{
+username:username,
+password:password
+}
+);
+
+
+if(!result.success){
+
+msg.className='msg error';
+
+msg.textContent=
+result.error ||
+'Login failed';
+
+return;
+
+}
+
+
+currentUser=result.data;
+
+
+localStorage.setItem(
+'amaya_user',
+JSON.stringify(currentUser)
+);
+
+
+showApp();
+
+}
+catch(error){
+
+console.error(error);
+
+msg.className='msg error';
+
+msg.textContent=
+'Connection error';
+
+}
+finally{
+
+btn.disabled=false;
+
+btn.textContent='Login';
+
+}
+
+}
+
+
+/* =====================================================
+RESTORE LOGIN
+===================================================== */
+
+function restoreLogin(){
+
+try{
+
+const saved=
+localStorage.getItem('amaya_user');
+
+if(!saved){
+
+return;
+
+}
+
+
+const user=
+JSON.parse(saved);
+
+if(user && user.loggedIn){
+
+currentUser=user;
+
+showApp();
+
+}
+
+}
+catch(error){
+
+localStorage.removeItem('amaya_user');
+
+}
+
+}
+
+
+/* =====================================================
+SHOW APP
+===================================================== */
+
+function showApp(){
+
+document
+.getElementById('loginPage')
+.classList.add('hidden');
+
+document
+.getElementById('app')
+.classList.remove('hidden');
+
+
+document
+.getElementById('userInfo')
+.textContent=
+(currentUser.username||'User')+
+(
+currentUser.role
+?' • '+currentUser.role
+:''
+);
+
+
+setToday();
+
+loadAllData();
+
+}
+
+
+/* =====================================================
+LOGOUT
+===================================================== */
+
+function logout(){
+
+currentUser=null;
+
+localStorage.removeItem('amaya_user');
+
+
+document
+.getElementById('app')
+.classList.add('hidden');
+
+document
+.getElementById('loginPage')
+.classList.remove('hidden');
+
+
+document
+.getElementById('username')
+.value='';
+
+document
+.getElementById('password')
+.value='';
+
+}
+
+
+/* =====================================================
+TODAY
+===================================================== */
+
+function setToday(){
+
+const input=
+document.getElementById('date');
+
+const d=new Date();
+
+const yyyy=
+d.getFullYear();
+
+const mm=
+String(
+d.getMonth()+1
+).padStart(2,'0');
+
+const dd=
+String(
+d.getDate()
+).padStart(2,'0');
+
+
+const today=
+yyyy+'-'+mm+'-'+dd;
+
+
+input.value=today;
+
+input.max=today;
+
+}
+
+
+/* =====================================================
+LOAD ALL
+===================================================== */
+
+function loadAllData(){
+
+loadCustomers();
+
+loadAgents();
+
+loadNotes();
+
+}
+
+
+/* =====================================================
+CUSTOMERS
+===================================================== */
+
+async function loadCustomers(){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+/*
+Customer page starts empty.
+No customer is selected.
+*/
+
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+
+try{
+
+const result=
+await getAPI('customers');
+
+
+console.log(
+'CUSTOMERS',
+result
+);
+
+
+if(!result.success){
+
+list.innerHTML=
+'<div class="empty">'+
+escapeHTML(
+result.error ||
+'Customer loading failed'
+)+
+'</div>';
+
+return;
+
+}
+
+
+customerData=
+Array.isArray(result.data)
+?result.data
+:[];
+
+
+/* =====================================================
+ADD TRANSACTION CUSTOMER DROPDOWN
+ALL CUSTOMERS WILL SHOW
+===================================================== */
+
+const transactionSelect=
+document.getElementById(
+'customerSelect'
+);
+
+
+transactionSelect.innerHTML=
+'<option value="">Select Customer</option>';
+
+
+customerData.forEach(function(customer){
+
+const option=
+document.createElement('option');
+
+
+option.value=
+customer.customerId;
+
+
+option.textContent=
+customer.customerName+
+(
+customer.phone
+?' • '+customer.phone
+:''
+);
+
+
+transactionSelect.appendChild(option);
+
+});
+
+
+/* =====================================================
+CUSTOMER PAGE DROPDOWN
+ONLY CUSTOMERS WITH DUE > 0
+===================================================== */
+
+const pageSelect=
+document.getElementById(
+'customerPageSelect'
+);
+
+
+pageSelect.innerHTML=
+'<option value="">Select Customer</option>';
+
+
+customerData.forEach(function(customer){
+
+const due=
+parseFloat(
+String(
+customer.totalDueKD || '0'
+)
+.replace(/,/g,'')
+)||0;
+
+
+/*
+0 balance customers
+will NOT be added here.
+*/
+
+if(due<=0){
+
+return;
+
+}
+
+
+const option=
+document.createElement('option');
+
+
+option.value=
+customer.customerId;
+
+
+option.textContent=
+customer.customerName+
+(
+customer.phone
+?' • '+customer.phone
+:''
+);
+
+
+pageSelect.appendChild(option);
+
+});
+
+
+/* =====================================================
+TOTAL ALL CUSTOMER DUE
+===================================================== */
+
+let totalDue=0;
+
+
+customerData.forEach(function(customer){
+
+totalDue+=
+parseFloat(
+String(
+customer.totalDueKD || '0'
+)
+.replace(/,/g,'')
+)||0;
+
+});
+
+
+document
+.getElementById('allCustomerDue')
+.innerHTML=
+totalDue.toLocaleString(
+'en-US',
+{
+minimumFractionDigits:3,
+maximumFractionDigits:3
+}
+)+
+' <span>KD</span>';
+
+
+/*
+IMPORTANT:
+Do NOT render all customers.
+*/
+
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+}
+catch(error){
+
+console.error(error);
+
+list.innerHTML=
+'<div class="empty">'+
+'Customer loading error'+
+'</div>';
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER SELECT
+===================================================== */
+
+document
+.getElementById('customerPageSelect')
+.addEventListener(
+'change',
+async function(){
+
+const id=
+this.value;
+
+
+/*
+Nothing selected:
+show nothing.
+*/
+
+if(!id){
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">Select a customer</div>';
+
+return;
+
+}
+
+
+const customer=
+customerData.find(function(item){
+
+return String(item.customerId)===
+String(id);
+
+});
+
+
+if(!customer){
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">Customer not found</div>';
+
+return;
+
+}
+
+
+/*
+Show only selected customer.
+*/
+
+renderCustomers([customer]);
+
+});
+
+
+/* =====================================================
+RENDER CUSTOMER
+===================================================== */
+
+function renderCustomers(data){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+if(!data || !data.length){
+
+list.innerHTML=
+'<div class="empty">No customer found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+data.forEach(function(customer){
+
+html+=
+
+'<div class="customer-card">'+
+
+'<div class="customer-row">'+
+
+'<div>'+
+
+'<div class="customer-name">'+
+escapeHTML(
+customer.customerName
+)+
+'</div>'+
+
+'<div class="phone">'+
+escapeHTML(
+customer.phone||''
+)+
+'</div>'+
+
+'</div>'+
+
+'<div class="due">'+
+
+'<div class="due-label">'+
+'Total Due'+
+'</div>'+
+
+'<div class="due-value">'+
+escapeHTML(
+customer.totalDueKD||'0.000'
+)+
+' <span class="kd-small">KD</span>'+
+
+'</div>'+
+
+'</div>'+
+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML=html;
+
+
+/*
+Load only selected customer's transactions.
+*/
+
+const customer=
+data[0];
+
+if(customer){
+
+loadCustomerTransactions(
+customer.customerId
+);
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER TRANSACTIONS
+===================================================== */
+
+async function loadCustomerTransactions(customerId){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+
+list.innerHTML+=
+'<div id="customerTxnLoading" class="loading">Loading transactions...</div>';
+
+
+try{
+
+const result=
+await getAPI(
+'customerTransactions',
+{
+customerId:customerId
+}
+);
+
+
+const loading=
+document.getElementById(
+'customerTxnLoading'
+);
+
+if(loading){
+
+loading.remove();
+
+}
+
+
+if(!result.success){
+
+list.innerHTML+=
+'<div class="empty">'+
+escapeHTML(
+result.error ||
+'Unable to load transactions'
+)+
+'</div>';
+
+return;
+
+}
+
+
+const transactions=
+result.data &&
+Array.isArray(
+result.data.transactions
+)
+?result.data.transactions
+:[];
+
+
+if(!transactions.length){
+
+list.innerHTML+=
+'<div class="empty">No Transaction found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+transactions.forEach(function(t){
+
+html+=
+
+'<div class="txn">'+
+
+'<div class="txn-top">'+
+
+'<div class="txn-date">'+
+escapeHTML(
+t.date||''
+)+
+'</div>'+
+
+'<div class="txn-amount">'+
+escapeHTML(
+t.kdAmount||'0.000'
+)+
+' KD'+
+'</div>'+
+
+'</div>'+
+
+'<div class="txn-bottom">'+
+
+escapeHTML(
+t.type||''
+)+
+
+(
+t.note
+?' • '+escapeHTML(t.note)
+:''
+)+
+
+(
+t.bdAmount
+?' • '+escapeHTML(t.bdAmount)+' Tk'
+:''
+)+
+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML+=html;
+
+}
+catch(error){
+
+console.error(error);
+
+const loading=
+document.getElementById(
+'customerTxnLoading'
+);
+
+if(loading){
+
+loading.remove();
+
+}
+
+list.innerHTML+=
+'<div class="empty">Connection error</div>';
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER SEARCH
+===================================================== */
+
+document
+.getElementById('customerSearch')
+.addEventListener(
+'input',
+function(){
+
+const query=
+this.value
+.trim()
+.toLowerCase();
+
+
+/*
+Search does not show anything
+until a customer is selected.
+*/
+
+const selectedId=
+document
+.getElementById(
+'customerPageSelect'
+)
+.value;
+
+
+if(!selectedId){
+
+return;
+
+}
+
+
+const customer=
+customerData.find(function(item){
+
+return String(item.customerId)===
+String(selectedId);
+
+});
+
+
+if(!customer){
+
+return;
+
+}
+
+
+/*
+Search can match the selected customer's
+name, phone or ID.
+*/
+
+const matched=
+
+String(
+customer.customerName||''
+)
+.toLowerCase()
+.includes(query)
+
+||
+
+String(
+customer.phone||''
+)
+.toLowerCase()
+.includes(query)
+
+||
+
+String(
+customer.customerId||''
+)
+.toLowerCase()
+.includes(query);
+
+
+if(!query || matched){
+
+renderCustomers([customer]);
+
+}
+else{
+
+document
+.getElementById('customerList')
+.innerHTML=
+'<div class="empty">No customer found</div>';
+
+}
+
+});
+
+
+/* =====================================================
+AGENTS
+===================================================== */
+
+async function loadAgents(){
+
+try{
+
+const result=
+await getAPI('agents');
+
+
+console.log(
+'AGENTS',
+result
+);
+
+
+if(!result.success){
+
+renderAgentError(
+result.error ||
+'Agent loading failed'
+);
+
+return;
+
+}
+
+
+agentData=
+Array.isArray(result.data)
+?result.data
+:[];
+
+
+fillAgentSelect(
+document.getElementById(
+'agentSelect'
+)
+);
+
+
+fillAgentSelect(
+document.getElementById(
+'agentView'
+)
+);
+
+
+/*
+Do NOT show all agent cards.
+*/
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+}
+catch(error){
+
+console.error(error);
+
+renderAgentError(
+'Agent loading error'
+);
+
+}
+
+}
+
+
+/* =====================================================
+FILL AGENT SELECT
+===================================================== */
+
+function fillAgentSelect(select){
+
+select.innerHTML=
+'<option value="">Select Agent</option>';
+
+
+agentData.forEach(function(agent){
+
+const option=
+document.createElement('option');
+
+
+option.value=
+agent.agentId;
+
+
+option.textContent=
+agent.agentName;
+
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+AGENT CARDS
+===================================================== */
+
+function renderAgentCards(data){
+
+const list=
+document.getElementById(
+'agentList'
+);
+
+
+if(!data || !data.length){
+
+list.innerHTML=
+'<div class="empty">No agents found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+data.forEach(function(agent){
+
+html+=
+
+'<div class="agent-card">'+
+
+'<div class="agent-name">'+
+escapeHTML(
+agent.agentName
+)+
+'</div>'+
+
+'<div class="agent-phone">'+
+escapeHTML(
+agent.phone||''
+)+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML=html;
+
+}
+
+
+/* =====================================================
+AGENT ERROR
+===================================================== */
+
+function renderAgentError(message){
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">'+
+escapeHTML(message)+
+'</div>';
+
+}
+
+
+/* =====================================================
+AGENT TRANSACTIONS
+===================================================== */
+
+async function agentChanged(){
+
+const agentId=
+document
+.getElementById('agentView')
+.value;
+
+
+const list=
+document.getElementById(
+'agentList'
+);
+
+
+/*
+Nothing selected:
+show nothing.
+*/
+
+if(!agentId){
+
+list.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+return;
+
+}
+
+
+list.innerHTML=
+'<div class="loading">Loading transactions...</div>';
+
+
+try{
+
+const result=
+await getAPI(
+'agentTransactions',
+{
+linkedId:agentId
+}
+);
+
+
+if(!result.success){
+
+list.innerHTML=
+'<div class="empty">'+
+escapeHTML(
+result.error ||
+'Unable to load transactions'
+)+
+'</div>';
+
+return;
+
+}
+
+
+const transactions=
+result.data &&
+Array.isArray(
+result.data.transactions
+)
+?result.data.transactions
+:[];
+
+
+if(!transactions.length){
+
+list.innerHTML=
+'<div class="empty">No BD transactions found</div>';
+
+return;
+
+}
+
+
+let html='';
+
+
+transactions.forEach(function(t){
+
+html+=
+
+'<div class="txn">'+
+
+'<div class="txn-top">'+
+
+'<div class="txn-date">'+
+escapeHTML(
+t.date||''
+)+
+'</div>'+
+
+'<div class="txn-amount">'+
+escapeHTML(
+t.bdAmount||'0'
+)+
+' Tk'+
+'</div>'+
+
+'</div>'+
+
+'<div class="txn-bottom">'+
+
+escapeHTML(
+t.type||''
+)+
+
+(
+t.note
+?' • '+escapeHTML(t.note)
+:''
+)+
+
+'</div>'+
+
+'</div>';
+
+});
+
+
+list.innerHTML=html;
+
+}
+catch(error){
+
+console.error(error);
+
+list.innerHTML=
+'<div class="empty">Connection error</div>';
+
+}
+
+}
+
+
+/* =====================================================
+NOTES
+===================================================== */
+
+async function loadNotes(){
+
+try{
+
+const result=
+await getAPI('options');
+
+
+if(!result.success){
+
+return;
+
+}
+
+
+notesData={
+
+dueNotes:
+Array.isArray(
+result.data.dueNotes
+)
+?result.data.dueNotes
+:[],
+
+paymentNotes:
+Array.isArray(
+result.data.paymentNotes
+)
+?result.data.paymentNotes
+:[]
+
+};
+
+
+setNotes(
+transactionType==='বাকি'
+?notesData.dueNotes
+:notesData.paymentNotes
+);
+
+}
+catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+/* =====================================================
+SET NOTES
+===================================================== */
+
+function setNotes(notes){
+
+const select=
+document.getElementById(
+'noteSelect'
+);
+
+
+select.innerHTML=
+'<option value="">Select Note</option>';
+
+
+(notes||[]).forEach(function(note){
+
+const option=
+document.createElement('option');
+
+
+option.value=note;
+
+option.textContent=note;
+
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+TYPE
+===================================================== */
+
+function setType(type){
+
+transactionType=type;
+
+
+document
+.getElementById('dueBtn')
+.classList.toggle(
+'active',
+type==='বাকি'
+);
+
+
+document
+.getElementById('paymentBtn')
+.classList.toggle(
+'active',
+type==='পেমেন্ট'
+);
+
+
+setNotes(
+type==='বাকি'
+?notesData.dueNotes
+:notesData.paymentNotes
+);
+
+}
+
+
+/* =====================================================
+SAVE TRANSACTION
+===================================================== */
+
+async function saveTransaction(){
+
+const date=
+document
+.getElementById('date')
+.value;
+
+
+const agentId=
+document
+.getElementById('agentSelect')
+.value;
+
+
+const customerId=
+document
+.getElementById('customerSelect')
+.value;
+
+
+const kd=
+parseFloat(
+document
+.getElementById('kdAmount')
+.value
+.replace(/,/g,'')
+)||0;
+
+
+const bd=
+parseFloat(
+document
+.getElementById('bdAmount')
+.value
+.replace(/,/g,'')
+)||0;
+
+
+const note=
+document
+.getElementById('noteSelect')
+.value;
+
+
+/* DATE */
+
+if(!date){
+
+showSaveError(
+'Date required'
+);
+
+return;
+
+}
+
+
+/* KD -> CUSTOMER */
+
+if(kd>0 && !customerId){
+
+showSaveError(
+'KD Amount দিলে Customer নির্বাচন করুন'
+);
+
+return;
+
+}
+
+
+/* BD -> AGENT */
+
+if(bd>0 && !agentId){
+
+showSaveError(
+'BD Amount দিলে Agent নির্বাচন করুন'
+);
+
+return;
+
+}
+
+
+/* AMOUNT */
+
+if(kd<=0 && bd<=0){
+
+showSaveError(
+'KD অথবা BD Amount দিন'
+);
+
+return;
+
+}
+
+
+/* FUTURE DATE */
+
+const selectedDate=
+new Date(
+date+'T00:00:00'
+);
+
+
+const today=
+new Date();
+
+today.setHours(
+0,0,0,0
+);
+
+
+if(selectedDate>today){
+
+showSaveError(
+'Future date দেওয়া যাবে না'
+);
+
+return;
+
+}
+
+
+/* AGENT NAME */
+
+let agentName='';
+
+
+if(agentId){
+
+const agent=
+agentData.find(function(a){
+
+return String(a.agentId)===
+String(agentId);
+
+});
+
+
+if(agent){
+
+agentName=
+agent.agentName;
+
+}
+
+}
+
+
+/* CUSTOMER NAME */
+
+let customerName='';
+
+
+if(customerId){
+
+const customer=
+customerData.find(function(c){
+
+return String(c.customerId)===
+String(customerId);
+
+});
+
+
+if(customer){
+
+customerName=
+customer.customerName;
+
+}
+
+}
+
+
+/* SAVE */
+
+const button=
+document.getElementById(
+'saveBtn'
+);
+
+
+const message=
+document.getElementById(
+'saveMsg'
+);
+
+
+button.disabled=true;
+
+button.textContent='Saving...';
+
+message.textContent='';
+
+message.className='msg';
+
+
+try{
+
+const result=
+await postAPI({
+
+action:'addTransaction',
+
+date:formatDate(date),
+
+customerId:customerId,
+
+customerName:customerName,
+
+agentName:agentName,
+
+kdAmount:kd,
+
+bdAmount:bd,
+
+type:transactionType,
+
+note:note
+
+});
+
+
+if(!result.success){
+
+showSaveError(
+result.error ||
+'Save failed'
+);
+
+return;
+
+}
+
+
+message.className=
+'msg success';
+
+message.textContent=
+'Transaction saved successfully';
+
+
+document
+.getElementById('kdAmount')
+.value='';
+
+
+document
+.getElementById('bdAmount')
+.value='';
+
+
+/*
+Refresh customer data.
+This keeps the customer dropdown
+updated according to current balance.
+*/
+
+if(customerId){
+
+await loadCustomers();
+
+}
+
+
+/*
+Refresh selected agent transaction.
+*/
+
+const selectedAgent=
+document
+.getElementById('agentView')
+.value;
+
+
+if(selectedAgent){
+
+agentChanged();
+
+}
+
+
+setTimeout(function(){
+
+message.textContent='';
+
+message.className='msg';
+
+},2500);
+
+
+}
+catch(error){
+
+console.error(error);
+
+showSaveError(
+'Connection error'
+);
+
+}
+finally{
+
+button.disabled=false;
+
+button.textContent='✅ Save';
+
+}
+
+}
+
+
+/* =====================================================
+ERROR
+===================================================== */
+
+function showSaveError(text){
+
+const message=
+document.getElementById(
+'saveMsg'
+);
+
+
+message.className=
+'msg error';
+
+message.textContent=text;
+
+}
+
+
+/* =====================================================
+DATE FORMAT
+===================================================== */
+
+function formatDate(value){
+
+const parts=
+value.split('-');
+
+
+const months=[
+'Jan','Feb','Mar','Apr','May','Jun',
+'Jul','Aug','Sep','Oct','Nov','Dec'
+];
+
+
+return(
+parts[2]+'-'+
+months[
+Number(parts[1])-1
+]+'-'+
+parts[0]
+);
+
+}
+
+
+/* =====================================================
+ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+return String(
+value===null ||
+value===undefined
+?''
+:value
+)
+
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;')
+.replace(/'/g,'&#039;');
+
+}
+
+
+/* =====================================================
+ENTER LOGIN
+===================================================== */
+
+document
+.getElementById('password')
+.addEventListener(
+'keydown',
+function(event){
+
+if(event.key==='Enter'){
+
+login();
+
+}
+
+});
+
+
+/* =====================================================
+START
+===================================================== */
+
+restoreLogin();
+
+</script></body>
+  </html>
