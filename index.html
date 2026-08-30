@@ -1,305 +1,1150 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Amaya Exchange</title><style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;background:#f5f7fa;color:#172033;font-family:Arial,sans-serif}
-body{min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.app{width:100%;max-width:520px;margin:auto;min-height:100vh}
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Amaya Exchange</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
+}
+
+html,body{
+margin:0;
+padding:0;
+background:#f5f7fa;
+color:#172033;
+font-family:Arial,sans-serif
+}
+
+body{
+min-height:100vh
+}
+
+button,input,select{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+.hidden{
+display:none!important
+}
+
+.app{
+width:100%;
+max-width:520px;
+margin:auto;
+min-height:100vh
+}
+
+/* HEADER */
 
 .header{
-background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;
-position:sticky;top:0;z-index:20
+background:#fff;
+padding:14px 15px;
+border-bottom:1px solid #e7e9ed;
+position:sticky;
+top:0;
+z-index:20
 }
-.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.logo{font-size:19px;font-weight:800}
-.user-info{font-size:11px;color:#858e9d;margin-top:3px}
+
+.header-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.logo{
+font-size:19px;
+font-weight:800
+}
+
+.user-info{
+font-size:11px;
+color:#858e9d;
+margin-top:3px
+}
+
 .logout{
-border:0;background:#eef0f3;color:#303744;border-radius:9px;
-padding:8px 11px;font-size:11px;font-weight:700
+border:0;
+background:#eef0f3;
+color:#303744;
+border-radius:9px;
+padding:8px 11px;
+font-size:11px;
+font-weight:700
 }
+
+/* TABS */
 
 .tabs{
-display:grid;grid-template-columns:repeat(3,1fr);gap:7px;
-padding:11px 14px 5px;background:#f5f7fa
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+padding:11px 14px 5px;
+background:#f5f7fa
 }
-.tab{
-border:0;height:43px;border-radius:11px;background:#e7ebf0;
-color:#687284;font-size:12px;font-weight:800
-}
-.tab.active{background:#111827;color:#fff}
 
-.content{padding:10px 14px 25px}
-.panel{display:none}
-.panel.active{display:block}
+.tab{
+border:0;
+height:43px;
+border-radius:11px;
+background:#e7ebf0;
+color:#687284;
+font-size:12px;
+font-weight:800
+}
+
+.tab.active{
+background:#111827;
+color:#fff
+}
+
+/* CONTENT */
+
+.content{
+padding:10px 14px 25px
+}
+
+.panel{
+display:none
+}
+
+.panel.active{
+display:block
+}
 
 .card{
-background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;
+background:#fff;
+border-radius:16px;
+padding:16px;
+margin-bottom:12px;
 box-shadow:0 3px 15px rgba(0,0,0,.045)
 }
-.title{font-size:16px;font-weight:800;margin-bottom:14px}
 
-.field{margin-bottom:13px}
-.label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+/* FORM */
+
+.field{
+margin-bottom:13px
+}
+
+.label{
+display:block;
+font-size:13px;
+font-weight:700;
+margin-bottom:7px
+}
 
 input,select{
-width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;
-background:#fff;padding:0 12px;outline:0;color:#172033
+width:100%;
+height:47px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+padding:0 12px;
+outline:0;
+color:#172033
 }
-input:focus,select:focus{border-color:#111827}
-.amount{font-size:17px!important;font-weight:700}
+
+input:focus,
+select:focus{
+border-color:#111827
+}
+
+.amount{
+font-size:17px!important;
+font-weight:700
+}
+
+/* KD + BD */
+
+.amount-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px
+}
+
+.amount-row .field{
+min-width:0
+}
+
+/* TYPE */
 
 .type-row{
-display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:3px 0 13px
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin:3px 0 13px
 }
+
 .type-btn{
-height:44px;border:1px solid #dfe3e9;border-radius:11px;
-background:#fff;font-weight:800
+height:44px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+font-weight:800
 }
-.type-btn.active{background:#111827;color:#fff;border-color:#111827}
+
+.type-btn.active{
+background:#111827;
+color:#fff;
+border-color:#111827
+}
+
+/* SAVE */
 
 .save{
-width:100%;height:49px;border:0;border-radius:12px;
-background:#111827;color:#fff;font-weight:800
+width:100%;
+height:49px;
+border:0;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-weight:800
 }
-.save:disabled{opacity:.55}
 
-.msg{font-size:12px;margin-top:9px;text-align:center}
-.error{color:#d33131}
-.success{color:#16824c}
+.save:disabled{
+opacity:.55
+}
 
-.customer-select{margin-bottom:13px}
+.msg{
+font-size:12px;
+margin-top:9px;
+text-align:center
+}
+
+.error{
+color:#d33131
+}
+
+.success{
+color:#16824c
+}
+
+/* CUSTOMER FILTER */
+
+.customer-filter-row{
+display:grid;
+grid-template-columns:.8fr 1.2fr;
+gap:7px;
+margin-bottom:9px
+}
+
+.customer-filter-row input,
+.customer-filter-row select{
+height:42px;
+font-size:12px;
+padding:0 9px
+}
+
+/* TOTAL DUE */
 
 .total-due-box{
-background:#111827;border-radius:14px;padding:15px;
-margin-bottom:13px;text-align:center
-}
-.total-due-label{font-size:11px;color:#c8ced8;margin-bottom:4px}
-.total-due-value{font-size:23px;font-weight:800;color:#fff}
-.total-due-value span{font-size:11px;font-weight:700}
-
-.list{display:flex;flex-direction:column;gap:9px}
-
-.customer-card,.txn,.agent-card{
-background:#fff;border-radius:14px;padding:13px;
-box-shadow:0 3px 14px rgba(0,0,0,.04)
+background:#111827;
+border-radius:12px;
+padding:9px 12px;
+margin-bottom:10px;
+text-align:left
 }
 
-.customer-row,.txn-top{
-display:flex;align-items:center;justify-content:space-between;gap:12px
+.total-due-label{
+font-size:10px;
+color:#c8ced8;
+margin-bottom:2px
 }
 
-.customer-name,.agent-name{font-size:15px;font-weight:800}
-.phone,.agent-phone{font-size:12px;color:#858e9d;margin-top:4px}
+.total-due-value{
+font-size:17px;
+font-weight:800;
+color:#fff
+}
 
-.due{text-align:right;white-space:nowrap}
-.due-label{font-size:10px;color:#8992a0}
-.due-value{font-size:16px;font-weight:800;margin-top:2px}
-.kd-small{font-size:10px}
+.total-due-value span{
+font-size:9px;
+font-weight:700
+}
 
-.txn-date{font-size:12px;color:#858e9d}
-.txn-amount{font-size:15px;font-weight:800}
-.txn-bottom{font-size:12px;color:#737d8d;margin-top:6px}
+/* CUSTOMER CARD */
+
+.list{
+display:flex;
+flex-direction:column;
+gap:8px
+}
+
+.customer-card{
+background:#fff;
+border-radius:11px;
+padding:9px 11px;
+box-shadow:0 2px 9px rgba(0,0,0,.04);
+border:1px solid #edf0f3
+}
+
+.customer-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.customer-info{
+min-width:0;
+flex:1
+}
+
+.customer-name{
+font-size:13px;
+font-weight:800;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap
+}
+
+.phone{
+font-size:10px;
+color:#858e9d;
+margin-top:2px
+}
+
+.due{
+text-align:right;
+white-space:nowrap
+}
+
+.due-label{
+font-size:9px;
+color:#8992a0
+}
+
+.due-value{
+font-size:14px;
+font-weight:800;
+margin-top:1px
+}
+
+.kd-small{
+font-size:9px
+}
+
+#customerList{
+max-height:calc(100vh - 300px);
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-right:2px
+}
+
+/* TRANSACTION */
+
+.txn{
+background:#fff;
+border-radius:11px;
+padding:10px;
+box-shadow:0 2px 9px rgba(0,0,0,.04)
+}
+
+.txn-top{
+display:flex;
+justify-content:space-between;
+gap:8px
+}
+
+.txn-date{
+font-size:11px;
+color:#858e9d
+}
+
+.txn-amount{
+font-size:13px;
+font-weight:800
+}
+
+.txn-bottom{
+font-size:10px;
+color:#737d8d;
+margin-top:4px
+}
+
+/* AGENT FILTER */
+
+.agent-filter-row{
+display:grid;
+grid-template-columns:.72fr 1fr 1.28fr;
+gap:6px;
+margin-bottom:9px
+}
+
+.agent-filter-row select{
+height:42px;
+font-size:11px;
+padding:0 7px;
+min-width:0
+}
+
+/* AGENT BALANCE / SALES */
+
+.agent-summary{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+margin-bottom:9px
+}
+
+.agent-summary-box{
+background:#fff;
+border-radius:11px;
+padding:8px 10px;
+border:1px solid #edf0f3;
+box-shadow:0 2px 8px rgba(0,0,0,.035)
+}
+
+.agent-summary-label{
+font-size:9px;
+color:#8992a0;
+margin-bottom:2px
+}
+
+.agent-summary-value{
+font-size:15px;
+font-weight:800;
+line-height:1.2
+}
+
+.agent-summary-value span{
+font-size:9px;
+font-weight:700
+}
+
+.agent-balance{
+text-align:left
+}
+
+.agent-sales{
+text-align:right
+}
+
+#agentList{
+max-height:calc(100vh - 265px);
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-right:2px
+}
+
+/* AGENT */
+
+.agent-card{
+background:#fff;
+border-radius:11px;
+padding:10px;
+box-shadow:0 2px 9px rgba(0,0,0,.04)
+}
+
+.agent-name{
+font-size:13px;
+font-weight:800
+}
+
+.agent-phone{
+font-size:10px;
+color:#858e9d;
+margin-top:3px
+}
+
+/* LOGIN */
 
 .login-page{
-min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px
 }
-.login-box{
-width:100%;max-width:390px;background:#fff;border-radius:21px;
-padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)
-}
-.login-title{font-size:24px;font-weight:800}
-.login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
 
-.loading,.empty{
-padding:28px 10px;text-align:center;color:#8992a0;font-size:13px
+.login-box{
+width:100%;
+max-width:390px;
+background:#fff;
+border-radius:21px;
+padding:25px 21px;
+box-shadow:0 8px 30px rgba(0,0,0,.06)
+}
+
+.login-title{
+font-size:24px;
+font-weight:800
+}
+
+.login-sub{
+font-size:13px;
+color:#8992a0;
+margin:5px 0 23px
+}
+
+.loading,
+.empty{
+padding:28px 10px;
+text-align:center;
+color:#8992a0;
+font-size:13px
 }
 
 @media(max-width:360px){
-.tabs{gap:5px}
-.tab{font-size:11px}
-}
-</style></head><body><!-- LOGIN --><div id="loginPage" class="login-page">
-<div class="login-box"><div class="login-title">Amaya Exchange</div>
-<div class="login-sub">Admin / Agent Login</div><div class="field">
-<label class="label">Username</label>
-<input id="username" type="text" autocomplete="username">
-</div><div class="field">
-<label class="label">Password</label>
-<input id="password" type="password" autocomplete="current-password">
-</div><button id="loginBtn" class="save" onclick="login()">Login</button>
 
-<div id="loginMsg" class="msg"></div></div>
-</div><!-- APP --><div id="app" class="app hidden"><div class="header">
-<div class="header-row"><div>
-<div class="logo">Amaya Exchange</div>
-<div id="userInfo" class="user-info"></div>
-</div><button class="logout" onclick="logout()">Logout</button>
+.tabs{
+gap:5px
+}
+
+.tab{
+font-size:11px
+}
+
+.amount-row,
+.customer-filter-row{
+gap:6px
+}
+
+.customer-filter-row input,
+.customer-filter-row select{
+font-size:11px;
+padding:0 7px
+}
+
+.agent-filter-row{
+gap:4px
+}
+
+.agent-filter-row select{
+font-size:10px;
+padding:0 5px
+}
+
+.agent-summary-value{
+font-size:14px
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div id="loginPage" class="login-page">
+
+<div class="login-box">
+
+<div class="login-title">
+Amaya Exchange
+</div>
+
+<div class="login-sub">
+Admin / Agent / Viewer Login
+</div>
+
+<div class="field">
+
+<label class="label">
+Username
+</label>
+
+<input
+id="username"
+type="text"
+autocomplete="username">
 
 </div>
-</div><div class="tabs"><button class="tab active" onclick="openTab('transaction',this)">
+
+<div class="field">
+
+<label class="label">
+Password
+</label>
+
+<input
+id="password"
+type="password"
+autocomplete="current-password">
+
+</div>
+
+<button
+id="loginBtn"
+class="save"
+onclick="login()">
+
+Login
+
+</button>
+
+<div
+id="loginMsg"
+class="msg">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- APP -->
+
+<div
+id="app"
+class="app hidden">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="header-row">
+
+<div>
+
+<div class="logo">
+Amaya Exchange
+</div>
+
+<div
+id="userInfo"
+class="user-info">
+</div>
+
+</div>
+
+<button
+class="logout"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TABS -->
+
+<div class="tabs">
+
+<button
+type="button"
+class="tab active"
+onclick="openTab('transaction',this)">
+
 Add Transaction
-</button><button class="tab" onclick="openTab('customer',this)">
+
+</button>
+
+<button
+type="button"
+class="tab"
+onclick="openTab('customer',this)">
+
 Customer
-</button><button class="tab" onclick="openTab('agent',this)">
+
+</button>
+
+<button
+type="button"
+class="tab"
+onclick="openTab('agent',this)">
+
 Agent
-</button></div><div class="content"><!-- ADD TRANSACTION --><section id="panelTransaction" class="panel active"><div class="card"><div class="title">Add Transaction</div><div class="field">
-<label class="label">📅 Date</label>
-<input id="date" type="date">
-</div><div class="field">
-<label class="label">◾ Agent</label>
+
+</button>
+
+</div>
+
+
+<div class="content">
+
+
+<!-- ADD TRANSACTION -->
+
+<section
+id="panelTransaction"
+class="panel active">
+
+<div class="card">
+
+<div
+class="title"
+style="font-size:16px;font-weight:800;margin-bottom:14px">
+
+Add Transaction
+
+</div>
+
+<div class="field">
+
+<label class="label">
+📅 Date
+</label>
+
+<input
+id="date"
+type="date">
+
+</div>
+
+<div class="field">
+
+<label class="label">
+◾ Agent
+</label>
+
 <select id="agentSelect">
-<option value="">Select Agent</option>
+
+<option value="">
+Select Agent
+</option>
+
 </select>
-</div><div class="field">
-<label class="label">🧒 Customer</label>
+
+</div>
+
+<div class="field">
+
+<label class="label">
+🧒 Customer
+</label>
+
 <select id="customerSelect">
-<option value="">Select Customer</option>
+
+<option value="">
+Select Customer
+</option>
+
 </select>
-</div><div class="field">
-<label class="label">💵 KD Amount</label>
-<input id="kdAmount" class="amount" type="text"
-inputmode="decimal" placeholder="0.000">
-</div><div class="field">
-<label class="label">💳 BD Amount</label>
-<input id="bdAmount" class="amount" type="text"
-inputmode="numeric" placeholder="0">
-</div><div class="type-row"><button id="dueBtn" class="type-btn active"
+
+</div>
+
+<div class="amount-row">
+
+<div class="field">
+
+<label class="label">
+💵 KD Amount
+</label>
+
+<input
+id="kdAmount"
+class="amount"
+type="text"
+inputmode="decimal"
+placeholder="0.000">
+
+</div>
+
+<div class="field">
+
+<label class="label">
+💳 BD Amount
+</label>
+
+<input
+id="bdAmount"
+class="amount"
+type="text"
+inputmode="numeric"
+placeholder="0">
+
+</div>
+
+</div>
+
+<div class="type-row">
+
+<button
+type="button"
+id="dueBtn"
+class="type-btn active"
 onclick="setType('বাকি')">
 
 + বাকি
-  </button>
 
-<button id="paymentBtn" class="type-btn"
+</button>
+
+<button
+type="button"
+id="paymentBtn"
+class="type-btn"
 onclick="setType('পেমেন্ট')">
 
 - পেমেন্ট
-  </button>
 
-</div><div class="field">
-<label class="label">Note</label>
+</button>
+
+</div>
+
+<div class="field">
+
+<label class="label">
+Note
+</label>
+
 <select id="noteSelect">
-<option value="">Select Note</option>
+
+<option value="">
+Select Note
+</option>
+
 </select>
-</div><button id="saveBtn" class="save" onclick="saveTransaction()">
-✅ Save
-</button><div id="saveMsg" class="msg"></div></div>
-</section><!-- CUSTOMER --><section id="panelCustomer" class="panel"><div class="card"><div class="title">Customer</div><select id="customerPageSelect" class="customer-select">
-<option value="">Select Customer</option>
-</select><div class="total-due-box"><div class="total-due-label">Total Due</div><div id="allCustomerDue" class="total-due-value">
-0.000 <span>KD</span>
-</div></div><input id="customerSearch" class="search"
+
+</div>
+
+<button
+type="button"
+id="saveBtn"
+class="save"
+onclick="saveTransaction">
+
+</button>
+
+<div
+id="saveMsg"
+class="msg">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CUSTOMER -->
+
+<section
+id="panelCustomer"
+class="panel">
+
+<div class="card">
+
+<div class="customer-filter-row">
+
+<input
+id="customerSearch"
 type="search"
-placeholder="Search customer..."
+placeholder="🔍 Search..."
 autocomplete="off">
 
-</div><div id="customerList" class="list">
-<div class="empty">Select a customer</div>
-</div></section><!-- AGENT --><section id="panelAgent" class="panel"><div class="card"><div class="title">Agent</div><select id="agentView" onchange="agentChanged()">
-<option value="">Select Agent</option>
-</select></div><div id="agentList" class="list">
-<div class="empty">Select an agent</div>
-</div></section></div>
-</div><script>
+<select
+id="customerPageSelect">
 
-/* ================= API ================= */
+<option value="">
+Select Customer
+</option>
+
+</select>
+
+</div>
+
+<div class="total-due-box">
+
+<div class="total-due-label">
+Total Due
+</div>
+
+<div
+id="allCustomerDue"
+class="total-due-value">
+
+0.000 <span>KD</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+id="customerList"
+class="list">
+
+<div class="empty">
+Select a customer
+</div>
+
+</div>
+
+</section>
+
+
+<!-- AGENT -->
+
+<section
+id="panelAgent"
+class="panel">
+
+<div class="agent-filter-row">
+
+<select id="agentYear"></select>
+
+<select id="agentMonth"></select>
+
+<select
+id="agentView"
+onchange="agentChanged()">
+
+<option value="">
+Agent
+</option>
+
+</select>
+
+</div>
+
+<div class="agent-summary">
+
+<div class="agent-summary-box agent-balance">
+
+<div class="agent-summary-label">
+Current Balance
+</div>
+
+<div
+id="agentCurrentBalance"
+class="agent-summary-value">
+
+0.000 <span>KD</span>
+
+</div>
+
+</div>
+
+<div class="agent-summary-box agent-sales">
+
+<div class="agent-summary-label">
+Monthly Sales
+</div>
+
+<div
+id="agentMonthlySales"
+class="agent-summary-value">
+
+0 <span>Tk</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+id="agentList"
+class="list">
+
+<div class="empty">
+Select an agent
+</div>
+
+</div>
+
+</section>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+API
+===================================================== */
 
 const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
 
 
-/* ================= STATE ================= */
+/* =====================================================
+STATE
+===================================================== */
 
 let currentUser=null;
+
 let transactionType='বাকি';
+
 let customerData=[];
+
 let agentData=[];
-let notesData={dueNotes:[],paymentNotes:[]};
+
+let notesData={
+dueNotes:[],
+paymentNotes:[]
+};
+
+let currentAgentTransactions=[];
 
 
-/* ================= API GET ================= */
+/* =====================================================
+GET API
+===================================================== */
 
 async function getAPI(action,params={}){
 
-const q=new URLSearchParams();
-q.set('action',action);
+const query=new URLSearchParams();
+
+query.set('action',action);
 
 for(const key in params){
-if(params[key]!==undefined&&params[key]!==null&&params[key]!==''){
-q.set(key,params[key]);
-}
+
+const value=params[key];
+
+if(value!==undefined &&
+value!==null &&
+value!==''){
+
+query.set(key,value);
+
 }
 
-const r=await fetch(API+'?'+q.toString(),{
+}
+
+const response=await fetch(
+API+'?'+query.toString(),
+{
 method:'GET',
 cache:'no-store'
-});
+}
+);
 
-return r.json();
+return response.json();
+
 }
 
 
-/* ================= API POST ================= */
+/* =====================================================
+POST API
+===================================================== */
 
 async function postAPI(data){
 
-const r=await fetch(API,{
+const response=await fetch(
+API,
+{
 method:'POST',
-headers:{'Content-Type':'text/plain;charset=utf-8'},
+headers:{
+'Content-Type':'text/plain;charset=utf-8'
+},
 body:JSON.stringify(data)
+}
+);
+
+return response.json();
+
+}
+
+
+/* =====================================================
+TABS
+===================================================== */
+
+function openTab(tab,button){
+
+document
+.querySelectorAll('.panel')
+.forEach(panel=>{
+panel.classList.remove('active');
 });
 
-return r.json();
+document
+.querySelectorAll('.tab')
+.forEach(btn=>{
+btn.classList.remove('active');
+});
+
+const panel=document.getElementById(
+'panel'+
+tab.charAt(0).toUpperCase()+
+tab.slice(1)
+);
+
+if(panel && !panel.classList.contains('hidden')){
+panel.classList.add('active');
+}
+
+if(button && !button.classList.contains('hidden')){
+button.classList.add('active');
+}
+
 }
 
 
-/* ================= TABS ================= */
-
-function openTab(tab,btn){
-
-document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-
-document.getElementById('panel'+tab.charAt(0).toUpperCase()+tab.slice(1))
-.classList.add('active');
-
-if(btn)btn.classList.add('active');
-}
-
-
-/* ================= LOGIN ================= */
+/* =====================================================
+LOGIN
+===================================================== */
 
 async function login(){
 
-const username=document.getElementById('username').value.trim();
-const password=document.getElementById('password').value;
-const msg=document.getElementById('loginMsg');
-const btn=document.getElementById('loginBtn');
+const username=document
+.getElementById('username')
+.value.trim();
 
-if(!username||!password){
+const password=document
+.getElementById('password')
+.value;
+
+const msg=document
+.getElementById('loginMsg');
+
+const btn=document
+.getElementById('loginBtn');
+
+
+if(!username || !password){
+
 msg.className='msg error';
 msg.textContent='Username and password required';
+
 return;
+
 }
 
 btn.disabled=true;
 btn.textContent='Logging in...';
 msg.textContent='';
 
+
 try{
 
-const r=await getAPI('login',{username,password});
+const result=
+await getAPI(
+'login',
+{
+username:username,
+password:password
+}
+);
 
-if(!r.success){
+
+if(!result.success){
+
 msg.className='msg error';
-msg.textContent=r.error||'Login failed';
+msg.textContent=
+result.error||'Login failed';
+
 return;
+
 }
 
-currentUser=r.data;
+currentUser=result.data;
 
 localStorage.setItem(
 'amaya_user',
@@ -308,106 +1153,383 @@ JSON.stringify(currentUser)
 
 showApp();
 
-}catch(e){
+}
+catch(error){
 
 msg.className='msg error';
 msg.textContent='Connection error';
 
-}finally{
+}
+finally{
 
 btn.disabled=false;
 btn.textContent='Login';
 
 }
+
 }
 
 
-/* ================= RESTORE ================= */
+/* =====================================================
+RESTORE LOGIN
+===================================================== */
 
 function restoreLogin(){
 
 try{
 
-const saved=localStorage.getItem('amaya_user');
+const saved=
+localStorage.getItem('amaya_user');
 
 if(!saved)return;
 
 const user=JSON.parse(saved);
 
-if(user&&user.loggedIn){
+if(user && user.loggedIn){
 
 currentUser=user;
 showApp();
 
 }
 
-}catch(e){
+}
+catch(error){
 
 localStorage.removeItem('amaya_user');
 
 }
+
 }
 
 
-/* ================= SHOW APP ================= */
+/* =====================================================
+SHOW APP
+===================================================== */
 
 function showApp(){
 
-document.getElementById('loginPage').classList.add('hidden');
-document.getElementById('app').classList.remove('hidden');
+document
+.getElementById('loginPage')
+.classList.add('hidden');
 
-document.getElementById('userInfo').textContent=
+document
+.getElementById('app')
+.classList.remove('hidden');
+
+document
+.getElementById('userInfo')
+.textContent=
 (currentUser.username||'User')+
-(currentUser.role?' • '+currentUser.role:'');
+(
+currentUser.role
+?' • '+currentUser.role
+:''
+);
 
 setToday();
+
+setupAgentDateFilters();
+
+applyRoleAccess();
+
 loadAllData();
 
 }
 
 
-/* ================= LOGOUT ================= */
+/* =====================================================
+ROLE ACCESS
+===================================================== */
 
-function logout(){
+function applyRoleAccess(){
 
-localStorage.removeItem('amaya_user');
-currentUser=null;
+const role=
+String(currentUser?.role||'')
+.trim()
+.toLowerCase();
 
-document.getElementById('app').classList.add('hidden');
-document.getElementById('loginPage').classList.remove('hidden');
+const tabs=
+document.querySelectorAll('.tab');
 
-document.getElementById('username').value='';
-document.getElementById('password').value='';
+const transactionTab=tabs[0];
+const customerTab=tabs[1];
+const agentTab=tabs[2];
+
+const transactionPanel=
+document.getElementById('panelTransaction');
+
+const customerPanel=
+document.getElementById('panelCustomer');
+
+const agentPanel=
+document.getElementById('panelAgent');
+
+
+/* RESET */
+
+transactionTab.classList.remove('hidden');
+customerTab.classList.remove('hidden');
+agentTab.classList.remove('hidden');
+
+transactionPanel.classList.remove('hidden');
+customerPanel.classList.remove('hidden');
+agentPanel.classList.remove('hidden');
+
+
+/* ADMIN */
+
+if(role==='admin'){
+
+openTab('transaction',transactionTab);
+
+return;
 
 }
 
 
-/* ================= TODAY ================= */
+/* AGENT */
+
+if(role==='agent'){
+
+transactionTab.classList.add('hidden');
+customerTab.classList.add('hidden');
+
+transactionPanel.classList.add('hidden');
+customerPanel.classList.add('hidden');
+
+agentTab.classList.remove('hidden');
+agentPanel.classList.remove('hidden');
+
+openTab('agent',agentTab);
+
+const agentView=
+document.getElementById('agentView');
+
+agentView.innerHTML='';
+
+const option=
+document.createElement('option');
+
+option.value=
+currentUser.linkedId||'';
+
+option.textContent='My Agent';
+
+agentView.appendChild(option);
+
+if(currentUser.linkedId){
+
+agentView.value=
+currentUser.linkedId;
+
+agentChanged();
+
+}
+
+return;
+
+}
+
+
+/* VIEWER */
+
+if(role==='viewar'){
+
+transactionTab.classList.add('hidden');
+transactionPanel.classList.add('hidden');
+
+customerTab.classList.remove('hidden');
+agentTab.classList.remove('hidden');
+
+customerPanel.classList.remove('hidden');
+agentPanel.classList.remove('hidden');
+
+openTab('customer',customerTab);
+
+return;
+
+}
+
+
+/* UNKNOWN ROLE */
+
+transactionTab.classList.add('hidden');
+customerTab.classList.add('hidden');
+agentTab.classList.add('hidden');
+
+transactionPanel.classList.add('hidden');
+customerPanel.classList.add('hidden');
+agentPanel.classList.add('hidden');
+
+}
+
+
+/* =====================================================
+LOGOUT
+===================================================== */
+
+function logout(){
+
+currentUser=null;
+
+localStorage.removeItem('amaya_user');
+
+document
+.getElementById('app')
+.classList.add('hidden');
+
+document
+.getElementById('loginPage')
+.classList.remove('hidden');
+
+document
+.getElementById('username')
+.value='';
+
+document
+.getElementById('password')
+.value='';
+
+}
+
+
+/* =====================================================
+TODAY
+===================================================== */
 
 function setToday(){
 
+const input=
+document.getElementById('date');
+
 const d=new Date();
 
-const y=d.getFullYear();
-const m=String(d.getMonth()+1).padStart(2,'0');
-const day=String(d.getDate()).padStart(2,'0');
-
-const today=y+'-'+m+'-'+day;
-
-const input=document.getElementById('date');
+const today=
+d.getFullYear()+
+'-'+
+String(d.getMonth()+1).padStart(2,'0')+
+'-'+
+String(d.getDate()).padStart(2,'0');
 
 input.value=today;
+
 input.max=today;
 
 }
 
 
-/* ================= LOAD ================= */
+/* =====================================================
+AGENT YEAR + MONTH
+===================================================== */
+
+function setupAgentDateFilters(){
+
+const yearSelect=
+document.getElementById('agentYear');
+
+const monthSelect=
+document.getElementById('agentMonth');
+
+const now=new Date();
+
+const currentYear=now.getFullYear();
+
+const currentMonth=now.getMonth()+1;
+
+
+yearSelect.innerHTML='';
+
+for(let y=currentYear-5;y<=currentYear;y++){
+
+const option=
+document.createElement('option');
+
+option.value=y;
+
+option.textContent=y;
+
+if(y===currentYear){
+option.selected=true;
+}
+
+yearSelect.appendChild(option);
+
+}
+
+
+const months=[
+'January',
+'February',
+'March',
+'April',
+'May',
+'June',
+'July',
+'August',
+'September',
+'October',
+'November',
+'December'
+];
+
+monthSelect.innerHTML='';
+
+months.forEach(function(month,index){
+
+const option=
+document.createElement('option');
+
+option.value=index+1;
+
+option.textContent=month;
+
+if(index+1===currentMonth){
+option.selected=true;
+}
+
+monthSelect.appendChild(option);
+
+});
+
+
+yearSelect.onchange=function(){
+
+if(
+document.getElementById('agentView').value
+){
+
+renderAgentTransactions();
+
+}
+
+};
+
+
+monthSelect.onchange=function(){
+
+if(
+document.getElementById('agentView').value
+){
+
+renderAgentTransactions();
+
+}
+
+};
+
+}
+
+
+/* =====================================================
+LOAD ALL
+===================================================== */
 
 function loadAllData(){
 
 loadCustomers();
+
 loadAgents();
+
 loadNotes();
 
 }
@@ -415,167 +1537,344 @@ loadNotes();
 
 /* =====================================================
 CUSTOMERS
-IMPORTANT:
-Backend already returns Customer D = Active only.
-But frontend also checks Active for safety.
 ===================================================== */
 
 async function loadCustomers(){
 
-const list=document.getElementById('customerList');
+const list=
+document.getElementById('customerList');
 
-list.innerHTML='<div class="empty">Select a customer</div>';
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
 
 try{
 
-const r=await getAPI('customers');
+const result=
+await getAPI('customers');
 
-if(!r.success){
+if(!result.success){
 
 list.innerHTML=
 '<div class="empty">'+
-escapeHTML(r.error||'Customer loading failed')+
+escapeHTML(
+result.error||'Customer loading failed'
+)+
 '</div>';
 
 return;
 
 }
 
-customerData=Array.isArray(r.data)?r.data:[];
+customerData=
+Array.isArray(result.data)
+?result.data
+:[];
 
-
-/* ================= ADD TRANSACTION =================
-ONLY ACTIVE CUSTOMERS
-============================================== */
 
 const transactionSelect=
-document.getElementById('customerSelect');
+document.getElementById(
+'customerSelect'
+);
 
 transactionSelect.innerHTML=
 '<option value="">Select Customer</option>';
 
-customerData.forEach(function(c){
+customerData.forEach(function(customer){
 
-/*
-D column status must be Active.
-Apps Script customers() sends status.
-*/
+const status=String(
+customer.status||
+customer.Status||
+customer.active||
+customer.Active||
+''
+)
+.trim()
+.toLowerCase();
 
-if(String(c.status||'').trim().toLowerCase()!=='active'){
+if(status!=='active'){
 return;
 }
 
-const o=document.createElement('option');
+const option=
+document.createElement('option');
 
-o.value=c.customerId;
+option.value=
+customer.customerId;
 
-o.textContent=
-c.customerName+
-(c.phone?' • '+c.phone:'');
+option.textContent=
+customer.customerName;
 
-transactionSelect.appendChild(o);
+transactionSelect.appendChild(option);
 
 });
 
 
-/* ================= CUSTOMER PAGE =================
-ACTIVE + DUE > 0
-============================================== */
+updateCustomerDropdown();
 
-const pageSelect=
-document.getElementById('customerPageSelect');
-
-pageSelect.innerHTML=
-'<option value="">Select Customer</option>';
 
 let totalDue=0;
 
-customerData.forEach(function(c){
+customerData.forEach(function(customer){
 
-if(String(c.status||'').trim().toLowerCase()!=='active'){
+const status=String(
+customer.status||
+customer.Status||
+customer.active||
+customer.Active||
+''
+)
+.trim()
+.toLowerCase();
+
+if(status!=='active'){
 return;
 }
 
-const due=parseFloat(
-String(c.totalDueKD||'0').replace(/,/g,'')
+totalDue+=
+parseFloat(
+String(
+customer.totalDueKD||'0'
+).replace(/,/g,'')
 )||0;
-
-totalDue+=due;
-
-if(due<=0)return;
-
-const o=document.createElement('option');
-
-o.value=c.customerId;
-
-o.textContent=
-c.customerName+
-(c.phone?' • '+c.phone:'');
-
-pageSelect.appendChild(o);
 
 });
 
-
-document.getElementById('allCustomerDue').innerHTML=
-totalDue.toLocaleString('en-US',{
+document
+.getElementById('allCustomerDue')
+.innerHTML=
+totalDue.toLocaleString(
+'en-US',
+{
 minimumFractionDigits:3,
 maximumFractionDigits:3
-})+' <span>KD</span>';
+}
+)+
+' <span>KD</span>';
 
-}catch(e){
-
-console.error(e);
+}
+catch(error){
 
 list.innerHTML=
 '<div class="empty">Customer loading error</div>';
 
 }
+
 }
 
 
-/* ================= CUSTOMER SELECT ================= */
+/* =====================================================
+CUSTOMER DROPDOWN
+===================================================== */
 
-document.getElementById('customerPageSelect')
-.addEventListener('change',function(){
+function updateCustomerDropdown(){
+
+const select=
+document.getElementById(
+'customerPageSelect'
+);
+
+const search=
+document.getElementById(
+'customerSearch'
+)
+.value
+.trim()
+.toLowerCase();
+
+const oldValue=select.value;
+
+select.innerHTML=
+'<option value="">Select Customer</option>';
+
+customerData.forEach(function(customer){
+
+const status=String(
+customer.status||
+customer.Status||
+customer.active||
+customer.Active||
+''
+)
+.trim()
+.toLowerCase();
+
+if(status!=='active'){
+return;
+}
+
+const due=
+parseFloat(
+String(
+customer.totalDueKD||'0'
+).replace(/,/g,'')
+)||0;
+
+if(due<=0){
+return;
+}
+
+const name=
+String(customer.customerName||'')
+.toLowerCase();
+
+const phone=
+String(customer.phone||'')
+.toLowerCase();
+
+const id=
+String(customer.customerId||'')
+.toLowerCase();
+
+if(
+search &&
+!name.includes(search) &&
+!phone.includes(search) &&
+!id.includes(search)
+){
+return;
+}
+
+const option=
+document.createElement('option');
+
+option.value=
+customer.customerId;
+
+option.textContent=
+customer.customerName;
+
+select.appendChild(option);
+
+});
+
+if(
+oldValue &&
+Array.from(select.options)
+.some(function(option){
+return option.value===oldValue;
+})
+){
+
+select.value=oldValue;
+
+}
+
+}
+
+
+/* =====================================================
+CUSTOMER SELECT
+===================================================== */
+
+document
+.getElementById('customerPageSelect')
+.addEventListener(
+'change',
+function(){
 
 const id=this.value;
-const list=document.getElementById('customerList');
+
+const list=
+document.getElementById(
+'customerList'
+);
 
 if(!id){
 
-list.innerHTML='<div class="empty">Select a customer</div>';
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
+
 return;
 
 }
 
-const customer=customerData.find(function(c){
-return String(c.customerId)===String(id);
+const customer=
+customerData.find(function(item){
+
+return String(item.customerId)===
+String(id);
+
 });
 
 if(!customer){
 
-list.innerHTML='<div class="empty">Customer not found</div>';
+list.innerHTML=
+'<div class="empty">Customer not found</div>';
+
 return;
 
 }
 
-renderCustomer(customer);
+renderCustomers([customer]);
 
 });
 
 
-/* ================= RENDER CUSTOMER ================= */
+/* =====================================================
+CUSTOMER SEARCH
+===================================================== */
 
-function renderCustomer(customer){
+document
+.getElementById('customerSearch')
+.addEventListener(
+'input',
+function(){
 
-const list=document.getElementById('customerList');
+const currentId=
+document
+.getElementById('customerPageSelect')
+.value;
+
+updateCustomerDropdown();
+
+const select=
+document
+.getElementById('customerPageSelect');
+
+if(
+currentId &&
+Array.from(select.options)
+.some(function(option){
+return option.value===currentId;
+})
+){
+
+select.value=currentId;
+
+}
+
+});
+
+
+/* =====================================================
+RENDER CUSTOMER
+===================================================== */
+
+function renderCustomers(data){
+
+const list=
+document.getElementById(
+'customerList'
+);
+
+if(!data || !data.length){
 
 list.innerHTML=
+'<div class="empty">No customer found</div>';
+
+return;
+
+}
+
+const customer=data[0];
+
+let html=
+
 '<div class="customer-card">'+
 '<div class="customer-row">'+
 
-'<div>'+
+'<div class="customer-info">'+
+
 '<div class="customer-name">'+
 escapeHTML(customer.customerName)+
 '</div>'+
@@ -583,273 +1882,635 @@ escapeHTML(customer.customerName)+
 '<div class="phone">'+
 escapeHTML(customer.phone||'')+
 '</div>'+
+
 '</div>'+
 
 '<div class="due">'+
-'<div class="due-label">Total Due</div>'+
+
+'<div class="due-label">Due Amount</div>'+
+
 '<div class="due-value">'+
 escapeHTML(customer.totalDueKD||'0.000')+
 ' <span class="kd-small">KD</span>'+
-'</div>'+
+
 '</div>'+
 
 '</div>'+
+
+'</div>'+
+
 '</div>';
 
-loadCustomerTransactions(customer.customerId);
+list.innerHTML=html;
+
+loadCustomerTransactions(
+customer.customerId
+);
 
 }
 
 
-/* ================= TRANSACTIONS ================= */
+/* =====================================================
+CUSTOMER TRANSACTIONS
+===================================================== */
 
 async function loadCustomerTransactions(customerId){
 
-const list=document.getElementById('customerList');
+const list=
+document.getElementById(
+'customerList'
+);
 
-const loading=document.createElement('div');
+const loading=
+document.createElement('div');
+
+loading.id='customerTxnLoading';
 
 loading.className='loading';
-loading.id='customerTxnLoading';
+
 loading.textContent='Loading transactions...';
 
 list.appendChild(loading);
 
 try{
 
-const r=await getAPI(
+const result=
+await getAPI(
 'customerTransactions',
-{customerId:customerId}
+{
+customerId:customerId
+}
 );
 
-const l=document.getElementById('customerTxnLoading');
+const currentLoading=
+document.getElementById(
+'customerTxnLoading'
+);
 
-if(l)l.remove();
-
-if(!r.success){
-
-const e=document.createElement('div');
-e.className='empty';
-e.textContent=r.error||'Unable to load transactions';
-list.appendChild(e);
-
-return;
+if(currentLoading){
+currentLoading.remove();
 }
 
+if(!result.success){
 
-/*
-Backend transactions() returns:
-success:true
-data:[...]
-*/
+const box=
+document.createElement('div');
 
-const transactions=Array.isArray(r.data)?r.data:[];
+box.className='empty';
 
-if(!transactions.length){
-
-const e=document.createElement('div');
-
-e.className='empty';
-e.textContent='No Transaction found';
-
-list.appendChild(e);
-
-return;
-
-}
-
-
-transactions.forEach(function(t){
-
-const box=document.createElement('div');
-box.className='txn';
-
-const top=document.createElement('div');
-top.className='txn-top';
-
-const d=document.createElement('div');
-d.className='txn-date';
-d.textContent=t.date||'';
-
-const amount=document.createElement('div');
-amount.className='txn-amount';
-amount.textContent=(t.kdAmount||'0.000')+' KD';
-
-top.appendChild(d);
-top.appendChild(amount);
-
-const bottom=document.createElement('div');
-bottom.className='txn-bottom';
-
-let text=t.type||'';
-
-if(t.note)text+=' • '+t.note;
-if(t.bdAmount)text+=' • '+t.bdAmount+' Tk';
-
-bottom.textContent=text;
-
-box.appendChild(top);
-box.appendChild(bottom);
+box.textContent=
+result.error||
+'Unable to load transactions';
 
 list.appendChild(box);
-
-});
-
-}catch(e){
-
-console.error(e);
-
-const l=document.getElementById('customerTxnLoading');
-
-if(l)l.remove();
-
-const error=document.createElement('div');
-
-error.className='empty';
-error.textContent='Connection error';
-
-list.appendChild(error);
-
-}
-}
-
-
-/* ================= SEARCH ================= */
-
-document.getElementById('customerSearch')
-.addEventListener('input',function(){
-
-const query=this.value.trim().toLowerCase();
-const id=document.getElementById('customerPageSelect').value;
-
-if(!id)return;
-
-const c=customerData.find(function(x){
-return String(x.customerId)===String(id);
-});
-
-if(!c)return;
-
-const match=
-String(c.customerName||'').toLowerCase().includes(query)||
-String(c.phone||'').toLowerCase().includes(query)||
-String(c.customerId||'').toLowerCase().includes(query);
-
-if(!query||match){
-
-renderCustomer(c);
-
-}else{
-
-document.getElementById('customerList').innerHTML=
-'<div class="empty">No customer found</div>';
-
-}
-
-});
-
-
-/* ================= AGENTS ================= */
-
-async function loadAgents(){
-
-try{
-
-const r=await getAPI('agents');
-
-if(!r.success){
-
-renderAgentError(r.error||'Agent loading failed');
-return;
-
-}
-
-agentData=Array.isArray(r.data)?r.data:[];
-
-fillAgentSelect(document.getElementById('agentSelect'));
-fillAgentSelect(document.getElementById('agentView'));
-
-document.getElementById('agentList').innerHTML=
-'<div class="empty">Select an agent</div>';
-
-}catch(e){
-
-renderAgentError('Agent loading error');
-
-}
-}
-
-
-/* ================= FILL AGENTS ================= */
-
-function fillAgentSelect(select){
-
-select.innerHTML='<option value="">Select Agent</option>';
-
-agentData.forEach(function(a){
-
-const o=document.createElement('option');
-
-o.value=a.agentId;
-o.textContent=a.agentName;
-
-select.appendChild(o);
-
-});
-
-}
-
-
-/* ================= AGENT ERROR ================= */
-
-function renderAgentError(text){
-
-document.getElementById('agentList').innerHTML=
-'<div class="empty">'+escapeHTML(text)+'</div>';
-
-}
-
-
-/* ================= AGENT TRANSACTIONS ================= */
-
-async function agentChanged(){
-
-const id=document.getElementById('agentView').value;
-const list=document.getElementById('agentList');
-
-if(!id){
-
-list.innerHTML='<div class="empty">Select an agent</div>';
-return;
-
-}
-
-list.innerHTML='<div class="loading">Loading transactions...</div>';
-
-try{
-
-const r=await getAPI(
-'agentTransactions',
-{linkedId:id}
-);
-
-if(!r.success){
-
-list.innerHTML=
-'<div class="empty">'+
-escapeHTML(r.error||'Unable to load transactions')+
-'</div>';
 
 return;
 
 }
 
 const transactions=
-r.data&&Array.isArray(r.data.transactions)
-?r.data.transactions
-:[];
+Array.isArray(result.data)
+?result.data
+:(
+result.data &&
+Array.isArray(result.data.transactions)
+?result.data.transactions
+:[]
+);
 
 if(!transactions.length){
+
+const empty=
+document.createElement('div');
+
+empty.className='empty';
+
+empty.textContent='No Transaction found';
+
+list.appendChild(empty);
+
+return;
+
+}
+
+transactions.forEach(function(t){
+
+const txn=
+document.createElement('div');
+
+txn.className='txn';
+
+const top=
+document.createElement('div');
+
+top.className='txn-top';
+
+const date=
+document.createElement('div');
+
+date.className='txn-date';
+
+date.textContent=t.date||'';
+
+const amount=
+document.createElement('div');
+
+amount.className='txn-amount';
+
+amount.textContent=
+(t.kdAmount||'0.000')+' KD';
+
+top.appendChild(date);
+
+top.appendChild(amount);
+
+const bottom=
+document.createElement('div');
+
+bottom.className='txn-bottom';
+
+let text=t.type||'';
+
+if(t.note){
+text+=' • '+t.note;
+}
+
+if(t.bdAmount){
+text+=' • '+t.bdAmount+' Tk';
+}
+
+bottom.textContent=text;
+
+txn.appendChild(top);
+
+txn.appendChild(bottom);
+
+list.appendChild(txn);
+
+});
+
+}
+catch(error){
+
+const loading=
+document.getElementById(
+'customerTxnLoading'
+);
+
+if(loading){
+loading.remove();
+}
+
+const box=
+document.createElement('div');
+
+box.className='empty';
+
+box.textContent='Connection error';
+
+list.appendChild(box);
+
+}
+
+}
+
+
+/* =====================================================
+AGENTS
+===================================================== */
+
+async function loadAgents(){
+
+try{
+
+const result=
+await getAPI('agents');
+
+if(!result.success){
+
+renderAgentError(
+result.error||'Agent loading failed'
+);
+
+return;
+
+}
+
+agentData=
+Array.isArray(result.data)
+?result.data
+:[];
+
+fillAgentSelect(
+document.getElementById('agentSelect')
+);
+
+if(
+String(currentUser?.role||'')
+.toLowerCase()!=='agent'
+){
+
+fillAgentSelect(
+document.getElementById('agentView'),
+true
+);
+
+}
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+}
+catch(error){
+
+renderAgentError(
+'Agent loading error'
+);
+
+}
+
+}
+
+
+/* =====================================================
+FILL AGENT SELECT
+===================================================== */
+
+function fillAgentSelect(select,isView=false){
+
+select.innerHTML=
+isView
+?'<option value="">Agent</option>'
+:'<option value="">Select Agent</option>';
+
+agentData.forEach(function(agent){
+
+const option=
+document.createElement('option');
+
+option.value=
+agent.agentId;
+
+option.textContent=
+agent.agentName;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================================
+AGENT ERROR
+===================================================== */
+
+function renderAgentError(message){
+
+document
+.getElementById('agentList')
+.innerHTML=
+'<div class="empty">'+
+escapeHTML(message)+
+'</div>';
+
+}
+
+
+/* =====================================================
+NORMALIZE TYPE
+===================================================== */
+
+function normalizeType(value){
+
+return String(value||'')
+.trim()
+.toLowerCase()
+.replace(/\s+/g,' ')
+.replace(/^[+\-]\s*/,'')
+.trim();
+
+}
+
+
+/* =====================================================
+IS DUE
+===================================================== */
+
+function isDueTransaction(t){
+
+const type=normalizeType(
+t.type||
+t.Type||
+t.transactionType||
+t.TransactionType||
+''
+);
+
+return(
+type==='বাকি' ||
+type==='due' ||
+type==='due amount' ||
+type==='+ বাকি'
+);
+
+}
+
+
+/* =====================================================
+IS PAYMENT
+===================================================== */
+
+function isPaymentTransaction(t){
+
+const type=normalizeType(
+t.type||
+t.Type||
+t.transactionType||
+t.TransactionType||
+''
+);
+
+return(
+type==='পেমেন্ট' ||
+type==='payment' ||
+type==='জমা' ||
+type==='paid' ||
+type==='payment amount'
+);
+
+}
+
+
+/* =====================================================
+GET KD AMOUNT
+===================================================== */
+
+function getKDAmount(t){
+
+let value=t.kdAmount;
+
+if(value===undefined||value===null||value===''){
+value=t.amountKD;
+}
+
+if(value===undefined||value===null||value===''){
+value=t.kd;
+}
+
+if(value===undefined||value===null||value===''){
+value=t.amount;
+}
+
+return parseFloat(
+String(value||'0')
+.replace(/,/g,'')
+.trim()
+)||0;
+
+}
+
+
+/* =====================================================
+GET BD AMOUNT
+===================================================== */
+
+function getBDAmount(t){
+
+let value=t.bdAmount;
+
+if(value===undefined||value===null||value===''){
+value=t.amountBD;
+}
+
+if(value===undefined||value===null||value===''){
+value=t.bd;
+}
+
+return parseFloat(
+String(value||'0')
+.replace(/,/g,'')
+.trim()
+)||0;
+
+}
+
+
+/* =====================================================
+AGENT CHANGE
+===================================================== */
+
+async function agentChanged(){
+
+const agentId=
+document
+.getElementById('agentView')
+.value;
+
+const list=
+document.getElementById('agentList');
+
+
+if(!agentId){
+
+currentAgentTransactions=[];
+
+document
+.getElementById('agentCurrentBalance')
+.innerHTML=
+'0.000 <span>KD</span>';
+
+document
+.getElementById('agentMonthlySales')
+.innerHTML=
+'0 <span>Tk</span>';
+
+list.innerHTML=
+'<div class="empty">Select an agent</div>';
+
+return;
+
+}
+
+
+list.innerHTML=
+'<div class="loading">Loading transactions...</div>';
+
+
+try{
+
+const result=
+await getAPI(
+'agentTransactions',
+{
+linkedId:agentId,
+username:currentUser?.username||'',
+role:currentUser?.role||''
+}
+);
+
+
+if(!result.success){
+
+list.innerHTML=
+'<div class="empty">'+
+escapeHTML(
+result.error||
+'Unable to load transactions'
+)+
+'</div>';
+
+return;
+
+}
+
+if(
+result.data &&
+Array.isArray(result.data.transactions)
+){
+
+currentAgentTransactions=
+result.data.transactions;
+
+}
+
+else if(
+Array.isArray(result.data)
+){
+
+currentAgentTransactions=
+result.data;
+
+}
+
+else{
+
+currentAgentTransactions=[];
+
+}
+
+calculateAgentSummary();
+
+renderAgentTransactions();
+
+}
+catch(error){
+
+currentAgentTransactions=[];
+
+document
+.getElementById('agentCurrentBalance')
+.innerHTML=
+'0.000 <span>Tk</span>';
+
+document
+.getElementById('agentMonthlySales')
+.innerHTML=
+'0 <span>Tk</span>';
+
+list.innerHTML=
+'<div class="empty">Connection error</div>';
+
+}
+
+}
+
+
+/* =====================================================
+AGENT SUMMARY
+===================================================== */
+
+function calculateAgentSummary(){
+
+let currentBalance=0;
+let monthlySales=0;
+
+const year=
+Number(
+document.getElementById('agentYear').value
+);
+
+const month=
+Number(
+document.getElementById('agentMonth').value
+);
+
+currentAgentTransactions.forEach(function(t){
+
+const amount=getBDAmount(t);
+
+if(isDueTransaction(t)){
+
+currentBalance+=amount;
+
+}
+else if(isPaymentTransaction(t)){
+
+currentBalance-=amount;
+
+}
+
+});
+
+
+currentAgentTransactions.forEach(function(t){
+
+if(!isDueTransaction(t)){
+return;
+}
+
+const dateInfo=
+parseTransactionDate(
+t.date||
+t.Date||
+t.transactionDate||
+t.TransactionDate
+);
+
+if(
+!dateInfo ||
+dateInfo.year!==year ||
+dateInfo.month!==month
+){
+
+return;
+
+}
+
+monthlySales+=getBDAmount(t);
+
+});
+
+
+document
+.getElementById('agentCurrentBalance')
+.innerHTML=
+formatNumber(currentBalance)+
+' <span>Tk</span>';
+
+document
+.getElementById('agentMonthlySales')
+.innerHTML=
+formatNumber(monthlySales)+
+' <span>Tk</span>';
+
+}
+
+
+/* =====================================================
+RENDER AGENT TRANSACTIONS
+===================================================== */
+
+function renderAgentTransactions(){
+
+const list=
+document.getElementById('agentList');
+
+if(!currentAgentTransactions.length){
+
+calculateAgentSummary();
 
 list.innerHTML=
 '<div class="empty">No BD transactions found</div>';
@@ -858,47 +2519,256 @@ return;
 
 }
 
+const year=
+Number(
+document.getElementById('agentYear').value
+);
+
+const month=
+Number(
+document.getElementById('agentMonth').value
+);
+
+const filtered=
+currentAgentTransactions.filter(function(t){
+
+const info=
+parseTransactionDate(
+t.date||
+t.Date||
+t.transactionDate||
+t.TransactionDate
+);
+
+return info &&
+info.year===year &&
+info.month===month;
+
+});
+
+calculateAgentSummary();
+
+if(!filtered.length){
+
+list.innerHTML=
+'<div class="empty">No transaction for this month</div>';
+
+return;
+
+}
+
 let html='';
 
-transactions.forEach(function(t){
+filtered.forEach(function(t){
+
+const type=
+String(
+t.type||
+t.Type||
+''
+);
+
+const bd=getBDAmount(t);
 
 html+=
+
 '<div class="txn">'+
+
 '<div class="txn-top">'+
-'<div class="txn-date">'+escapeHTML(t.date||'')+'</div>'+
-'<div class="txn-amount">'+escapeHTML(t.bdAmount||'0')+' Tk</div>'+
+
+'<div class="txn-date">'+
+escapeHTML(
+t.date||
+t.Date||
+''
+)+
 '</div>'+
+
+'<div class="txn-amount">'+
+formatNumber(bd)+
+' Tk'+
+'</div>'+
+
+'</div>'+
+
 '<div class="txn-bottom">'+
-escapeHTML(t.type||'')+
-(t.note?' • '+escapeHTML(t.note):'')+
+escapeHTML(type)+
+
+(
+t.note
+?' • '+escapeHTML(t.note)
+:''
+)+
+
 '</div>'+
+
 '</div>';
 
 });
 
 list.innerHTML=html;
 
-}catch(e){
-
-list.innerHTML='<div class="empty">Connection error</div>';
-
-}
 }
 
 
-/* ================= NOTES ================= */
+/* =====================================================
+PARSE TRANSACTION DATE
+===================================================== */
+
+function parseTransactionDate(value){
+
+if(!value){
+return null;
+}
+
+const str=
+String(value).trim();
+
+let match=
+str.match(
+/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/
+);
+
+if(match){
+
+const months={
+jan:1,
+feb:2,
+mar:3,
+apr:4,
+may:5,
+jun:6,
+jul:7,
+aug:8,
+sep:9,
+oct:10,
+nov:11,
+dec:12
+};
+
+const month=
+months[
+match[2].toLowerCase()
+];
+
+if(month){
+
+return{
+year:Number(match[3]),
+month:month
+};
+
+}
+
+}
+
+match=
+str.match(
+/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
+);
+
+if(match){
+
+return{
+year:Number(match[1]),
+month:Number(match[2])
+};
+
+}
+
+match=
+str.match(
+/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
+);
+
+if(match){
+
+return{
+year:Number(match[3]),
+month:Number(match[2])
+};
+
+}
+
+const date=new Date(str);
+
+if(!isNaN(date.getTime())){
+
+return{
+year:date.getFullYear(),
+month:date.getMonth()+1
+};
+
+}
+
+return null;
+
+}
+
+
+/* =====================================================
+FORMAT KD
+===================================================== */
+
+function formatKD(value){
+
+return Number(value||0)
+.toLocaleString(
+'en-US',
+{
+minimumFractionDigits:3,
+maximumFractionDigits:3
+}
+);
+
+}
+
+
+/* =====================================================
+FORMAT NUMBER
+===================================================== */
+
+function formatNumber(value){
+
+return Number(value||0)
+.toLocaleString(
+'en-US',
+{
+minimumFractionDigits:0,
+maximumFractionDigits:0
+}
+);
+
+}
+
+
+/* =====================================================
+NOTES
+===================================================== */
 
 async function loadNotes(){
 
 try{
 
-const r=await getAPI('options');
+const result=
+await getAPI('options');
 
-if(!r.success)return;
+if(!result.success){
+return;
+}
 
 notesData={
-dueNotes:Array.isArray(r.data.dueNotes)?r.data.dueNotes:[],
-paymentNotes:Array.isArray(r.data.paymentNotes)?r.data.paymentNotes:[]
+
+dueNotes:
+Array.isArray(result.data.dueNotes)
+?result.data.dueNotes
+:[],
+
+paymentNotes:
+Array.isArray(result.data.paymentNotes)
+?result.data.paymentNotes
+:[]
+
 };
 
 setNotes(
@@ -907,44 +2777,81 @@ transactionType==='বাকি'
 :notesData.paymentNotes
 );
 
-}catch(e){}
+}
+catch(error){
+
+}
 
 }
 
 
-/* ================= SET NOTES ================= */
+/* =====================================================
+SET NOTES
+===================================================== */
 
 function setNotes(notes){
 
-const select=document.getElementById('noteSelect');
+const select=
+document.getElementById('noteSelect');
 
-select.innerHTML='<option value="">Select Note</option>';
+select.innerHTML='';
 
-(notes||[]).forEach(function(n){
+if(!notes||!notes.length){
 
-const o=document.createElement('option');
+const option=
+document.createElement('option');
 
-o.value=n;
-o.textContent=n;
+option.value='';
+option.textContent='Select Note';
 
-select.appendChild(o);
+select.appendChild(option);
+
+return;
+
+}
+
+notes.forEach(function(note,index){
+
+const option=
+document.createElement('option');
+
+option.value=note;
+option.textContent=note;
+
+if(index===0){
+option.selected=true;
+}
+
+select.appendChild(option);
 
 });
+
+select.selectedIndex=0;
 
 }
 
 
-/* ================= TYPE ================= */
+/* =====================================================
+TYPE
+===================================================== */
 
 function setType(type){
 
 transactionType=type;
 
-document.getElementById('dueBtn')
-.classList.toggle('active',type==='বাকি');
+document
+.getElementById('dueBtn')
+.classList.toggle(
+'active',
+type==='বাকি'
+);
 
-document.getElementById('paymentBtn')
-.classList.toggle('active',type==='পেমেন্ট');
+document
+.getElementById('paymentBtn')
+.classList.toggle(
+'active',
+type==='পেমেন্ট'
+);
 
 setNotes(
 type==='বাকি'
@@ -955,63 +2862,123 @@ type==='বাকি'
 }
 
 
-/* ================= SAVE ================= */
+/* =====================================================
+SAVE TRANSACTION
+===================================================== */
 
 async function saveTransaction(){
 
-const date=document.getElementById('date').value;
-const agentId=document.getElementById('agentSelect').value;
-const customerId=document.getElementById('customerSelect').value;
+if(
+String(currentUser?.role||'')
+.toLowerCase()!=='admin'
+){
 
-const kd=parseFloat(
-document.getElementById('kdAmount').value.replace(/,/g,'')
+showSaveError('Access denied');
+
+return;
+
+}
+
+const date=
+document.getElementById('date').value;
+
+const agentId=
+document.getElementById('agentSelect').value;
+
+const customerId=
+document.getElementById('customerSelect').value;
+
+const kd=
+parseFloat(
+document
+.getElementById('kdAmount')
+.value
+.replace(/,/g,'')
 )||0;
 
-const bd=parseFloat(
-document.getElementById('bdAmount').value.replace(/,/g,'')
+const bd=
+parseFloat(
+document
+.getElementById('bdAmount')
+.value
+.replace(/,/g,'')
 )||0;
 
-const note=document.getElementById('noteSelect').value;
+const note=
+document
+.getElementById('noteSelect')
+.value;
+
 
 if(!date){
+
 showSaveError('Date required');
 return;
+
 }
 
 if(kd>0&&!customerId){
-showSaveError('KD Amount দিলে Customer নির্বাচন করুন');
+
+showSaveError(
+'KD Amount দিলে Customer নির্বাচন করুন'
+);
+
 return;
+
 }
 
 if(bd>0&&!agentId){
-showSaveError('BD Amount দিলে Agent নির্বাচন করুন');
+
+showSaveError(
+'BD Amount দিলে Agent নির্বাচন করুন'
+);
+
 return;
+
 }
 
 if(kd<=0&&bd<=0){
-showSaveError('KD অথবা BD Amount দিন');
+
+showSaveError(
+'KD অথবা BD Amount দিন'
+);
+
 return;
+
 }
 
-const selectedDate=new Date(date+'T00:00:00');
+const selectedDate=
+new Date(date+'T00:00:00');
 
 const today=new Date();
+
 today.setHours(0,0,0,0);
 
 if(selectedDate>today){
-showSaveError('Future date দেওয়া যাবে না');
+
+showSaveError(
+'Future date দেওয়া যাবে না'
+);
+
 return;
+
 }
 
 let agentName='';
 
 if(agentId){
 
-const a=agentData.find(function(x){
-return String(x.agentId)===String(agentId);
+const agent=
+agentData.find(function(a){
+
+return String(a.agentId)===
+String(agentId);
+
 });
 
-if(a)agentName=a.agentName;
+if(agent){
+agentName=agent.agentName;
+}
 
 }
 
@@ -1019,112 +2986,175 @@ let customerName='';
 
 if(customerId){
 
-const c=customerData.find(function(x){
-return String(x.customerId)===String(customerId);
+const customer=
+customerData.find(function(c){
+
+return String(c.customerId)===
+String(customerId);
+
 });
 
-if(c)customerName=c.customerName;
+if(customer){
+customerName=customer.customerName;
+}
 
 }
 
-const button=document.getElementById('saveBtn');
-const message=document.getElementById('saveMsg');
+const button=
+document.getElementById('saveBtn');
+
+const message=
+document.getElementById('saveMsg');
 
 button.disabled=true;
+
 button.textContent='Saving...';
+
 message.textContent='';
+
 message.className='msg';
 
 try{
 
-const r=await postAPI({
+const result=
+await postAPI({
 
 action:'addTransaction',
+
+username:currentUser?.username||'',
+
+role:currentUser?.role||'',
+
 date:formatDate(date),
+
 customerId:customerId,
+
 customerName:customerName,
+
 agentName:agentName,
+
 kdAmount:kd,
+
 bdAmount:bd,
+
 type:transactionType,
+
 note:note
 
 });
 
-if(!r.success){
 
-showSaveError(r.error||'Save failed');
+if(!result.success){
+
+showSaveError(
+result.error||'Save failed'
+);
+
 return;
 
 }
 
 message.className='msg success';
-message.textContent='Transaction saved successfully';
 
-document.getElementById('kdAmount').value='';
-document.getElementById('bdAmount').value='';
+message.textContent=
+'Transaction saved successfully';
 
-if(customerId){
+document
+.getElementById('kdAmount')
+.value='';
+
+document
+.getElementById('bdAmount')
+.value='';
+
 await loadCustomers();
-}
 
 const selectedAgent=
-document.getElementById('agentView').value;
+document
+.getElementById('agentView')
+.value;
 
-if(selectedAgent)agentChanged();
+if(selectedAgent){
+
+await agentChanged();
+
+}
 
 setTimeout(function(){
+
 message.textContent='';
+
 message.className='msg';
+
 },2500);
 
-}catch(e){
+}
+catch(error){
 
-showSaveError('Connection error');
+showSaveError(
+'Connection error'
+);
 
-}finally{
+}
+finally{
 
 button.disabled=false;
+
 button.textContent='✅ Save';
 
 }
+
 }
 
 
-/* ================= ERROR ================= */
+/* =====================================================
+ERROR
+===================================================== */
 
 function showSaveError(text){
 
-const msg=document.getElementById('saveMsg');
+const message=
+document.getElementById('saveMsg');
 
-msg.className='msg error';
-msg.textContent=text;
+message.className='msg error';
+
+message.textContent=text;
 
 }
 
 
-/* ================= DATE ================= */
+/* =====================================================
+DATE FORMAT
+===================================================== */
 
 function formatDate(value){
 
-const p=value.split('-');
+const parts=value.split('-');
 
 const months=[
 'Jan','Feb','Mar','Apr','May','Jun',
 'Jul','Aug','Sep','Oct','Nov','Dec'
 ];
 
-return p[2]+'-'+months[Number(p[1])-1]+'-'+p[0];
+return(
+parts[2]+'-'+
+months[Number(parts[1])-1]+'-'+
+parts[0]
+);
 
 }
 
 
-/* ================= ESCAPE ================= */
+/* =====================================================
+ESCAPE
+===================================================== */
 
 function escapeHTML(value){
 
 return String(
-value===null||value===undefined?'':value
+value===null||value===undefined
+?''
+:value
 )
 .replace(/&/g,'&amp;')
 .replace(/</g,'&lt;')
@@ -1135,19 +3165,31 @@ value===null||value===undefined?'':value
 }
 
 
-/* ================= ENTER LOGIN ================= */
+/* =====================================================
+ENTER LOGIN
+===================================================== */
 
-document.getElementById('password')
-.addEventListener('keydown',function(e){
+document
+.getElementById('password')
+.addEventListener(
+'keydown',
+function(event){
 
-if(e.key==='Enter')login();
+if(event.key==='Enter'){
+login();
+}
 
 });
 
 
-/* ================= START ================= */
+/* =====================================================
+START
+===================================================== */
 
 restoreLogin();
 
-</script></body>
-</html>
+</script>
+
+</body>
+
+  </html>
