@@ -1,1353 +1,1545 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Amaya Exchange</title>
-
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;background:#f5f7fa;color:#172033;font-family:Arial,sans-serif}
-body{min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.app{width:100%;max-width:520px;margin:auto;min-height:100vh}
-
-.header{background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;position:sticky;top:0;z-index:20}
-.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.logo{font-size:19px;font-weight:800}
-.tagline{font-size:11px;color:#858e9d;margin-top:4px}
-.logout{border:0;background:#eef0f3;color:#303744;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:700}
-
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:11px 14px 5px}
-.tab{border:0;height:43px;border-radius:11px;background:#e7ebf0;color:#687284;font-size:12px;font-weight:800}
-.tab.active{background:#111827;color:#fff}
-
-.content{padding:10px 14px 25px}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 3px 15px rgba(0,0,0,.045)}
-
-.field{margin-bottom:13px}
-.label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-input,select{width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;padding:0 12px;outline:0;color:#172033}
-input:focus,select:focus{border-color:#111827}
-select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
-.amount{font-size:17px!important;font-weight:700}
-.amount-row,.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.type-row{margin:3px 0 13px}
-.type-btn{height:44px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;font-weight:800}
-.type-btn.active{background:#111827;color:#fff;border-color:#111827}
-.save{width:100%;height:49px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:800}
-.save:disabled{opacity:.55;cursor:not-allowed}
-.msg{font-size:12px;margin-top:9px;text-align:center}
-.error{color:#d33131}
-.success{color:#16824c}
-
-.customer-filter-card{background:#fff;border-radius:14px;padding:10px;margin-bottom:9px;box-shadow:0 2px 10px rgba(0,0,0,.035)}
-.customer-filter-row{display:grid;grid-template-columns:.72fr 1.28fr;gap:6px;margin-bottom:7px}
-.customer-filter-row input,.customer-filter-row select{height:36px;font-size:11px;padding:0 8px;border-radius:9px}
-.customer-selected-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;min-height:38px}
-.selected-customer{min-width:0}
-.selected-name{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.selected-phone{font-size:9px;color:#858e9d;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.due-amount-box{background:#f1f3f6;border-radius:9px;padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0}
-.due-amount-label{font-size:8px;color:#858e9d;margin-bottom:1px}
-.due-amount-value{font-size:13px;font-weight:800;color:#172033;line-height:1.1;white-space:nowrap}
-.due-amount-value span{font-size:8px;font-weight:700}
-
-.total-due-box{background:#111827;border-radius:9px;padding:6px 9px;min-width:105px;text-align:center;flex-shrink:0}
-.total-due-label{font-size:8px;color:#c8ced8;margin-bottom:1px}
-.total-due-value{font-size:14px;font-weight:800;color:#fff;line-height:1.1;white-space:nowrap}
-.total-due-value span{font-size:8px;font-weight:700}
-
-.list{display:flex;flex-direction:column;gap:6px}
-#customerList{max-height:calc(100vh - 255px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
-
-.txn{background:#fff;border-radius:9px;padding:7px 8px;box-shadow:0 1px 6px rgba(0,0,0,.035);border:1px solid #edf0f3;border-left:3px solid #dfe3e9}
-.txn.sale{border-left-color:#35a853}
-.txn.payment{border-left-color:#f3a6a6}
-.txn-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
-.txn-date{font-size:9px;color:#858e9d}
-.txn-type{font-size:9px;font-weight:800}
-.txn.sale .txn-type{color:#16824c}
-.txn.payment .txn-type{color:#d66b6b}
-.txn-amount{font-size:12px;font-weight:800;margin-top:2px}
-.txn.sale .txn-amount{color:#16824c}
-.txn.payment .txn-amount{color:#d66b6b}
-.txn-bottom{font-size:8px;color:#737d8d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1.25fr;gap:5px;margin-bottom:8px}
-.agent-filter-row select{height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0}
-.agent-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
-.agent-summary-box{background:#111827;color:#fff;border-radius:10px;padding:8px 9px;border:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.agent-summary-label{font-size:8px;color:#c8ced8;margin-bottom:2px}
-.agent-summary-value{font-size:14px;font-weight:800;line-height:1.2;color:#fff}
-.agent-summary-value span{font-size:8px;font-weight:700;color:#c8ced8}
-.agent-balance{text-align:left}
-.agent-sales{text-align:right}
-#agentList{max-height:calc(100vh - 250px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
-#agentList .txn{padding:7px 8px;border-radius:9px}
-#agentList .txn-date,#agentList .txn-type{font-size:9px}
-#agentList .txn-amount{font-size:12px;margin-top:2px}
-#agentList .txn-bottom{font-size:8px;margin-top:2px}
-
-.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{width:100%;max-width:390px;background:#fff;border-radius:21px;padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
-.login-title{font-size:24px;font-weight:800}
-.login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
-.loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
-
-@media(max-width:360px){
-.tabs{gap:5px}
-.tab{font-size:11px}
-.amount-row{gap:6px}
-.customer-filter-row{gap:5px}
-.customer-filter-row input,.customer-filter-row select{font-size:10px;padding:0 7px}
-.agent-filter-row{gap:4px}
-.agent-filter-row select{font-size:9px;padding:0 5px}
-.agent-summary-value{font-size:13px}
-.total-due-box{min-width:98px}
-.due-amount-box{min-width:75px;padding:6px 6px}
-.due-amount-value{font-size:12px}
-.selected-name{font-size:11px}
-.customer-selected-row{gap:5px}
-}
-</style>
-</head>
-
-<body>
-
-<div id="loginPage" class="login-page">
-<div class="login-box">
-<div class="login-title">Amaya Exchange</div>
-<div class="login-sub">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
-
-<div class="field">
-<label class="label">Username</label>
-<input id="username" type="text" autocomplete="username">
-</div>
-
-<div class="field">
-<label class="label">Password</label>
-<input id="password" type="password" autocomplete="current-password">
-</div>
-
-<button id="loginBtn" class="save" onclick="login()">Login</button>
-<div id="loginMsg" class="msg"></div>
-</div>
-</div>
-
-<div id="app" class="app hidden">
-
-<div class="header">
-<div class="header-row">
-<div>
-<div class="logo">Amaya Exchange</div>
-<div class="tagline">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
-</div>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-</div>
-
-<div class="tabs">
-<button class="tab active" onclick="openTab('transaction',this)">Add Transaction</button>
-<button class="tab" onclick="openTab('customer',this)">Customer</button>
-<button class="tab" onclick="openTab('agent',this)">Agent</button>
-</div>
-
-<div class="content">
-
-<section id="panelTransaction" class="panel active">
-<div class="card">
-
-<div style="font-size:16px;font-weight:800;margin-bottom:14px">Add Transaction</div>
-
-<div class="field">
-<label class="label">📅 Date</label>
-<input id="date" type="date">
-</div>
-
-<div class="field">
-<label class="label">◾ Agent</label>
-<select id="agentSelect"><option value="">Select Agent</option></select>
-</div>
-
-<div class="field">
-<label class="label">🧒 Customer</label>
-<select id="customerSelect"><option value="">Select Customer</option></select>
-</div>
-
-<div class="amount-row">
-<div class="field">
-<label class="label">💵 KD Amount</label>
-<input id="kdAmount" class="amount" type="text" inputmode="decimal" placeholder="0.000">
-</div>
-
-<div class="field">
-<label class="label">💳 BD Amount</label>
-<input id="bdAmount" class="amount" type="text" inputmode="numeric" placeholder="0">
-</div>
-</div>
-
-<div class="type-row">
-<button id="dueBtn" class="type-btn active" onclick="setType('বাকি')">+ বাকি</button>
-<button id="paymentBtn" class="type-btn" onclick="setType('পেমেন্ট')">- পেমেন্ট</button>
-</div>
-
-<div class="field">
-<label class="label">Note</label>
-<select id="noteSelect"><option value="">Select Note</option></select>
-</div>
-
-<button id="saveBtn" class="save" onclick="saveTransaction()">✅ Save</button>
-<div id="saveMsg" class="msg"></div>
-
-</div>
-</section>
-
-<section id="panelCustomer" class="panel">
-
-<div class="customer-filter-card">
-
-<div class="customer-filter-row">
-<input id="customerSearch" type="search" placeholder="🔍 Search..." autocomplete="off">
-<select id="customerPageSelect">
-<option value="">Select Customer</option>
-</select>
-</div>
-
-<div class="customer-selected-row">
-
-<div id="selectedCustomerInfo" class="selected-customer">
-<div class="selected-empty">Select a customer</div>
-</div>
-
-<div class="due-amount-box">
-<div class="due-amount-label">Due Amount</div>
-<div id="selectedDueAmount" class="due-amount-value">0.000 <span>KD</span></div>
-</div>
-
-<div class="total-due-box">
-<div class="total-due-label">Total Due</div>
-<div id="allCustomerDue" class="total-due-value">0.000 <span>KD</span></div>
-</div>
-
-</div>
-</div>
-
-<div id="customerList" class="list">
-<div class="empty">Select a customer</div>
-</div>
-
-</section>
-
-<section id="panelAgent" class="panel">
-
-<div class="agent-filter-row">
-<select id="agentYear"></select>
-<select id="agentMonth"></select>
-<select id="agentView" onchange="agentChanged()">
-<option value="">Agent</option>
-</select>
-</div>
-
-<div class="agent-summary">
-
-<div class="agent-summary-box agent-balance">
-<div class="agent-summary-label">Current Balance</div>
-<div id="agentCurrentBalance" class="agent-summary-value">0 <span>Tk</span></div>
-</div>
-
-<div class="agent-summary-box agent-sales">
-<div class="agent-summary-label">Monthly Sales</div>
-<div id="agentMonthlySales" class="agent-summary-value">0 <span>Tk</span></div>
-</div>
-
-</div>
-
-<div id="agentList" class="list">
-<div class="empty">Select an agent</div>
-</div>
-
-</section>
-
-</div>
-</div>
-
-<script>
-
-const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
-
-const $=id=>document.getElementById(id);
-
-let currentUser=null;
-let transactionType='বাকি';
-let customerData=[];
-let agentData=[];
-let notesData={dueNotes:[],paymentNotes:[]};
-let currentAgentTransactions=[];
-
-const fmtKD=v=>number(v).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
-const fmtIndian=v=>Math.floor(number(v)).toLocaleString('en-IN');
-
-async function getAPI(action,params={}){
- const q=new URLSearchParams({action});
- for(const k in params)
-  if(params[k]!==undefined&&params[k]!==null&&params[k]!=='')
-   q.set(k,params[k]);
- const r=await fetch(API+'?'+q,{method:'GET',cache:'no-store'});
- return r.json();
-}
-
-async function postAPI(data){
- const r=await fetch(API,{
-  method:'POST',
-  headers:{'Content-Type':'text/plain;charset=utf-8'},
-  body:JSON.stringify(data)
- });
- return r.json();
-}
-
-function openTab(tab,button){
- document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
- document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-
- const panel=$('panel'+tab.charAt(0).toUpperCase()+tab.slice(1));
- if(panel&&!panel.classList.contains('hidden'))panel.classList.add('active');
- if(button&&!button.classList.contains('hidden'))button.classList.add('active');
-}
-
-async function login(){
- const username=$('username').value.trim();
- const password=$('password').value;
- const msg=$('loginMsg');
- const btn=$('loginBtn');
-
- if(!username||!password){
-  msg.className='msg error';
-  msg.textContent='Username and password required';
-  return;
- }
-
- btn.disabled=true;
- btn.textContent='Logging in...';
- msg.textContent='';
-
- try{
-  const result=await getAPI('login',{username,password});
-
-  if(!result.success){
-   msg.className='msg error';
-   msg.textContent=result.error||'Login failed';
-   return;
-  }
-
-  currentUser=result.data;
-  localStorage.setItem('amaya_user',JSON.stringify(currentUser));
-  showApp();
-
- }catch(e){
-  msg.className='msg error';
-  msg.textContent='Connection error';
- }finally{
-  btn.disabled=false;
-  btn.textContent='Login';
- }
-}
-
-function restoreLogin(){
- try{
-  const saved=localStorage.getItem('amaya_user');
-  if(!saved)return;
-  const user=JSON.parse(saved);
-  if(user&&user.loggedIn){
-   currentUser=user;
-   showApp();
-  }
- }catch(e){
-  localStorage.removeItem('amaya_user');
- }
-}
-
-function showApp(){
- $('loginPage').classList.add('hidden');
- $('app').classList.remove('hidden');
- setToday();
- setupAgentDateFilters();
- applyRoleAccess();
- loadAllData();
-}
-
-function getRole(){
- return String(currentUser?.role||'').trim().toLowerCase();
-}
-
-function applyRoleAccess(){
-
- const role=getRole();
- const tabs=document.querySelectorAll('.tab');
- const transactionTab=tabs[0];
- const customerTab=tabs[1];
- const agentTab=tabs[2];
-
- const transactionPanel=$('panelTransaction');
- const customerPanel=$('panelCustomer');
- const agentPanel=$('panelAgent');
-
- [transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));
- [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));
-
- if(role==='admin'){
-  openTab('transaction',transactionTab);
-  return;
- }
-
- if(role==='agent'){
-
-  transactionTab.classList.add('hidden');
-  customerTab.classList.add('hidden');
-  agentTab.classList.add('hidden');
-
-  transactionPanel.classList.add('hidden');
-  customerPanel.classList.add('hidden');
-  agentPanel.classList.remove('hidden');
-  agentPanel.classList.add('active');
-
-  const agentView=$('agentView');
-  agentView.innerHTML='';
-
-  const option=document.createElement('option');
-  option.value=currentUser.linkedId||'';
-  option.textContent=currentUser.agentName||currentUser.name||'My Agent';
-
-  agentView.appendChild(option);
-  agentView.value=currentUser.linkedId||'';
-  agentView.disabled=true;
-
-  if(currentUser.linkedId)agentChanged();
-  return;
- }
-
- if(role==='viewer'||role==='viewar'){
-
-  transactionTab.classList.add('hidden');
-  transactionPanel.classList.add('hidden');
-
-  customerTab.classList.remove('hidden');
-  agentTab.classList.remove('hidden');
-
-  customerPanel.classList.remove('hidden');
-  agentPanel.classList.remove('hidden');
-
-  $('customerPageSelect').value='';
-  $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
-  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-  $('customerList').innerHTML='<div class="empty">Select a customer</div>';
-
-  let totalDue=0;
-  customerData.forEach(c=>{
-   if(isActive(c))totalDue+=number(c.totalDueKD);
-  });
-
-  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
-
-  const agentView=$('agentView');
-  agentView.disabled=false;
-  agentView.value='';
-
-  currentAgentTransactions=[];
-  setAgentNumbers(0,0);
-  $('agentList').innerHTML='<div class="empty">Select an agent</div>';
-
-  openTab('customer',customerTab);
-  return;
- }
-
- [transactionTab,customerTab,agentTab].forEach(x=>x.classList.add('hidden'));
- [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.add('hidden'));
-}
-
-function logout(){
-
- currentUser=null;
- localStorage.removeItem('amaya_user');
-
- $('app').classList.add('hidden');
- $('loginPage').classList.remove('hidden');
-
- $('username').value='';
- $('password').value='';
- $('loginMsg').textContent='';
-
- $('customerPageSelect').value='';
- $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
- $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
- $('customerList').innerHTML='<div class="empty">Select a customer</div>';
-
- $('agentView').value='';
- $('agentView').disabled=false;
- currentAgentTransactions=[];
- setAgentNumbers(0,0);
- $('agentList').innerHTML='<div class="empty">Select an agent</div>';
-}
-
-function setToday(){
- const d=new Date();
- $('date').value=d.getFullYear()+'-'+
-  String(d.getMonth()+1).padStart(2,'0')+'-'+
-  String(d.getDate()).padStart(2,'0');
- $('date').max=$('date').value;
-}
-
-function setupAgentDateFilters(){
-
- const yearSelect=$('agentYear');
- const monthSelect=$('agentMonth');
- const now=new Date();
- const currentYear=now.getFullYear();
- const currentMonth=now.getMonth()+1;
-
- yearSelect.innerHTML='';
- for(let y=currentYear-5;y<=currentYear;y++){
-  const o=document.createElement('option');
-  o.value=y;
-  o.textContent=y;
-  if(y===currentYear)o.selected=true;
-  yearSelect.appendChild(o);
- }
-
- const months=[
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December'
- ];
-
- monthSelect.innerHTML='';
- months.forEach((m,i)=>{
-  const o=document.createElement('option');
-  o.value=i+1;
-  o.textContent=m;
-  if(i+1===currentMonth)o.selected=true;
-  monthSelect.appendChild(o);
- });
-
- yearSelect.onchange=()=>{
-  if($('agentView').value)renderAgentTransactions();
- };
-
- monthSelect.onchange=()=>{
-  if($('agentView').value)renderAgentTransactions();
- };
-}
-
-function loadAllData(){
- loadCustomers();
- loadAgents();
- loadNotes();
-}
-
-async function loadCustomers(){
-
- const list=$('customerList');
- list.innerHTML='<div class="empty">Select a customer</div>';
-
- try{
-
-  const result=await getAPI('customers');
-
-  if(!result.success){
-   list.innerHTML='<div class="empty">'+escapeHTML(result.error||'Customer loading failed')+'</div>';
-   return;
-  }
-
-  customerData=Array.isArray(result.data)?result.data:[];
-
-  const transactionSelect=$('customerSelect');
-  transactionSelect.innerHTML='<option value="">Select Customer</option>';
-
-  let totalDue=0;
-
-  customerData.forEach(customer=>{
-   if(!isActive(customer))return;
-
-   const option=document.createElement('option');
-   option.value=customer.customerId;
-   option.textContent=customer.customerName;
-   transactionSelect.appendChild(option);
-
-   totalDue+=number(customer.totalDueKD);
-  });
-
-  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
-  updateCustomerDropdown();
-
- }catch(e){
-  list.innerHTML='<div class="empty">Customer loading error</div>';
- }
-}
-
-function isActive(customer){
- const status=String(
-  customer.status||
-  customer.Status||
-  customer.active||
-  customer.Active||
-  ''
- ).trim().toLowerCase();
-
- return status==='active';
-}
-
-function number(value){
- return parseFloat(String(value||'').replace(/,/g,''))||0;
-}
-
-function updateCustomerDropdown(){
-
- const select=$('customerPageSelect');
- const search=$('customerSearch').value.trim().toLowerCase();
- const oldValue=select.value;
-
- select.innerHTML='<option value="">Select Customer</option>';
-
- customerData.forEach(customer=>{
-
-  if(!isActive(customer)||number(customer.totalDueKD)<=0)return;
-
-  const name=String(customer.customerName||'').toLowerCase();
-  const phone=String(customer.phone||'').toLowerCase();
-  const id=String(customer.customerId||'').toLowerCase();
-
-  if(search&&!name.includes(search)&&!phone.includes(search)&&!id.includes(search))return;
-
-  const option=document.createElement('option');
-  option.value=customer.customerId;
-  option.textContent=customer.customerName;
-  select.appendChild(option);
- });
-
- if(oldValue&&[...select.options].some(o=>o.value===oldValue))
-  select.value=oldValue;
-}
-
-$('customerPageSelect').addEventListener('change',async function(){
-
- const id=this.value;
- const list=$('customerList');
- const info=$('selectedCustomerInfo');
-
- if(!id){
-
-  info.innerHTML='<div class="selected-empty">Select a customer</div>';
-  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-
-  let totalDue=0;
-  customerData.forEach(c=>{
-   if(isActive(c))totalDue+=number(c.totalDueKD);
-  });
-
-  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
-  list.innerHTML='<div class="empty">Select a customer</div>';
-  return;
- }
-
- const customer=customerData.find(x=>String(x.customerId)===String(id));
-
- if(!customer){
-  info.innerHTML='<div class="selected-empty">Customer not found</div>';
-  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-  list.innerHTML='<div class="empty">Customer not found</div>';
-  return;
- }
-
- info.innerHTML=
-  '<div class="selected-name">'+escapeHTML(customer.customerName)+'</div>'+
-  '<div class="selected-phone">'+escapeHTML(customer.phone||'')+'</div>';
-
- $('selectedDueAmount').innerHTML='Loading...';
-
- let totalDue=0;
- customerData.forEach(c=>{
-  if(isActive(c))totalDue+=number(c.totalDueKD);
- });
-
- $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
-
- await renderCustomers(customer);
-});
-
-$('customerSearch').addEventListener('input',function(){
- const currentId=$('customerPageSelect').value;
- updateCustomerDropdown();
-
- const select=$('customerPageSelect');
-
- if(currentId&&[...select.options].some(o=>o.value===currentId))
-  select.value=currentId;
-});
-
-async function renderCustomers(customer){
- $('customerList').innerHTML='';
- await loadCustomerTransactions(customer.customerId);
-}
-
-function calculateCustomerDue(transactions){
-
- let total=0;
-
- transactions.forEach(t=>{
-  const kdAmount=number(
-   t.kdAmount!==undefined
-    ?t.kdAmount
-    :(t.amountKD!==undefined?t.amountKD:t.kd)
-  );
-
-  if(isDueTransaction(t))total+=kdAmount;
-  else if(isPaymentTransaction(t))total-=kdAmount;
- });
-
- return Math.round(total*1000)/1000;
-}
-
-async function loadCustomerTransactions(customerId){
-
- const list=$('customerList');
- const loading=document.createElement('div');
-
- loading.id='customerTxnLoading';
- loading.className='loading';
- loading.textContent='Loading transactions...';
- list.appendChild(loading);
-
- try{
-
-  const result=await getAPI('customerTransactions',{customerId});
-
-  if(loading.isConnected)loading.remove();
-
-  if(!result.success){
-
-   $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-   addEmpty(list,result.error||'Unable to load transactions');
-   return;
-  }
-
-  const transactions=Array.isArray(result.data)
-   ?result.data
-   :(result.data&&Array.isArray(result.data.transactions)
-     ?result.data.transactions:[]);
-
-  const customerDue=calculateCustomerDue(transactions);
-
-  $('selectedDueAmount').innerHTML=fmtKD(customerDue)+' <span>KD</span>';
-
-  if(!transactions.length){
-   addEmpty(list,'No Transaction found');
-   return;
-  }
-
-  const fragment=document.createDocumentFragment();
-
-  transactions.forEach(t=>{
-
-   const sale=isDueTransaction(t);
-   const payment=isPaymentTransaction(t);
-
-   const txn=document.createElement('div');
-   txn.className='txn '+(sale?'sale':payment?'payment':'');
-
-   const top=document.createElement('div');
-   top.className='txn-top';
-
-   const date=document.createElement('div');
-   date.className='txn-date';
-   date.textContent=t.date||t.Date||t.transactionDate||'';
-
-   const type=document.createElement('div');
-   type.className='txn-type';
-   type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');
-
-   top.append(date,type);
-
-   const amount=document.createElement('div');
-   amount.className='txn-amount';
-
-   const kdAmount=number(
-    t.kdAmount!==undefined?t.kdAmount:t.amountKD
-   );
-
-   const sign=payment?'−':sale?'+':'';
-   amount.textContent=sign+fmtKD(kdAmount)+' KD';
-
-   const bottom=document.createElement('div');
-   bottom.className='txn-bottom';
-
-   const note=String(t.note||'').trim();
-   const bdAmount=getBDAmount(t);
-
-   bottom.textContent=note
-    ?note+' • '+fmtIndian(bdAmount)+' TK'
-    :fmtIndian(bdAmount)+' TK';
-
-   txn.append(top,amount,bottom);
-   fragment.appendChild(txn);
-  });
-
-  list.appendChild(fragment);
-
- }catch(e){
-
-  if(loading.isConnected)loading.remove();
-
-  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-  addEmpty(list,'Connection error');
- }
-}
-
-async function loadAgents(){
-
- try{
-
-  const result=await getAPI('agents');
-
-  if(!result.success){
-   renderAgentError(result.error||'Agent loading failed');
-   return;
-  }
-
-  agentData=Array.isArray(result.data)?result.data:[];
-
-  fillAgentSelect($('agentSelect'));
-
-  if(getRole()==='agent'){
-
-   const agentView=$('agentView');
-   const linkedId=String(currentUser.linkedId||'');
-
-   agentView.innerHTML='';
-
-   const found=agentData.find(a=>String(a.agentId)===linkedId);
-
-   const option=document.createElement('option');
-   option.value=linkedId;
-   option.textContent=found
-    ?found.agentName
-    :(currentUser.agentName||currentUser.name||'My Agent');
-
-   agentView.appendChild(option);
-   agentView.value=linkedId;
-   agentView.disabled=true;
-
-   if(linkedId)agentChanged();
-
-  }else{
-
-   fillAgentSelect($('agentView'),true);
-
-   if(getRole()==='viewer'||getRole()==='viewar'){
-    $('agentView').disabled=false;
-    $('agentView').value='';
-   }
-  }
-
-  $('agentList').innerHTML='<div class="empty">Select an agent</div>';
-
- }catch(e){
-  renderAgentError('Agent loading error');
- }
-}
-
-function fillAgentSelect(select,isView=false){
-
- select.innerHTML=isView
-  ?'<option value="">Agent</option>'
-  :'<option value="">Select Agent</option>';
-
- const fragment=document.createDocumentFragment();
-
- agentData.forEach(agent=>{
-  const option=document.createElement('option');
-  option.value=agent.agentId;
-  option.textContent=agent.agentName;
-  fragment.appendChild(option);
- });
-
- select.appendChild(fragment);
-}
-
-function renderAgentError(message){
- $('agentList').innerHTML='<div class="empty">'+escapeHTML(message)+'</div>';
-}
-
-async function loadNotes(){
-
- try{
-
-  const result=await getAPI('options');
-  if(!result.success)return;
-
-  notesData={
-   dueNotes:Array.isArray(result.data.dueNotes)?result.data.dueNotes:[],
-   paymentNotes:Array.isArray(result.data.paymentNotes)?result.data.paymentNotes:[]
-  };
-
-  setNotes(transactionType==='বাকি'
-   ?notesData.dueNotes
-   :notesData.paymentNotes);
-
- }catch(e){}
-}
-
-function setNotes(notes){
-
- const select=$('noteSelect');
- select.innerHTML='';
-
- if(!notes||!notes.length){
-  select.innerHTML='<option value="">Select Note</option>';
-  return;
- }
-
- const fragment=document.createDocumentFragment();
-
- notes.forEach((note,i)=>{
-  const option=document.createElement('option');
-  option.value=note;
-  option.textContent=note;
-  if(i===0)option.selected=true;
-  fragment.appendChild(option);
- });
-
- select.appendChild(fragment);
-}
-
-function setType(type){
-
- transactionType=type;
-
- $('dueBtn').classList.toggle('active',type==='বাকি');
- $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
-
- setNotes(type==='বাকি'?notesData.dueNotes:notesData.paymentNotes);
-}
-
-function normalizeType(value){
- return String(value||'')
-  .trim()
-  .toLowerCase()
-  .replace(/\s+/g,' ')
-  .replace(/^[+\-]\s*/,'')
-  .trim();
-}
-
-function isDueTransaction(t){
-
- const type=normalizeType(
-  t.type||t.Type||t.transactionType||t.TransactionType
- );
-
- return type==='বাকি'||
-  type==='due'||
-  type==='due amount'||
-  type==='বিক্রয়'||
-  type==='sale';
-}
-
-function isPaymentTransaction(t){
-
- const type=normalizeType(
-  t.type||t.Type||t.transactionType||t.TransactionType
- );
-
- return type==='পেমেন্ট'||
-  type==='payment'||
-  type==='জমা'||
-  type==='paid'||
-  type==='payment amount';
-}
-
-function getBDAmount(t){
- return number(
-  t.bdAmount!==undefined&&t.bdAmount!==''
-   ?t.bdAmount
-   :(t.amountBD!==undefined&&t.amountBD!==''?t.amountBD:t.bd)
- );
-}
-
-async function agentChanged(){
-
- const agentId=$('agentView').value;
- const list=$('agentList');
-
- if(!agentId){
-  currentAgentTransactions=[];
-  setAgentNumbers(0,0);
-  list.innerHTML='<div class="empty">Select an agent</div>';
-  return;
- }
-
- list.innerHTML='<div class="loading">Loading transactions...</div>';
-
- try{
-
-  const result=await getAPI('agentTransactions',{
-   linkedId:agentId,
-   username:currentUser?.username||'',
-   role:currentUser?.role||''
-  });
-
-  if(!result.success){
-   list.innerHTML='<div class="empty">'+
-    escapeHTML(result.error||'Unable to load transactions')+
-    '</div>';
-   return;
-  }
-
-  currentAgentTransactions=
-   result.data&&Array.isArray(result.data.transactions)
-    ?result.data.transactions
-    :Array.isArray(result.data)?result.data:[];
-
-  calculateAgentSummary();
-  renderAgentTransactions();
-
- }catch(e){
-
-  currentAgentTransactions=[];
-  setAgentNumbers(0,0);
-  list.innerHTML='<div class="empty">Connection error</div>';
- }
-}
-
-function calculateAgentSummary(){
-
- let balance=0;
- let sales=0;
-
- const year=Number($('agentYear').value);
- const month=Number($('agentMonth').value);
-
- currentAgentTransactions.forEach(t=>{
-
-  const amount=getBDAmount(t);
-
-  if(isDueTransaction(t))balance+=amount;
-  else if(isPaymentTransaction(t))balance-=amount;
-
-  if(isDueTransaction(t)){
-
-   const info=parseTransactionDate(
-    t.date||t.Date||t.transactionDate||t.TransactionDate
-   );
-
-   if(info&&info.year===year&&info.month===month)
-    sales+=amount;
-  }
- });
-
- setAgentNumbers(balance,sales);
-}
-
-function setAgentNumbers(balance,sales){
-
- $('agentCurrentBalance').innerHTML=fmtIndian(balance)+' <span>Tk</span>';
- $('agentMonthlySales').innerHTML=fmtIndian(sales)+' <span>Tk</span>';
-}
-
-function renderAgentTransactions(){
-
- const list=$('agentList');
-
- if(!currentAgentTransactions.length){
-  calculateAgentSummary();
-  list.innerHTML='<div class="empty">No BD transactions found</div>';
-  return;
- }
-
- const year=Number($('agentYear').value);
- const month=Number($('agentMonth').value);
-
- const filtered=currentAgentTransactions.filter(t=>{
-
-  const info=parseTransactionDate(
-   t.date||t.Date||t.transactionDate||t.TransactionDate
-  );
-
-  return info&&info.year===year&&info.month===month;
- });
-
- calculateAgentSummary();
-
- if(!filtered.length){
-  list.innerHTML='<div class="empty">No transaction for this month</div>';
-  return;
- }
-
- list.innerHTML='';
-
- const fragment=document.createDocumentFragment();
-
- filtered.forEach(t=>{
-
-  const sale=isDueTransaction(t);
-  const payment=isPaymentTransaction(t);
-
-  const txn=document.createElement('div');
-  txn.className='txn '+(sale?'sale':payment?'payment':'');
-
-  const top=document.createElement('div');
-  top.className='txn-top';
-
-  const date=document.createElement('div');
-  date.className='txn-date';
-  date.textContent=t.date||t.Date||'';
-
-  const type=document.createElement('div');
-  type.className='txn-type';
-  type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');
-
-  top.append(date,type);
-
-  const amount=document.createElement('div');
-  amount.className='txn-amount';
-
-  const bdAmount=getBDAmount(t);
-  const sign=payment?'−':sale?'+':'';
-
-  amount.textContent=sign+fmtIndian(bdAmount)+' Tk';
-
-  const bottom=document.createElement('div');
-  bottom.className='txn-bottom';
-  bottom.textContent=t.note||'';
-
-  txn.append(top,amount,bottom);
-  fragment.appendChild(txn);
- });
-
- list.appendChild(fragment);
-}
-
-function parseTransactionDate(value){
-
- if(!value)return null;
-
- const str=String(value).trim();
-
- let match=str.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/);
-
- if(match){
-
-  const months={
-   jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
-   jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
-  };
-
-  const month=months[match[2].toLowerCase()];
-
-  if(month)
-   return{year:Number(match[3]),month};
- }
-
- match=str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
-
- if(match)
-  return{year:Number(match[1]),month:Number(match[2])};
-
- match=str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
-
- if(match)
-  return{year:Number(match[3]),month:Number(match[2])};
-
- const date=new Date(str);
-
- if(!isNaN(date.getTime()))
-  return{year:date.getFullYear(),month:date.getMonth()+1};
-
- return null;
-}
-
-$('bdAmount').addEventListener('input',function(){
-
- let value=this.value.replace(/[^\d]/g,'');
-
- if(!value){
-  this.value='';
-  return;
- }
-
- value=value.replace(/^0+(?=\d)/,'');
- this.value=Number(value).toLocaleString('en-IN');
-});
-
-async function saveTransaction(){
-
- if(getRole()!=='admin'){
-  showSaveError('Access denied');
-  return;
- }
-
- const date=$('date').value;
- const agentId=$('agentSelect').value;
- const customerId=$('customerSelect').value;
- const kd=number($('kdAmount').value);
- const bd=number($('bdAmount').value);
- const note=$('noteSelect').value;
-
- if(!date){
-  showSaveError('Date required');
-  return;
- }
-
- if(kd>0&&!customerId){
-  showSaveError('KD Amount দিলে Customer নির্বাচন করুন');
-  return;
- }
-
- if(bd>0&&!agentId){
-  showSaveError('BD Amount দিলে Agent নির্বাচন করুন');
-  return;
- }
-
- if(kd<=0&&bd<=0){
-  showSaveError('KD অথবা BD Amount দিন');
-  return;
- }
-
- const selectedDate=new Date(date+'T00:00:00');
- const today=new Date();
- today.setHours(0,0,0,0);
-
- if(selectedDate>today){
-  showSaveError('Future date দেওয়া যাবে না');
-  return;
- }
-
- const agent=agentData.find(a=>String(a.agentId)===String(agentId));
- const customer=customerData.find(c=>String(c.customerId)===String(customerId));
-
- const button=$('saveBtn');
- const message=$('saveMsg');
- const savedCustomerPageId=$('customerPageSelect').value;
-
- button.disabled=true;
- button.textContent='Saving...';
- message.textContent='';
- message.className='msg';
-
- try{
-
-  const result=await postAPI({
-
-   action:'addTransaction',
-
-   username:currentUser?.username||'',
-   role:currentUser?.role||'',
-
-   date:formatDate(date),
-
-   customerId,
-   customerName:customer?.customerName||'',
-   agentName:agent?.agentName||'',
-
-   kdAmount:kd,
-   bdAmount:bd,
-
-   type:transactionType,
-   note
-  });
-
-  if(!result.success){
-   showSaveError(result.error||'Save failed');
-   return;
-  }
-
-  message.className='msg success';
-  message.textContent='Transaction saved successfully';
-
-  $('kdAmount').value='';
-  $('bdAmount').value='';
-
-  await loadCustomers();
-
-  const customerPageSelect=$('customerPageSelect');
-
-  if(
-   savedCustomerPageId&&
-   [...customerPageSelect.options].some(o=>o.value===savedCustomerPageId)
-  ){
-
-   customerPageSelect.value=savedCustomerPageId;
-   customerPageSelect.dispatchEvent(new Event('change'));
-  }
-
-  const selectedAgent=$('agentView').value;
-
-  if(selectedAgent)
-   await agentChanged();
-
-  setTimeout(()=>{
-   message.textContent='';
-   message.className='msg';
-  },2500);
-
- }catch(e){
-
-  showSaveError('Connection error');
-
- }finally{
-
-  button.disabled=false;
-  button.textContent='✅ Save';
- }
-}
-
-function showSaveError(text){
- const message=$('saveMsg');
- message.className='msg error';
- message.textContent=text;
-}
-
-function formatDate(value){
-
- const parts=value.split('-');
-
- const months=[
-  'Jan','Feb','Mar','Apr','May','Jun',
-  'Jul','Aug','Sep','Oct','Nov','Dec'
- ];
-
- return parts[2]+'-'+months[Number(parts[1])-1]+'-'+parts[0];
-}
-
-function addEmpty(parent,text){
-
- const box=document.createElement('div');
- box.className='empty';
- box.textContent=text;
- parent.appendChild(box);
-}
-
-function escapeHTML(value){
-
- return String(
-  value===null||value===undefined?'':value
- )
- .replace(/&/g,'&amp;')
- .replace(/</g,'&lt;')
- .replace(/>/g,'&gt;')
- .replace(/"/g,'&quot;')
- .replace(/'/g,'&#039;');
-}
-
-$('password').addEventListener('keydown',e=>{
- if(e.key==='Enter')login();
-});
-
-restoreLogin();
-
-</script>
-
-</body>
+<!DOCTYPE html>  <html lang="bn">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">  
+<title>Amaya Exchange</title>  <style>  
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}  
+html,body{margin:0;padding:0;background:#f5f7fa;color:#172033;font-family:Arial,sans-serif}  
+body{min-height:100vh}  
+button,input,select{font:inherit}  
+button{cursor:pointer}  
+.hidden{display:none!important}  
+.app{width:100%;max-width:520px;margin:auto;min-height:100vh}  
+  
+.header{  
+  background:#fff;  
+  padding:14px 15px;  
+  border-bottom:1px solid #e7e9ed;  
+  position:sticky;  
+  top:0;  
+  z-index:20;  
+  overflow:visible;  
+}  
+  
+.header-row{  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  gap:10px;  
+  overflow:visible;  
+}  
+  
+.logo{font-size:19px;font-weight:800}  
+.tagline{font-size:11px;color:#858e9d;margin-top:4px}  
+.logout{border:0;background:#eef0f3;color:#303744;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:700}  
+  
+  
+/* ================= HEADER RATE ================= */  
+  
+.header-rate-wrap{  
+  display:flex;  
+  align-items:center;  
+  gap:6px;  
+  flex-shrink:0;  
+}  
+  
+.header-rate{  
+  position:relative;  
+  width:120px;  
+  flex-shrink:0;  
+}  
+  
+.header-rate-input{  
+  width:100%;  
+  height:34px;  
+  border:1px solid #dfe3e9;  
+  border-radius:18px;  
+  background:#EFF6FF;  
+  padding:0 10px;  
+  outline:0;  
+  color:#172033;  
+  font-size:11px;  
+  font-weight:600;  
+}  
+  
+.header-rate-input:focus{  
+  border-color:#111827;  
+}  
+  
+.header-rate-popup{  
+  position:absolute;  
+  left:-10px;  
+  right:-45px;  
+  top:calc(100% + 7px);  
+  
+  background:#111827;  
+  color:#fff;  
+  
+  border-radius:10px;  
+  padding:12px 9px;  
+  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  gap:7px;  
+  
+  opacity:0;  
+  visibility:hidden;  
+  transform:translateY(7px);  
+  
+  transition:  
+    opacity .18s ease,  
+    transform .18s ease,  
+    visibility .18s ease;  
+  
+  box-shadow:0 5px 16px rgba(0,0,0,.18);  
+  
+  z-index:100;  
+}  
+  
+.header-rate-popup.show{  
+  opacity:1;  
+  visibility:visible;  
+  transform:translateY(0);  
+}  
+  
+.header-rate-left{  
+  min-width:0;  
+}  
+  
+.header-rate-label{  
+  color:#aeb8c7;  
+  font-size:8px;  
+  line-height:1;  
+  margin-bottom:2px;  
+}  
+  
+.header-rate-amount{  
+  font-size:12px;  
+  font-weight:700;  
+  white-space:nowrap;  
+}  
+  
+.header-rate-right{  
+  text-align:right;  
+  flex-shrink:0;  
+}  
+  
+.header-rate-kd{  
+  font-size:15px;  
+  font-weight:800;  
+  line-height:1;  
+  white-space:nowrap;  
+}  
+  
+.header-rate-popup::after{  
+  content:"";  
+  position:absolute;  
+  right:35%;  
+  top:-5px;  
+  width:10px;  
+  height:10px;  
+  background:#111827;  
+  transform:rotate(45deg);  
+}  
+  
+  
+/* ================= TABS ================= */  
+  
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:11px 14px 5px}  
+.tab{border:0;height:43px;border-radius:11px;background:#e7ebf0;color:#687284;font-size:12px;font-weight:800}  
+.tab.active{background:#111827;color:#fff}  
+  
+.content{padding:10px 14px 25px}  
+.panel{display:none}  
+.panel.active{display:block}  
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 3px 15px rgba(0,0,0,.045)}  
+  
+.field{margin-bottom:13px}  
+.label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}  
+input,select{width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;padding:0 12px;outline:0;color:#172033}  
+input:focus,select:focus{border-color:#111827}  
+select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}  
+.amount{font-size:17px!important;font-weight:700}  
+.amount-row,.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}  
+.type-row{margin:3px 0 13px}  
+.type-btn{height:44px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;font-weight:800}  
+.type-btn.active{background:#111827;color:#fff;border-color:#111827}  
+.save{width:100%;height:49px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:800}  
+.save:disabled{opacity:.55;cursor:not-allowed}  
+.msg{font-size:12px;margin-top:9px;text-align:center}  
+.error{color:#d33131}  
+.success{color:#16824c}  
+  
+.customer-filter-card{background:#fff;border-radius:14px;padding:10px;margin-bottom:9px;box-shadow:0 2px 10px rgba(0,0,0,.035)}  
+.customer-filter-row{display:grid;grid-template-columns:.72fr 1.28fr;gap:6px;margin-bottom:7px}  
+.customer-filter-row input,.customer-filter-row select{height:36px;font-size:11px;padding:0 8px;border-radius:9px}  
+.customer-selected-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;min-height:38px}  
+.selected-customer{min-width:0}  
+.selected-name{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}  
+.selected-phone{font-size:9px;color:#858e9d;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}  
+  
+.due-amount-box{background:#f1f3f6;border-radius:9px;padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0}  
+.due-amount-label{font-size:8px;color:#858e9d;margin-bottom:1px}  
+.due-amount-value{font-size:13px;font-weight:800;color:#172033;line-height:1.1;white-space:nowrap}  
+.due-amount-value span{font-size:8px;font-weight:700}  
+  
+.total-due-box{background:#111827;border-radius:9px;padding:6px 9px;min-width:105px;text-align:center;flex-shrink:0}  
+.total-due-label{font-size:8px;color:#c8ced8;margin-bottom:1px}  
+.total-due-value{font-size:14px;font-weight:800;color:#fff;line-height:1.1;white-space:nowrap}  
+.total-due-value span{font-size:8px;font-weight:700}  
+  
+.list{display:flex;flex-direction:column;gap:6px}  
+#customerList{max-height:calc(100vh - 255px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}  
+  
+.txn{background:#fff;border-radius:9px;padding:7px 8px;box-shadow:0 1px 6px rgba(0,0,0,.035);border:1px solid #edf0f3;border-left:3px solid #dfe3e9}  
+.txn.sale{border-left-color:#35a853}  
+.txn.payment{border-left-color:#f3a6a6}  
+.txn-top{display:flex;align-items:center;justify-content:space-between;gap:6px}  
+.txn-date{font-size:9px;color:#858e9d}  
+.txn-type{font-size:9px;font-weight:800}  
+.txn.sale .txn-type{color:#16824c}  
+.txn.payment .txn-type{color:#d66b6b}  
+.txn-amount{font-size:12px;font-weight:800;margin-top:2px}  
+.txn.sale .txn-amount{color:#16824c}  
+.txn.payment .txn-amount{color:#d66b6b}  
+.txn-bottom{font-size:8px;color:#737d8d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}  
+  
+.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1.25fr;gap:5px;margin-bottom:8px}  
+.agent-filter-row select{height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0}  
+.agent-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}  
+.agent-summary-box{background:#111827;color:#fff;border-radius:10px;padding:8px 9px;border:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}  
+.agent-summary-label{font-size:8px;color:#c8ced8;margin-bottom:2px}  
+.agent-summary-value{font-size:14px;font-weight:800;line-height:1.2;color:#fff}  
+.agent-summary-value span{font-size:8px;font-weight:700;color:#c8ced8}  
+.agent-balance{text-align:left}  
+.agent-sales{text-align:right}  
+#agentList{max-height:calc(100vh - 250px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}  
+#agentList .txn{padding:7px 8px;border-radius:9px}  
+#agentList .txn-date,#agentList .txn-type{font-size:9px}  
+#agentList .txn-amount{font-size:12px;margin-top:2px}  
+#agentList .txn-bottom{font-size:8px;margin-top:2px}  
+  
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}  
+.login-box{width:100%;max-width:390px;background:#fff;border-radius:21px;padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)}  
+.login-title{font-size:24px;font-weight:800}  
+.login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}  
+.loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}  
+  
+  
+/* ================= SMALL PHONE ================= */  
+  
+@media(max-width:360px){  
+  
+.tabs{gap:5px}  
+.tab{font-size:11px}  
+.amount-row{gap:6px}  
+.customer-filter-row{gap:5px}  
+.customer-filter-row input,.customer-filter-row select{font-size:10px;padding:0 7px}  
+.agent-filter-row{gap:4px}  
+.agent-filter-row select{font-size:9px;padding:0 5px}  
+.agent-summary-value{font-size:13px}  
+.total-due-box{min-width:98px}  
+.due-amount-box{min-width:75px;padding:6px 6px}  
+.due-amount-value{font-size:12px}  
+.selected-name{font-size:11px}  
+.customer-selected-row{gap:5px}  
+  
+.header{  
+  padding:13px 10px;  
+}  
+  
+.logo{  
+  font-size:16px;  
+}  
+  
+.tagline{  
+  font-size:9px;  
+}  
+  
+.header-rate-wrap{  
+  gap:4px;  
+}  
+  
+.header-rate{  
+  width:105px;  
+}  
+  
+.header-rate-input{  
+  height:31px;  
+  font-size:10px;  
+  padding:0 8px;  
+}  
+  
+.logout{  
+  padding:7px 8px;  
+  font-size:10px;  
+}  
+  
+.header-rate-popup{  
+  padding:6px 7px;  
+}  
+  
+.header-rate-amount{  
+  font-size:11px;  
+}  
+  
+.header-rate-kd{  
+  font-size:14px;  
+}  
+  
+}  
+</style>  </head>  <body>  <div id="loginPage" class="login-page">  
+<div class="login-box">  
+<div class="login-title">Amaya Exchange</div>  
+<div class="login-sub">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>  <div class="field">  
+<label class="label">Username</label>  
+<input id="username" type="text" autocomplete="username">  
+</div>  <div class="field">  
+<label class="label">Password</label>  
+<input id="password" type="password" autocomplete="current-password">  
+</div>  <button id="loginBtn" class="save" onclick="login()">Login</button>
+
+<div id="loginMsg" class="msg"></div>  
+</div>  
+</div>  <div id="app" class="app hidden">  <div class="header">  
+<div class="header-row">  <div>  
+<div class="logo">Amaya Exchange</div>  
+<div class="tagline">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>  
+</div>  <!-- ================= HEADER RATE ================= -->  <div class="header-rate-wrap">  <div id="adminRateBox" class="header-rate">  <div  
+id="headerRatePopup"  
+class="header-rate-popup">  <div class="header-rate-left">  <div class="header-rate-label">  
+Amount  
+</div>  <div  
+id="headerRatePopupAmount"  
+class="header-rate-amount">  
+0 Tk  
+</div>  </div>  <div class="header-rate-right">  <div  
+id="headerRatePopupKD"  
+class="header-rate-kd">  
+0.000 KD  
+</div>  </div>  </div>  <input  
+id="headerRateAmount"  
+class="header-rate-input"  
+type="text"  
+inputmode="numeric"  
+autocomplete="off"  
+placeholder="💱 Rate"  
+oninput="calculateHeaderRate()">
+
+</div>  <button class="logout" onclick="logout()">Logout</button>
+
+</div>  </div>  
+</div>  <div class="tabs">  
+<button class="tab active" onclick="openTab('transaction',this)">Add Transaction</button>  
+<button class="tab" onclick="openTab('customer',this)">Customer</button>  
+<button class="tab" onclick="openTab('agent',this)">Agent</button>  
+</div>  <div class="content">  <section id="panelTransaction" class="panel active">  
+<div class="card">  <div style="font-size:16px;font-weight:800;margin-bottom:14px">Add Transaction</div>  <div class="field">  
+<label class="label">📅 Date</label>  
+<input id="date" type="date">  
+</div>  <div class="field">  
+<label class="label">👨🏻‍💼 Agent</label>  
+<select id="agentSelect"><option value="">Select Agent</option></select>  
+</div>  <div class="field">  
+<label class="label">🤝 Customer</label>  
+<select id="customerSelect"><option value="">Select Customer</option></select>  
+</div>  <div class="amount-row">  
+<div class="field">  
+<label class="label">🇰🇼 KD Amount</label>  
+<input id="kdAmount" class="amount" type="text" inputmode="decimal" placeholder="0.000">  
+</div>  <div class="field">  
+<label class="label">৳ BD Amount</label>  
+<input id="bdAmount" class="amount" type="text" inputmode="numeric" placeholder="0">  
+</div>  
+</div>  <div class="type-row">  
+<button id="dueBtn" class="type-btn active" onclick="setType('বাকি')">+ বাকি</button>  
+<button id="paymentBtn" class="type-btn" onclick="setType('পেমেন্ট')">- পেমেন্ট</button>  
+</div>  <div class="field">  
+<label class="label">Note</label>  
+<select id="noteSelect"><option value="">Select Note</option></select>  
+</div>  <button id="saveBtn" class="save" onclick="saveTransaction()">💾 Save</button>
+
+<div id="saveMsg" class="msg"></div>  </div>  
+</section>  <section id="panelCustomer" class="panel">  <div class="customer-filter-card">  <div class="customer-filter-row">  
+<input id="customerSearch" type="search" placeholder="🔍 Search..." autocomplete="off">  
+<select id="customerPageSelect">  
+<option value="">Select Customer</option>  
+</select>  
+</div>  <div class="customer-selected-row">  <div id="selectedCustomerInfo" class="selected-customer">  
+<div class="selected-empty">Select a customer</div>  
+</div>  <div class="due-amount-box">  
+<div class="due-amount-label">Due Amount</div>  
+<div id="selectedDueAmount" class="due-amount-value">0.000 <span>KD</span></div>  
+</div>  <div class="total-due-box">  
+<div class="total-due-label">Total Due</div>  
+<div id="allCustomerDue" class="total-due-value">0.000 <span>KD</span></div>  
+</div>  </div>  
+</div>  <div id="customerList" class="list">  
+<div class="empty">Select a customer</div>  
+</div>  </section>  <section id="panelAgent" class="panel">  <div class="agent-filter-row">  
+<select id="agentYear"></select>  
+<select id="agentMonth"></select>  
+<select id="agentView" onchange="agentChanged()">  
+<option value="">Agent</option>  
+</select>  
+</div>  <div class="agent-summary">  <div class="agent-summary-box agent-balance">  
+<div class="agent-summary-label">Current Balance</div>  
+<div id="agentCurrentBalance" class="agent-summary-value">0 <span>Tk</span></div>  
+</div>  <div class="agent-summary-box agent-sales">  
+<div class="agent-summary-label">Monthly Sales</div>  
+<div id="agentMonthlySales" class="agent-summary-value">0 <span>Tk</span></div>  
+</div>  </div>  <div id="agentList" class="list">  
+<div class="empty">Select an agent</div>  
+</div>  </section>  </div>  
+</div>  <script>  
+  
+const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';  
+  
+  
+/* ================= HEADER RATE ================= */  
+  
+const HEADER_RATE_1=333.333333;  
+const HEADER_RATE_2=363.636363;  
+const HEADER_RATE_3=357.142857;  
+  
+function calculateHeaderRate(){  
+  
+ let value=String($('headerRateAmount').value)  
+  .replace(/[০-৯]/g,function(d){  
+   return "0123456789"["০১২৩৪৫৬৭৮৯".indexOf(d)];  
+  })  
+  .replace(/[^0-9]/g,'');  
+  
+ const popup=$('headerRatePopup');  
+  
+ document.addEventListener('click',function(e){  
+  
+ const rateWrap=document.querySelector('.header-rate-wrap');  
+  
+ if(!rateWrap.contains(e.target)){  
+  
+  $('headerRateAmount').value='';  
+  $('headerRatePopup').classList.remove('show');  
+  
+ }  
+  
+});   
+   
+  if(!value){  
+  popup.classList.remove('show');  
+  return;  
+ }  
+  
+ const amount=parseInt(value,10);  
+  
+ if(!Number.isFinite(amount)||amount<=0){  
+  popup.classList.remove('show');  
+  return;  
+ }  
+  
+ let rate;  
+  
+ if(amount<1000){  
+  rate=HEADER_RATE_1;  
+ }else if(amount%1000===0){  
+  rate=HEADER_RATE_2;  
+ }else{  
+  rate=HEADER_RATE_3;  
+ }  
+  
+ const kd=amount/rate;  
+  
+ $('headerRateAmount').value=  
+  Math.floor(amount).toLocaleString('en-IN');  
+  
+ $('headerRatePopupAmount').textContent=  
+  Math.floor(amount).toLocaleString('en-IN')+' Tk';  
+  
+ $('headerRatePopupKD').textContent=  
+  kd.toFixed(3)+' KD';  
+  
+ popup.classList.add('show');  
+}  
+  
+  
+/* ================= MAIN ================= */  
+  
+const $=id=>document.getElementById(id);  
+  
+let currentUser=null;  
+let transactionType='বাকি';  
+let customerData=[];  
+let agentData=[];  
+let notesData={dueNotes:[],paymentNotes:[]};  
+let currentAgentTransactions=[];  
+  
+const fmtKD=v=>number(v).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});  
+const fmtIndian=v=>Math.floor(number(v)).toLocaleString('en-IN');  
+  
+async function getAPI(action,params={}){  
+ const q=new URLSearchParams({action});  
+ for(const k in params)  
+  if(params[k]!==undefined&&params[k]!==null&&params[k]!=='')  
+   q.set(k,params[k]);  
+ const r=await fetch(API+'?'+q,{method:'GET',cache:'no-store'});  
+ return r.json();  
+}  
+  
+async function postAPI(data){  
+ const r=await fetch(API,{  
+  method:'POST',  
+  headers:{'Content-Type':'text/plain;charset=utf-8'},  
+  body:JSON.stringify(data)  
+ });  
+ return r.json();  
+}  
+  
+function openTab(tab,button){  
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));  
+ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));  
+  
+ const panel=$('panel'+tab.charAt(0).toUpperCase()+tab.slice(1));  
+ if(panel&&!panel.classList.contains('hidden'))panel.classList.add('active');  
+ if(button&&!button.classList.contains('hidden'))button.classList.add('active');  
+}  
+  
+async function login(){  
+ const username=$('username').value.trim();  
+ const password=$('password').value;  
+ const msg=$('loginMsg');  
+ const btn=$('loginBtn');  
+  
+ if(!username||!password){  
+  msg.className='msg error';  
+  msg.textContent='Username and password required';  
+  return;  
+ }  
+  
+ btn.disabled=true;  
+ btn.textContent='Logging in...';  
+ msg.textContent='';  
+  
+ try{  
+  const result=await getAPI('login',{username,password});  
+  
+  if(!result.success){  
+   msg.className='msg error';  
+   msg.textContent=result.error||'Login failed';  
+   return;  
+  }  
+  
+  currentUser=result.data;  
+  localStorage.setItem('amaya_user',JSON.stringify(currentUser));  
+  showApp();  
+  
+ }catch(e){  
+  msg.className='msg error';  
+  msg.textContent='Connection error';  
+ }finally{  
+  btn.disabled=false;  
+  btn.textContent='Login';  
+ }  
+}  
+  
+function restoreLogin(){  
+ try{  
+  const saved=localStorage.getItem('amaya_user');  
+  if(!saved)return;  
+  const user=JSON.parse(saved);  
+  if(user&&user.loggedIn){  
+   currentUser=user;  
+   showApp();  
+  }  
+ }catch(e){  
+  localStorage.removeItem('amaya_user');  
+ }  
+}  
+  
+function showApp(){  
+ $('loginPage').classList.add('hidden');  
+ $('app').classList.remove('hidden');  
+ setToday();  
+ setupAgentDateFilters();  
+ applyRoleAccess();  
+ loadAllData();  
+}  
+  
+function getRole(){  
+ return String(currentUser?.role||'').trim().toLowerCase();  
+}  
+  
+function applyRoleAccess(){  
+  
+ const role=getRole();  
+  
+ const rateBox=$('adminRateBox');  
+  
+ if(rateBox){  
+  rateBox.classList.toggle('hidden',role!=='admin');  
+ }  
+  
+ const tabs=document.querySelectorAll('.tab');  
+ const transactionTab=tabs[0];  
+ const customerTab=tabs[1];  
+ const agentTab=tabs[2];  
+  
+ const transactionPanel=$('panelTransaction');  
+ const customerPanel=$('panelCustomer');  
+ const agentPanel=$('panelAgent');  
+  
+ [transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));  
+ [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));  
+  
+ if(role==='admin'){  
+  openTab('transaction',transactionTab);  
+  return;  
+ }  
+  
+ if(role==='agent'){  
+  
+  transactionTab.classList.add('hidden');  
+  customerTab.classList.add('hidden');  
+  agentTab.classList.add('hidden');  
+  
+  transactionPanel.classList.add('hidden');  
+  customerPanel.classList.add('hidden');  
+  agentPanel.classList.remove('hidden');  
+  agentPanel.classList.add('active');  
+  
+  const agentView=$('agentView');  
+  agentView.innerHTML='';  
+  
+  const option=document.createElement('option');  
+  option.value=currentUser.linkedId||'';  
+  option.textContent=currentUser.agentName||currentUser.name||'My Agent';  
+  
+  agentView.appendChild(option);  
+  agentView.value=currentUser.linkedId||'';  
+  agentView.disabled=true;  
+  
+  if(currentUser.linkedId)agentChanged();  
+  return;  
+ }  
+  
+ if(role==='viewer'||role==='viewar'){  
+  
+  transactionTab.classList.add('hidden');  
+  transactionPanel.classList.add('hidden');  
+  
+  customerTab.classList.remove('hidden');  
+  agentTab.classList.remove('hidden');  
+  
+  customerPanel.classList.remove('hidden');  
+  agentPanel.classList.remove('hidden');  
+  
+  $('customerPageSelect').value='';  
+  $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';  
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+  $('customerList').innerHTML='<div class="empty">Select a customer</div>';  
+  
+  let totalDue=0;  
+  customerData.forEach(c=>{  
+   if(isActive(c))totalDue+=number(c.totalDueKD);  
+  });  
+  
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';  
+  
+  const agentView=$('agentView');  
+  agentView.disabled=false;  
+  agentView.value='';  
+  
+  currentAgentTransactions=[];  
+  setAgentNumbers(0,0);  
+  $('agentList').innerHTML='<div class="empty">Select an agent</div>';  
+  
+  openTab('customer',customerTab);  
+  return;  
+ }  
+  
+ [transactionTab,customerTab,agentTab].forEach(x=>x.classList.add('hidden'));  
+ [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.add('hidden'));  
+}  
+  
+function logout(){  
+  
+ currentUser=null;  
+ localStorage.removeItem('amaya_user');  
+  
+ $('app').classList.add('hidden');  
+ $('loginPage').classList.remove('hidden');  
+  
+ $('username').value='';  
+ $('password').value='';  
+ $('loginMsg').textContent='';  
+  
+ $('customerPageSelect').value='';  
+ $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';  
+ $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+ $('customerList').innerHTML='<div class="empty">Select a customer</div>';  
+  
+ $('agentView').value='';  
+ $('agentView').disabled=false;  
+ currentAgentTransactions=[];  
+ setAgentNumbers(0,0);  
+ $('agentList').innerHTML='<div class="empty">Select an agent</div>';  
+  
+ $('headerRateAmount').value='';  
+ $('headerRatePopup').classList.remove('show');  
+}  
+  
+function setToday(){  
+ const d=new Date();  
+ $('date').value=d.getFullYear()+'-'+  
+  String(d.getMonth()+1).padStart(2,'0')+'-'+  
+  String(d.getDate()).padStart(2,'0');  
+ $('date').max=$('date').value;  
+}  
+  
+function setupAgentDateFilters(){  
+  
+ const yearSelect=$('agentYear');  
+ const monthSelect=$('agentMonth');  
+ const now=new Date();  
+ const currentYear=now.getFullYear();  
+ const currentMonth=now.getMonth()+1;  
+  
+ yearSelect.innerHTML='';  
+ for(let y=currentYear-5;y<=currentYear;y++){  
+  const o=document.createElement('option');  
+  o.value=y;  
+  o.textContent=y;  
+  if(y===currentYear)o.selected=true;  
+  yearSelect.appendChild(o);  
+ }  
+  
+ const months=[  
+  'January','February','March','April','May','June',  
+  'July','August','September','October','November','December'  
+ ];  
+  
+ monthSelect.innerHTML='';  
+ months.forEach((m,i)=>{  
+  const o=document.createElement('option');  
+  o.value=i+1;  
+  o.textContent=m;  
+  if(i+1===currentMonth)o.selected=true;  
+  monthSelect.appendChild(o);  
+ });  
+  
+ yearSelect.onchange=()=>{  
+  if($('agentView').value)renderAgentTransactions();  
+ };  
+  
+ monthSelect.onchange=()=>{  
+  if($('agentView').value)renderAgentTransactions();  
+ };  
+}  
+  
+function loadAllData(){  
+ loadCustomers();  
+ loadAgents();  
+ loadNotes();  
+}  
+  
+async function loadCustomers(){  
+  
+ const list=$('customerList');  
+ list.innerHTML='<div class="empty">Select a customer</div>';  
+  
+ try{  
+  
+  const result=await getAPI('customers');  
+  
+  if(!result.success){  
+   list.innerHTML='<div class="empty">'+escapeHTML(result.error||'Customer loading failed')+'</div>';  
+   return;  
+  }  
+  
+  customerData=Array.isArray(result.data)?result.data:[];  
+  
+  const transactionSelect=$('customerSelect');  
+  transactionSelect.innerHTML='<option value="">Select Customer</option>';  
+  
+  let totalDue=0;  
+  
+  customerData.forEach(customer=>{  
+   if(!isActive(customer))return;  
+  
+   const option=document.createElement('option');  
+   option.value=customer.customerId;  
+   option.textContent=customer.customerName;  
+   transactionSelect.appendChild(option);  
+  
+   totalDue+=number(customer.totalDueKD);  
+  });  
+  
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';  
+  updateCustomerDropdown();  
+  
+ }catch(e){  
+  list.innerHTML='<div class="empty">Customer loading error</div>';  
+ }  
+}  
+  
+function isActive(customer){  
+ const status=String(  
+  customer.status||  
+  customer.Status||  
+  customer.active||  
+  customer.Active||  
+  ''  
+ ).trim().toLowerCase();  
+  
+ return status==='active';  
+}  
+  
+function number(value){  
+ return parseFloat(String(value||'').replace(/,/g,''))||0;  
+}  
+  
+function updateCustomerDropdown(){  
+  
+ const select=$('customerPageSelect');  
+ const search=$('customerSearch').value.trim().toLowerCase();  
+ const oldValue=select.value;  
+  
+ select.innerHTML='<option value="">Select Customer</option>';  
+  
+ customerData.forEach(customer=>{  
+  
+  if(!isActive(customer)||number(customer.totalDueKD)<=0)return;  
+  
+  const name=String(customer.customerName||'').toLowerCase();  
+  const phone=String(customer.phone||'').toLowerCase();  
+  const id=String(customer.customerId||'').toLowerCase();  
+  
+  if(search&&!name.includes(search)&&!phone.includes(search)&&!id.includes(search))return;  
+  
+  const option=document.createElement('option');  
+  option.value=customer.customerId;  
+  option.textContent=customer.customerName;  
+  select.appendChild(option);  
+ });  
+  
+ if(oldValue&&[...select.options].some(o=>o.value===oldValue))  
+  select.value=oldValue;  
+}  
+  
+$('customerPageSelect').addEventListener('change',async function(){  
+  
+ const id=this.value;  
+ const list=$('customerList');  
+ const info=$('selectedCustomerInfo');  
+  
+ if(!id){  
+  
+  info.innerHTML='<div class="selected-empty">Select a customer</div>';  
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+  
+  let totalDue=0;  
+  customerData.forEach(c=>{  
+   if(isActive(c))totalDue+=number(c.totalDueKD);  
+  });  
+  
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';  
+  list.innerHTML='<div class="empty">Select a customer</div>';  
+  return;  
+ }  
+  
+ const customer=customerData.find(x=>String(x.customerId)===String(id));  
+  
+ if(!customer){  
+  info.innerHTML='<div class="selected-empty">Customer not found</div>';  
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+  list.innerHTML='<div class="empty">Customer not found</div>';  
+  return;  
+ }  
+  
+ info.innerHTML=  
+  '<div class="selected-name">'+escapeHTML(customer.customerName)+'</div>'+  
+  '<div class="selected-phone">'+escapeHTML(customer.phone||'')+'</div>';  
+  
+ $('selectedDueAmount').innerHTML='Loading...';  
+  
+ let totalDue=0;  
+ customerData.forEach(c=>{  
+  if(isActive(c))totalDue+=number(c.totalDueKD);  
+ });  
+  
+ $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';  
+  
+ await renderCustomers(customer);  
+});  
+  
+$('customerSearch').addEventListener('input',function(){  
+ const currentId=$('customerPageSelect').value;  
+ updateCustomerDropdown();  
+  
+ const select=$('customerPageSelect');  
+  
+ if(currentId&&[...select.options].some(o=>o.value===currentId))  
+  select.value=currentId;  
+});  
+  
+async function renderCustomers(customer){  
+ $('customerList').innerHTML='';  
+ await loadCustomerTransactions(customer.customerId);  
+}  
+  
+function calculateCustomerDue(transactions){  
+  
+ let total=0;  
+  
+ transactions.forEach(t=>{  
+  const kdAmount=number(  
+   t.kdAmount!==undefined  
+    ?t.kdAmount  
+    :(t.amountKD!==undefined?t.amountKD:t.kd)  
+  );  
+  
+  if(isDueTransaction(t))total+=kdAmount;  
+  else if(isPaymentTransaction(t))total-=kdAmount;  
+ });  
+  
+ return Math.round(total*1000)/1000;  
+}  
+  
+async function loadCustomerTransactions(customerId){  
+  
+ const list=$('customerList');  
+ const loading=document.createElement('div');  
+  
+ loading.id='customerTxnLoading';  
+ loading.className='loading';  
+ loading.textContent='Loading transactions...';  
+ list.appendChild(loading);  
+  
+ try{  
+  
+  const result=await getAPI('customerTransactions',{customerId});  
+  
+  if(loading.isConnected)loading.remove();  
+  
+  if(!result.success){  
+  
+   $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+   addEmpty(list,result.error||'Unable to load transactions');  
+   return;  
+  }  
+  
+  const transactions=Array.isArray(result.data)  
+   ?result.data  
+   :(result.data&&Array.isArray(result.data.transactions)  
+     ?result.data.transactions:[]);  
+  
+  const customerDue=calculateCustomerDue(transactions);  
+  
+  $('selectedDueAmount').innerHTML=fmtKD(customerDue)+' <span>KD</span>';  
+  
+  if(!transactions.length){  
+   addEmpty(list,'No Transaction found');  
+   return;  
+  }  
+  
+  const fragment=document.createDocumentFragment();  
+  
+  transactions.forEach(t=>{  
+  
+   const sale=isDueTransaction(t);  
+   const payment=isPaymentTransaction(t);  
+  
+   const txn=document.createElement('div');  
+   txn.className='txn '+(sale?'sale':payment?'payment':'');  
+  
+   const top=document.createElement('div');  
+   top.className='txn-top';  
+  
+   const date=document.createElement('div');  
+   date.className='txn-date';  
+   date.textContent=t.date||t.Date||t.transactionDate||'';  
+  
+   const type=document.createElement('div');  
+   type.className='txn-type';  
+   type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');  
+  
+   top.append(date,type);  
+  
+   const amount=document.createElement('div');  
+   amount.className='txn-amount';  
+  
+   const kdAmount=number(  
+    t.kdAmount!==undefined?t.kdAmount:t.amountKD  
+   );  
+  
+   const sign=payment?'−':sale?'+':'';  
+   amount.textContent=sign+fmtKD(kdAmount)+' KD';  
+  
+   const bottom=document.createElement('div');  
+   bottom.className='txn-bottom';  
+  
+   const note=String(t.note||'').trim();  
+   const bdAmount=getBDAmount(t);  
+  
+   bottom.textContent=note  
+    ?note+' • '+fmtIndian(bdAmount)+' TK'  
+    :fmtIndian(bdAmount)+' TK';  
+  
+   txn.append(top,amount,bottom);  
+   fragment.appendChild(txn);  
+  });  
+  
+  list.appendChild(fragment);  
+  
+ }catch(e){  
+  
+  if(loading.isConnected)loading.remove();  
+  
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';  
+  addEmpty(list,'Connection error');  
+ }  
+}  
+  
+async function loadAgents(){  
+  
+ try{  
+  
+  const result=await getAPI('agents');  
+  
+  if(!result.success){  
+   renderAgentError(result.error||'Agent loading failed');  
+   return;  
+  }  
+  
+  agentData=Array.isArray(result.data)?result.data:[];  
+  
+  fillAgentSelect($('agentSelect'));  
+  
+  if(getRole()==='agent'){  
+  
+   const agentView=$('agentView');  
+   const linkedId=String(currentUser.linkedId||'');  
+  
+   agentView.innerHTML='';  
+  
+   const found=agentData.find(a=>String(a.agentId)===linkedId);  
+  
+   const option=document.createElement('option');  
+   option.value=linkedId;  
+   option.textContent=found  
+    ?found.agentName  
+    :(currentUser.agentName||currentUser.name||'My Agent');  
+  
+   agentView.appendChild(option);  
+   agentView.value=linkedId;  
+   agentView.disabled=true;  
+  
+   if(linkedId)agentChanged();  
+  
+  }else{  
+  
+   fillAgentSelect($('agentView'),true);  
+  
+   if(getRole()==='viewer'||getRole()==='viewar'){  
+    $('agentView').disabled=false;  
+    $('agentView').value='';  
+   }  
+  }  
+  
+  $('agentList').innerHTML='<div class="empty">Select an agent</div>';  
+  
+ }catch(e){  
+  renderAgentError('Agent loading error');  
+ }  
+}  
+  
+function fillAgentSelect(select,isView=false){  
+  
+ select.innerHTML=isView  
+  ?'<option value="">Agent</option>'  
+  :'<option value="">Select Agent</option>';  
+  
+ const fragment=document.createDocumentFragment();  
+  
+ agentData.forEach(agent=>{  
+  const option=document.createElement('option');  
+  option.value=agent.agentId;  
+  option.textContent=agent.agentName;  
+  fragment.appendChild(option);  
+ });  
+  
+ select.appendChild(fragment);  
+}  
+  
+function renderAgentError(message){  
+ $('agentList').innerHTML='<div class="empty">'+escapeHTML(message)+'</div>';  
+}  
+  
+async function loadNotes(){  
+  
+ try{  
+  
+  const result=await getAPI('options');  
+  if(!result.success)return;  
+  
+  notesData={  
+   dueNotes:Array.isArray(result.data.dueNotes)?result.data.dueNotes:[],  
+   paymentNotes:Array.isArray(result.data.paymentNotes)?result.data.paymentNotes:[]  
+  };  
+  
+  setNotes(transactionType==='বাকি'  
+   ?notesData.dueNotes  
+   :notesData.paymentNotes);  
+  
+ }catch(e){}  
+}  
+  
+function setNotes(notes){  
+  
+ const select=$('noteSelect');  
+ select.innerHTML='';  
+  
+ if(!notes||!notes.length){  
+  select.innerHTML='<option value="">Select Note</option>';  
+  return;  
+ }  
+  
+ const fragment=document.createDocumentFragment();  
+  
+ notes.forEach((note,i)=>{  
+  const option=document.createElement('option');  
+  option.value=note;  
+  option.textContent=note;  
+  if(i===0)option.selected=true;  
+  fragment.appendChild(option);  
+ });  
+  
+ select.appendChild(fragment);  
+}  
+  
+function setType(type){  
+  
+ transactionType=type;  
+  
+ $('dueBtn').classList.toggle('active',type==='বাকি');  
+ $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');  
+  
+ setNotes(type==='বাকি'?notesData.dueNotes:notesData.paymentNotes);  
+}  
+  
+function normalizeType(value){  
+ return String(value||'')  
+  .trim()  
+  .toLowerCase()  
+  .replace(/\s+/g,' ')  
+  .replace(/^[+\-]\s*/,'')  
+  .trim();  
+}  
+  
+function isDueTransaction(t){  
+  
+ const type=normalizeType(  
+  t.type||t.Type||t.transactionType||t.TransactionType  
+ );  
+  
+ return type==='বাকি'||  
+  type==='due'||  
+  type==='due amount'||  
+  type==='বিক্রয়'||  
+  type==='sale';  
+}  
+  
+function isPaymentTransaction(t){  
+  
+ const type=normalizeType(  
+  t.type||t.Type||t.transactionType||t.TransactionType  
+ );  
+  
+ return type==='পেমেন্ট'||  
+  type==='payment'||  
+  type==='জমা'||  
+  type==='paid'||  
+  type==='payment amount';  
+}  
+  
+function getBDAmount(t){  
+ return number(  
+  t.bdAmount!==undefined&&t.bdAmount!==''  
+   ?t.bdAmount  
+   :(t.amountBD!==undefined&&t.amountBD!==''?t.amountBD:t.bd)  
+ );  
+}  
+  
+async function agentChanged(){  
+  
+ const agentId=$('agentView').value;  
+ const list=$('agentList');  
+  
+ if(!agentId){  
+  currentAgentTransactions=[];  
+  setAgentNumbers(0,0);  
+  list.innerHTML='<div class="empty">Select an agent</div>';  
+  return;  
+ }  
+  
+ list.innerHTML='<div class="loading">Loading transactions...</div>';  
+  
+ try{  
+  
+  const result=await getAPI('agentTransactions',{  
+   linkedId:agentId,  
+   username:currentUser?.username||'',  
+   role:currentUser?.role||''  
+  });  
+  
+  if(!result.success){  
+   list.innerHTML='<div class="empty">'+  
+    escapeHTML(result.error||'Unable to load transactions')+  
+    '</div>';  
+   return;  
+  }  
+  
+  currentAgentTransactions=  
+   result.data&&Array.isArray(result.data.transactions)  
+    ?result.data.transactions  
+    :Array.isArray(result.data)?result.data:[];  
+  
+  calculateAgentSummary();  
+  renderAgentTransactions();  
+  
+ }catch(e){  
+  
+  currentAgentTransactions=[];  
+  setAgentNumbers(0,0);  
+  list.innerHTML='<div class="empty">Connection error</div>';  
+ }  
+}  
+  
+function calculateAgentSummary(){  
+  
+ let balance=0;  
+ let sales=0;  
+  
+ const year=Number($('agentYear').value);  
+ const month=Number($('agentMonth').value);  
+  
+ currentAgentTransactions.forEach(t=>{  
+  
+  const amount=getBDAmount(t);  
+  
+  if(isDueTransaction(t))balance+=amount;  
+  else if(isPaymentTransaction(t))balance-=amount;  
+  
+  if(isDueTransaction(t)){  
+  
+   const info=parseTransactionDate(  
+    t.date||t.Date||t.transactionDate||t.TransactionDate  
+   );  
+  
+   if(info&&info.year===year&&info.month===month)  
+    sales+=amount;  
+  }  
+ });  
+  
+ setAgentNumbers(balance,sales);  
+}  
+  
+function setAgentNumbers(balance,sales){  
+  
+ $('agentCurrentBalance').innerHTML=fmtIndian(balance)+' <span>Tk</span>';  
+ $('agentMonthlySales').innerHTML=fmtIndian(sales)+' <span>Tk</span>';  
+}  
+  
+function renderAgentTransactions(){  
+  
+ const list=$('agentList');  
+  
+ if(!currentAgentTransactions.length){  
+  calculateAgentSummary();  
+  list.innerHTML='<div class="empty">No BD transactions found</div>';  
+  return;  
+ }  
+  
+ const year=Number($('agentYear').value);  
+ const month=Number($('agentMonth').value);  
+  
+ const filtered=currentAgentTransactions.filter(t=>{  
+  
+  const info=parseTransactionDate(  
+   t.date||t.Date||t.transactionDate||t.TransactionDate  
+  );  
+  
+  return info&&info.year===year&&info.month===month;  
+ });  
+  
+ calculateAgentSummary();  
+  
+ if(!filtered.length){  
+  list.innerHTML='<div class="empty">No transaction for this month</div>';  
+  return;  
+ }  
+  
+ list.innerHTML='';  
+  
+ const fragment=document.createDocumentFragment();  
+  
+ filtered.forEach(t=>{  
+  
+  const sale=isDueTransaction(t);  
+  const payment=isPaymentTransaction(t);  
+  
+  const txn=document.createElement('div');  
+  txn.className='txn '+(sale?'sale':payment?'payment':'');  
+  
+  const top=document.createElement('div');  
+  top.className='txn-top';  
+  
+  const date=document.createElement('div');  
+  date.className='txn-date';  
+  date.textContent=t.date||t.Date||'';  
+  
+  const type=document.createElement('div');  
+  type.className='txn-type';  
+  type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');  
+  
+  top.append(date,type);  
+  
+  const amount=document.createElement('div');  
+  amount.className='txn-amount';  
+  
+  const bdAmount=getBDAmount(t);  
+  const sign=payment?'−':sale?'+':'';  
+  
+  amount.textContent=sign+fmtIndian(bdAmount)+' Tk';  
+  
+  const bottom=document.createElement('div');  
+  bottom.className='txn-bottom';  
+  bottom.textContent=t.note||'';  
+  
+  txn.append(top,amount,bottom);  
+  fragment.appendChild(txn);  
+ });  
+  
+ list.appendChild(fragment);  
+}  
+  
+function parseTransactionDate(value){  
+  
+ if(!value)return null;  
+  
+ const str=String(value).trim();  
+  
+ let match=str.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/);  
+  
+ if(match){  
+  
+  const months={  
+   jan:1,feb:2,mar:3,apr:4,may:5,jun:6,  
+   jul:7,aug:8,sep:9,oct:10,nov:11,dec:12  
+  };  
+  
+  const month=months[match[2].toLowerCase()];  
+  
+  if(month)  
+   return{year:Number(match[3]),month};  
+ }  
+  
+ match=str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);  
+  
+ if(match)  
+  return{year:Number(match[1]),month:Number(match[2])};  
+  
+ match=str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);  
+  
+ if(match)  
+  return{year:Number(match[3]),month:Number(match[2])};  
+  
+ const date=new Date(str);  
+  
+ if(!isNaN(date.getTime()))  
+  return{year:date.getFullYear(),month:date.getMonth()+1};  
+  
+ return null;  
+}  
+  
+$('bdAmount').addEventListener('input',function(){  
+  
+ let value=this.value.replace(/[^\d]/g,'');  
+  
+ if(!value){  
+  this.value='';  
+  return;  
+ }  
+  
+ value=value.replace(/^0+(?=\d)/,'');  
+ this.value=Number(value).toLocaleString('en-IN');  
+});  
+  
+async function saveTransaction(){  
+  
+ if(getRole()!=='admin'){  
+  showSaveError('Access denied');  
+  return;  
+ }  
+  
+ const date=$('date').value;  
+ const agentId=$('agentSelect').value;  
+ const customerId=$('customerSelect').value;  
+ const kd=number($('kdAmount').value);  
+ const bd=number($('bdAmount').value);  
+ const note=$('noteSelect').value;  
+  
+ if(!date){  
+  showSaveError('Date required');  
+  return;  
+ }  
+  
+ if(kd>0&&!customerId){  
+  showSaveError('KD Amount দিলে Customer নির্বাচন করুন');  
+  return;  
+ }  
+  
+ if(bd>0&&!agentId){  
+  showSaveError('BD Amount দিলে Agent নির্বাচন করুন');  
+  return;  
+ }  
+  
+ if(kd<=0&&bd<=0){  
+  showSaveError('KD অথবা BD Amount দিন');  
+  return;  
+ }  
+  
+ const selectedDate=new Date(date+'T00:00:00');  
+ const today=new Date();  
+ today.setHours(0,0,0,0);  
+  
+ if(selectedDate>today){  
+  showSaveError('Future date দেওয়া যাবে না');  
+  return;  
+ }  
+  
+ const agent=agentData.find(a=>String(a.agentId)===String(agentId));  
+ const customer=customerData.find(c=>String(c.customerId)===String(customerId));  
+  
+ const button=$('saveBtn');  
+ const message=$('saveMsg');  
+ const savedCustomerPageId=$('customerPageSelect').value;  
+  
+ button.disabled=true;  
+ button.textContent='Saving...';  
+ message.textContent='';  
+ message.className='msg';  
+  
+ try{  
+  
+  const result=await postAPI({  
+  
+   action:'addTransaction',  
+  
+   username:currentUser?.username||'',  
+   role:currentUser?.role||'',  
+  
+   date:formatDate(date),  
+  
+   customerId,  
+   customerName:customer?.customerName||'',  
+   agentName:agent?.agentName||'',  
+  
+   kdAmount:kd,  
+   bdAmount:bd,  
+  
+   type:transactionType,  
+   note  
+  });  
+  
+  if(!result.success){  
+   showSaveError(result.error||'Save failed');  
+   return;  
+  }  
+  
+  message.className='msg success';  
+  message.textContent='Transaction saved successfully';  
+  
+  $('kdAmount').value='';  
+  $('bdAmount').value='';  
+  
+  await loadCustomers();  
+  
+  const customerPageSelect=$('customerPageSelect');  
+  
+  if(  
+   savedCustomerPageId&&  
+   [...customerPageSelect.options].some(o=>o.value===savedCustomerPageId)  
+  ){  
+  
+   customerPageSelect.value=savedCustomerPageId;  
+   customerPageSelect.dispatchEvent(new Event('change'));  
+  }  
+  
+  const selectedAgent=$('agentView').value;  
+  
+  if(selectedAgent)  
+   await agentChanged();  
+  
+  setTimeout(()=>{  
+   message.textContent='';  
+   message.className='msg';  
+  },2500);  
+  
+ }catch(e){  
+  
+  showSaveError('Connection error');  
+  
+ }finally{  
+  
+  button.disabled=false;  
+  button.textContent='💾 Save';  
+ }  
+}  
+  
+function showSaveError(text){  
+ const message=$('saveMsg');  
+ message.className='msg error';  
+ message.textContent=text;  
+}  
+  
+function formatDate(value){  
+  
+ const parts=value.split('-');  
+  
+ const months=[  
+  'Jan','Feb','Mar','Apr','May','Jun',  
+  'Jul','Aug','Sep','Oct','Nov','Dec'  
+ ];  
+  
+ return parts[2]+'-'+months[Number(parts[1])-1]+'-'+parts[0];  
+}  
+  
+function addEmpty(parent,text){  
+  
+ const box=document.createElement('div');  
+ box.className='empty';  
+ box.textContent=text;  
+ parent.appendChild(box);  
+}  
+  
+function escapeHTML(value){  
+  
+ return String(  
+  value===null||value===undefined?'':value  
+ )  
+ .replace(/&/g,'&amp;')  
+ .replace(/</g,'&lt;')  
+ .replace(/>/g,'&gt;')  
+ .replace(/"/g,'&quot;')  
+ .replace(/'/g,'&#039;');  
+}  
+  
+$('password').addEventListener('keydown',e=>{  
+ if(e.key==='Enter')login();  
+});  
+  
+restoreLogin();  
+  
+</script>  </body>  
 </html>
