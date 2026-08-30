@@ -1,3195 +1,1445 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Amaya Exchange</title>
 
 <style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:#f5f7fa;color:#172033;font-family:Arial,sans-serif}
+body{min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent
-}
-
-html,body{
-margin:0;
-padding:0;
-background:#f5f7fa;
-color:#172033;
-font-family:Arial,sans-serif
-}
-
-body{
-min-height:100vh
-}
-
-button,input,select{
-font:inherit
-}
-
-button{
-cursor:pointer
-}
-
-.hidden{
-display:none!important
-}
-
-.app{
-width:100%;
-max-width:520px;
-margin:auto;
-min-height:100vh
-}
+.app{width:100%;max-width:520px;margin:auto;min-height:100vh}
 
 /* HEADER */
-
 .header{
-background:#fff;
-padding:14px 15px;
-border-bottom:1px solid #e7e9ed;
-position:sticky;
-top:0;
-z-index:20
+ background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;
+ position:sticky;top:0;z-index:20
 }
-
-.header-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px
-}
-
-.logo{
-font-size:19px;
-font-weight:800
-}
-
-.user-info{
-font-size:11px;
-color:#858e9d;
-margin-top:3px
-}
-
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{font-size:19px;font-weight:800}
+.tagline{font-size:11px;color:#858e9d;margin-top:4px}
 .logout{
-border:0;
-background:#eef0f3;
-color:#303744;
-border-radius:9px;
-padding:8px 11px;
-font-size:11px;
-font-weight:700
+ border:0;background:#eef0f3;color:#303744;border-radius:9px;
+ padding:8px 11px;font-size:11px;font-weight:700
 }
 
 /* TABS */
-
-.tabs{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:7px;
-padding:11px 14px 5px;
-background:#f5f7fa
-}
-
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:11px 14px 5px}
 .tab{
-border:0;
-height:43px;
-border-radius:11px;
-background:#e7ebf0;
-color:#687284;
-font-size:12px;
-font-weight:800
+ border:0;height:43px;border-radius:11px;background:#e7ebf0;
+ color:#687284;font-size:12px;font-weight:800
 }
-
-.tab.active{
-background:#111827;
-color:#fff
-}
+.tab.active{background:#111827;color:#fff}
 
 /* CONTENT */
-
-.content{
-padding:10px 14px 25px
-}
-
-.panel{
-display:none
-}
-
-.panel.active{
-display:block
-}
-
+.content{padding:10px 14px 25px}
+.panel{display:none}
+.panel.active{display:block}
 .card{
-background:#fff;
-border-radius:16px;
-padding:16px;
-margin-bottom:12px;
-box-shadow:0 3px 15px rgba(0,0,0,.045)
+ background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;
+ box-shadow:0 3px 15px rgba(0,0,0,.045)
 }
 
 /* FORM */
-
-.field{
-margin-bottom:13px
-}
-
-.label{
-display:block;
-font-size:13px;
-font-weight:700;
-margin-bottom:7px
-}
-
+.field{margin-bottom:13px}
+.label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
 input,select{
-width:100%;
-height:47px;
-border:1px solid #dfe3e9;
-border-radius:11px;
-background:#fff;
-padding:0 12px;
-outline:0;
-color:#172033
+ width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;
+ background:#fff;padding:0 12px;outline:0;color:#172033
 }
+input:focus,select:focus{border-color:#111827}
+select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
+.amount{font-size:17px!important;font-weight:700}
 
-input:focus,
-select:focus{
-border-color:#111827
-}
-
-.amount{
-font-size:17px!important;
-font-weight:700
-}
-
-/* KD + BD */
-
-.amount-row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
-.amount-row .field{
-min-width:0
-}
-
-/* TYPE */
-
-.type-row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin:3px 0 13px
-}
-
+.amount-row,.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.type-row{margin:3px 0 13px}
 .type-btn{
-height:44px;
-border:1px solid #dfe3e9;
-border-radius:11px;
-background:#fff;
-font-weight:800
+ height:44px;border:1px solid #dfe3e9;border-radius:11px;
+ background:#fff;font-weight:800
 }
-
-.type-btn.active{
-background:#111827;
-color:#fff;
-border-color:#111827
-}
-
-/* SAVE */
+.type-btn.active{background:#111827;color:#fff;border-color:#111827}
 
 .save{
-width:100%;
-height:49px;
-border:0;
-border-radius:12px;
-background:#111827;
-color:#fff;
-font-weight:800
+ width:100%;height:49px;border:0;border-radius:12px;
+ background:#111827;color:#fff;font-weight:800
 }
+.save:disabled{opacity:.55;cursor:not-allowed}
 
-.save:disabled{
-opacity:.55
-}
+.msg{font-size:12px;margin-top:9px;text-align:center}
+.error{color:#d33131}
+.success{color:#16824c}
 
-.msg{
-font-size:12px;
-margin-top:9px;
-text-align:center
-}
-
-.error{
-color:#d33131
-}
-
-.success{
-color:#16824c
-}
-
-/* CUSTOMER FILTER */
-
+/* CUSTOMER */
 .customer-filter-row{
-display:grid;
-grid-template-columns:.8fr 1.2fr;
-gap:7px;
-margin-bottom:9px
+ display:grid;grid-template-columns:.8fr 1.2fr;gap:7px;margin-bottom:9px
 }
-
 .customer-filter-row input,
 .customer-filter-row select{
-height:42px;
-font-size:12px;
-padding:0 9px
+ height:42px;font-size:12px;padding:0 9px
 }
-
-/* TOTAL DUE */
 
 .total-due-box{
-background:#111827;
-border-radius:12px;
-padding:9px 12px;
-margin-bottom:10px;
-text-align:left
+ background:#111827;border-radius:12px;padding:9px 12px;
+ margin-bottom:10px;text-align:left
 }
+.total-due-label{font-size:10px;color:#c8ced8;margin-bottom:2px}
+.total-due-value{font-size:17px;font-weight:800;color:#fff}
+.total-due-value span{font-size:9px;font-weight:700}
 
-.total-due-label{
-font-size:10px;
-color:#c8ced8;
-margin-bottom:2px
-}
-
-.total-due-value{
-font-size:17px;
-font-weight:800;
-color:#fff
-}
-
-.total-due-value span{
-font-size:9px;
-font-weight:700
-}
-
-/* CUSTOMER CARD */
-
-.list{
-display:flex;
-flex-direction:column;
-gap:8px
-}
-
+.list{display:flex;flex-direction:column;gap:8px}
 .customer-card{
-background:#fff;
-border-radius:11px;
-padding:9px 11px;
-box-shadow:0 2px 9px rgba(0,0,0,.04);
-border:1px solid #edf0f3
+ background:#fff;border-radius:11px;padding:9px 11px;
+ box-shadow:0 2px 9px rgba(0,0,0,.04);border:1px solid #edf0f3
 }
-
-.customer-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px
-}
-
-.customer-info{
-min-width:0;
-flex:1
-}
-
+.customer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.customer-info{min-width:0;flex:1}
 .customer-name{
-font-size:13px;
-font-weight:800;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap
+ font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
 }
-
-.phone{
-font-size:10px;
-color:#858e9d;
-margin-top:2px
-}
-
-.due{
-text-align:right;
-white-space:nowrap
-}
-
-.due-label{
-font-size:9px;
-color:#8992a0
-}
-
-.due-value{
-font-size:14px;
-font-weight:800;
-margin-top:1px
-}
-
-.kd-small{
-font-size:9px
-}
+.phone{font-size:10px;color:#858e9d;margin-top:2px}
+.due{text-align:right;white-space:nowrap}
+.due-label{font-size:9px;color:#8992a0}
+.due-value{font-size:14px;font-weight:800;margin-top:1px}
+.kd-small{font-size:9px}
 
 #customerList{
-max-height:calc(100vh - 300px);
-overflow-y:auto;
--webkit-overflow-scrolling:touch;
-padding-right:2px
+ max-height:calc(100vh - 300px);overflow-y:auto;
+ -webkit-overflow-scrolling:touch;padding-right:2px
 }
 
 /* TRANSACTION */
-
 .txn{
-background:#fff;
-border-radius:11px;
-padding:10px;
-box-shadow:0 2px 9px rgba(0,0,0,.04)
+ background:#fff;border-radius:11px;padding:10px;
+ box-shadow:0 2px 9px rgba(0,0,0,.04)
 }
-
-.txn-top{
-display:flex;
-justify-content:space-between;
-gap:8px
-}
-
-.txn-date{
-font-size:11px;
-color:#858e9d
-}
-
-.txn-amount{
-font-size:13px;
-font-weight:800
-}
-
-.txn-bottom{
-font-size:10px;
-color:#737d8d;
-margin-top:4px
-}
-
-/* AGENT FILTER */
-
-.agent-filter-row{
-display:grid;
-grid-template-columns:.72fr 1fr 1.28fr;
-gap:6px;
-margin-bottom:9px
-}
-
-.agent-filter-row select{
-height:42px;
-font-size:11px;
-padding:0 7px;
-min-width:0
-}
-
-/* AGENT BALANCE / SALES */
-
-.agent-summary{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:7px;
-margin-bottom:9px
-}
-
-.agent-summary-box{
-background:#fff;
-border-radius:11px;
-padding:8px 10px;
-border:1px solid #edf0f3;
-box-shadow:0 2px 8px rgba(0,0,0,.035)
-}
-
-.agent-summary-label{
-font-size:9px;
-color:#8992a0;
-margin-bottom:2px
-}
-
-.agent-summary-value{
-font-size:15px;
-font-weight:800;
-line-height:1.2
-}
-
-.agent-summary-value span{
-font-size:9px;
-font-weight:700
-}
-
-.agent-balance{
-text-align:left
-}
-
-.agent-sales{
-text-align:right
-}
-
-#agentList{
-max-height:calc(100vh - 265px);
-overflow-y:auto;
--webkit-overflow-scrolling:touch;
-padding-right:2px
-}
+.txn-top{display:flex;justify-content:space-between;gap:8px}
+.txn-date{font-size:11px;color:#858e9d}
+.txn-amount{font-size:13px;font-weight:800}
+.txn-bottom{font-size:10px;color:#737d8d;margin-top:4px}
 
 /* AGENT */
-
-.agent-card{
-background:#fff;
-border-radius:11px;
-padding:10px;
-box-shadow:0 2px 9px rgba(0,0,0,.04)
+.agent-filter-row{
+ display:grid;grid-template-columns:.72fr 1fr 1.28fr;gap:6px;margin-bottom:9px
 }
-
-.agent-name{
-font-size:13px;
-font-weight:800
+.agent-filter-row select{
+ height:42px;font-size:11px;padding:0 7px;min-width:0
 }
+.agent-summary{
+ display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px
+}
+.agent-summary-box{
+ background:#fff;border-radius:11px;padding:8px 10px;
+ border:1px solid #edf0f3;box-shadow:0 2px 8px rgba(0,0,0,.035)
+}
+.agent-summary-label{font-size:9px;color:#8992a0;margin-bottom:2px}
+.agent-summary-value{font-size:15px;font-weight:800;line-height:1.2}
+.agent-summary-value span{font-size:9px;font-weight:700}
+.agent-balance{text-align:left}
+.agent-sales{text-align:right}
 
-.agent-phone{
-font-size:10px;
-color:#858e9d;
-margin-top:3px
+#agentList{
+ max-height:calc(100vh - 265px);overflow-y:auto;
+ -webkit-overflow-scrolling:touch;padding-right:2px
 }
 
 /* LOGIN */
-
 .login-page{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px
+ min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px
 }
-
 .login-box{
-width:100%;
-max-width:390px;
-background:#fff;
-border-radius:21px;
-padding:25px 21px;
-box-shadow:0 8px 30px rgba(0,0,0,.06)
+ width:100%;max-width:390px;background:#fff;border-radius:21px;
+ padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)
 }
-
-.login-title{
-font-size:24px;
-font-weight:800
-}
-
-.login-sub{
-font-size:13px;
-color:#8992a0;
-margin:5px 0 23px
-}
-
-.loading,
-.empty{
-padding:28px 10px;
-text-align:center;
-color:#8992a0;
-font-size:13px
-}
+.login-title{font-size:24px;font-weight:800}
+.login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
+.loading,.empty{padding:28px 10px;text-align:center;color:#8992a0;font-size:13px}
 
 @media(max-width:360px){
-
-.tabs{
-gap:5px
+ .tabs{gap:5px}
+ .tab{font-size:11px}
+ .amount-row,.customer-filter-row{gap:6px}
+ .customer-filter-row input,.customer-filter-row select{font-size:11px;padding:0 7px}
+ .agent-filter-row{gap:4px}
+ .agent-filter-row select{font-size:10px;padding:0 5px}
+ .agent-summary-value{font-size:14px}
 }
-
-.tab{
-font-size:11px
-}
-
-.amount-row,
-.customer-filter-row{
-gap:6px
-}
-
-.customer-filter-row input,
-.customer-filter-row select{
-font-size:11px;
-padding:0 7px
-}
-
-.agent-filter-row{
-gap:4px
-}
-
-.agent-filter-row select{
-font-size:10px;
-padding:0 5px
-}
-
-.agent-summary-value{
-font-size:14px
-}
-
-}
-
 </style>
-
 </head>
 
 <body>
 
 <!-- LOGIN -->
-
 <div id="loginPage" class="login-page">
-
 <div class="login-box">
 
-<div class="login-title">
-Amaya Exchange
-</div>
+<div class="login-title">Amaya Exchange</div>
+<div class="login-sub">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
 
-<div class="login-sub">
-Admin / Agent / Viewer Login
+<div class="field">
+<label class="label">Username</label>
+<input id="username" type="text" autocomplete="username">
 </div>
 
 <div class="field">
-
-<label class="label">
-Username
-</label>
-
-<input
-id="username"
-type="text"
-autocomplete="username">
-
+<label class="label">Password</label>
+<input id="password" type="password" autocomplete="current-password">
 </div>
 
-<div class="field">
-
-<label class="label">
-Password
-</label>
-
-<input
-id="password"
-type="password"
-autocomplete="current-password">
+<button id="loginBtn" class="save" onclick="login()">Login</button>
+<div id="loginMsg" class="msg"></div>
 
 </div>
-
-<button
-id="loginBtn"
-class="save"
-onclick="login()">
-
-Login
-
-</button>
-
-<div
-id="loginMsg"
-class="msg">
 </div>
-
-</div>
-
-</div>
-
 
 <!-- APP -->
-
-<div
-id="app"
-class="app hidden">
-
-
-<!-- HEADER -->
+<div id="app" class="app hidden">
 
 <div class="header">
-
 <div class="header-row">
-
 <div>
-
-<div class="logo">
-Amaya Exchange
+<div class="logo">Amaya Exchange</div>
+<div class="tagline">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
 </div>
-
-<div
-id="userInfo"
-class="user-info">
+<button class="logout" onclick="logout()">Logout</button>
 </div>
-
 </div>
-
-<button
-class="logout"
-onclick="logout()">
-
-Logout
-
-</button>
-
-</div>
-
-</div>
-
-
-<!-- TABS -->
 
 <div class="tabs">
-
-<button
-type="button"
-class="tab active"
-onclick="openTab('transaction',this)">
-
-Add Transaction
-
-</button>
-
-<button
-type="button"
-class="tab"
-onclick="openTab('customer',this)">
-
-Customer
-
-</button>
-
-<button
-type="button"
-class="tab"
-onclick="openTab('agent',this)">
-
-Agent
-
-</button>
-
+<button class="tab active" onclick="openTab('transaction',this)">Add Transaction</button>
+<button class="tab" onclick="openTab('customer',this)">Customer</button>
+<button class="tab" onclick="openTab('agent',this)">Agent</button>
 </div>
-
 
 <div class="content">
 
-
-<!-- ADD TRANSACTION -->
-
-<section
-id="panelTransaction"
-class="panel active">
-
+<!-- TRANSACTION -->
+<section id="panelTransaction" class="panel active">
 <div class="card">
 
-<div
-class="title"
-style="font-size:16px;font-weight:800;margin-bottom:14px">
-
+<div style="font-size:16px;font-weight:800;margin-bottom:14px">
 Add Transaction
-
 </div>
 
 <div class="field">
-
-<label class="label">
-📅 Date
-</label>
-
-<input
-id="date"
-type="date">
-
+<label class="label">📅 Date</label>
+<input id="date" type="date">
 </div>
 
 <div class="field">
-
-<label class="label">
-◾ Agent
-</label>
-
+<label class="label">◾ Agent</label>
 <select id="agentSelect">
-
-<option value="">
-Select Agent
-</option>
-
+<option value="">Select Agent</option>
 </select>
-
 </div>
 
 <div class="field">
-
-<label class="label">
-🧒 Customer
-</label>
-
+<label class="label">🧒 Customer</label>
 <select id="customerSelect">
-
-<option value="">
-Select Customer
-</option>
-
+<option value="">Select Customer</option>
 </select>
-
 </div>
 
 <div class="amount-row">
 
 <div class="field">
-
-<label class="label">
-💵 KD Amount
-</label>
-
-<input
-id="kdAmount"
-class="amount"
-type="text"
-inputmode="decimal"
-placeholder="0.000">
-
+<label class="label">💵 KD Amount</label>
+<input id="kdAmount" class="amount" type="text" inputmode="decimal" placeholder="0.000">
 </div>
 
 <div class="field">
-
-<label class="label">
-💳 BD Amount
-</label>
-
-<input
-id="bdAmount"
-class="amount"
-type="text"
-inputmode="numeric"
-placeholder="0">
-
+<label class="label">💳 BD Amount</label>
+<input id="bdAmount" class="amount" type="text" inputmode="numeric" placeholder="0">
 </div>
 
 </div>
 
 <div class="type-row">
-
-<button
-type="button"
-id="dueBtn"
-class="type-btn active"
-onclick="setType('বাকি')">
-
-+ বাকি
-
-</button>
-
-<button
-type="button"
-id="paymentBtn"
-class="type-btn"
-onclick="setType('পেমেন্ট')">
-
-- পেমেন্ট
-
-</button>
-
+<button id="dueBtn" class="type-btn active" onclick="setType('বাকি')">+ বাকি</button>
+<button id="paymentBtn" class="type-btn" onclick="setType('পেমেন্ট')">- পেমেন্ট</button>
 </div>
 
 <div class="field">
-
-<label class="label">
-Note
-</label>
-
+<label class="label">Note</label>
 <select id="noteSelect">
-
-<option value="">
-Select Note
-</option>
-
+<option value="">Select Note</option>
 </select>
-
 </div>
 
-<button
-type="button"
-id="saveBtn"
-class="save"
-onclick="saveTransaction">
-
-</button>
-
-<div
-id="saveMsg"
-class="msg">
-</div>
+<button id="saveBtn" class="save" onclick="saveTransaction()">✅ Save</button>
+<div id="saveMsg" class="msg"></div>
 
 </div>
-
 </section>
 
-
 <!-- CUSTOMER -->
-
-<section
-id="panelCustomer"
-class="panel">
+<section id="panelCustomer" class="panel">
 
 <div class="card">
 
 <div class="customer-filter-row">
 
-<input
-id="customerSearch"
-type="search"
-placeholder="🔍 Search..."
-autocomplete="off">
+<input id="customerSearch" type="search" placeholder="🔍 Search..." autocomplete="off">
 
-<select
-id="customerPageSelect">
-
-<option value="">
-Select Customer
-</option>
-
+<select id="customerPageSelect">
+<option value="">Select Customer</option>
 </select>
 
 </div>
 
 <div class="total-due-box">
-
-<div class="total-due-label">
-Total Due
-</div>
-
-<div
-id="allCustomerDue"
-class="total-due-value">
-
+<div class="total-due-label">Total Due</div>
+<div id="allCustomerDue" class="total-due-value">
 0.000 <span>KD</span>
-
+</div>
 </div>
 
 </div>
 
-</div>
-
-<div
-id="customerList"
-class="list">
-
-<div class="empty">
-Select a customer
-</div>
-
+<div id="customerList" class="list">
+<div class="empty">Select a customer</div>
 </div>
 
 </section>
 
-
 <!-- AGENT -->
-
-<section
-id="panelAgent"
-class="panel">
+<section id="panelAgent" class="panel">
 
 <div class="agent-filter-row">
-
 <select id="agentYear"></select>
-
 <select id="agentMonth"></select>
-
-<select
-id="agentView"
-onchange="agentChanged()">
-
-<option value="">
-Agent
-</option>
-
+<select id="agentView" onchange="agentChanged()">
+<option value="">Agent</option>
 </select>
-
 </div>
 
 <div class="agent-summary">
 
 <div class="agent-summary-box agent-balance">
-
-<div class="agent-summary-label">
-Current Balance
+<div class="agent-summary-label">Current Balance</div>
+<div id="agentCurrentBalance" class="agent-summary-value">
+0 <span>Tk</span>
 </div>
-
-<div
-id="agentCurrentBalance"
-class="agent-summary-value">
-
-0.000 <span>KD</span>
-
-</div>
-
 </div>
 
 <div class="agent-summary-box agent-sales">
-
-<div class="agent-summary-label">
-Monthly Sales
-</div>
-
-<div
-id="agentMonthlySales"
-class="agent-summary-value">
-
+<div class="agent-summary-label">Monthly Sales</div>
+<div id="agentMonthlySales" class="agent-summary-value">
 0 <span>Tk</span>
-
+</div>
 </div>
 
 </div>
 
-</div>
-
-<div
-id="agentList"
-class="list">
-
-<div class="empty">
-Select an agent
-</div>
-
+<div id="agentList" class="list">
+<div class="empty">Select an agent</div>
 </div>
 
 </section>
 
-
 </div>
-
 </div>
-
 
 <script>
 
-/* =====================================================
-API
-===================================================== */
-
+/* API */
 const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
 
-
-/* =====================================================
-STATE
-===================================================== */
-
+/* STATE */
 let currentUser=null;
-
 let transactionType='বাকি';
-
 let customerData=[];
-
 let agentData=[];
-
-let notesData={
-dueNotes:[],
-paymentNotes:[]
-};
-
+let notesData={dueNotes:[],paymentNotes:[]};
 let currentAgentTransactions=[];
 
-
-/* =====================================================
-GET API
-===================================================== */
-
+/* API GET */
 async function getAPI(action,params={}){
-
-const query=new URLSearchParams();
-
-query.set('action',action);
-
-for(const key in params){
-
-const value=params[key];
-
-if(value!==undefined &&
-value!==null &&
-value!==''){
-
-query.set(key,value);
-
+ const query=new URLSearchParams({action});
+ Object.keys(params).forEach(k=>{
+  if(params[k]!==undefined&&params[k]!==null&&params[k]!=='')
+   query.set(k,params[k]);
+ });
+ const response=await fetch(API+'?'+query.toString(),{
+  method:'GET',
+  cache:'no-store'
+ });
+ return response.json();
 }
 
-}
-
-const response=await fetch(
-API+'?'+query.toString(),
-{
-method:'GET',
-cache:'no-store'
-}
-);
-
-return response.json();
-
-}
-
-
-/* =====================================================
-POST API
-===================================================== */
-
+/* API POST */
 async function postAPI(data){
-
-const response=await fetch(
-API,
-{
-method:'POST',
-headers:{
-'Content-Type':'text/plain;charset=utf-8'
-},
-body:JSON.stringify(data)
-}
-);
-
-return response.json();
-
+ const response=await fetch(API,{
+  method:'POST',
+  headers:{'Content-Type':'text/plain;charset=utf-8'},
+  body:JSON.stringify(data)
+ });
+ return response.json();
 }
 
-
-/* =====================================================
-TABS
-===================================================== */
-
+/* TABS */
 function openTab(tab,button){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
 
-document
-.querySelectorAll('.panel')
-.forEach(panel=>{
-panel.classList.remove('active');
-});
+ const panel=document.getElementById(
+  'panel'+tab.charAt(0).toUpperCase()+tab.slice(1)
+ );
 
-document
-.querySelectorAll('.tab')
-.forEach(btn=>{
-btn.classList.remove('active');
-});
+ if(panel&&!panel.classList.contains('hidden'))
+  panel.classList.add('active');
 
-const panel=document.getElementById(
-'panel'+
-tab.charAt(0).toUpperCase()+
-tab.slice(1)
-);
-
-if(panel && !panel.classList.contains('hidden')){
-panel.classList.add('active');
+ if(button&&!button.classList.contains('hidden'))
+  button.classList.add('active');
 }
 
-if(button && !button.classList.contains('hidden')){
-button.classList.add('active');
-}
-
-}
-
-
-/* =====================================================
-LOGIN
-===================================================== */
-
+/* LOGIN */
 async function login(){
 
-const username=document
-.getElementById('username')
-.value.trim();
+ const username=document.getElementById('username').value.trim();
+ const password=document.getElementById('password').value;
+ const msg=document.getElementById('loginMsg');
+ const btn=document.getElementById('loginBtn');
 
-const password=document
-.getElementById('password')
-.value;
+ if(!username||!password){
+  msg.className='msg error';
+  msg.textContent='Username and password required';
+  return;
+ }
 
-const msg=document
-.getElementById('loginMsg');
+ btn.disabled=true;
+ btn.textContent='Logging in...';
+ msg.textContent='';
 
-const btn=document
-.getElementById('loginBtn');
+ try{
 
+  const result=await getAPI('login',{username,password});
 
-if(!username || !password){
+  if(!result.success){
+   msg.className='msg error';
+   msg.textContent=result.error||'Login failed';
+   return;
+  }
 
-msg.className='msg error';
-msg.textContent='Username and password required';
+  currentUser=result.data;
+  localStorage.setItem('amaya_user',JSON.stringify(currentUser));
+  showApp();
 
-return;
+ }catch(e){
 
+  msg.className='msg error';
+  msg.textContent='Connection error';
+
+ }finally{
+
+  btn.disabled=false;
+  btn.textContent='Login';
+
+ }
 }
 
-btn.disabled=true;
-btn.textContent='Logging in...';
-msg.textContent='';
-
-
-try{
-
-const result=
-await getAPI(
-'login',
-{
-username:username,
-password:password
-}
-);
-
-
-if(!result.success){
-
-msg.className='msg error';
-msg.textContent=
-result.error||'Login failed';
-
-return;
-
-}
-
-currentUser=result.data;
-
-localStorage.setItem(
-'amaya_user',
-JSON.stringify(currentUser)
-);
-
-showApp();
-
-}
-catch(error){
-
-msg.className='msg error';
-msg.textContent='Connection error';
-
-}
-finally{
-
-btn.disabled=false;
-btn.textContent='Login';
-
-}
-
-}
-
-
-/* =====================================================
-RESTORE LOGIN
-===================================================== */
-
+/* RESTORE */
 function restoreLogin(){
 
-try{
+ try{
 
-const saved=
-localStorage.getItem('amaya_user');
+  const saved=localStorage.getItem('amaya_user');
+  if(!saved)return;
 
-if(!saved)return;
+  const user=JSON.parse(saved);
 
-const user=JSON.parse(saved);
+  if(user&&user.loggedIn){
+   currentUser=user;
+   showApp();
+  }
 
-if(user && user.loggedIn){
+ }catch(e){
 
-currentUser=user;
-showApp();
+  localStorage.removeItem('amaya_user');
 
+ }
 }
 
-}
-catch(error){
-
-localStorage.removeItem('amaya_user');
-
-}
-
-}
-
-
-/* =====================================================
-SHOW APP
-===================================================== */
-
+/* SHOW APP */
 function showApp(){
 
-document
-.getElementById('loginPage')
-.classList.add('hidden');
+ document.getElementById('loginPage').classList.add('hidden');
+ document.getElementById('app').classList.remove('hidden');
 
-document
-.getElementById('app')
-.classList.remove('hidden');
-
-document
-.getElementById('userInfo')
-.textContent=
-(currentUser.username||'User')+
-(
-currentUser.role
-?' • '+currentUser.role
-:''
-);
-
-setToday();
-
-setupAgentDateFilters();
-
-applyRoleAccess();
-
-loadAllData();
-
+ setToday();
+ setupAgentDateFilters();
+ applyRoleAccess();
+ loadAllData();
 }
 
+/* ROLE */
+function getRole(){
+ return String(currentUser?.role||'').trim().toLowerCase();
+}
 
-/* =====================================================
-ROLE ACCESS
-===================================================== */
-
+/* ROLE ACCESS */
 function applyRoleAccess(){
 
-const role=
-String(currentUser?.role||'')
-.trim()
-.toLowerCase();
+ const role=getRole();
 
-const tabs=
-document.querySelectorAll('.tab');
+ const tabs=document.querySelectorAll('.tab');
+ const transactionTab=tabs[0];
+ const customerTab=tabs[1];
+ const agentTab=tabs[2];
 
-const transactionTab=tabs[0];
-const customerTab=tabs[1];
-const agentTab=tabs[2];
+ const transactionPanel=document.getElementById('panelTransaction');
+ const customerPanel=document.getElementById('panelCustomer');
+ const agentPanel=document.getElementById('panelAgent');
 
-const transactionPanel=
-document.getElementById('panelTransaction');
+ /* RESET */
+ [transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));
+ [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));
 
-const customerPanel=
-document.getElementById('panelCustomer');
+ /* ADMIN */
+ if(role==='admin'){
+  openTab('transaction',transactionTab);
+  return;
+ }
 
-const agentPanel=
-document.getElementById('panelAgent');
+ /* AGENT */
+ if(role==='agent'){
 
+  transactionTab.classList.add('hidden');
+  customerTab.classList.add('hidden');
+  agentTab.classList.add('hidden');
 
-/* RESET */
+  transactionPanel.classList.add('hidden');
+  customerPanel.classList.add('hidden');
 
-transactionTab.classList.remove('hidden');
-customerTab.classList.remove('hidden');
-agentTab.classList.remove('hidden');
+  agentPanel.classList.remove('hidden');
+  agentPanel.classList.add('active');
 
-transactionPanel.classList.remove('hidden');
-customerPanel.classList.remove('hidden');
-agentPanel.classList.remove('hidden');
+  const agentView=document.getElementById('agentView');
 
+  agentView.innerHTML='';
 
-/* ADMIN */
+  const option=document.createElement('option');
+  option.value=currentUser.linkedId||'';
+  option.textContent=currentUser.agentName||currentUser.name||'My Agent';
 
-if(role==='admin'){
+  agentView.appendChild(option);
+  agentView.value=currentUser.linkedId||'';
+  agentView.disabled=true;
 
-openTab('transaction',transactionTab);
+  if(currentUser.linkedId)agentChanged();
 
-return;
+  return;
+ }
 
+ /* VIEWER */
+ if(role==='viewer'||role==='viewar'){
+
+  transactionTab.classList.add('hidden');
+  transactionPanel.classList.add('hidden');
+
+  customerTab.classList.remove('hidden');
+  agentTab.classList.remove('hidden');
+
+  customerPanel.classList.remove('hidden');
+  agentPanel.classList.remove('hidden');
+
+  openTab('customer',customerTab);
+  return;
+ }
+
+ /* UNKNOWN */
+ [transactionTab,customerTab,agentTab].forEach(x=>x.classList.add('hidden'));
+ [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.add('hidden'));
 }
 
-
-/* AGENT */
-
-if(role==='agent'){
-
-transactionTab.classList.add('hidden');
-customerTab.classList.add('hidden');
-
-transactionPanel.classList.add('hidden');
-customerPanel.classList.add('hidden');
-
-agentTab.classList.remove('hidden');
-agentPanel.classList.remove('hidden');
-
-openTab('agent',agentTab);
-
-const agentView=
-document.getElementById('agentView');
-
-agentView.innerHTML='';
-
-const option=
-document.createElement('option');
-
-option.value=
-currentUser.linkedId||'';
-
-option.textContent='My Agent';
-
-agentView.appendChild(option);
-
-if(currentUser.linkedId){
-
-agentView.value=
-currentUser.linkedId;
-
-agentChanged();
-
-}
-
-return;
-
-}
-
-
-/* VIEWER */
-
-if(role==='viewar'){
-
-transactionTab.classList.add('hidden');
-transactionPanel.classList.add('hidden');
-
-customerTab.classList.remove('hidden');
-agentTab.classList.remove('hidden');
-
-customerPanel.classList.remove('hidden');
-agentPanel.classList.remove('hidden');
-
-openTab('customer',customerTab);
-
-return;
-
-}
-
-
-/* UNKNOWN ROLE */
-
-transactionTab.classList.add('hidden');
-customerTab.classList.add('hidden');
-agentTab.classList.add('hidden');
-
-transactionPanel.classList.add('hidden');
-customerPanel.classList.add('hidden');
-agentPanel.classList.add('hidden');
-
-}
-
-
-/* =====================================================
-LOGOUT
-===================================================== */
-
+/* LOGOUT */
 function logout(){
 
-currentUser=null;
+ currentUser=null;
+ localStorage.removeItem('amaya_user');
 
-localStorage.removeItem('amaya_user');
+ document.getElementById('app').classList.add('hidden');
+ document.getElementById('loginPage').classList.remove('hidden');
 
-document
-.getElementById('app')
-.classList.add('hidden');
-
-document
-.getElementById('loginPage')
-.classList.remove('hidden');
-
-document
-.getElementById('username')
-.value='';
-
-document
-.getElementById('password')
-.value='';
-
+ document.getElementById('username').value='';
+ document.getElementById('password').value='';
+ document.getElementById('loginMsg').textContent='';
 }
 
-
-/* =====================================================
-TODAY
-===================================================== */
-
+/* TODAY */
 function setToday(){
 
-const input=
-document.getElementById('date');
+ const input=document.getElementById('date');
+ const d=new Date();
 
-const d=new Date();
+ const today=
+ d.getFullYear()+'-'+
+ String(d.getMonth()+1).padStart(2,'0')+'-'+
+ String(d.getDate()).padStart(2,'0');
 
-const today=
-d.getFullYear()+
-'-'+
-String(d.getMonth()+1).padStart(2,'0')+
-'-'+
-String(d.getDate()).padStart(2,'0');
-
-input.value=today;
-
-input.max=today;
-
+ input.value=today;
+ input.max=today;
 }
 
-
-/* =====================================================
-AGENT YEAR + MONTH
-===================================================== */
-
+/* AGENT FILTERS */
 function setupAgentDateFilters(){
 
-const yearSelect=
-document.getElementById('agentYear');
+ const yearSelect=document.getElementById('agentYear');
+ const monthSelect=document.getElementById('agentMonth');
 
-const monthSelect=
-document.getElementById('agentMonth');
+ const now=new Date();
+ const currentYear=now.getFullYear();
+ const currentMonth=now.getMonth()+1;
 
-const now=new Date();
+ yearSelect.innerHTML='';
 
-const currentYear=now.getFullYear();
+ for(let y=currentYear-5;y<=currentYear;y++){
 
-const currentMonth=now.getMonth()+1;
+  const option=document.createElement('option');
+  option.value=y;
+  option.textContent=y;
 
+  if(y===currentYear)option.selected=true;
 
-yearSelect.innerHTML='';
+  yearSelect.appendChild(option);
+ }
 
-for(let y=currentYear-5;y<=currentYear;y++){
+ const months=[
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December'
+ ];
 
-const option=
-document.createElement('option');
+ monthSelect.innerHTML='';
 
-option.value=y;
+ months.forEach((month,i)=>{
 
-option.textContent=y;
+  const option=document.createElement('option');
+  option.value=i+1;
+  option.textContent=month;
 
-if(y===currentYear){
-option.selected=true;
+  if(i+1===currentMonth)option.selected=true;
+
+  monthSelect.appendChild(option);
+ });
+
+ yearSelect.onchange=()=>{
+  if(document.getElementById('agentView').value)
+   renderAgentTransactions();
+ };
+
+ monthSelect.onchange=()=>{
+  if(document.getElementById('agentView').value)
+   renderAgentTransactions();
+ };
 }
 
-yearSelect.appendChild(option);
-
-}
-
-
-const months=[
-'January',
-'February',
-'March',
-'April',
-'May',
-'June',
-'July',
-'August',
-'September',
-'October',
-'November',
-'December'
-];
-
-monthSelect.innerHTML='';
-
-months.forEach(function(month,index){
-
-const option=
-document.createElement('option');
-
-option.value=index+1;
-
-option.textContent=month;
-
-if(index+1===currentMonth){
-option.selected=true;
-}
-
-monthSelect.appendChild(option);
-
-});
-
-
-yearSelect.onchange=function(){
-
-if(
-document.getElementById('agentView').value
-){
-
-renderAgentTransactions();
-
-}
-
-};
-
-
-monthSelect.onchange=function(){
-
-if(
-document.getElementById('agentView').value
-){
-
-renderAgentTransactions();
-
-}
-
-};
-
-}
-
-
-/* =====================================================
-LOAD ALL
-===================================================== */
-
+/* LOAD ALL */
 function loadAllData(){
-
-loadCustomers();
-
-loadAgents();
-
-loadNotes();
-
+ loadCustomers();
+ loadAgents();
+ loadNotes();
 }
 
-
-/* =====================================================
-CUSTOMERS
-===================================================== */
-
+/* CUSTOMERS */
 async function loadCustomers(){
 
-const list=
-document.getElementById('customerList');
+ const list=document.getElementById('customerList');
+ list.innerHTML='<div class="empty">Select a customer</div>';
 
-list.innerHTML=
-'<div class="empty">Select a customer</div>';
+ try{
 
-try{
+  const result=await getAPI('customers');
 
-const result=
-await getAPI('customers');
+  if(!result.success){
+   list.innerHTML='<div class="empty">'+escapeHTML(result.error||'Customer loading failed')+'</div>';
+   return;
+  }
 
-if(!result.success){
+  customerData=Array.isArray(result.data)?result.data:[];
 
-list.innerHTML=
-'<div class="empty">'+
-escapeHTML(
-result.error||'Customer loading failed'
-)+
-'</div>';
+  const transactionSelect=document.getElementById('customerSelect');
 
-return;
+  transactionSelect.innerHTML='<option value="">Select Customer</option>';
 
+  let totalDue=0;
+
+  customerData.forEach(customer=>{
+
+   if(!isActive(customer))return;
+
+   const option=document.createElement('option');
+   option.value=customer.customerId;
+   option.textContent=customer.customerName;
+   transactionSelect.appendChild(option);
+
+   totalDue+=number(customer.totalDueKD);
+  });
+
+  document.getElementById('allCustomerDue').innerHTML=
+   totalDue.toLocaleString('en-US',{
+    minimumFractionDigits:3,
+    maximumFractionDigits:3
+   })+' <span>KD</span>';
+
+  updateCustomerDropdown();
+
+ }catch(e){
+
+  list.innerHTML='<div class="empty">Customer loading error</div>';
+
+ }
 }
 
-customerData=
-Array.isArray(result.data)
-?result.data
-:[];
+/* ACTIVE */
+function isActive(customer){
 
+ const status=String(
+  customer.status||
+  customer.Status||
+  customer.active||
+  customer.Active||
+  ''
+ ).trim().toLowerCase();
 
-const transactionSelect=
-document.getElementById(
-'customerSelect'
-);
-
-transactionSelect.innerHTML=
-'<option value="">Select Customer</option>';
-
-customerData.forEach(function(customer){
-
-const status=String(
-customer.status||
-customer.Status||
-customer.active||
-customer.Active||
-''
-)
-.trim()
-.toLowerCase();
-
-if(status!=='active'){
-return;
+ return status==='active';
 }
 
-const option=
-document.createElement('option');
-
-option.value=
-customer.customerId;
-
-option.textContent=
-customer.customerName;
-
-transactionSelect.appendChild(option);
-
-});
-
-
-updateCustomerDropdown();
-
-
-let totalDue=0;
-
-customerData.forEach(function(customer){
-
-const status=String(
-customer.status||
-customer.Status||
-customer.active||
-customer.Active||
-''
-)
-.trim()
-.toLowerCase();
-
-if(status!=='active'){
-return;
+/* NUMBER */
+function number(value){
+ return parseFloat(String(value||'0').replace(/,/g,''))||0;
 }
 
-totalDue+=
-parseFloat(
-String(
-customer.totalDueKD||'0'
-).replace(/,/g,'')
-)||0;
-
-});
-
-document
-.getElementById('allCustomerDue')
-.innerHTML=
-totalDue.toLocaleString(
-'en-US',
-{
-minimumFractionDigits:3,
-maximumFractionDigits:3
-}
-)+
-' <span>KD</span>';
-
-}
-catch(error){
-
-list.innerHTML=
-'<div class="empty">Customer loading error</div>';
-
-}
-
-}
-
-
-/* =====================================================
-CUSTOMER DROPDOWN
-===================================================== */
-
+/* CUSTOMER DROPDOWN */
 function updateCustomerDropdown(){
 
-const select=
-document.getElementById(
-'customerPageSelect'
-);
+ const select=document.getElementById('customerPageSelect');
+ const search=document.getElementById('customerSearch').value.trim().toLowerCase();
+ const oldValue=select.value;
 
-const search=
-document.getElementById(
-'customerSearch'
-)
-.value
-.trim()
-.toLowerCase();
+ select.innerHTML='<option value="">Select Customer</option>';
 
-const oldValue=select.value;
+ customerData.forEach(customer=>{
 
-select.innerHTML=
-'<option value="">Select Customer</option>';
+  if(!isActive(customer))return;
+  if(number(customer.totalDueKD)<=0)return;
 
-customerData.forEach(function(customer){
+  const name=String(customer.customerName||'').toLowerCase();
+  const phone=String(customer.phone||'').toLowerCase();
+  const id=String(customer.customerId||'').toLowerCase();
 
-const status=String(
-customer.status||
-customer.Status||
-customer.active||
-customer.Active||
-''
-)
-.trim()
-.toLowerCase();
+  if(search&&!name.includes(search)&&!phone.includes(search)&&!id.includes(search))
+   return;
 
-if(status!=='active'){
-return;
+  const option=document.createElement('option');
+  option.value=customer.customerId;
+  option.textContent=customer.customerName;
+
+  select.appendChild(option);
+ });
+
+ if(oldValue&&[...select.options].some(o=>o.value===oldValue))
+  select.value=oldValue;
 }
 
-const due=
-parseFloat(
-String(
-customer.totalDueKD||'0'
-).replace(/,/g,'')
-)||0;
+/* CUSTOMER SELECT */
+document.getElementById('customerPageSelect').addEventListener('change',function(){
 
-if(due<=0){
-return;
-}
+ const id=this.value;
+ const list=document.getElementById('customerList');
 
-const name=
-String(customer.customerName||'')
-.toLowerCase();
+ if(!id){
+  list.innerHTML='<div class="empty">Select a customer</div>';
+  return;
+ }
 
-const phone=
-String(customer.phone||'')
-.toLowerCase();
+ const customer=customerData.find(x=>String(x.customerId)===String(id));
 
-const id=
-String(customer.customerId||'')
-.toLowerCase();
+ if(!customer){
+  list.innerHTML='<div class="empty">Customer not found</div>';
+  return;
+ }
 
-if(
-search &&
-!name.includes(search) &&
-!phone.includes(search) &&
-!id.includes(search)
-){
-return;
-}
-
-const option=
-document.createElement('option');
-
-option.value=
-customer.customerId;
-
-option.textContent=
-customer.customerName;
-
-select.appendChild(option);
-
+ renderCustomers(customer);
 });
 
-if(
-oldValue &&
-Array.from(select.options)
-.some(function(option){
-return option.value===oldValue;
-})
-){
+/* CUSTOMER SEARCH */
+document.getElementById('customerSearch').addEventListener('input',function(){
 
-select.value=oldValue;
+ const currentId=document.getElementById('customerPageSelect').value;
 
-}
+ updateCustomerDropdown();
 
-}
+ const select=document.getElementById('customerPageSelect');
 
-
-/* =====================================================
-CUSTOMER SELECT
-===================================================== */
-
-document
-.getElementById('customerPageSelect')
-.addEventListener(
-'change',
-function(){
-
-const id=this.value;
-
-const list=
-document.getElementById(
-'customerList'
-);
-
-if(!id){
-
-list.innerHTML=
-'<div class="empty">Select a customer</div>';
-
-return;
-
-}
-
-const customer=
-customerData.find(function(item){
-
-return String(item.customerId)===
-String(id);
-
+ if(currentId&&[...select.options].some(o=>o.value===currentId))
+  select.value=currentId;
 });
 
-if(!customer){
+/* RENDER CUSTOMER */
+function renderCustomers(customer){
 
-list.innerHTML=
-'<div class="empty">Customer not found</div>';
+ const list=document.getElementById('customerList');
 
-return;
+ list.innerHTML=
+ '<div class="customer-card">'+
+ '<div class="customer-row">'+
+ '<div class="customer-info">'+
+ '<div class="customer-name">'+escapeHTML(customer.customerName)+'</div>'+
+ '<div class="phone">'+escapeHTML(customer.phone||'')+'</div>'+
+ '</div>'+
+ '<div class="due">'+
+ '<div class="due-label">Due Amount</div>'+
+ '<div class="due-value">'+escapeHTML(customer.totalDueKD||'0.000')+
+ ' <span class="kd-small">KD</span></div>'+
+ '</div>'+
+ '</div>'+
+ '</div>';
 
+ loadCustomerTransactions(customer.customerId);
 }
 
-renderCustomers([customer]);
-
-});
-
-
-/* =====================================================
-CUSTOMER SEARCH
-===================================================== */
-
-document
-.getElementById('customerSearch')
-.addEventListener(
-'input',
-function(){
-
-const currentId=
-document
-.getElementById('customerPageSelect')
-.value;
-
-updateCustomerDropdown();
-
-const select=
-document
-.getElementById('customerPageSelect');
-
-if(
-currentId &&
-Array.from(select.options)
-.some(function(option){
-return option.value===currentId;
-})
-){
-
-select.value=currentId;
-
-}
-
-});
-
-
-/* =====================================================
-RENDER CUSTOMER
-===================================================== */
-
-function renderCustomers(data){
-
-const list=
-document.getElementById(
-'customerList'
-);
-
-if(!data || !data.length){
-
-list.innerHTML=
-'<div class="empty">No customer found</div>';
-
-return;
-
-}
-
-const customer=data[0];
-
-let html=
-
-'<div class="customer-card">'+
-'<div class="customer-row">'+
-
-'<div class="customer-info">'+
-
-'<div class="customer-name">'+
-escapeHTML(customer.customerName)+
-'</div>'+
-
-'<div class="phone">'+
-escapeHTML(customer.phone||'')+
-'</div>'+
-
-'</div>'+
-
-'<div class="due">'+
-
-'<div class="due-label">Due Amount</div>'+
-
-'<div class="due-value">'+
-escapeHTML(customer.totalDueKD||'0.000')+
-' <span class="kd-small">KD</span>'+
-
-'</div>'+
-
-'</div>'+
-
-'</div>'+
-
-'</div>';
-
-list.innerHTML=html;
-
-loadCustomerTransactions(
-customer.customerId
-);
-
-}
-
-
-/* =====================================================
-CUSTOMER TRANSACTIONS
-===================================================== */
-
+/* CUSTOMER TRANSACTIONS */
 async function loadCustomerTransactions(customerId){
 
-const list=
-document.getElementById(
-'customerList'
-);
+ const list=document.getElementById('customerList');
 
-const loading=
-document.createElement('div');
+ const loading=document.createElement('div');
+ loading.id='customerTxnLoading';
+ loading.className='loading';
+ loading.textContent='Loading transactions...';
 
-loading.id='customerTxnLoading';
+ list.appendChild(loading);
 
-loading.className='loading';
+ try{
 
-loading.textContent='Loading transactions...';
+  const result=await getAPI('customerTransactions',{customerId});
 
-list.appendChild(loading);
+  loading.remove();
 
-try{
+  if(!result.success){
+   addEmpty(list,result.error||'Unable to load transactions');
+   return;
+  }
 
-const result=
-await getAPI(
-'customerTransactions',
-{
-customerId:customerId
-}
-);
+  const transactions=Array.isArray(result.data)
+   ?result.data
+   :(result.data&&Array.isArray(result.data.transactions)
+    ?result.data.transactions:[]);
 
-const currentLoading=
-document.getElementById(
-'customerTxnLoading'
-);
+  if(!transactions.length){
+   addEmpty(list,'No Transaction found');
+   return;
+  }
 
-if(currentLoading){
-currentLoading.remove();
-}
+  transactions.forEach(t=>{
 
-if(!result.success){
+   const txn=document.createElement('div');
+   txn.className='txn';
 
-const box=
-document.createElement('div');
+   const top=document.createElement('div');
+   top.className='txn-top';
 
-box.className='empty';
+   const date=document.createElement('div');
+   date.className='txn-date';
+   date.textContent=t.date||'';
 
-box.textContent=
-result.error||
-'Unable to load transactions';
+   const amount=document.createElement('div');
+   amount.className='txn-amount';
+   amount.textContent=(t.kdAmount||'0.000')+' KD';
 
-list.appendChild(box);
+   top.append(date,amount);
 
-return;
+   const bottom=document.createElement('div');
+   bottom.className='txn-bottom';
 
-}
+   let text=t.type||'';
 
-const transactions=
-Array.isArray(result.data)
-?result.data
-:(
-result.data &&
-Array.isArray(result.data.transactions)
-?result.data.transactions
-:[]
-);
+   if(t.note)text+=' • '+t.note;
+   if(t.bdAmount)text+=' • '+t.bdAmount+' Tk';
 
-if(!transactions.length){
+   bottom.textContent=text;
 
-const empty=
-document.createElement('div');
+   txn.append(top,bottom);
+   list.appendChild(txn);
+  });
 
-empty.className='empty';
+ }catch(e){
 
-empty.textContent='No Transaction found';
+  if(loading.isConnected)loading.remove();
+  addEmpty(list,'Connection error');
 
-list.appendChild(empty);
-
-return;
-
+ }
 }
 
-transactions.forEach(function(t){
-
-const txn=
-document.createElement('div');
-
-txn.className='txn';
-
-const top=
-document.createElement('div');
-
-top.className='txn-top';
-
-const date=
-document.createElement('div');
-
-date.className='txn-date';
-
-date.textContent=t.date||'';
-
-const amount=
-document.createElement('div');
-
-amount.className='txn-amount';
-
-amount.textContent=
-(t.kdAmount||'0.000')+' KD';
-
-top.appendChild(date);
-
-top.appendChild(amount);
-
-const bottom=
-document.createElement('div');
-
-bottom.className='txn-bottom';
-
-let text=t.type||'';
-
-if(t.note){
-text+=' • '+t.note;
-}
-
-if(t.bdAmount){
-text+=' • '+t.bdAmount+' Tk';
-}
-
-bottom.textContent=text;
-
-txn.appendChild(top);
-
-txn.appendChild(bottom);
-
-list.appendChild(txn);
-
-});
-
-}
-catch(error){
-
-const loading=
-document.getElementById(
-'customerTxnLoading'
-);
-
-if(loading){
-loading.remove();
-}
-
-const box=
-document.createElement('div');
-
-box.className='empty';
-
-box.textContent='Connection error';
-
-list.appendChild(box);
-
-}
-
-}
-
-
-/* =====================================================
-AGENTS
-===================================================== */
-
+/* AGENTS */
 async function loadAgents(){
 
-try{
+ try{
 
-const result=
-await getAPI('agents');
+  const result=await getAPI('agents');
 
-if(!result.success){
+  if(!result.success){
+   renderAgentError(result.error||'Agent loading failed');
+   return;
+  }
 
-renderAgentError(
-result.error||'Agent loading failed'
-);
+  agentData=Array.isArray(result.data)?result.data:[];
 
-return;
+  fillAgentSelect(document.getElementById('agentSelect'));
 
+  if(getRole()==='agent'){
+
+   const agentView=document.getElementById('agentView');
+   const linkedId=String(currentUser.linkedId||'');
+
+   agentView.innerHTML='';
+
+   const found=agentData.find(
+    a=>String(a.agentId)===linkedId
+   );
+
+   const option=document.createElement('option');
+   option.value=linkedId;
+   option.textContent=found
+    ?found.agentName
+    :(currentUser.agentName||currentUser.name||'My Agent');
+
+   agentView.appendChild(option);
+   agentView.value=linkedId;
+   agentView.disabled=true;
+
+   if(linkedId)agentChanged();
+
+  }else{
+
+   fillAgentSelect(document.getElementById('agentView'),true);
+
+  }
+
+  document.getElementById('agentList').innerHTML=
+   '<div class="empty">Select an agent</div>';
+
+ }catch(e){
+
+  renderAgentError('Agent loading error');
+
+ }
 }
 
-agentData=
-Array.isArray(result.data)
-?result.data
-:[];
-
-fillAgentSelect(
-document.getElementById('agentSelect')
-);
-
-if(
-String(currentUser?.role||'')
-.toLowerCase()!=='agent'
-){
-
-fillAgentSelect(
-document.getElementById('agentView'),
-true
-);
-
-}
-
-document
-.getElementById('agentList')
-.innerHTML=
-'<div class="empty">Select an agent</div>';
-
-}
-catch(error){
-
-renderAgentError(
-'Agent loading error'
-);
-
-}
-
-}
-
-
-/* =====================================================
-FILL AGENT SELECT
-===================================================== */
-
+/* AGENT SELECT */
 function fillAgentSelect(select,isView=false){
 
-select.innerHTML=
-isView
-?'<option value="">Agent</option>'
-:'<option value="">Select Agent</option>';
+ select.innerHTML=isView
+  ?'<option value="">Agent</option>'
+  :'<option value="">Select Agent</option>';
 
-agentData.forEach(function(agent){
+ agentData.forEach(agent=>{
 
-const option=
-document.createElement('option');
+  const option=document.createElement('option');
 
-option.value=
-agent.agentId;
+  option.value=agent.agentId;
+  option.textContent=agent.agentName;
 
-option.textContent=
-agent.agentName;
-
-select.appendChild(option);
-
-});
-
+  select.appendChild(option);
+ });
 }
 
-
-/* =====================================================
-AGENT ERROR
-===================================================== */
-
+/* AGENT ERROR */
 function renderAgentError(message){
-
-document
-.getElementById('agentList')
-.innerHTML=
-'<div class="empty">'+
-escapeHTML(message)+
-'</div>';
-
+ document.getElementById('agentList').innerHTML=
+  '<div class="empty">'+escapeHTML(message)+'</div>';
 }
 
-
-/* =====================================================
-NORMALIZE TYPE
-===================================================== */
-
-function normalizeType(value){
-
-return String(value||'')
-.trim()
-.toLowerCase()
-.replace(/\s+/g,' ')
-.replace(/^[+\-]\s*/,'')
-.trim();
-
-}
-
-
-/* =====================================================
-IS DUE
-===================================================== */
-
-function isDueTransaction(t){
-
-const type=normalizeType(
-t.type||
-t.Type||
-t.transactionType||
-t.TransactionType||
-''
-);
-
-return(
-type==='বাকি' ||
-type==='due' ||
-type==='due amount' ||
-type==='+ বাকি'
-);
-
-}
-
-
-/* =====================================================
-IS PAYMENT
-===================================================== */
-
-function isPaymentTransaction(t){
-
-const type=normalizeType(
-t.type||
-t.Type||
-t.transactionType||
-t.TransactionType||
-''
-);
-
-return(
-type==='পেমেন্ট' ||
-type==='payment' ||
-type==='জমা' ||
-type==='paid' ||
-type==='payment amount'
-);
-
-}
-
-
-/* =====================================================
-GET KD AMOUNT
-===================================================== */
-
-function getKDAmount(t){
-
-let value=t.kdAmount;
-
-if(value===undefined||value===null||value===''){
-value=t.amountKD;
-}
-
-if(value===undefined||value===null||value===''){
-value=t.kd;
-}
-
-if(value===undefined||value===null||value===''){
-value=t.amount;
-}
-
-return parseFloat(
-String(value||'0')
-.replace(/,/g,'')
-.trim()
-)||0;
-
-}
-
-
-/* =====================================================
-GET BD AMOUNT
-===================================================== */
-
-function getBDAmount(t){
-
-let value=t.bdAmount;
-
-if(value===undefined||value===null||value===''){
-value=t.amountBD;
-}
-
-if(value===undefined||value===null||value===''){
-value=t.bd;
-}
-
-return parseFloat(
-String(value||'0')
-.replace(/,/g,'')
-.trim()
-)||0;
-
-}
-
-
-/* =====================================================
-AGENT CHANGE
-===================================================== */
-
-async function agentChanged(){
-
-const agentId=
-document
-.getElementById('agentView')
-.value;
-
-const list=
-document.getElementById('agentList');
-
-
-if(!agentId){
-
-currentAgentTransactions=[];
-
-document
-.getElementById('agentCurrentBalance')
-.innerHTML=
-'0.000 <span>KD</span>';
-
-document
-.getElementById('agentMonthlySales')
-.innerHTML=
-'0 <span>Tk</span>';
-
-list.innerHTML=
-'<div class="empty">Select an agent</div>';
-
-return;
-
-}
-
-
-list.innerHTML=
-'<div class="loading">Loading transactions...</div>';
-
-
-try{
-
-const result=
-await getAPI(
-'agentTransactions',
-{
-linkedId:agentId,
-username:currentUser?.username||'',
-role:currentUser?.role||''
-}
-);
-
-
-if(!result.success){
-
-list.innerHTML=
-'<div class="empty">'+
-escapeHTML(
-result.error||
-'Unable to load transactions'
-)+
-'</div>';
-
-return;
-
-}
-
-if(
-result.data &&
-Array.isArray(result.data.transactions)
-){
-
-currentAgentTransactions=
-result.data.transactions;
-
-}
-
-else if(
-Array.isArray(result.data)
-){
-
-currentAgentTransactions=
-result.data;
-
-}
-
-else{
-
-currentAgentTransactions=[];
-
-}
-
-calculateAgentSummary();
-
-renderAgentTransactions();
-
-}
-catch(error){
-
-currentAgentTransactions=[];
-
-document
-.getElementById('agentCurrentBalance')
-.innerHTML=
-'0.000 <span>Tk</span>';
-
-document
-.getElementById('agentMonthlySales')
-.innerHTML=
-'0 <span>Tk</span>';
-
-list.innerHTML=
-'<div class="empty">Connection error</div>';
-
-}
-
-}
-
-
-/* =====================================================
-AGENT SUMMARY
-===================================================== */
-
-function calculateAgentSummary(){
-
-let currentBalance=0;
-let monthlySales=0;
-
-const year=
-Number(
-document.getElementById('agentYear').value
-);
-
-const month=
-Number(
-document.getElementById('agentMonth').value
-);
-
-currentAgentTransactions.forEach(function(t){
-
-const amount=getBDAmount(t);
-
-if(isDueTransaction(t)){
-
-currentBalance+=amount;
-
-}
-else if(isPaymentTransaction(t)){
-
-currentBalance-=amount;
-
-}
-
-});
-
-
-currentAgentTransactions.forEach(function(t){
-
-if(!isDueTransaction(t)){
-return;
-}
-
-const dateInfo=
-parseTransactionDate(
-t.date||
-t.Date||
-t.transactionDate||
-t.TransactionDate
-);
-
-if(
-!dateInfo ||
-dateInfo.year!==year ||
-dateInfo.month!==month
-){
-
-return;
-
-}
-
-monthlySales+=getBDAmount(t);
-
-});
-
-
-document
-.getElementById('agentCurrentBalance')
-.innerHTML=
-formatNumber(currentBalance)+
-' <span>Tk</span>';
-
-document
-.getElementById('agentMonthlySales')
-.innerHTML=
-formatNumber(monthlySales)+
-' <span>Tk</span>';
-
-}
-
-
-/* =====================================================
-RENDER AGENT TRANSACTIONS
-===================================================== */
-
-function renderAgentTransactions(){
-
-const list=
-document.getElementById('agentList');
-
-if(!currentAgentTransactions.length){
-
-calculateAgentSummary();
-
-list.innerHTML=
-'<div class="empty">No BD transactions found</div>';
-
-return;
-
-}
-
-const year=
-Number(
-document.getElementById('agentYear').value
-);
-
-const month=
-Number(
-document.getElementById('agentMonth').value
-);
-
-const filtered=
-currentAgentTransactions.filter(function(t){
-
-const info=
-parseTransactionDate(
-t.date||
-t.Date||
-t.transactionDate||
-t.TransactionDate
-);
-
-return info &&
-info.year===year &&
-info.month===month;
-
-});
-
-calculateAgentSummary();
-
-if(!filtered.length){
-
-list.innerHTML=
-'<div class="empty">No transaction for this month</div>';
-
-return;
-
-}
-
-let html='';
-
-filtered.forEach(function(t){
-
-const type=
-String(
-t.type||
-t.Type||
-''
-);
-
-const bd=getBDAmount(t);
-
-html+=
-
-'<div class="txn">'+
-
-'<div class="txn-top">'+
-
-'<div class="txn-date">'+
-escapeHTML(
-t.date||
-t.Date||
-''
-)+
-'</div>'+
-
-'<div class="txn-amount">'+
-formatNumber(bd)+
-' Tk'+
-'</div>'+
-
-'</div>'+
-
-'<div class="txn-bottom">'+
-escapeHTML(type)+
-
-(
-t.note
-?' • '+escapeHTML(t.note)
-:''
-)+
-
-'</div>'+
-
-'</div>';
-
-});
-
-list.innerHTML=html;
-
-}
-
-
-/* =====================================================
-PARSE TRANSACTION DATE
-===================================================== */
-
-function parseTransactionDate(value){
-
-if(!value){
-return null;
-}
-
-const str=
-String(value).trim();
-
-let match=
-str.match(
-/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/
-);
-
-if(match){
-
-const months={
-jan:1,
-feb:2,
-mar:3,
-apr:4,
-may:5,
-jun:6,
-jul:7,
-aug:8,
-sep:9,
-oct:10,
-nov:11,
-dec:12
-};
-
-const month=
-months[
-match[2].toLowerCase()
-];
-
-if(month){
-
-return{
-year:Number(match[3]),
-month:month
-};
-
-}
-
-}
-
-match=
-str.match(
-/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
-);
-
-if(match){
-
-return{
-year:Number(match[1]),
-month:Number(match[2])
-};
-
-}
-
-match=
-str.match(
-/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
-);
-
-if(match){
-
-return{
-year:Number(match[3]),
-month:Number(match[2])
-};
-
-}
-
-const date=new Date(str);
-
-if(!isNaN(date.getTime())){
-
-return{
-year:date.getFullYear(),
-month:date.getMonth()+1
-};
-
-}
-
-return null;
-
-}
-
-
-/* =====================================================
-FORMAT KD
-===================================================== */
-
-function formatKD(value){
-
-return Number(value||0)
-.toLocaleString(
-'en-US',
-{
-minimumFractionDigits:3,
-maximumFractionDigits:3
-}
-);
-
-}
-
-
-/* =====================================================
-FORMAT NUMBER
-===================================================== */
-
-function formatNumber(value){
-
-return Number(value||0)
-.toLocaleString(
-'en-US',
-{
-minimumFractionDigits:0,
-maximumFractionDigits:0
-}
-);
-
-}
-
-
-/* =====================================================
-NOTES
-===================================================== */
-
+/* NOTES */
 async function loadNotes(){
 
-try{
+ try{
 
-const result=
-await getAPI('options');
+  const result=await getAPI('options');
+  if(!result.success)return;
 
-if(!result.success){
-return;
+  notesData={
+   dueNotes:Array.isArray(result.data.dueNotes)?result.data.dueNotes:[],
+   paymentNotes:Array.isArray(result.data.paymentNotes)?result.data.paymentNotes:[]
+  };
+
+  setNotes(
+   transactionType==='বাকি'
+   ?notesData.dueNotes
+   :notesData.paymentNotes
+  );
+
+ }catch(e){}
 }
 
-notesData={
-
-dueNotes:
-Array.isArray(result.data.dueNotes)
-?result.data.dueNotes
-:[],
-
-paymentNotes:
-Array.isArray(result.data.paymentNotes)
-?result.data.paymentNotes
-:[]
-
-};
-
-setNotes(
-transactionType==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
-);
-
-}
-catch(error){
-
-}
-
-}
-
-
-/* =====================================================
-SET NOTES
-===================================================== */
-
+/* SET NOTES */
 function setNotes(notes){
 
-const select=
-document.getElementById('noteSelect');
+ const select=document.getElementById('noteSelect');
+ select.innerHTML='';
 
-select.innerHTML='';
+ if(!notes||!notes.length){
+  select.innerHTML='<option value="">Select Note</option>';
+  return;
+ }
 
-if(!notes||!notes.length){
+ notes.forEach((note,i)=>{
 
-const option=
-document.createElement('option');
+  const option=document.createElement('option');
 
-option.value='';
-option.textContent='Select Note';
+  option.value=note;
+  option.textContent=note;
 
-select.appendChild(option);
+  if(i===0)option.selected=true;
 
-return;
-
+  select.appendChild(option);
+ });
 }
 
-notes.forEach(function(note,index){
-
-const option=
-document.createElement('option');
-
-option.value=note;
-option.textContent=note;
-
-if(index===0){
-option.selected=true;
-}
-
-select.appendChild(option);
-
-});
-
-select.selectedIndex=0;
-
-}
-
-
-/* =====================================================
-TYPE
-===================================================== */
-
+/* TYPE */
 function setType(type){
 
-transactionType=type;
+ transactionType=type;
 
-document
-.getElementById('dueBtn')
-.classList.toggle(
-'active',
-type==='বাকি'
-);
+ document.getElementById('dueBtn').classList.toggle('active',type==='বাকি');
+ document.getElementById('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 
-document
-.getElementById('paymentBtn')
-.classList.toggle(
-'active',
-type==='পেমেন্ট'
-);
-
-setNotes(
-type==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
-);
-
+ setNotes(
+  type==='বাকি'
+  ?notesData.dueNotes
+  :notesData.paymentNotes
+ );
 }
 
+/* NORMALIZE */
+function normalizeType(value){
 
-/* =====================================================
-SAVE TRANSACTION
-===================================================== */
+ return String(value||'')
+ .trim()
+ .toLowerCase()
+ .replace(/\s+/g,' ')
+ .replace(/^[+\-]\s*/,'')
+ .trim();
+}
 
+/* DUE */
+function isDueTransaction(t){
+
+ const type=normalizeType(
+  t.type||t.Type||t.transactionType||t.TransactionType
+ );
+
+ return type==='বাকি'||type==='due'||type==='due amount';
+}
+
+/* PAYMENT */
+function isPaymentTransaction(t){
+
+ const type=normalizeType(
+  t.type||t.Type||t.transactionType||t.TransactionType
+ );
+
+ return type==='পেমেন্ট'||
+        type==='payment'||
+        type==='জমা'||
+        type==='paid'||
+        type==='payment amount';
+}
+
+/* BD */
+function getBDAmount(t){
+ return number(
+  t.bdAmount!==undefined&&t.bdAmount!==''
+  ?t.bdAmount
+  :(t.amountBD!==undefined&&t.amountBD!==''
+   ?t.amountBD:t.bd)
+ );
+}
+
+/* AGENT CHANGE */
+async function agentChanged(){
+
+ const agentId=document.getElementById('agentView').value;
+ const list=document.getElementById('agentList');
+
+ if(!agentId){
+
+  currentAgentTransactions=[];
+
+  setAgentNumbers(0,0);
+
+  list.innerHTML='<div class="empty">Select an agent</div>';
+
+  return;
+ }
+
+ list.innerHTML='<div class="loading">Loading transactions...</div>';
+
+ try{
+
+  const result=await getAPI('agentTransactions',{
+   linkedId:agentId,
+   username:currentUser?.username||'',
+   role:currentUser?.role||''
+  });
+
+  if(!result.success){
+   list.innerHTML='<div class="empty">'+
+    escapeHTML(result.error||'Unable to load transactions')+
+    '</div>';
+   return;
+  }
+
+  currentAgentTransactions=
+   result.data&&Array.isArray(result.data.transactions)
+   ?result.data.transactions
+   :Array.isArray(result.data)
+    ?result.data:[];
+
+  calculateAgentSummary();
+  renderAgentTransactions();
+
+ }catch(e){
+
+  currentAgentTransactions=[];
+  setAgentNumbers(0,0);
+  list.innerHTML='<div class="empty">Connection error</div>';
+
+ }
+}
+
+/* AGENT SUMMARY */
+function calculateAgentSummary(){
+
+ let balance=0;
+ let sales=0;
+
+ const year=Number(document.getElementById('agentYear').value);
+ const month=Number(document.getElementById('agentMonth').value);
+
+ currentAgentTransactions.forEach(t=>{
+
+  const amount=getBDAmount(t);
+
+  if(isDueTransaction(t))balance+=amount;
+  else if(isPaymentTransaction(t))balance-=amount;
+
+  if(isDueTransaction(t)){
+
+   const info=parseTransactionDate(
+    t.date||t.Date||t.transactionDate||t.TransactionDate
+   );
+
+   if(info&&info.year===year&&info.month===month)
+    sales+=amount;
+  }
+ });
+
+ setAgentNumbers(balance,sales);
+}
+
+/* AGENT NUMBERS */
+function setAgentNumbers(balance,sales){
+
+ document.getElementById('agentCurrentBalance').innerHTML=
+  formatNumber(balance)+' <span>Tk</span>';
+
+ document.getElementById('agentMonthlySales').innerHTML=
+  formatNumber(sales)+' <span>Tk</span>';
+}
+
+/* RENDER AGENT */
+function renderAgentTransactions(){
+
+ const list=document.getElementById('agentList');
+
+ if(!currentAgentTransactions.length){
+
+  calculateAgentSummary();
+  list.innerHTML='<div class="empty">No BD transactions found</div>';
+  return;
+ }
+
+ const year=Number(document.getElementById('agentYear').value);
+ const month=Number(document.getElementById('agentMonth').value);
+
+ const filtered=currentAgentTransactions.filter(t=>{
+
+  const info=parseTransactionDate(
+   t.date||t.Date||t.transactionDate||t.TransactionDate
+  );
+
+  return info&&info.year===year&&info.month===month;
+ });
+
+ calculateAgentSummary();
+
+ if(!filtered.length){
+
+  list.innerHTML='<div class="empty">No transaction for this month</div>';
+  return;
+ }
+
+ list.innerHTML='';
+
+ filtered.forEach(t=>{
+
+  const txn=document.createElement('div');
+  txn.className='txn';
+
+  const top=document.createElement('div');
+  top.className='txn-top';
+
+  const date=document.createElement('div');
+  date.className='txn-date';
+  date.textContent=t.date||t.Date||'';
+
+  const amount=document.createElement('div');
+  amount.className='txn-amount';
+  amount.textContent=formatNumber(getBDAmount(t))+' Tk';
+
+  top.append(date,amount);
+
+  const bottom=document.createElement('div');
+  bottom.className='txn-bottom';
+
+  let text=t.type||'';
+
+  if(t.note)text+=' • '+t.note;
+
+  bottom.textContent=text;
+
+  txn.append(top,bottom);
+  list.appendChild(txn);
+ });
+}
+
+/* DATE */
+function parseTransactionDate(value){
+
+ if(!value)return null;
+
+ const str=String(value).trim();
+
+ let match=str.match(/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/);
+
+ if(match){
+
+  const months={
+   jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
+   jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
+  };
+
+  const month=months[match[2].toLowerCase()];
+
+  if(month)
+   return{year:Number(match[3]),month};
+ }
+
+ match=str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+
+ if(match)
+  return{year:Number(match[1]),month:Number(match[2])};
+
+ match=str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+
+ if(match)
+  return{year:Number(match[3]),month:Number(match[2])};
+
+ const date=new Date(str);
+
+ if(!isNaN(date.getTime()))
+  return{year:date.getFullYear(),month:date.getMonth()+1};
+
+ return null;
+}
+
+/* FORMAT */
+function formatNumber(value){
+
+ return Number(value||0).toLocaleString('en-US',{
+  minimumFractionDigits:0,
+  maximumFractionDigits:0
+ });
+}
+
+/* SAVE */
 async function saveTransaction(){
 
-if(
-String(currentUser?.role||'')
-.toLowerCase()!=='admin'
-){
+ if(getRole()!=='admin'){
+  showSaveError('Access denied');
+  return;
+ }
 
-showSaveError('Access denied');
+ const date=document.getElementById('date').value;
+ const agentId=document.getElementById('agentSelect').value;
+ const customerId=document.getElementById('customerSelect').value;
 
-return;
+ const kd=number(document.getElementById('kdAmount').value);
+ const bd=number(document.getElementById('bdAmount').value);
 
+ const note=document.getElementById('noteSelect').value;
+
+ if(!date){
+  showSaveError('Date required');
+  return;
+ }
+
+ if(kd>0&&!customerId){
+  showSaveError('KD Amount দিলে Customer নির্বাচন করুন');
+  return;
+ }
+
+ if(bd>0&&!agentId){
+  showSaveError('BD Amount দিলে Agent নির্বাচন করুন');
+  return;
+ }
+
+ if(kd<=0&&bd<=0){
+  showSaveError('KD অথবা BD Amount দিন');
+  return;
+ }
+
+ const selectedDate=new Date(date+'T00:00:00');
+ const today=new Date();
+
+ today.setHours(0,0,0,0);
+
+ if(selectedDate>today){
+  showSaveError('Future date দেওয়া যাবে না');
+  return;
+ }
+
+ const agent=agentData.find(
+  a=>String(a.agentId)===String(agentId)
+ );
+
+ const customer=customerData.find(
+  c=>String(c.customerId)===String(customerId)
+ );
+
+ const button=document.getElementById('saveBtn');
+ const message=document.getElementById('saveMsg');
+
+ button.disabled=true;
+ button.textContent='Saving...';
+ message.textContent='';
+ message.className='msg';
+
+ try{
+
+  const result=await postAPI({
+
+   action:'addTransaction',
+
+   username:currentUser?.username||'',
+   role:currentUser?.role||'',
+
+   date:formatDate(date),
+
+   customerId,
+   customerName:customer?.customerName||'',
+
+   agentName:agent?.agentName||'',
+
+   kdAmount:kd,
+   bdAmount:bd,
+
+   type:transactionType,
+   note
+
+  });
+
+  if(!result.success){
+   showSaveError(result.error||'Save failed');
+   return;
+  }
+
+  message.className='msg success';
+  message.textContent='Transaction saved successfully';
+
+  document.getElementById('kdAmount').value='';
+  document.getElementById('bdAmount').value='';
+
+  await loadCustomers();
+
+  const selectedAgent=document.getElementById('agentView').value;
+
+  if(selectedAgent)
+   await agentChanged();
+
+  setTimeout(()=>{
+   message.textContent='';
+   message.className='msg';
+  },2500);
+
+ }catch(e){
+
+  showSaveError('Connection error');
+
+ }finally{
+
+  button.disabled=false;
+  button.textContent='✅ Save';
+
+ }
 }
 
-const date=
-document.getElementById('date').value;
-
-const agentId=
-document.getElementById('agentSelect').value;
-
-const customerId=
-document.getElementById('customerSelect').value;
-
-const kd=
-parseFloat(
-document
-.getElementById('kdAmount')
-.value
-.replace(/,/g,'')
-)||0;
-
-const bd=
-parseFloat(
-document
-.getElementById('bdAmount')
-.value
-.replace(/,/g,'')
-)||0;
-
-const note=
-document
-.getElementById('noteSelect')
-.value;
-
-
-if(!date){
-
-showSaveError('Date required');
-return;
-
-}
-
-if(kd>0&&!customerId){
-
-showSaveError(
-'KD Amount দিলে Customer নির্বাচন করুন'
-);
-
-return;
-
-}
-
-if(bd>0&&!agentId){
-
-showSaveError(
-'BD Amount দিলে Agent নির্বাচন করুন'
-);
-
-return;
-
-}
-
-if(kd<=0&&bd<=0){
-
-showSaveError(
-'KD অথবা BD Amount দিন'
-);
-
-return;
-
-}
-
-const selectedDate=
-new Date(date+'T00:00:00');
-
-const today=new Date();
-
-today.setHours(0,0,0,0);
-
-if(selectedDate>today){
-
-showSaveError(
-'Future date দেওয়া যাবে না'
-);
-
-return;
-
-}
-
-let agentName='';
-
-if(agentId){
-
-const agent=
-agentData.find(function(a){
-
-return String(a.agentId)===
-String(agentId);
-
-});
-
-if(agent){
-agentName=agent.agentName;
-}
-
-}
-
-let customerName='';
-
-if(customerId){
-
-const customer=
-customerData.find(function(c){
-
-return String(c.customerId)===
-String(customerId);
-
-});
-
-if(customer){
-customerName=customer.customerName;
-}
-
-}
-
-const button=
-document.getElementById('saveBtn');
-
-const message=
-document.getElementById('saveMsg');
-
-button.disabled=true;
-
-button.textContent='Saving...';
-
-message.textContent='';
-
-message.className='msg';
-
-try{
-
-const result=
-await postAPI({
-
-action:'addTransaction',
-
-username:currentUser?.username||'',
-
-role:currentUser?.role||'',
-
-date:formatDate(date),
-
-customerId:customerId,
-
-customerName:customerName,
-
-agentName:agentName,
-
-kdAmount:kd,
-
-bdAmount:bd,
-
-type:transactionType,
-
-note:note
-
-});
-
-
-if(!result.success){
-
-showSaveError(
-result.error||'Save failed'
-);
-
-return;
-
-}
-
-message.className='msg success';
-
-message.textContent=
-'Transaction saved successfully';
-
-document
-.getElementById('kdAmount')
-.value='';
-
-document
-.getElementById('bdAmount')
-.value='';
-
-await loadCustomers();
-
-const selectedAgent=
-document
-.getElementById('agentView')
-.value;
-
-if(selectedAgent){
-
-await agentChanged();
-
-}
-
-setTimeout(function(){
-
-message.textContent='';
-
-message.className='msg';
-
-},2500);
-
-}
-catch(error){
-
-showSaveError(
-'Connection error'
-);
-
-}
-finally{
-
-button.disabled=false;
-
-button.textContent='✅ Save';
-
-}
-
-}
-
-
-/* =====================================================
-ERROR
-===================================================== */
-
+/* ERROR */
 function showSaveError(text){
 
-const message=
-document.getElementById('saveMsg');
+ const message=document.getElementById('saveMsg');
 
-message.className='msg error';
-
-message.textContent=text;
-
+ message.className='msg error';
+ message.textContent=text;
 }
 
-
-/* =====================================================
-DATE FORMAT
-===================================================== */
-
+/* DATE FORMAT */
 function formatDate(value){
 
-const parts=value.split('-');
+ const parts=value.split('-');
 
-const months=[
-'Jan','Feb','Mar','Apr','May','Jun',
-'Jul','Aug','Sep','Oct','Nov','Dec'
-];
+ const months=[
+  'Jan','Feb','Mar','Apr','May','Jun',
+  'Jul','Aug','Sep','Oct','Nov','Dec'
+ ];
 
-return(
-parts[2]+'-'+
-months[Number(parts[1])-1]+'-'+
-parts[0]
-);
-
+ return parts[2]+'-'+months[Number(parts[1])-1]+'-'+parts[0];
 }
 
+/* EMPTY */
+function addEmpty(parent,text){
 
-/* =====================================================
-ESCAPE
-===================================================== */
+ const box=document.createElement('div');
+ box.className='empty';
+ box.textContent=text;
+ parent.appendChild(box);
+}
 
+/* ESCAPE */
 function escapeHTML(value){
 
-return String(
-value===null||value===undefined
-?''
-:value
-)
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;')
-.replace(/'/g,'&#039;');
-
+ return String(value===null||value===undefined?'':value)
+  .replace(/&/g,'&amp;')
+  .replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;')
+  .replace(/'/g,'&#039;');
 }
 
-
-/* =====================================================
-ENTER LOGIN
-===================================================== */
-
-document
-.getElementById('password')
-.addEventListener(
-'keydown',
-function(event){
-
-if(event.key==='Enter'){
-login();
-}
-
+/* ENTER LOGIN */
+document.getElementById('password').addEventListener('keydown',e=>{
+ if(e.key==='Enter')login();
 });
 
-
-/* =====================================================
-START
-===================================================== */
-
+/* START */
 restoreLogin();
 
 </script>
 
 </body>
-
-  </html>
+</html>
