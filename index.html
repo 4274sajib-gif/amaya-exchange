@@ -12,171 +12,116 @@ body{min-height:100vh}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-
 .app{width:100%;max-width:520px;margin:auto;min-height:100vh}
 
-/* HEADER */
-.header{
- background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;
- position:sticky;top:0;z-index:20
-}
+.header{background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;position:sticky;top:0;z-index:20}
 .header-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .logo{font-size:19px;font-weight:800}
 .tagline{font-size:11px;color:#858e9d;margin-top:4px}
-.logout{
- border:0;background:#eef0f3;color:#303744;border-radius:9px;
- padding:8px 11px;font-size:11px;font-weight:700
-}
+.logout{border:0;background:#eef0f3;color:#303744;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:700}
 
-/* TABS */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:11px 14px 5px}
-.tab{
- border:0;height:43px;border-radius:11px;background:#e7ebf0;
- color:#687284;font-size:12px;font-weight:800
-}
+.tab{border:0;height:43px;border-radius:11px;background:#e7ebf0;color:#687284;font-size:12px;font-weight:800}
 .tab.active{background:#111827;color:#fff}
 
-/* CONTENT */
 .content{padding:10px 14px 25px}
 .panel{display:none}
 .panel.active{display:block}
-.card{
- background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;
- box-shadow:0 3px 15px rgba(0,0,0,.045)
-}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 3px 15px rgba(0,0,0,.045)}
 
-/* FORM */
 .field{margin-bottom:13px}
 .label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-input,select{
- width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;
- background:#fff;padding:0 12px;outline:0;color:#172033
-}
+input,select{width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;padding:0 12px;outline:0;color:#172033}
 input:focus,select:focus{border-color:#111827}
 select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
 .amount{font-size:17px!important;font-weight:700}
-
 .amount-row,.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .type-row{margin:3px 0 13px}
-.type-btn{
- height:44px;border:1px solid #dfe3e9;border-radius:11px;
- background:#fff;font-weight:800
-}
+.type-btn{height:44px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;font-weight:800}
 .type-btn.active{background:#111827;color:#fff;border-color:#111827}
-
-.save{
- width:100%;height:49px;border:0;border-radius:12px;
- background:#111827;color:#fff;font-weight:800
-}
+.save{width:100%;height:49px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:800}
 .save:disabled{opacity:.55;cursor:not-allowed}
-
 .msg{font-size:12px;margin-top:9px;text-align:center}
 .error{color:#d33131}
 .success{color:#16824c}
 
-/* CUSTOMER */
-.customer-filter-row{
- display:grid;grid-template-columns:.8fr 1.2fr;gap:7px;margin-bottom:9px
-}
-.customer-filter-row input,
-.customer-filter-row select{
- height:42px;font-size:12px;padding:0 9px
-}
+.customer-filter-card{background:#fff;border-radius:14px;padding:10px;margin-bottom:9px;box-shadow:0 2px 10px rgba(0,0,0,.035)}
+.customer-filter-row{display:grid;grid-template-columns:.72fr 1.28fr;gap:6px;margin-bottom:7px}
+.customer-filter-row input,.customer-filter-row select{height:36px;font-size:11px;padding:0 8px;border-radius:9px}
+.customer-selected-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;min-height:38px}
+.selected-customer{min-width:0}
+.selected-name{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.selected-phone{font-size:9px;color:#858e9d;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.total-due-box{
- background:#111827;border-radius:12px;padding:9px 12px;
- margin-bottom:10px;text-align:left
-}
-.total-due-label{font-size:10px;color:#c8ced8;margin-bottom:2px}
-.total-due-value{font-size:17px;font-weight:800;color:#fff}
-.total-due-value span{font-size:9px;font-weight:700}
+.due-amount-box{background:#f1f3f6;border-radius:9px;padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0}
+.due-amount-label{font-size:8px;color:#858e9d;margin-bottom:1px}
+.due-amount-value{font-size:13px;font-weight:800;color:#172033;line-height:1.1;white-space:nowrap}
+.due-amount-value span{font-size:8px;font-weight:700}
 
-.list{display:flex;flex-direction:column;gap:8px}
-.customer-card{
- background:#fff;border-radius:11px;padding:9px 11px;
- box-shadow:0 2px 9px rgba(0,0,0,.04);border:1px solid #edf0f3
-}
-.customer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.customer-info{min-width:0;flex:1}
-.customer-name{
- font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
-}
-.phone{font-size:10px;color:#858e9d;margin-top:2px}
-.due{text-align:right;white-space:nowrap}
-.due-label{font-size:9px;color:#8992a0}
-.due-value{font-size:14px;font-weight:800;margin-top:1px}
-.kd-small{font-size:9px}
+.total-due-box{background:#111827;border-radius:9px;padding:6px 9px;min-width:105px;text-align:center;flex-shrink:0}
+.total-due-label{font-size:8px;color:#c8ced8;margin-bottom:1px}
+.total-due-value{font-size:14px;font-weight:800;color:#fff;line-height:1.1;white-space:nowrap}
+.total-due-value span{font-size:8px;font-weight:700}
 
-#customerList{
- max-height:calc(100vh - 300px);overflow-y:auto;
- -webkit-overflow-scrolling:touch;padding-right:2px
-}
+.list{display:flex;flex-direction:column;gap:6px}
+#customerList{max-height:calc(100vh - 255px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
-/* TRANSACTION */
-.txn{
- background:#fff;border-radius:11px;padding:10px;
- box-shadow:0 2px 9px rgba(0,0,0,.04)
-}
-.txn-top{display:flex;justify-content:space-between;gap:8px}
-.txn-date{font-size:11px;color:#858e9d}
-.txn-amount{font-size:13px;font-weight:800}
-.txn-bottom{font-size:10px;color:#737d8d;margin-top:4px}
+.txn{background:#fff;border-radius:9px;padding:7px 8px;box-shadow:0 1px 6px rgba(0,0,0,.035);border:1px solid #edf0f3;border-left:3px solid #dfe3e9}
+.txn.sale{border-left-color:#35a853}
+.txn.payment{border-left-color:#f3a6a6}
+.txn-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.txn-date{font-size:9px;color:#858e9d}
+.txn-type{font-size:9px;font-weight:800}
+.txn.sale .txn-type{color:#16824c}
+.txn.payment .txn-type{color:#d66b6b}
+.txn-amount{font-size:12px;font-weight:800;margin-top:2px}
+.txn.sale .txn-amount{color:#16824c}
+.txn.payment .txn-amount{color:#d66b6b}
+.txn-bottom{font-size:8px;color:#737d8d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* AGENT */
-.agent-filter-row{
- display:grid;grid-template-columns:.72fr 1fr 1.28fr;gap:6px;margin-bottom:9px
-}
-.agent-filter-row select{
- height:42px;font-size:11px;padding:0 7px;min-width:0
-}
-.agent-summary{
- display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px
-}
-.agent-summary-box{
- background:#fff;border-radius:11px;padding:8px 10px;
- border:1px solid #edf0f3;box-shadow:0 2px 8px rgba(0,0,0,.035)
-}
-.agent-summary-label{font-size:9px;color:#8992a0;margin-bottom:2px}
-.agent-summary-value{font-size:15px;font-weight:800;line-height:1.2}
-.agent-summary-value span{font-size:9px;font-weight:700}
+.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1.25fr;gap:5px;margin-bottom:8px}
+.agent-filter-row select{height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0}
+.agent-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.agent-summary-box{background:#111827;color:#fff;border-radius:10px;padding:8px 9px;border:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.agent-summary-label{font-size:8px;color:#c8ced8;margin-bottom:2px}
+.agent-summary-value{font-size:14px;font-weight:800;line-height:1.2;color:#fff}
+.agent-summary-value span{font-size:8px;font-weight:700;color:#c8ced8}
 .agent-balance{text-align:left}
 .agent-sales{text-align:right}
+#agentList{max-height:calc(100vh - 250px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
+#agentList .txn{padding:7px 8px;border-radius:9px}
+#agentList .txn-date,#agentList .txn-type{font-size:9px}
+#agentList .txn-amount{font-size:12px;margin-top:2px}
+#agentList .txn-bottom{font-size:8px;margin-top:2px}
 
-#agentList{
- max-height:calc(100vh - 265px);overflow-y:auto;
- -webkit-overflow-scrolling:touch;padding-right:2px
-}
-
-/* LOGIN */
-.login-page{
- min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px
-}
-.login-box{
- width:100%;max-width:390px;background:#fff;border-radius:21px;
- padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)
-}
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{width:100%;max-width:390px;background:#fff;border-radius:21px;padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
 .login-title{font-size:24px;font-weight:800}
 .login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
-.loading,.empty{padding:28px 10px;text-align:center;color:#8992a0;font-size:13px}
+.loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
 
 @media(max-width:360px){
- .tabs{gap:5px}
- .tab{font-size:11px}
- .amount-row,.customer-filter-row{gap:6px}
- .customer-filter-row input,.customer-filter-row select{font-size:11px;padding:0 7px}
- .agent-filter-row{gap:4px}
- .agent-filter-row select{font-size:10px;padding:0 5px}
- .agent-summary-value{font-size:14px}
+.tabs{gap:5px}
+.tab{font-size:11px}
+.amount-row{gap:6px}
+.customer-filter-row{gap:5px}
+.customer-filter-row input,.customer-filter-row select{font-size:10px;padding:0 7px}
+.agent-filter-row{gap:4px}
+.agent-filter-row select{font-size:9px;padding:0 5px}
+.agent-summary-value{font-size:13px}
+.total-due-box{min-width:98px}
+.due-amount-box{min-width:75px;padding:6px 6px}
+.due-amount-value{font-size:12px}
+.selected-name{font-size:11px}
+.customer-selected-row{gap:5px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
 <div id="loginPage" class="login-page">
 <div class="login-box">
-
 <div class="login-title">Amaya Exchange</div>
 <div class="login-sub">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
 
@@ -192,11 +137,9 @@ select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
 
 <button id="loginBtn" class="save" onclick="login()">Login</button>
 <div id="loginMsg" class="msg"></div>
-
 </div>
 </div>
 
-<!-- APP -->
 <div id="app" class="app hidden">
 
 <div class="header">
@@ -217,13 +160,10 @@ select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
 
 <div class="content">
 
-<!-- TRANSACTION -->
 <section id="panelTransaction" class="panel active">
 <div class="card">
 
-<div style="font-size:16px;font-weight:800;margin-bottom:14px">
-Add Transaction
-</div>
+<div style="font-size:16px;font-weight:800;margin-bottom:14px">Add Transaction</div>
 
 <div class="field">
 <label class="label">📅 Date</label>
@@ -232,20 +172,15 @@ Add Transaction
 
 <div class="field">
 <label class="label">◾ Agent</label>
-<select id="agentSelect">
-<option value="">Select Agent</option>
-</select>
+<select id="agentSelect"><option value="">Select Agent</option></select>
 </div>
 
 <div class="field">
 <label class="label">🧒 Customer</label>
-<select id="customerSelect">
-<option value="">Select Customer</option>
-</select>
+<select id="customerSelect"><option value="">Select Customer</option></select>
 </div>
 
 <div class="amount-row">
-
 <div class="field">
 <label class="label">💵 KD Amount</label>
 <input id="kdAmount" class="amount" type="text" inputmode="decimal" placeholder="0.000">
@@ -255,7 +190,6 @@ Add Transaction
 <label class="label">💳 BD Amount</label>
 <input id="bdAmount" class="amount" type="text" inputmode="numeric" placeholder="0">
 </div>
-
 </div>
 
 <div class="type-row">
@@ -265,9 +199,7 @@ Add Transaction
 
 <div class="field">
 <label class="label">Note</label>
-<select id="noteSelect">
-<option value="">Select Note</option>
-</select>
+<select id="noteSelect"><option value="">Select Note</option></select>
 </div>
 
 <button id="saveBtn" class="save" onclick="saveTransaction()">✅ Save</button>
@@ -276,28 +208,34 @@ Add Transaction
 </div>
 </section>
 
-<!-- CUSTOMER -->
 <section id="panelCustomer" class="panel">
 
-<div class="card">
+<div class="customer-filter-card">
 
 <div class="customer-filter-row">
-
 <input id="customerSearch" type="search" placeholder="🔍 Search..." autocomplete="off">
-
 <select id="customerPageSelect">
 <option value="">Select Customer</option>
 </select>
+</div>
 
+<div class="customer-selected-row">
+
+<div id="selectedCustomerInfo" class="selected-customer">
+<div class="selected-empty">Select a customer</div>
+</div>
+
+<div class="due-amount-box">
+<div class="due-amount-label">Due Amount</div>
+<div id="selectedDueAmount" class="due-amount-value">0.000 <span>KD</span></div>
 </div>
 
 <div class="total-due-box">
 <div class="total-due-label">Total Due</div>
-<div id="allCustomerDue" class="total-due-value">
-0.000 <span>KD</span>
-</div>
+<div id="allCustomerDue" class="total-due-value">0.000 <span>KD</span></div>
 </div>
 
+</div>
 </div>
 
 <div id="customerList" class="list">
@@ -306,7 +244,6 @@ Add Transaction
 
 </section>
 
-<!-- AGENT -->
 <section id="panelAgent" class="panel">
 
 <div class="agent-filter-row">
@@ -321,16 +258,12 @@ Add Transaction
 
 <div class="agent-summary-box agent-balance">
 <div class="agent-summary-label">Current Balance</div>
-<div id="agentCurrentBalance" class="agent-summary-value">
-0 <span>Tk</span>
-</div>
+<div id="agentCurrentBalance" class="agent-summary-value">0 <span>Tk</span></div>
 </div>
 
 <div class="agent-summary-box agent-sales">
 <div class="agent-summary-label">Monthly Sales</div>
-<div id="agentMonthlySales" class="agent-summary-value">
-0 <span>Tk</span>
-</div>
+<div id="agentMonthlySales" class="agent-summary-value">0 <span>Tk</span></div>
 </div>
 
 </div>
@@ -346,10 +279,10 @@ Add Transaction
 
 <script>
 
-/* API */
 const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
 
-/* STATE */
+const $=id=>document.getElementById(id);
+
 let currentUser=null;
 let transactionType='বাকি';
 let customerData=[];
@@ -357,53 +290,41 @@ let agentData=[];
 let notesData={dueNotes:[],paymentNotes:[]};
 let currentAgentTransactions=[];
 
-/* API GET */
+const fmtKD=v=>number(v).toLocaleString('en-US',{minimumFractionDigits:3,maximumFractionDigits:3});
+const fmtIndian=v=>Math.floor(number(v)).toLocaleString('en-IN');
+
 async function getAPI(action,params={}){
- const query=new URLSearchParams({action});
- Object.keys(params).forEach(k=>{
+ const q=new URLSearchParams({action});
+ for(const k in params)
   if(params[k]!==undefined&&params[k]!==null&&params[k]!=='')
-   query.set(k,params[k]);
- });
- const response=await fetch(API+'?'+query.toString(),{
-  method:'GET',
-  cache:'no-store'
- });
- return response.json();
+   q.set(k,params[k]);
+ const r=await fetch(API+'?'+q,{method:'GET',cache:'no-store'});
+ return r.json();
 }
 
-/* API POST */
 async function postAPI(data){
- const response=await fetch(API,{
+ const r=await fetch(API,{
   method:'POST',
   headers:{'Content-Type':'text/plain;charset=utf-8'},
   body:JSON.stringify(data)
  });
- return response.json();
+ return r.json();
 }
 
-/* TABS */
 function openTab(tab,button){
  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
 
- const panel=document.getElementById(
-  'panel'+tab.charAt(0).toUpperCase()+tab.slice(1)
- );
-
- if(panel&&!panel.classList.contains('hidden'))
-  panel.classList.add('active');
-
- if(button&&!button.classList.contains('hidden'))
-  button.classList.add('active');
+ const panel=$('panel'+tab.charAt(0).toUpperCase()+tab.slice(1));
+ if(panel&&!panel.classList.contains('hidden'))panel.classList.add('active');
+ if(button&&!button.classList.contains('hidden'))button.classList.add('active');
 }
 
-/* LOGIN */
 async function login(){
-
- const username=document.getElementById('username').value.trim();
- const password=document.getElementById('password').value;
- const msg=document.getElementById('loginMsg');
- const btn=document.getElementById('loginBtn');
+ const username=$('username').value.trim();
+ const password=$('password').value;
+ const msg=$('loginMsg');
+ const btn=$('loginBtn');
 
  if(!username||!password){
   msg.className='msg error';
@@ -416,7 +337,6 @@ async function login(){
  msg.textContent='';
 
  try{
-
   const result=await getAPI('login',{username,password});
 
   if(!result.success){
@@ -430,82 +350,61 @@ async function login(){
   showApp();
 
  }catch(e){
-
   msg.className='msg error';
   msg.textContent='Connection error';
-
  }finally{
-
   btn.disabled=false;
   btn.textContent='Login';
-
  }
 }
 
-/* RESTORE */
 function restoreLogin(){
-
  try{
-
   const saved=localStorage.getItem('amaya_user');
   if(!saved)return;
-
   const user=JSON.parse(saved);
-
   if(user&&user.loggedIn){
    currentUser=user;
    showApp();
   }
-
  }catch(e){
-
   localStorage.removeItem('amaya_user');
-
  }
 }
 
-/* SHOW APP */
 function showApp(){
-
- document.getElementById('loginPage').classList.add('hidden');
- document.getElementById('app').classList.remove('hidden');
-
+ $('loginPage').classList.add('hidden');
+ $('app').classList.remove('hidden');
  setToday();
  setupAgentDateFilters();
  applyRoleAccess();
  loadAllData();
 }
 
-/* ROLE */
 function getRole(){
  return String(currentUser?.role||'').trim().toLowerCase();
 }
 
-/* ROLE ACCESS */
 function applyRoleAccess(){
 
  const role=getRole();
-
  const tabs=document.querySelectorAll('.tab');
  const transactionTab=tabs[0];
  const customerTab=tabs[1];
  const agentTab=tabs[2];
 
- const transactionPanel=document.getElementById('panelTransaction');
- const customerPanel=document.getElementById('panelCustomer');
- const agentPanel=document.getElementById('panelAgent');
+ const transactionPanel=$('panelTransaction');
+ const customerPanel=$('panelCustomer');
+ const agentPanel=$('panelAgent');
 
- /* RESET */
  [transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));
  [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));
 
- /* ADMIN */
  if(role==='admin'){
   openTab('transaction',transactionTab);
   return;
  }
 
- /* AGENT */
  if(role==='agent'){
 
   transactionTab.classList.add('hidden');
@@ -514,12 +413,10 @@ function applyRoleAccess(){
 
   transactionPanel.classList.add('hidden');
   customerPanel.classList.add('hidden');
-
   agentPanel.classList.remove('hidden');
   agentPanel.classList.add('active');
 
-  const agentView=document.getElementById('agentView');
-
+  const agentView=$('agentView');
   agentView.innerHTML='';
 
   const option=document.createElement('option');
@@ -531,11 +428,9 @@ function applyRoleAccess(){
   agentView.disabled=true;
 
   if(currentUser.linkedId)agentChanged();
-
   return;
  }
 
- /* VIEWER */
  if(role==='viewer'||role==='viewar'){
 
   transactionTab.classList.add('hidden');
@@ -547,65 +442,81 @@ function applyRoleAccess(){
   customerPanel.classList.remove('hidden');
   agentPanel.classList.remove('hidden');
 
+  $('customerPageSelect').value='';
+  $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+  $('customerList').innerHTML='<div class="empty">Select a customer</div>';
+
+  let totalDue=0;
+  customerData.forEach(c=>{
+   if(isActive(c))totalDue+=number(c.totalDueKD);
+  });
+
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
+
+  const agentView=$('agentView');
+  agentView.disabled=false;
+  agentView.value='';
+
+  currentAgentTransactions=[];
+  setAgentNumbers(0,0);
+  $('agentList').innerHTML='<div class="empty">Select an agent</div>';
+
   openTab('customer',customerTab);
   return;
  }
 
- /* UNKNOWN */
  [transactionTab,customerTab,agentTab].forEach(x=>x.classList.add('hidden'));
  [transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.add('hidden'));
 }
 
-/* LOGOUT */
 function logout(){
 
  currentUser=null;
  localStorage.removeItem('amaya_user');
 
- document.getElementById('app').classList.add('hidden');
- document.getElementById('loginPage').classList.remove('hidden');
+ $('app').classList.add('hidden');
+ $('loginPage').classList.remove('hidden');
 
- document.getElementById('username').value='';
- document.getElementById('password').value='';
- document.getElementById('loginMsg').textContent='';
+ $('username').value='';
+ $('password').value='';
+ $('loginMsg').textContent='';
+
+ $('customerPageSelect').value='';
+ $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
+ $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+ $('customerList').innerHTML='<div class="empty">Select a customer</div>';
+
+ $('agentView').value='';
+ $('agentView').disabled=false;
+ currentAgentTransactions=[];
+ setAgentNumbers(0,0);
+ $('agentList').innerHTML='<div class="empty">Select an agent</div>';
 }
 
-/* TODAY */
 function setToday(){
-
- const input=document.getElementById('date');
  const d=new Date();
-
- const today=
- d.getFullYear()+'-'+
- String(d.getMonth()+1).padStart(2,'0')+'-'+
- String(d.getDate()).padStart(2,'0');
-
- input.value=today;
- input.max=today;
+ $('date').value=d.getFullYear()+'-'+
+  String(d.getMonth()+1).padStart(2,'0')+'-'+
+  String(d.getDate()).padStart(2,'0');
+ $('date').max=$('date').value;
 }
 
-/* AGENT FILTERS */
 function setupAgentDateFilters(){
 
- const yearSelect=document.getElementById('agentYear');
- const monthSelect=document.getElementById('agentMonth');
-
+ const yearSelect=$('agentYear');
+ const monthSelect=$('agentMonth');
  const now=new Date();
  const currentYear=now.getFullYear();
  const currentMonth=now.getMonth()+1;
 
  yearSelect.innerHTML='';
-
  for(let y=currentYear-5;y<=currentYear;y++){
-
-  const option=document.createElement('option');
-  option.value=y;
-  option.textContent=y;
-
-  if(y===currentYear)option.selected=true;
-
-  yearSelect.appendChild(option);
+  const o=document.createElement('option');
+  o.value=y;
+  o.textContent=y;
+  if(y===currentYear)o.selected=true;
+  yearSelect.appendChild(o);
  }
 
  const months=[
@@ -614,40 +525,32 @@ function setupAgentDateFilters(){
  ];
 
  monthSelect.innerHTML='';
-
- months.forEach((month,i)=>{
-
-  const option=document.createElement('option');
-  option.value=i+1;
-  option.textContent=month;
-
-  if(i+1===currentMonth)option.selected=true;
-
-  monthSelect.appendChild(option);
+ months.forEach((m,i)=>{
+  const o=document.createElement('option');
+  o.value=i+1;
+  o.textContent=m;
+  if(i+1===currentMonth)o.selected=true;
+  monthSelect.appendChild(o);
  });
 
  yearSelect.onchange=()=>{
-  if(document.getElementById('agentView').value)
-   renderAgentTransactions();
+  if($('agentView').value)renderAgentTransactions();
  };
 
  monthSelect.onchange=()=>{
-  if(document.getElementById('agentView').value)
-   renderAgentTransactions();
+  if($('agentView').value)renderAgentTransactions();
  };
 }
 
-/* LOAD ALL */
 function loadAllData(){
  loadCustomers();
  loadAgents();
  loadNotes();
 }
 
-/* CUSTOMERS */
 async function loadCustomers(){
 
- const list=document.getElementById('customerList');
+ const list=$('customerList');
  list.innerHTML='<div class="empty">Select a customer</div>';
 
  try{
@@ -661,14 +564,12 @@ async function loadCustomers(){
 
   customerData=Array.isArray(result.data)?result.data:[];
 
-  const transactionSelect=document.getElementById('customerSelect');
-
+  const transactionSelect=$('customerSelect');
   transactionSelect.innerHTML='<option value="">Select Customer</option>';
 
   let totalDue=0;
 
   customerData.forEach(customer=>{
-
    if(!isActive(customer))return;
 
    const option=document.createElement('option');
@@ -679,24 +580,15 @@ async function loadCustomers(){
    totalDue+=number(customer.totalDueKD);
   });
 
-  document.getElementById('allCustomerDue').innerHTML=
-   totalDue.toLocaleString('en-US',{
-    minimumFractionDigits:3,
-    maximumFractionDigits:3
-   })+' <span>KD</span>';
-
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
   updateCustomerDropdown();
 
  }catch(e){
-
   list.innerHTML='<div class="empty">Customer loading error</div>';
-
  }
 }
 
-/* ACTIVE */
 function isActive(customer){
-
  const status=String(
   customer.status||
   customer.Status||
@@ -708,36 +600,31 @@ function isActive(customer){
  return status==='active';
 }
 
-/* NUMBER */
 function number(value){
- return parseFloat(String(value||'0').replace(/,/g,''))||0;
+ return parseFloat(String(value||'').replace(/,/g,''))||0;
 }
 
-/* CUSTOMER DROPDOWN */
 function updateCustomerDropdown(){
 
- const select=document.getElementById('customerPageSelect');
- const search=document.getElementById('customerSearch').value.trim().toLowerCase();
+ const select=$('customerPageSelect');
+ const search=$('customerSearch').value.trim().toLowerCase();
  const oldValue=select.value;
 
  select.innerHTML='<option value="">Select Customer</option>';
 
  customerData.forEach(customer=>{
 
-  if(!isActive(customer))return;
-  if(number(customer.totalDueKD)<=0)return;
+  if(!isActive(customer)||number(customer.totalDueKD)<=0)return;
 
   const name=String(customer.customerName||'').toLowerCase();
   const phone=String(customer.phone||'').toLowerCase();
   const id=String(customer.customerId||'').toLowerCase();
 
-  if(search&&!name.includes(search)&&!phone.includes(search)&&!id.includes(search))
-   return;
+  if(search&&!name.includes(search)&&!phone.includes(search)&&!id.includes(search))return;
 
   const option=document.createElement('option');
   option.value=customer.customerId;
   option.textContent=customer.customerName;
-
   select.appendChild(option);
  });
 
@@ -745,13 +632,23 @@ function updateCustomerDropdown(){
   select.value=oldValue;
 }
 
-/* CUSTOMER SELECT */
-document.getElementById('customerPageSelect').addEventListener('change',function(){
+$('customerPageSelect').addEventListener('change',async function(){
 
  const id=this.value;
- const list=document.getElementById('customerList');
+ const list=$('customerList');
+ const info=$('selectedCustomerInfo');
 
  if(!id){
+
+  info.innerHTML='<div class="selected-empty">Select a customer</div>';
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+
+  let totalDue=0;
+  customerData.forEach(c=>{
+   if(isActive(c))totalDue+=number(c.totalDueKD);
+  });
+
+  $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
   list.innerHTML='<div class="empty">Select a customer</div>';
   return;
  }
@@ -759,68 +656,80 @@ document.getElementById('customerPageSelect').addEventListener('change',function
  const customer=customerData.find(x=>String(x.customerId)===String(id));
 
  if(!customer){
+  info.innerHTML='<div class="selected-empty">Customer not found</div>';
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
   list.innerHTML='<div class="empty">Customer not found</div>';
   return;
  }
 
- renderCustomers(customer);
+ info.innerHTML=
+  '<div class="selected-name">'+escapeHTML(customer.customerName)+'</div>'+
+  '<div class="selected-phone">'+escapeHTML(customer.phone||'')+'</div>';
+
+ $('selectedDueAmount').innerHTML='Loading...';
+
+ let totalDue=0;
+ customerData.forEach(c=>{
+  if(isActive(c))totalDue+=number(c.totalDueKD);
+ });
+
+ $('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
+
+ await renderCustomers(customer);
 });
 
-/* CUSTOMER SEARCH */
-document.getElementById('customerSearch').addEventListener('input',function(){
-
- const currentId=document.getElementById('customerPageSelect').value;
-
+$('customerSearch').addEventListener('input',function(){
+ const currentId=$('customerPageSelect').value;
  updateCustomerDropdown();
 
- const select=document.getElementById('customerPageSelect');
+ const select=$('customerPageSelect');
 
  if(currentId&&[...select.options].some(o=>o.value===currentId))
   select.value=currentId;
 });
 
-/* RENDER CUSTOMER */
-function renderCustomers(customer){
-
- const list=document.getElementById('customerList');
-
- list.innerHTML=
- '<div class="customer-card">'+
- '<div class="customer-row">'+
- '<div class="customer-info">'+
- '<div class="customer-name">'+escapeHTML(customer.customerName)+'</div>'+
- '<div class="phone">'+escapeHTML(customer.phone||'')+'</div>'+
- '</div>'+
- '<div class="due">'+
- '<div class="due-label">Due Amount</div>'+
- '<div class="due-value">'+escapeHTML(customer.totalDueKD||'0.000')+
- ' <span class="kd-small">KD</span></div>'+
- '</div>'+
- '</div>'+
- '</div>';
-
- loadCustomerTransactions(customer.customerId);
+async function renderCustomers(customer){
+ $('customerList').innerHTML='';
+ await loadCustomerTransactions(customer.customerId);
 }
 
-/* CUSTOMER TRANSACTIONS */
+function calculateCustomerDue(transactions){
+
+ let total=0;
+
+ transactions.forEach(t=>{
+  const kdAmount=number(
+   t.kdAmount!==undefined
+    ?t.kdAmount
+    :(t.amountKD!==undefined?t.amountKD:t.kd)
+  );
+
+  if(isDueTransaction(t))total+=kdAmount;
+  else if(isPaymentTransaction(t))total-=kdAmount;
+ });
+
+ return Math.round(total*1000)/1000;
+}
+
 async function loadCustomerTransactions(customerId){
 
- const list=document.getElementById('customerList');
-
+ const list=$('customerList');
  const loading=document.createElement('div');
+
  loading.id='customerTxnLoading';
  loading.className='loading';
  loading.textContent='Loading transactions...';
-
  list.appendChild(loading);
 
  try{
 
   const result=await getAPI('customerTransactions',{customerId});
 
-  loading.remove();
+  if(loading.isConnected)loading.remove();
 
   if(!result.success){
+
+   $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
    addEmpty(list,result.error||'Unable to load transactions');
    return;
   }
@@ -828,54 +737,75 @@ async function loadCustomerTransactions(customerId){
   const transactions=Array.isArray(result.data)
    ?result.data
    :(result.data&&Array.isArray(result.data.transactions)
-    ?result.data.transactions:[]);
+     ?result.data.transactions:[]);
+
+  const customerDue=calculateCustomerDue(transactions);
+
+  $('selectedDueAmount').innerHTML=fmtKD(customerDue)+' <span>KD</span>';
 
   if(!transactions.length){
    addEmpty(list,'No Transaction found');
    return;
   }
 
+  const fragment=document.createDocumentFragment();
+
   transactions.forEach(t=>{
 
+   const sale=isDueTransaction(t);
+   const payment=isPaymentTransaction(t);
+
    const txn=document.createElement('div');
-   txn.className='txn';
+   txn.className='txn '+(sale?'sale':payment?'payment':'');
 
    const top=document.createElement('div');
    top.className='txn-top';
 
    const date=document.createElement('div');
    date.className='txn-date';
-   date.textContent=t.date||'';
+   date.textContent=t.date||t.Date||t.transactionDate||'';
+
+   const type=document.createElement('div');
+   type.className='txn-type';
+   type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');
+
+   top.append(date,type);
 
    const amount=document.createElement('div');
    amount.className='txn-amount';
-   amount.textContent=(t.kdAmount||'0.000')+' KD';
 
-   top.append(date,amount);
+   const kdAmount=number(
+    t.kdAmount!==undefined?t.kdAmount:t.amountKD
+   );
+
+   const sign=payment?'−':sale?'+':'';
+   amount.textContent=sign+fmtKD(kdAmount)+' KD';
 
    const bottom=document.createElement('div');
    bottom.className='txn-bottom';
 
-   let text=t.type||'';
+   const note=String(t.note||'').trim();
+   const bdAmount=getBDAmount(t);
 
-   if(t.note)text+=' • '+t.note;
-   if(t.bdAmount)text+=' • '+t.bdAmount+' Tk';
+   bottom.textContent=note
+    ?note+' • '+fmtIndian(bdAmount)+' TK'
+    :fmtIndian(bdAmount)+' TK';
 
-   bottom.textContent=text;
-
-   txn.append(top,bottom);
-   list.appendChild(txn);
+   txn.append(top,amount,bottom);
+   fragment.appendChild(txn);
   });
+
+  list.appendChild(fragment);
 
  }catch(e){
 
   if(loading.isConnected)loading.remove();
-  addEmpty(list,'Connection error');
 
+  $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+  addEmpty(list,'Connection error');
  }
 }
 
-/* AGENTS */
 async function loadAgents(){
 
  try{
@@ -889,18 +819,16 @@ async function loadAgents(){
 
   agentData=Array.isArray(result.data)?result.data:[];
 
-  fillAgentSelect(document.getElementById('agentSelect'));
+  fillAgentSelect($('agentSelect'));
 
   if(getRole()==='agent'){
 
-   const agentView=document.getElementById('agentView');
+   const agentView=$('agentView');
    const linkedId=String(currentUser.linkedId||'');
 
    agentView.innerHTML='';
 
-   const found=agentData.find(
-    a=>String(a.agentId)===linkedId
-   );
+   const found=agentData.find(a=>String(a.agentId)===linkedId);
 
    const option=document.createElement('option');
    option.value=linkedId;
@@ -916,45 +844,43 @@ async function loadAgents(){
 
   }else{
 
-   fillAgentSelect(document.getElementById('agentView'),true);
+   fillAgentSelect($('agentView'),true);
 
+   if(getRole()==='viewer'||getRole()==='viewar'){
+    $('agentView').disabled=false;
+    $('agentView').value='';
+   }
   }
 
-  document.getElementById('agentList').innerHTML=
-   '<div class="empty">Select an agent</div>';
+  $('agentList').innerHTML='<div class="empty">Select an agent</div>';
 
  }catch(e){
-
   renderAgentError('Agent loading error');
-
  }
 }
 
-/* AGENT SELECT */
 function fillAgentSelect(select,isView=false){
 
  select.innerHTML=isView
   ?'<option value="">Agent</option>'
   :'<option value="">Select Agent</option>';
 
+ const fragment=document.createDocumentFragment();
+
  agentData.forEach(agent=>{
-
   const option=document.createElement('option');
-
   option.value=agent.agentId;
   option.textContent=agent.agentName;
-
-  select.appendChild(option);
+  fragment.appendChild(option);
  });
+
+ select.appendChild(fragment);
 }
 
-/* AGENT ERROR */
 function renderAgentError(message){
- document.getElementById('agentList').innerHTML=
-  '<div class="empty">'+escapeHTML(message)+'</div>';
+ $('agentList').innerHTML='<div class="empty">'+escapeHTML(message)+'</div>';
 }
 
-/* NOTES */
 async function loadNotes(){
 
  try{
@@ -967,19 +893,16 @@ async function loadNotes(){
    paymentNotes:Array.isArray(result.data.paymentNotes)?result.data.paymentNotes:[]
   };
 
-  setNotes(
-   transactionType==='বাকি'
+  setNotes(transactionType==='বাকি'
    ?notesData.dueNotes
-   :notesData.paymentNotes
-  );
+   :notesData.paymentNotes);
 
  }catch(e){}
 }
 
-/* SET NOTES */
 function setNotes(notes){
 
- const select=document.getElementById('noteSelect');
+ const select=$('noteSelect');
  select.innerHTML='';
 
  if(!notes||!notes.length){
@@ -987,56 +910,51 @@ function setNotes(notes){
   return;
  }
 
+ const fragment=document.createDocumentFragment();
+
  notes.forEach((note,i)=>{
-
   const option=document.createElement('option');
-
   option.value=note;
   option.textContent=note;
-
   if(i===0)option.selected=true;
-
-  select.appendChild(option);
+  fragment.appendChild(option);
  });
+
+ select.appendChild(fragment);
 }
 
-/* TYPE */
 function setType(type){
 
  transactionType=type;
 
- document.getElementById('dueBtn').classList.toggle('active',type==='বাকি');
- document.getElementById('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
+ $('dueBtn').classList.toggle('active',type==='বাকি');
+ $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 
- setNotes(
-  type==='বাকি'
-  ?notesData.dueNotes
-  :notesData.paymentNotes
- );
+ setNotes(type==='বাকি'?notesData.dueNotes:notesData.paymentNotes);
 }
 
-/* NORMALIZE */
 function normalizeType(value){
-
  return String(value||'')
- .trim()
- .toLowerCase()
- .replace(/\s+/g,' ')
- .replace(/^[+\-]\s*/,'')
- .trim();
+  .trim()
+  .toLowerCase()
+  .replace(/\s+/g,' ')
+  .replace(/^[+\-]\s*/,'')
+  .trim();
 }
 
-/* DUE */
 function isDueTransaction(t){
 
  const type=normalizeType(
   t.type||t.Type||t.transactionType||t.TransactionType
  );
 
- return type==='বাকি'||type==='due'||type==='due amount';
+ return type==='বাকি'||
+  type==='due'||
+  type==='due amount'||
+  type==='বিক্রয়'||
+  type==='sale';
 }
 
-/* PAYMENT */
 function isPaymentTransaction(t){
 
  const type=normalizeType(
@@ -1044,36 +962,29 @@ function isPaymentTransaction(t){
  );
 
  return type==='পেমেন্ট'||
-        type==='payment'||
-        type==='জমা'||
-        type==='paid'||
-        type==='payment amount';
+  type==='payment'||
+  type==='জমা'||
+  type==='paid'||
+  type==='payment amount';
 }
 
-/* BD */
 function getBDAmount(t){
  return number(
   t.bdAmount!==undefined&&t.bdAmount!==''
-  ?t.bdAmount
-  :(t.amountBD!==undefined&&t.amountBD!==''
-   ?t.amountBD:t.bd)
+   ?t.bdAmount
+   :(t.amountBD!==undefined&&t.amountBD!==''?t.amountBD:t.bd)
  );
 }
 
-/* AGENT CHANGE */
 async function agentChanged(){
 
- const agentId=document.getElementById('agentView').value;
- const list=document.getElementById('agentList');
+ const agentId=$('agentView').value;
+ const list=$('agentList');
 
  if(!agentId){
-
   currentAgentTransactions=[];
-
   setAgentNumbers(0,0);
-
   list.innerHTML='<div class="empty">Select an agent</div>';
-
   return;
  }
 
@@ -1096,9 +1007,8 @@ async function agentChanged(){
 
   currentAgentTransactions=
    result.data&&Array.isArray(result.data.transactions)
-   ?result.data.transactions
-   :Array.isArray(result.data)
-    ?result.data:[];
+    ?result.data.transactions
+    :Array.isArray(result.data)?result.data:[];
 
   calculateAgentSummary();
   renderAgentTransactions();
@@ -1108,18 +1018,16 @@ async function agentChanged(){
   currentAgentTransactions=[];
   setAgentNumbers(0,0);
   list.innerHTML='<div class="empty">Connection error</div>';
-
  }
 }
 
-/* AGENT SUMMARY */
 function calculateAgentSummary(){
 
  let balance=0;
  let sales=0;
 
- const year=Number(document.getElementById('agentYear').value);
- const month=Number(document.getElementById('agentMonth').value);
+ const year=Number($('agentYear').value);
+ const month=Number($('agentMonth').value);
 
  currentAgentTransactions.forEach(t=>{
 
@@ -1142,30 +1050,24 @@ function calculateAgentSummary(){
  setAgentNumbers(balance,sales);
 }
 
-/* AGENT NUMBERS */
 function setAgentNumbers(balance,sales){
 
- document.getElementById('agentCurrentBalance').innerHTML=
-  formatNumber(balance)+' <span>Tk</span>';
-
- document.getElementById('agentMonthlySales').innerHTML=
-  formatNumber(sales)+' <span>Tk</span>';
+ $('agentCurrentBalance').innerHTML=fmtIndian(balance)+' <span>Tk</span>';
+ $('agentMonthlySales').innerHTML=fmtIndian(sales)+' <span>Tk</span>';
 }
 
-/* RENDER AGENT */
 function renderAgentTransactions(){
 
- const list=document.getElementById('agentList');
+ const list=$('agentList');
 
  if(!currentAgentTransactions.length){
-
   calculateAgentSummary();
   list.innerHTML='<div class="empty">No BD transactions found</div>';
   return;
  }
 
- const year=Number(document.getElementById('agentYear').value);
- const month=Number(document.getElementById('agentMonth').value);
+ const year=Number($('agentYear').value);
+ const month=Number($('agentMonth').value);
 
  const filtered=currentAgentTransactions.filter(t=>{
 
@@ -1179,17 +1081,21 @@ function renderAgentTransactions(){
  calculateAgentSummary();
 
  if(!filtered.length){
-
   list.innerHTML='<div class="empty">No transaction for this month</div>';
   return;
  }
 
  list.innerHTML='';
 
+ const fragment=document.createDocumentFragment();
+
  filtered.forEach(t=>{
 
+  const sale=isDueTransaction(t);
+  const payment=isPaymentTransaction(t);
+
   const txn=document.createElement('div');
-  txn.className='txn';
+  txn.className='txn '+(sale?'sale':payment?'payment':'');
 
   const top=document.createElement('div');
   top.className='txn-top';
@@ -1198,27 +1104,31 @@ function renderAgentTransactions(){
   date.className='txn-date';
   date.textContent=t.date||t.Date||'';
 
+  const type=document.createElement('div');
+  type.className='txn-type';
+  type.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':(t.type||'');
+
+  top.append(date,type);
+
   const amount=document.createElement('div');
   amount.className='txn-amount';
-  amount.textContent=formatNumber(getBDAmount(t))+' Tk';
 
-  top.append(date,amount);
+  const bdAmount=getBDAmount(t);
+  const sign=payment?'−':sale?'+':'';
+
+  amount.textContent=sign+fmtIndian(bdAmount)+' Tk';
 
   const bottom=document.createElement('div');
   bottom.className='txn-bottom';
+  bottom.textContent=t.note||'';
 
-  let text=t.type||'';
-
-  if(t.note)text+=' • '+t.note;
-
-  bottom.textContent=text;
-
-  txn.append(top,bottom);
-  list.appendChild(txn);
+  txn.append(top,amount,bottom);
+  fragment.appendChild(txn);
  });
+
+ list.appendChild(fragment);
 }
 
-/* DATE */
 function parseTransactionDate(value){
 
  if(!value)return null;
@@ -1258,16 +1168,19 @@ function parseTransactionDate(value){
  return null;
 }
 
-/* FORMAT */
-function formatNumber(value){
+$('bdAmount').addEventListener('input',function(){
 
- return Number(value||0).toLocaleString('en-US',{
-  minimumFractionDigits:0,
-  maximumFractionDigits:0
- });
-}
+ let value=this.value.replace(/[^\d]/g,'');
 
-/* SAVE */
+ if(!value){
+  this.value='';
+  return;
+ }
+
+ value=value.replace(/^0+(?=\d)/,'');
+ this.value=Number(value).toLocaleString('en-IN');
+});
+
 async function saveTransaction(){
 
  if(getRole()!=='admin'){
@@ -1275,14 +1188,12 @@ async function saveTransaction(){
   return;
  }
 
- const date=document.getElementById('date').value;
- const agentId=document.getElementById('agentSelect').value;
- const customerId=document.getElementById('customerSelect').value;
-
- const kd=number(document.getElementById('kdAmount').value);
- const bd=number(document.getElementById('bdAmount').value);
-
- const note=document.getElementById('noteSelect').value;
+ const date=$('date').value;
+ const agentId=$('agentSelect').value;
+ const customerId=$('customerSelect').value;
+ const kd=number($('kdAmount').value);
+ const bd=number($('bdAmount').value);
+ const note=$('noteSelect').value;
 
  if(!date){
   showSaveError('Date required');
@@ -1306,7 +1217,6 @@ async function saveTransaction(){
 
  const selectedDate=new Date(date+'T00:00:00');
  const today=new Date();
-
  today.setHours(0,0,0,0);
 
  if(selectedDate>today){
@@ -1314,16 +1224,12 @@ async function saveTransaction(){
   return;
  }
 
- const agent=agentData.find(
-  a=>String(a.agentId)===String(agentId)
- );
+ const agent=agentData.find(a=>String(a.agentId)===String(agentId));
+ const customer=customerData.find(c=>String(c.customerId)===String(customerId));
 
- const customer=customerData.find(
-  c=>String(c.customerId)===String(customerId)
- );
-
- const button=document.getElementById('saveBtn');
- const message=document.getElementById('saveMsg');
+ const button=$('saveBtn');
+ const message=$('saveMsg');
+ const savedCustomerPageId=$('customerPageSelect').value;
 
  button.disabled=true;
  button.textContent='Saving...';
@@ -1343,7 +1249,6 @@ async function saveTransaction(){
 
    customerId,
    customerName:customer?.customerName||'',
-
    agentName:agent?.agentName||'',
 
    kdAmount:kd,
@@ -1351,7 +1256,6 @@ async function saveTransaction(){
 
    type:transactionType,
    note
-
   });
 
   if(!result.success){
@@ -1362,12 +1266,23 @@ async function saveTransaction(){
   message.className='msg success';
   message.textContent='Transaction saved successfully';
 
-  document.getElementById('kdAmount').value='';
-  document.getElementById('bdAmount').value='';
+  $('kdAmount').value='';
+  $('bdAmount').value='';
 
   await loadCustomers();
 
-  const selectedAgent=document.getElementById('agentView').value;
+  const customerPageSelect=$('customerPageSelect');
+
+  if(
+   savedCustomerPageId&&
+   [...customerPageSelect.options].some(o=>o.value===savedCustomerPageId)
+  ){
+
+   customerPageSelect.value=savedCustomerPageId;
+   customerPageSelect.dispatchEvent(new Event('change'));
+  }
+
+  const selectedAgent=$('agentView').value;
 
   if(selectedAgent)
    await agentChanged();
@@ -1385,20 +1300,15 @@ async function saveTransaction(){
 
   button.disabled=false;
   button.textContent='✅ Save';
-
  }
 }
 
-/* ERROR */
 function showSaveError(text){
-
- const message=document.getElementById('saveMsg');
-
+ const message=$('saveMsg');
  message.className='msg error';
  message.textContent=text;
 }
 
-/* DATE FORMAT */
 function formatDate(value){
 
  const parts=value.split('-');
@@ -1411,7 +1321,6 @@ function formatDate(value){
  return parts[2]+'-'+months[Number(parts[1])-1]+'-'+parts[0];
 }
 
-/* EMPTY */
 function addEmpty(parent,text){
 
  const box=document.createElement('div');
@@ -1420,23 +1329,22 @@ function addEmpty(parent,text){
  parent.appendChild(box);
 }
 
-/* ESCAPE */
 function escapeHTML(value){
 
- return String(value===null||value===undefined?'':value)
-  .replace(/&/g,'&amp;')
-  .replace(/</g,'&lt;')
-  .replace(/>/g,'&gt;')
-  .replace(/"/g,'&quot;')
-  .replace(/'/g,'&#039;');
+ return String(
+  value===null||value===undefined?'':value
+ )
+ .replace(/&/g,'&amp;')
+ .replace(/</g,'&lt;')
+ .replace(/>/g,'&gt;')
+ .replace(/"/g,'&quot;')
+ .replace(/'/g,'&#039;');
 }
 
-/* ENTER LOGIN */
-document.getElementById('password').addEventListener('keydown',e=>{
+$('password').addEventListener('keydown',e=>{
  if(e.key==='Enter')login();
 });
 
-/* START */
 restoreLogin();
 
 </script>
