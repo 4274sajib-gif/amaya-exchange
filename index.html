@@ -2405,6 +2405,15 @@ async function loadCustomers(){
         ? result.data
         : [];
 
+        customerData.sort((a,b) =>
+  String(a.customerName || '')
+    .localeCompare(
+      String(b.customerName || ''),
+      'en',
+      {sensitivity:'base'}
+    )
+);
+
 
     const transactionSelect =
       $('customerSelect');
