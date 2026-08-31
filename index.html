@@ -279,6 +279,16 @@ select{
   color:#172033;
 }
 
+#agentSelect,
+#customerSelect{
+  font-weight:400;
+}
+
+#agentSelect.has-value,
+#customerSelect.has-value{
+  font-weight:700;
+}      
+
 input:focus,
 select:focus{
   border-color:#111827;
@@ -1051,7 +1061,13 @@ select:disabled{
 
           <input
             id="date"
-            type="date">
+            type="text"
+            inputmode="numeric"
+            placeholder="DD/MM/YYYY"
+            maxlength="10"
+            autocomplete="off">
+            
+            
 
         </div>
 
@@ -2194,24 +2210,14 @@ function logout(){
 
 function setToday(){
 
-  const d =
-    new Date();
-
+  const d = new Date();
 
   $('date').value =
-    d.getFullYear()+
-    '-'+
-    String(
-      d.getMonth()+1
-    ).padStart(2,'0')+
-    '-'+
-    String(
-      d.getDate()
-    ).padStart(2,'0');
-
-
-  $('date').max =
-    $('date').value;
+    String(d.getDate()).padStart(2,'0') +
+    '/' +
+    String(d.getMonth()+1).padStart(2,'0') +
+    '/' +
+    d.getFullYear();
 
 }
 
@@ -4708,6 +4714,25 @@ $('password')
     }
   );
 
+
+
+$('agentSelect').addEventListener('change', function(){
+
+  this.classList.toggle(
+    'has-value',
+    this.value !== ''
+  );
+
+});
+
+$('customerSelect').addEventListener('change', function(){
+
+  this.classList.toggle(
+    'has-value',
+    this.value !== ''
+  );
+
+});
 
 
 /* ================= START ================= */
