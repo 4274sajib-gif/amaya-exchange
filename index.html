@@ -416,7 +416,7 @@ select:disabled{
 }
 
 .selected-name{
-  font-size:15px;
+  font-size:14px;
   font-weight:800;
   white-space:nowrap;
   overflow:hidden;
@@ -1515,6 +1515,34 @@ function calculateHeaderRate(){
   popup.classList.add('show');
 
 }
+
+
+/* ================= CLOSE RATE ON OUTSIDE CLICK ================= */
+
+document.addEventListener('click', function(e){
+
+  const rateBox =
+    $('adminRateBox');
+
+  const input =
+    $('headerRateAmount');
+
+  const popup =
+    $('headerRatePopup');
+
+
+  if(
+    rateBox &&
+    !rateBox.contains(e.target)
+  ){
+
+    input.value = '';
+
+    popup.classList.remove('show');
+
+  }
+
+});      
 
 
 /* ================= MAIN ================= */
