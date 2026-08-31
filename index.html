@@ -257,7 +257,7 @@ button{
 /* ================= FORM ================= */
 
 .field{
-  margin-bottom:17px;
+  margin-bottom:20px;
 }
 
 .label{
@@ -2206,11 +2206,14 @@ function setToday(){
   const d = new Date();
 
   $('date').value =
-    String(d.getDate()).padStart(2,'0') +
-    '/' +
+    d.getFullYear() +
+    '-' +
     String(d.getMonth()+1).padStart(2,'0') +
-    '/' +
-    d.getFullYear();
+    '-' +
+    String(d.getDate()).padStart(2,'0');
+
+  $('date').max =
+    $('date').value;
 
 }
 
