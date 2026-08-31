@@ -257,7 +257,7 @@ button{
 /* ================= FORM ================= */
 
 .field{
-  margin-bottom:13px;
+  margin-bottom:17px;
 }
 
 .label{
@@ -1044,13 +1044,6 @@ select:disabled{
 
       <div class="card">
 
-
-        <div
-          style="font-size:16px;font-weight:800;margin-bottom:14px">
-
-          Add Transaction
-
-        </div>
 
 
         <div class="field">
@@ -3589,6 +3582,25 @@ function isPaymentTransaction(t){
 
 
 
+$('kdAmount').addEventListener('blur', function(){
+
+  const value = number(this.value);
+
+  if(!value){
+    this.value = '';
+    return;
+  }
+
+  if(Number.isInteger(value)){
+    this.value = String(value);
+  }else{
+    this.value = value.toFixed(3);
+  }
+
+});
+
+
+      
 /* ================= BD AMOUNT ================= */
 
 function getBDAmount(t){
