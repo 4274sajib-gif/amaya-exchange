@@ -324,71 +324,33 @@ select:disabled{
   border-color:#111827;
 }
 
+
+/* ================= SAVE BUTTON ================= */
+/* 3D EFFECT REMOVED */
+
 .save{
   width:100%;
   height:50px;
-
-  border:1px solid #0b1220;
+  border:0;
   border-radius:12px;
-
-  background:linear-gradient(
-    145deg,
-    #1f2937 0%,
-    #111827 55%,
-    #080d16 100%
-  );
-
+  background:#111827;
   color:#fff;
-
   font-size:13px;
   font-weight:800;
-
   letter-spacing:.2px;
-
-  box-shadow:
-    0 4px 0 #060a10,
-    0 7px 14px rgba(17,24,39,.22),
-    0 12px 25px rgba(17,24,39,.10),
-    inset 0 1px 0 rgba(255,255,255,.12);
-
-  text-shadow:
-    0 1px 2px rgba(0,0,0,.35);
-
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease,
-    background .12s ease;
-
-  position:relative;
-  top:0;
 }
 
 .save:hover{
-  background:linear-gradient(
-    145deg,
-    #273449 0%,
-    #111827 55%,
-    #080d16 100%
-  );
+  background:#111827;
 }
 
 .save:active{
-  top:3px;
-
-  box-shadow:
-    0 1px 0 #060a10,
-    0 3px 6px rgba(17,24,39,.16),
-    inset 0 2px 3px rgba(0,0,0,.18);
+  transform:scale(.98);
 }
 
 .save:disabled{
   opacity:.55;
   cursor:not-allowed;
-  top:0;
-
-  box-shadow:
-    0 2px 0 #060a10,
-    0 4px 8px rgba(17,24,39,.10);
 }
 
 .msg{
@@ -550,9 +512,23 @@ select:disabled{
   border-left:3px solid #dfe3e9;
 }
 
+
+/* বিক্রয় এখন কালো */
+
 .txn.sale{
-  border-left-color:#35a853;
+  border-left-color:#111827;
 }
+
+.txn.sale .txn-type{
+  color:#111827;
+}
+
+.txn.sale .txn-amount{
+  color:#111827;
+}
+
+
+/* পেমেন্ট আগের মতোই */
 
 .txn.payment{
   border-left-color:#f3a6a6;
@@ -580,10 +556,6 @@ select:disabled{
   font-weight:800;
 }
 
-.txn.sale .txn-type{
-  color:#16824c;
-}
-
 .txn.payment .txn-type{
   color:#d66b6b;
 }
@@ -592,10 +564,6 @@ select:disabled{
   font-size:14px;
   font-weight:800;
   margin-top:4px;
-}
-
-.txn.sale .txn-amount{
-  color:#16824c;
 }
 
 .txn.payment .txn-amount{
@@ -3104,27 +3072,43 @@ async function loadCustomerTransactions(
           getBDAmount(t);
 
 
-        bottom.textContent =
-          note
+        /*
+          D/E ফাঁকা থাকলে 0 TK দেখাবে না।
+          Note অথবা BD Amount থাকলেই bottom দেখাবে।
+        */
 
-            ? note+
-              ' • '+
-              fmtIndian(
-                bdAmount
-              )+
-              ' TK'
+        if(note || bdAmount){
 
-            : fmtIndian(
-                bdAmount
-              )+
-              ' TK';
+          bottom.textContent =
+            note
+
+              ? note+
+                (
+                  bdAmount
+                    ? ' • '+
+                      fmtIndian(
+                        bdAmount
+                      )+
+                      ' TK'
+                    : ''
+                )
+
+              : fmtIndian(
+                  bdAmount
+                )+
+                ' TK';
+
+        }
 
 
         txn.append(
           top,
-          amount,
-          bottom
+          amount
         );
+
+
+        if(note || bdAmount)
+          txn.append(bottom);
 
 
         fragment.appendChild(
@@ -4735,4 +4719,4 @@ restoreLogin();
 
 </body>
 
-  </html>
+      </html>
