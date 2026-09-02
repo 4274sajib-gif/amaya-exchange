@@ -3043,31 +3043,75 @@ async function loadCustomerTransactions(
           '';
 
 
-        const type =
-          document.createElement(
-            'div'
-          );
+        const typeWrap =
+  document.createElement(
+    'div'
+  );
 
+typeWrap.style.textAlign =
+  'right';
 
-        type.className =
-          'txn-type';
+const type =
+  document.createElement(
+    'div'
+  );
 
+type.className =
+  'txn-type';
 
-        type.textContent =
-          sale
-            ? 'বিক্রয়'
-            : payment
-              ? 'পেমেন্ট'
-              : (
-                  t.type ||
-                  ''
-                );
-
-
-        top.append(
-          date,
-          type
+type.textContent =
+  sale
+    ? 'বিক্রয়'
+    : payment
+      ? 'পেমেন্ট'
+      : (
+          t.type ||
+          ''
         );
+
+typeWrap.appendChild(
+  type
+);
+
+
+/* Agent Name */
+
+const agentName =
+  document.createElement(
+    'div'
+  );
+
+agentName.style.fontSize =
+  '9px';
+
+agentName.style.color =
+  '#858e9d';
+
+agentName.style.fontWeight =
+  '600';
+
+agentName.style.marginTop =
+  '2px';
+
+agentName.textContent =
+  t.agentName ||
+  t.agent ||
+  t.AgentName ||
+  '';
+
+if(agentName.textContent){
+
+  typeWrap.appendChild(
+    agentName
+  );
+
+}
+
+
+top.append(
+  date,
+  typeWrap
+);
 
 
         const amount =
