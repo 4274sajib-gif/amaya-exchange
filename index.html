@@ -1508,10 +1508,13 @@ function calculateHeaderRate(){
       .toLocaleString('en-IN');
 
 
-  $('headerRatePopupAmount').textContent =
-    Math.floor(amount)
-      .toLocaleString('en-IN')
-      +' Tk';
+  const amountWith2Percent =
+  amount * 1.02;
+
+$('headerRatePopupAmount').textContent =
+  Math.floor(amountWith2Percent)
+    .toLocaleString('en-IN')
+    +' Tk';
 
 
   $('headerRatePopupKD').textContent =
