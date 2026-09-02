@@ -1,22 +1,22 @@
 {
   "name": "Amaya Exchange",
   "short_name": "Amaya Exchange",
-  "description": "Amaya Exchange - লেনদেনে আস্থা, সেবায় নির্ভরতা",
-  "start_url": "/amaya-exchange/",
-  "scope": "/amaya-exchange/",
+  "description": "Amaya Exchange Business Management",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f5f7fa",
-  "theme_color": "#111827",
+  "theme_color": "#0B6B4F",
   "icons": [
     {
-      "src": "/amaya-exchange/icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/amaya-exchange/icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
