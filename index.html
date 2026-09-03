@@ -527,6 +527,7 @@ select:disabled{
   box-shadow:0 1px 6px rgba(0,0,0,.035);
   border:1px solid #edf0f3;
   border-left:4px solid #dfe3e9;
+  position:relative;
 }
 
 
@@ -598,16 +599,17 @@ select:disabled{
 }
 
 .txn-agent{
-  float:right;
+  position:absolute;
+  right:11px;
+  bottom:10px;
   font-size:9px;
   font-weight:600;
   color:#858e9d;
-  margin-left:8px;
+  max-width:45%;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  max-width:45%;
-  }   
+}   
       
 /* ================= AGENT ================= */
 
