@@ -597,6 +597,17 @@ select:disabled{
   text-overflow:ellipsis;
 }
 
+.txn-agent{
+  float:right;
+  font-size:9px;
+  font-weight:600;
+  color:#858e9d;
+  margin-left:8px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:45%;
+  }   
       
 /* ================= AGENT ================= */
 
@@ -3178,13 +3189,15 @@ agentName.textContent =
 
 
         txn.append(
-          top,
-          amount
-        );
+  top,
+  amount
+);
 
+if(note || bdAmount)
+  txn.append(bottom);
 
-        if(note || bdAmount)
-          txn.append(bottom);
+if(agentName.textContent)
+  txn.append(agentName);
 
 
         fragment.appendChild(
