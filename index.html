@@ -558,9 +558,10 @@ select:disabled{
 
 .txn-top{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:8px;
+  min-height:20px;
 }
 
 .txn-date{
@@ -571,6 +572,7 @@ select:disabled{
 .txn-type{
   font-size:10px;
   font-weight:800;
+  line-height:10px;
 }
 
 .txn.payment .txn-type{
@@ -580,7 +582,7 @@ select:disabled{
 .txn-amount{
   font-size:14px;
   font-weight:800;
-  margin-top:4px;
+  margin-top:0px;
 }
 
 .txn.payment .txn-amount{
@@ -597,11 +599,12 @@ select:disabled{
 }
 
 .txn-agent{
-  font-size:9px;
+  font-size:8px;
   font-weight:600;
   color:#858e9d;
-  line-height:10px;
-  margin-top:1px;
+  line-height:8px;
+  margin-top:0;
+  height:8px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -3061,6 +3064,9 @@ async function loadCustomerTransactions(
 typeWrap.style.textAlign =
   'right';
 
+typeWrap.style.minWidth =
+  '55px';
+         
 const type =
   document.createElement(
     'div'
