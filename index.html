@@ -596,7 +596,17 @@ select:disabled{
   text-overflow:ellipsis;
 }
 
-
+.txn-agent{
+  font-size:9px;
+  font-weight:600;
+  color:#858e9d;
+  line-height:10px;
+  margin-top:1px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+      
 /* ================= AGENT ================= */
 
 .agent-filter-row{
@@ -3076,22 +3086,8 @@ typeWrap.appendChild(
 
 /* Agent Name */
 
-const agentName =
-  document.createElement(
-    'div'
-  );
-
-agentName.style.fontSize =
-  '9px';
-
-agentName.style.color =
-  '#858e9d';
-
-agentName.style.fontWeight =
-  '600';
-
-agentName.style.marginTop =
-  '2px';
+const agentName = document.createElement('div');
+agentName.className = 'txn-agent';
 
 agentName.textContent =
   t.agentName ||
@@ -3100,11 +3096,7 @@ agentName.textContent =
   '';
 
 if(agentName.textContent){
-
-  typeWrap.appendChild(
-    agentName
-  );
-
+  typeWrap.appendChild(agentName);
 }
 
 
