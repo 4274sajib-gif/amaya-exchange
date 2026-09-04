@@ -1249,7 +1249,10 @@ search&&
 const option=document.createElement('option');
 
 option.value=customer.customerId;
-option.textContent=customer.customerName;
+option.textContent=
+customer.customerName+
+' • '+
+fmtKD(customer.totalDueKD);
 
 select.appendChild(option);
 
