@@ -211,19 +211,31 @@ display:flex;align-items:center;justify-content:space-between;gap:8px
 .txn.payment .txn-type,
 .txn.payment .txn-amount{color:#d66b6b}
 .txn-amount{font-size:14px;font-weight:800;margin-top:4px}
+
+/* ALL TRANSACTION BOTTOM */
 .txn-bottom{
 font-size:9px;
 color:#858e9d !important;
 font-weight:400 !important;
 margin-top:4px;
+padding-right:45%;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
 }
+
 .txn-agent{
-position:absolute;right:11px;bottom:10px;
-font-size:9px;font-weight:600;color:#858e9d;
-max-width:45%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+position:absolute;
+right:11px;
+bottom:10px;
+font-size:9px;
+font-weight:600;
+color:#858e9d;
+max-width:42%;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+text-align:right;
 }
 
 /* AGENT */
@@ -556,6 +568,7 @@ const fmtIndian=v=>Math.floor(number(v)).toLocaleString('en-IN');
 
 /* HEADER RATE */
 function calculateHeaderRate(){
+
 let value=String($('headerRateAmount').value)
 .replace(/[০-৯]/g,d=>'0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)])
 .replace(/[^0-9]/g,'');
@@ -592,6 +605,7 @@ popup.classList.add('show');
 
 /* PROFIT */
 function calculateProfitPopup(){
+
 const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
 const popup=$('profitPopup');
@@ -603,27 +617,37 @@ return;
 
 const profit=(kd*400)-bd;
 
-popup.textContent='Profit '+(profit<0?'-':'')+Number(Math.abs(profit).toFixed(3)).toLocaleString('en-IN')+' Tk';
+popup.textContent='Profit '+(profit<0?'-':'')+
+Number(Math.abs(profit).toFixed(3)).toLocaleString('en-IN')+
+' Tk';
+
 popup.classList.add('show');
 }
 
 document.addEventListener('click',e=>{
+
 const rateBox=$('adminRateBox');
 
 if(rateBox&&!rateBox.contains(e.target)){
+
 $('headerRateAmount').value='';
 $('headerRatePopup').classList.remove('show');
+
 }
 });
 
+
 /* API */
 async function getAPI(action,params={}){
+
 const q=new URLSearchParams({action});
 
 for(const k in params){
+
 if(params[k]!==undefined&&params[k]!==null&&params[k]!==''){
 q.set(k,params[k]);
 }
+
 }
 
 const r=await fetch(API+'?'+q,{
@@ -635,6 +659,7 @@ return r.json();
 }
 
 async function postAPI(data){
+
 const r=await fetch(API,{
 method:'POST',
 headers:{'Content-Type':'text/plain;charset=utf-8'},
@@ -647,8 +672,12 @@ return r.json();
 
 /* TABS */
 function openTab(tab,button){
-document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+
+document.querySelectorAll('.panel')
+.forEach(p=>p.classList.remove('active'));
+
+document.querySelectorAll('.tab')
+.forEach(b=>b.classList.remove('active'));
 
 const panel=$('panel'+tab.charAt(0).toUpperCase()+tab.slice(1));
 
@@ -664,14 +693,17 @@ button.classList.add('active');
 
 /* LOGIN */
 async function login(){
+
 const username=$('username').value.trim();
 const password=$('password').value;
 const msg=$('loginMsg');
 const btn=$('loginBtn');
 
 if(!username||!password){
+
 msg.className='msg error';
 msg.textContent='Username and password required';
+
 return;
 }
 
@@ -680,30 +712,43 @@ btn.textContent='Logging in...';
 msg.textContent='';
 
 try{
+
 const result=await getAPI('login',{username,password});
 
 if(!result.success){
+
 msg.className='msg error';
 msg.textContent=result.error||'Login failed';
+
 return;
 }
 
 currentUser=result.data;
-localStorage.setItem('amaya_user',JSON.stringify(currentUser));
+
+localStorage.setItem(
+'amaya_user',
+JSON.stringify(currentUser)
+);
+
 showApp();
 
 }catch(e){
+
 msg.className='msg error';
 msg.textContent='Connection error';
 
 }finally{
+
 btn.disabled=false;
 btn.textContent='Login';
+
 }
 }
 
 function restoreLogin(){
+
 try{
+
 const saved=localStorage.getItem('amaya_user');
 
 if(!saved)return;
@@ -711,16 +756,21 @@ if(!saved)return;
 const user=JSON.parse(saved);
 
 if(user&&user.loggedIn){
+
 currentUser=user;
 showApp();
+
 }
 
 }catch(e){
+
 localStorage.removeItem('amaya_user');
+
 }
 }
 
 function showApp(){
+
 $('loginPage').classList.add('hidden');
 $('app').classList.remove('hidden');
 
@@ -729,20 +779,24 @@ setCustomerToday();
 setupAgentDateFilters();
 applyRoleAccess();
 loadAllData();
+
 }
 
 
 /* CUSTOMER DATE */
 function setCustomerToday(){
+
 const input=$('customerTransactionDate');
 const picker=$('customerDatePicker');
 
 if(!input||!picker)return;
 
 const d=new Date();
+
 const yyyy=d.getFullYear();
 const mm=String(d.getMonth()+1).padStart(2,'0');
 const dd=String(d.getDate()).padStart(2,'0');
+
 const today=yyyy+'-'+mm+'-'+dd;
 
 picker.max=today;
@@ -750,26 +804,34 @@ picker.max=today;
 input.value=dd+'-'+
 ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]
 +'-'+yyyy;
+
 }
 
 function openCustomerDatePicker(){
+
 const picker=$('customerDatePicker');
 
 if(!picker)return;
 
 picker.focus();
 picker.click();
+
 }
 
 function selectCustomerDate(value){
+
 if(!value)return;
 
 const parts=value.split('-');
+
 const year=parts[0];
 const month=Number(parts[1]);
 const day=parts[2];
 
-const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const months=[
+'Jan','Feb','Mar','Apr','May','Jun',
+'Jul','Aug','Sep','Oct','Nov','Dec'
+];
 
 $('customerTransactionDate').value=
 day+'-'+months[month-1]+'-'+year;
@@ -777,19 +839,28 @@ day+'-'+months[month-1]+'-'+year;
 if($('customerPageSelect').value==='__ALL_TRANSACTIONS__'){
 renderAllCustomerTransactions();
 }
+
 }
 
 
 /* ROLE */
 function getRole(){
-return String(currentUser?.role||'').trim().toLowerCase();
+
+return String(currentUser?.role||'')
+.trim()
+.toLowerCase();
+
 }
 
 function applyRoleAccess(){
+
 const role=getRole();
+
 const rateBox=$('adminRateBox');
 
-if(rateBox)rateBox.classList.toggle('hidden',role!=='admin');
+if(rateBox){
+rateBox.classList.toggle('hidden',role!=='admin');
+}
 
 const tabs=document.querySelectorAll('.tab');
 
@@ -801,12 +872,18 @@ const transactionPanel=$('panelTransaction');
 const customerPanel=$('panelCustomer');
 const agentPanel=$('panelAgent');
 
-[transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));
-[transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));
+[transactionTab,customerTab,agentTab]
+.forEach(x=>x.classList.remove('hidden'));
+
+[transactionPanel,customerPanel,agentPanel]
+.forEach(x=>x.classList.remove('hidden'));
 
 if(role==='admin'){
+
 openTab('transaction',transactionTab);
+
 return;
+
 }
 
 if(role==='agent'){
@@ -827,7 +904,11 @@ agentView.innerHTML='';
 const option=document.createElement('option');
 
 option.value=currentUser.linkedId||'';
-option.textContent=currentUser.agentName||currentUser.name||'My Agent';
+
+option.textContent=
+currentUser.agentName||
+currentUser.name||
+'My Agent';
 
 agentView.appendChild(option);
 
@@ -837,6 +918,7 @@ agentView.disabled=true;
 if(currentUser.linkedId)agentChanged();
 
 return;
+
 }
 
 if(role==='viewer'||role==='viewar'){
@@ -851,17 +933,28 @@ customerPanel.classList.remove('hidden');
 agentPanel.classList.remove('hidden');
 
 $('customerPageSelect').value='';
-$('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-$('customerList').innerHTML='<div class="empty">Select a customer</div>';
+
+$('selectedCustomerInfo').innerHTML=
+'<div class="selected-empty">Select a customer</div>';
+
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
+
+$('customerList').innerHTML=
+'<div class="empty">Select a customer</div>';
 
 let totalDue=0;
 
 customerData.forEach(c=>{
-if(isActive(c))totalDue+=number(c.totalDueKD);
+
+if(isActive(c)){
+totalDue+=number(c.totalDueKD);
+}
+
 });
 
-$('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
+$('allCustomerDue').innerHTML=
+fmtKD(totalDue)+' <span>KD</span>';
 
 const agentView=$('agentView');
 
@@ -869,18 +962,24 @@ agentView.disabled=false;
 agentView.value='';
 
 currentAgentTransactions=[];
+
 setAgentNumbers(0,0);
 
-$('agentList').innerHTML='<div class="empty">Select an agent</div>';
+$('agentList').innerHTML=
+'<div class="empty">Select an agent</div>';
 
 openTab('customer',customerTab);
+
 }
+
 }
 
 
 /* LOGOUT */
 function logout(){
+
 currentUser=null;
+
 localStorage.removeItem('amaya_user');
 
 $('app').classList.add('hidden');
@@ -891,17 +990,25 @@ $('password').value='';
 $('loginMsg').textContent='';
 
 $('customerPageSelect').value='';
-$('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-$('customerList').innerHTML='<div class="empty">Select a customer</div>';
+
+$('selectedCustomerInfo').innerHTML=
+'<div class="selected-empty">Select a customer</div>';
+
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
+
+$('customerList').innerHTML=
+'<div class="empty">Select a customer</div>';
 
 $('agentView').value='';
 $('agentView').disabled=false;
 
 currentAgentTransactions=[];
+
 setAgentNumbers(0,0);
 
-$('agentList').innerHTML='<div class="empty">Select an agent</div>';
+$('agentList').innerHTML=
+'<div class="empty">Select an agent</div>';
 
 $('headerRateAmount').value='';
 $('headerRatePopup').classList.remove('show');
@@ -909,9 +1016,11 @@ $('headerRatePopup').classList.remove('show');
 $('profitPopup').classList.remove('show');
 
 setCustomerToday();
+
 }
 
 function setToday(){
+
 const d=new Date();
 
 $('date').value=
@@ -920,21 +1029,25 @@ String(d.getMonth()+1).padStart(2,'0')+'-'+
 String(d.getDate()).padStart(2,'0');
 
 $('date').max=$('date').value;
+
 }
 
 
 /* AGENT DATE FILTER */
 function setupAgentDateFilters(){
+
 const yearSelect=$('agentYear');
 const monthSelect=$('agentMonth');
 
 const now=new Date();
+
 const currentYear=now.getFullYear();
 const currentMonth=now.getMonth()+1;
 
 yearSelect.innerHTML='';
 
 for(let y=currentYear-5;y<=currentYear;y++){
+
 const o=document.createElement('option');
 
 o.value=y;
@@ -943,6 +1056,7 @@ o.textContent=y;
 if(y===currentYear)o.selected=true;
 
 yearSelect.appendChild(o);
+
 }
 
 const months=[
@@ -953,6 +1067,7 @@ const months=[
 monthSelect.innerHTML='';
 
 months.forEach((m,i)=>{
+
 const o=document.createElement('option');
 
 o.value=i+1;
@@ -961,46 +1076,67 @@ o.textContent=m;
 if(i+1===currentMonth)o.selected=true;
 
 monthSelect.appendChild(o);
+
 });
 
 yearSelect.onchange=()=>{
-if($('agentView').value)renderAgentTransactions();
+
+if($('agentView').value){
+renderAgentTransactions();
+}
+
 };
 
 monthSelect.onchange=()=>{
-if($('agentView').value)renderAgentTransactions();
+
+if($('agentView').value){
+renderAgentTransactions();
+}
+
 };
+
 }
 
 
 /* LOAD DATA */
 function loadAllData(){
+
 loadCustomers();
 loadAgents();
 loadNotes();
+
 }
 
 async function loadCustomers(){
+
 const list=$('customerList');
 
-list.innerHTML='<div class="empty">Select a customer</div>';
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
 
 try{
 
 const result=await getAPI('customers');
 
 if(!result.success){
+
 list.innerHTML=
 '<div class="empty">'+
 escapeHTML(result.error||'Customer loading failed')+
 '</div>';
+
 return;
+
 }
 
-customerData=Array.isArray(result.data)?result.data:[];
+customerData=
+Array.isArray(result.data)
+?result.data
+:[];
 
 customerData.sort((a,b)=>
-String(a.customerName||'').localeCompare(
+String(a.customerName||'')
+.localeCompare(
 String(b.customerName||''),
 'en',
 {sensitivity:'base'}
@@ -1008,7 +1144,8 @@ String(b.customerName||''),
 
 const transactionSelect=$('customerSelect');
 
-transactionSelect.innerHTML='<option value="">Select Customer</option>';
+transactionSelect.innerHTML=
+'<option value="">Select Customer</option>';
 
 let totalDue=0;
 
@@ -1024,41 +1161,60 @@ option.textContent=customer.customerName;
 transactionSelect.appendChild(option);
 
 totalDue+=number(customer.totalDueKD);
+
 });
 
-$('allCustomerDue').innerHTML=fmtKD(totalDue)+' <span>KD</span>';
+$('allCustomerDue').innerHTML=
+fmtKD(totalDue)+' <span>KD</span>';
 
 updateCustomerDropdown();
 
 }catch(e){
-list.innerHTML='<div class="empty">Customer loading error</div>';
+
+list.innerHTML=
+'<div class="empty">Customer loading error</div>';
+
 }
+
 }
 
 function isActive(customer){
+
 const status=String(
 customer.status||
 customer.Status||
 customer.active||
 customer.Active||
 ''
-).trim().toLowerCase();
+)
+.trim()
+.toLowerCase();
 
 return status==='active';
+
 }
 
 function number(value){
-return parseFloat(String(value||'').replace(/,/g,''))||0;
+
+return parseFloat(
+String(value||'').replace(/,/g,'')
+)||0;
+
 }
 
 
 /* CUSTOMER DROPDOWN */
 function updateCustomerDropdown(){
+
 const select=$('customerPageSelect');
-const search=$('customerSearch').value.trim().toLowerCase();
+
+const search=
+$('customerSearch').value.trim().toLowerCase();
+
 const oldValue=select.value;
 
-select.innerHTML='<option value="">Select Customer</option>';
+select.innerHTML=
+'<option value="">Select Customer</option>';
 
 const allOption=document.createElement('option');
 
@@ -1069,11 +1225,19 @@ select.appendChild(allOption);
 
 customerData.forEach(customer=>{
 
-if(!isActive(customer)||number(customer.totalDueKD)<=0)return;
+if(
+!isActive(customer)||
+number(customer.totalDueKD)<=0
+)return;
 
-const name=String(customer.customerName||'').toLowerCase();
-const phone=String(customer.phone||'').toLowerCase();
-const id=String(customer.customerId||'').toLowerCase();
+const name=
+String(customer.customerName||'').toLowerCase();
+
+const phone=
+String(customer.phone||'').toLowerCase();
+
+const id=
+String(customer.customerId||'').toLowerCase();
 
 if(
 search&&
@@ -1088,32 +1252,44 @@ option.value=customer.customerId;
 option.textContent=customer.customerName;
 
 select.appendChild(option);
+
 });
 
-if(oldValue&&[...select.options].some(o=>o.value===oldValue)){
+if(
+oldValue&&
+[...select.options].some(o=>o.value===oldValue)
+){
 select.value=oldValue;
 }
+
 }
 
 
 /* CUSTOMER SELECT */
-$('customerPageSelect').addEventListener('change',async function(){
+$('customerPageSelect').addEventListener(
+'change',
+async function(){
 
 const id=this.value;
+
 const list=$('customerList');
 const info=$('selectedCustomerInfo');
 
 if(!id){
 
-info.innerHTML='<div class="selected-empty">Select a customer</div>';
+info.innerHTML=
+'<div class="selected-empty">Select a customer</div>';
 
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
 
 updateTotalDue();
 
-list.innerHTML='<div class="empty">Select a customer</div>';
+list.innerHTML=
+'<div class="empty">Select a customer</div>';
 
 return;
+
 }
 
 if(id==='__ALL_TRANSACTIONS__'){
@@ -1129,6 +1305,7 @@ updateTotalDue();
 await renderAllCustomerTransactions();
 
 return;
+
 }
 
 const customer=customerData.find(
@@ -1137,13 +1314,17 @@ x=>String(x.customerId)===String(id)
 
 if(!customer){
 
-info.innerHTML='<div class="selected-empty">Customer not found</div>';
+info.innerHTML=
+'<div class="selected-empty">Customer not found</div>';
 
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
 
-list.innerHTML='<div class="empty">Customer not found</div>';
+list.innerHTML=
+'<div class="empty">Customer not found</div>';
 
 return;
+
 }
 
 info.innerHTML=
@@ -1159,22 +1340,31 @@ $('selectedDueAmount').innerHTML='Loading...';
 updateTotalDue();
 
 await renderCustomers(customer);
+
 });
 
 
 /* CUSTOMER SEARCH */
 function updateTotalDue(){
+
 let totalDue=0;
 
 customerData.forEach(c=>{
-if(isActive(c))totalDue+=number(c.totalDueKD);
+
+if(isActive(c)){
+totalDue+=number(c.totalDueKD);
+}
+
 });
 
 $('allCustomerDue').innerHTML=
 fmtKD(totalDue)+' <span>KD</span>';
+
 }
 
-$('customerSearch').addEventListener('input',function(){
+$('customerSearch').addEventListener(
+'input',
+function(){
 
 const currentId=$('customerPageSelect').value;
 
@@ -1188,48 +1378,70 @@ currentId&&
 ){
 select.value=currentId;
 }
+
 });
 
-$('customerTransactionDate').addEventListener('change',async function(){
+$('customerTransactionDate').addEventListener(
+'change',
+async function(){
 
-if($('customerPageSelect').value==='__ALL_TRANSACTIONS__'){
+if(
+$('customerPageSelect').value===
+'__ALL_TRANSACTIONS__'
+){
 await renderAllCustomerTransactions();
 }
+
 });
 
 async function renderCustomers(customer){
+
 $('customerList').innerHTML='';
-await loadCustomerTransactions(customer.customerId);
+
+await loadCustomerTransactions(
+customer.customerId
+);
+
 }
 
 
-/* ALL TRANSACTION
-   এখানে মূল ভুলটি ঠিক করা হয়েছে
-*/
+/* ALL TRANSACTION */
 async function renderAllCustomerTransactions(){
 
 const list=$('customerList');
-const selectedDate=$('customerTransactionDate').value;
 
-list.innerHTML='<div class="loading">Loading transactions...</div>';
+const selectedDate=
+$('customerTransactionDate').value;
 
-const activeCustomers=customerData.filter(c=>isActive(c));
+list.innerHTML=
+'<div class="loading">Loading transactions...</div>';
+
+const activeCustomers=
+customerData.filter(c=>isActive(c));
 
 if(!activeCustomers.length){
-list.innerHTML='<div class="empty">No active customer found</div>';
+
+list.innerHTML=
+'<div class="empty">No active customer found</div>';
+
 return;
+
 }
 
 try{
 
 const results=await Promise.all(
-activeCustomers.map(async customer=>{
+
+activeCustomers.map(
+async customer=>{
 
 try{
 
 const result=await getAPI(
 'customerTransactions',
-{customerId:customer.customerId}
+{
+customerId:customer.customerId
+}
 );
 
 if(!result.success)return[];
@@ -1237,25 +1449,48 @@ if(!result.success)return[];
 const transactions=
 Array.isArray(result.data)
 ?result.data
-:(result.data&&Array.isArray(result.data.transactions)
+:(
+result.data&&
+Array.isArray(result.data.transactions)
 ?result.data.transactions
-:[]);
+:[]
+);
 
 return transactions
+
 .map((t,index)=>({
+
 ...t,
-_customerName:customer.customerName||'',
-_customerPhone:customer.phone||'',
-_customerId:customer.customerId||'',
+
+_customerName:
+customer.customerName||'',
+
+_customerPhone:
+customer.phone||'',
+
+_customerId:
+customer.customerId||'',
+
 _sortIndex:index
+
 }))
-.filter(t=>transactionMatchesDate(t,selectedDate));
+
+.filter(t=>
+transactionMatchesDate(
+t,
+selectedDate
+)
+);
 
 }catch(e){
+
 return[];
+
 }
 
-})
+}
+)
+
 );
 
 let allTransactions=results.flat();
@@ -1279,9 +1514,13 @@ t.transactionDate||
 t.TransactionDate||
 '';
 
-const parsed=getFullTransactionDate(value);
+const parsed=
+getFullTransactionDate(value);
 
-return parsed?parsed.getTime():0;
+return parsed?
+parsed.getTime():
+0;
+
 };
 
 const timeA=getTransactionTime(a);
@@ -1291,18 +1530,29 @@ if(timeA!==timeB){
 return timeB-timeA;
 }
 
-return (b._sortIndex||0)-(a._sortIndex||0);
+return(
+(b._sortIndex||0)-
+(a._sortIndex||0)
+);
+
 });
 
 
 list.innerHTML='';
 
 if(!allTransactions.length){
-addEmpty(list,'No Transaction found');
+
+addEmpty(
+list,
+'No Transaction found'
+);
+
 return;
+
 }
 
-const fragment=document.createDocumentFragment();
+const fragment=
+document.createDocumentFragment();
 
 allTransactions.forEach(t=>{
 
@@ -1329,6 +1579,7 @@ date.textContent=
 t.date||
 t.Date||
 t.transactionDate||
+t.TransactionDate||
 '';
 
 const typeWrap=document.createElement('div');
@@ -1350,17 +1601,21 @@ typeWrap.appendChild(type);
 top.append(date,typeWrap);
 
 
-/* KD AMOUNT — এই অংশটি আগে বাদ পড়ে গিয়েছিল */
+/* KD AMOUNT */
 const amount=document.createElement('div');
 
 amount.className='txn-amount';
 
 const kdAmount=number(
+
 t.kdAmount!==undefined
 ?t.kdAmount
-:(t.amountKD!==undefined
+:(
+t.amountKD!==undefined
 ?t.amountKD
-:t.kd)
+:t.kd
+)
+
 );
 
 const sign=
@@ -1378,11 +1633,12 @@ fmtKD(kdAmount)+
 const bottom=document.createElement('div');
 
 bottom.className='txn-bottom';
-bottom.style.fontWeight='700';
-bottom.style.color='#172033';
 
-const note=String(t.note||'').trim();
-const bdAmount=getBDAmount(t);
+const note=
+String(t.note||'').trim();
+
+const bdAmount=
+getBDAmount(t);
 
 let bottomText='';
 
@@ -1396,7 +1652,10 @@ if(bottomText){
 bottomText+=' • ';
 }
 
-bottomText+=fmtIndian(bdAmount)+' TK';
+bottomText+=
+fmtIndian(bdAmount)+
+' TK';
+
 }
 
 if(t._customerName){
@@ -1405,16 +1664,20 @@ if(bottomText){
 bottomText+=' • ';
 }
 
-bottomText+=t._customerName;
+bottomText+=
+t._customerName;
+
 }
 
 bottom.textContent=bottomText;
 
 
 /* AGENT */
-const agentName=document.createElement('div');
+const agentName=
+document.createElement('div');
 
-agentName.className='txn-agent';
+agentName.className=
+'txn-agent';
 
 agentName.textContent=
 t.agentName||
@@ -1442,16 +1705,24 @@ list.appendChild(fragment);
 
 }catch(e){
 
-console.error('All Transaction Error:',e);
+console.error(
+'All Transaction Error:',
+e
+);
 
 list.innerHTML=
 '<div class="empty">Connection error</div>';
+
 }
+
 }
 
 
 /* DATE FILTER */
-function transactionMatchesDate(transaction,selectedDate){
+function transactionMatchesDate(
+transaction,
+selectedDate
+){
 
 if(!selectedDate)return true;
 
@@ -1462,19 +1733,27 @@ transaction.transactionDate||
 transaction.TransactionDate||
 '';
 
-const transactionDate=getFullTransactionDate(value);
+const transactionDate=
+getFullTransactionDate(value);
 
 if(!transactionDate)return false;
 
-const selectedDateObj=getFullTransactionDate(selectedDate);
+const selectedDateObj=
+getFullTransactionDate(selectedDate);
 
 if(!selectedDateObj)return false;
 
 return(
-transactionDate.getFullYear()===selectedDateObj.getFullYear()&&
-transactionDate.getMonth()===selectedDateObj.getMonth()&&
-transactionDate.getDate()===selectedDateObj.getDate()
+transactionDate.getFullYear()===
+selectedDateObj.getFullYear()&&
+
+transactionDate.getMonth()===
+selectedDateObj.getMonth()&&
+
+transactionDate.getDate()===
+selectedDateObj.getDate()
 );
+
 }
 
 
@@ -1499,11 +1778,16 @@ const year=Number(match[1]);
 const month=Number(match[2]);
 const day=Number(match[3]);
 
-date=new Date(year,month-1,day);
+date=new Date(
+year,
+month-1,
+day
+);
 
 if(match[4]){
 
-const time=match[4].trim().replace(/Z$/,'');
+const time=
+match[4].trim().replace(/Z$/,'');
 
 const tm=time.match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\.(\d+))?(?:\s*(AM|PM))?/i
@@ -1512,6 +1796,7 @@ const tm=time.match(
 if(tm){
 
 let hour=Number(tm[1]);
+
 const minute=Number(tm[2]);
 const second=Number(tm[3]||0);
 
@@ -1522,16 +1807,27 @@ String(tm[4]||'')
 .slice(0,3)
 )||0;
 
-const ampm=String(tm[5]||'').toUpperCase();
+const ampm=
+String(tm[5]||'').toUpperCase();
 
 if(ampm==='PM'&&hour<12)hour+=12;
 if(ampm==='AM'&&hour===12)hour=0;
 
-date.setHours(hour,minute,second,ms);
-}
+date.setHours(
+hour,
+minute,
+second,
+ms
+);
+
 }
 
-return isNaN(date.getTime())?null:date;
+}
+
+return isNaN(date.getTime())
+?null
+:date;
+
 }
 
 match=str.match(
@@ -1545,7 +1841,8 @@ jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
 jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
 };
 
-const month=months[match[2].toLowerCase()];
+const month=
+months[match[2].toLowerCase()];
 
 if(month){
 
@@ -1557,13 +1854,15 @@ Number(match[1])
 
 if(match[4]){
 
-const tm=match[4].trim().match(
+const tm=
+match[4].trim().match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?/i
 );
 
 if(tm){
 
 let hour=Number(tm[1]);
+
 const minute=Number(tm[2]);
 const second=Number(tm[3]||0);
 
@@ -1573,12 +1872,23 @@ String(tm[4]||'').toUpperCase();
 if(ampm==='PM'&&hour<12)hour+=12;
 if(ampm==='AM'&&hour===12)hour=0;
 
-date.setHours(hour,minute,second,0);
-}
+date.setHours(
+hour,
+minute,
+second,
+0
+);
+
 }
 
-return isNaN(date.getTime())?null:date;
 }
+
+return isNaN(date.getTime())
+?null
+:date;
+
+}
+
 }
 
 match=str.match(
@@ -1595,13 +1905,15 @@ Number(match[1])
 
 if(match[4]){
 
-const tm=match[4].trim().match(
+const tm=
+match[4].trim().match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?/i
 );
 
 if(tm){
 
 let hour=Number(tm[1]);
+
 const minute=Number(tm[2]);
 const second=Number(tm[3]||0);
 
@@ -1611,16 +1923,29 @@ String(tm[4]||'').toUpperCase();
 if(ampm==='PM'&&hour<12)hour+=12;
 if(ampm==='AM'&&hour===12)hour=0;
 
-date.setHours(hour,minute,second,0);
-}
+date.setHours(
+hour,
+minute,
+second,
+0
+);
+
 }
 
-return isNaN(date.getTime())?null:date;
+}
+
+return isNaN(date.getTime())
+?null
+:date;
+
 }
 
 date=new Date(str);
 
-return isNaN(date.getTime())?null:date;
+return isNaN(date.getTime())
+?null
+:date;
+
 }
 
 
@@ -1632,96 +1957,133 @@ let total=0;
 transactions.forEach(t=>{
 
 const kdAmount=number(
+
 t.kdAmount!==undefined
 ?t.kdAmount
-:(t.amountKD!==undefined
+:(
+t.amountKD!==undefined
 ?t.amountKD
-:t.kd)
+:t.kd
+)
+
 );
 
 if(isDueTransaction(t)){
+
 total+=kdAmount;
+
 }else if(isPaymentTransaction(t)){
+
 total-=kdAmount;
+
 }
 
 });
 
 return Math.round(total*1000)/1000;
+
 }
 
 
 /* CUSTOMER TRANSACTIONS */
-async function loadCustomerTransactions(customerId){
+async function loadCustomerTransactions(
+customerId
+){
 
 const list=$('customerList');
 
-const loading=document.createElement('div');
+const loading=
+document.createElement('div');
 
-loading.id='customerTxnLoading';
+loading.id=
+'customerTxnLoading';
+
 loading.className='loading';
-loading.textContent='Loading transactions...';
+
+loading.textContent=
+'Loading transactions...';
 
 list.appendChild(loading);
 
 try{
 
-const result=await getAPI(
+const result=
+await getAPI(
 'customerTransactions',
 {customerId}
 );
 
-if(loading.isConnected)loading.remove();
+if(loading.isConnected){
+loading.remove();
+}
 
 if(!result.success){
 
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
 
 addEmpty(
 list,
-result.error||'Unable to load transactions'
+result.error||
+'Unable to load transactions'
 );
 
 return;
+
 }
 
 const transactions=
 Array.isArray(result.data)
 ?result.data
-:(result.data&&Array.isArray(result.data.transactions)
+:(
+result.data&&
+Array.isArray(result.data.transactions)
 ?result.data.transactions
-:[]);
+:[]
+);
 
-const customerDue=calculateCustomerDue(transactions);
+const customerDue=
+calculateCustomerDue(
+transactions
+);
 
 $('selectedDueAmount').innerHTML=
-fmtKD(customerDue)+' <span>KD</span>';
+fmtKD(customerDue)+
+' <span>KD</span>';
 
 if(!transactions.length){
 
-addEmpty(list,'No Transaction found');
+addEmpty(
+list,
+'No Transaction found'
+);
 
 return;
+
 }
 
-const fragment=document.createDocumentFragment();
+const fragment=
+document.createDocumentFragment();
 
 transactions.forEach(t=>{
 
 const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
 
-const txn=document.createElement('div');
+const txn=
+document.createElement('div');
 
 txn.className=
 'txn '+
 (sale?'sale':payment?'payment':'');
 
-const top=document.createElement('div');
+const top=
+document.createElement('div');
 
 top.className='txn-top';
 
-const date=document.createElement('div');
+const date=
+document.createElement('div');
 
 date.className='txn-date';
 
@@ -1729,14 +2091,17 @@ date.textContent=
 t.date||
 t.Date||
 t.transactionDate||
+t.TransactionDate||
 '';
 
-const typeWrap=document.createElement('div');
+const typeWrap=
+document.createElement('div');
 
 typeWrap.style.textAlign='right';
 typeWrap.style.minWidth='55px';
 
-const type=document.createElement('div');
+const type=
+document.createElement('div');
 
 type.className='txn-type';
 
@@ -1746,9 +2111,11 @@ payment?'পেমেন্ট':
 (t.type||'');
 
 typeWrap.appendChild(type);
+
 top.append(date,typeWrap);
 
-const amount=document.createElement('div');
+const amount=
+document.createElement('div');
 
 amount.className='txn-amount';
 
@@ -1758,16 +2125,23 @@ t.kdAmount!==undefined
 :t.amountKD
 );
 
-const sign=payment?'−':sale?'+':'';
+const sign=
+payment?'−':
+sale?'+':
+'';
 
 amount.textContent=
-sign+fmtKD(kdAmount)+' KD';
+sign+
+fmtKD(kdAmount)+
+' KD';
 
-const bottom=document.createElement('div');
+const bottom=
+document.createElement('div');
 
 bottom.className='txn-bottom';
 
-const agentName=document.createElement('div');
+const agentName=
+document.createElement('div');
 
 agentName.className='txn-agent';
 
@@ -1777,15 +2151,24 @@ t.agent||
 t.AgentName||
 '';
 
-const note=String(t.note||'').trim();
-const bdAmount=getBDAmount(t);
+const note=
+String(t.note||'').trim();
+
+const bdAmount=
+getBDAmount(t);
 
 if(note||bdAmount){
 
 bottom.textContent=
 note?
-note+(bdAmount?' • '+fmtIndian(bdAmount)+' TK':''):
+note+
+(
+bdAmount
+?' • '+fmtIndian(bdAmount)+' TK'
+:''
+):
 fmtIndian(bdAmount)+' TK';
+
 }
 
 txn.append(top,amount);
@@ -1806,12 +2189,20 @@ list.appendChild(fragment);
 
 }catch(e){
 
-if(loading.isConnected)loading.remove();
-
-$('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
-
-addEmpty(list,'Connection error');
+if(loading.isConnected){
+loading.remove();
 }
+
+$('selectedDueAmount').innerHTML=
+'0.000 <span>KD</span>';
+
+addEmpty(
+list,
+'Connection error'
+);
+
+}
+
 }
 
 
@@ -1820,36 +2211,56 @@ async function loadAgents(){
 
 try{
 
-const result=await getAPI('agents');
+const result=
+await getAPI('agents');
 
 if(!result.success){
-renderAgentError(result.error||'Agent loading failed');
+
+renderAgentError(
+result.error||
+'Agent loading failed'
+);
+
 return;
+
 }
 
-agentData=Array.isArray(result.data)?result.data:[];
+agentData=
+Array.isArray(result.data)
+?result.data
+:[];
 
-fillAgentSelect($('agentSelect'));
+fillAgentSelect(
+$('agentSelect')
+);
 
 if(getRole()==='agent'){
 
 const agentView=$('agentView');
-const linkedId=String(currentUser.linkedId||'');
+
+const linkedId=
+String(currentUser.linkedId||'');
 
 agentView.innerHTML='';
 
-const found=agentData.find(
+const found=
+agentData.find(
 a=>String(a.agentId)===linkedId
 );
 
-const option=document.createElement('option');
+const option=
+document.createElement('option');
 
 option.value=linkedId;
 
 option.textContent=
 found?
 found.agentName:
-(currentUser.agentName||currentUser.name||'My Agent');
+(
+currentUser.agentName||
+currentUser.name||
+'My Agent'
+);
 
 agentView.appendChild(option);
 
@@ -1860,12 +2271,21 @@ if(linkedId)agentChanged();
 
 }else{
 
-fillAgentSelect($('agentView'),true);
+fillAgentSelect(
+$('agentView'),
+true
+);
 
-if(getRole()==='viewer'||getRole()==='viewar'){
+if(
+getRole()==='viewer'||
+getRole()==='viewar'
+){
+
 $('agentView').disabled=false;
 $('agentView').value='';
+
 }
+
 }
 
 $('agentList').innerHTML=
@@ -1873,37 +2293,50 @@ $('agentList').innerHTML=
 
 }catch(e){
 
-renderAgentError('Agent loading error');
-}
+renderAgentError(
+'Agent loading error'
+);
+
 }
 
-function fillAgentSelect(select,isView=false){
+}
+
+function fillAgentSelect(
+select,
+isView=false
+){
 
 select.innerHTML=
 isView?
 '<option value="">Agent</option>':
 '<option value="">Select Agent</option>';
 
-const fragment=document.createDocumentFragment();
+const fragment=
+document.createDocumentFragment();
 
 agentData.forEach(agent=>{
 
-const option=document.createElement('option');
+const option=
+document.createElement('option');
 
 option.value=agent.agentId;
 option.textContent=agent.agentName;
 
 fragment.appendChild(option);
+
 });
 
 select.appendChild(fragment);
+
 }
 
 function renderAgentError(message){
+
 $('agentList').innerHTML=
 '<div class="empty">'+
 escapeHTML(message)+
 '</div>';
+
 }
 
 
@@ -1912,15 +2345,23 @@ async function loadNotes(){
 
 try{
 
-const result=await getAPI('options');
+const result=
+await getAPI('options');
 
 if(!result.success)return;
 
 notesData={
-dueNotes:Array.isArray(result.data.dueNotes)
-?result.data.dueNotes:[],
-paymentNotes:Array.isArray(result.data.paymentNotes)
-?result.data.paymentNotes:[]
+
+dueNotes:
+Array.isArray(result.data.dueNotes)
+?result.data.dueNotes
+:[],
+
+paymentNotes:
+Array.isArray(result.data.paymentNotes)
+?result.data.paymentNotes
+:[]
+
 };
 
 setNotes(
@@ -1930,6 +2371,7 @@ transactionType==='বাকি'
 );
 
 }catch(e){}
+
 }
 
 function setNotes(notes){
@@ -1940,16 +2382,20 @@ select.innerHTML='';
 
 if(!notes||!notes.length){
 
-select.innerHTML='<option value="">Select Note</option>';
+select.innerHTML=
+'<option value="">Select Note</option>';
 
 return;
+
 }
 
-const fragment=document.createDocumentFragment();
+const fragment=
+document.createDocumentFragment();
 
 notes.forEach((note,i)=>{
 
-const option=document.createElement('option');
+const option=
+document.createElement('option');
 
 option.value=note;
 option.textContent=note;
@@ -1957,23 +2403,33 @@ option.textContent=note;
 if(i===0)option.selected=true;
 
 fragment.appendChild(option);
+
 });
 
 select.appendChild(fragment);
+
 }
 
 function setType(type){
 
 transactionType=type;
 
-$('dueBtn').classList.toggle('active',type==='বাকি');
-$('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
+$('dueBtn').classList.toggle(
+'active',
+type==='বাকি'
+);
+
+$('paymentBtn').classList.toggle(
+'active',
+type==='পেমেন্ট'
+);
 
 setNotes(
 type==='বাকি'
 ?notesData.dueNotes
 :notesData.paymentNotes
 );
+
 }
 
 
@@ -1986,11 +2442,13 @@ return String(value||'')
 .replace(/\s+/g,' ')
 .replace(/^[+\-]\s*/,'')
 .trim();
+
 }
 
 function isDueTransaction(t){
 
-const type=normalizeType(
+const type=
+normalizeType(
 t.type||
 t.Type||
 t.transactionType||
@@ -2004,11 +2462,13 @@ type==='due amount'||
 type==='বিক্রয়'||
 type==='sale'
 );
+
 }
 
 function isPaymentTransaction(t){
 
-const type=normalizeType(
+const type=
+normalizeType(
 t.type||
 t.Type||
 t.transactionType||
@@ -2022,29 +2482,40 @@ type==='জমা'||
 type==='paid'||
 type==='payment amount'
 );
+
 }
 
 
 /* KD INPUT */
-$('kdAmount').addEventListener('blur',function(){
+$('kdAmount').addEventListener(
+'blur',
+function(){
 
-const value=number(this.value);
+const value=
+number(this.value);
 
 if(!value){
 
 this.value='';
+
 calculateProfitPopup();
 
 return;
+
 }
 
 if(Number.isInteger(value)){
+
 this.value=String(value);
+
 }else{
+
 this.value=value.toFixed(3);
+
 }
 
 calculateProfitPopup();
+
 });
 
 
@@ -2052,12 +2523,19 @@ calculateProfitPopup();
 function getBDAmount(t){
 
 return number(
-t.bdAmount!==undefined&&t.bdAmount!==''
+
+t.bdAmount!==undefined&&
+t.bdAmount!==''
 ?t.bdAmount
-:(t.amountBD!==undefined&&t.amountBD!==''
+:(
+t.amountBD!==undefined&&
+t.amountBD!==''
 ?t.amountBD
-:t.bd)
+:t.bd
+)
+
 );
+
 }
 
 
@@ -2073,16 +2551,20 @@ currentAgentTransactions=[];
 
 setAgentNumbers(0,0);
 
-list.innerHTML='<div class="empty">Select an agent</div>';
+list.innerHTML=
+'<div class="empty">Select an agent</div>';
 
 return;
+
 }
 
-list.innerHTML='<div class="loading">Loading transactions...</div>';
+list.innerHTML=
+'<div class="loading">Loading transactions...</div>';
 
 try{
 
-const result=await getAPI(
+const result=
+await getAPI(
 'agentTransactions',
 {
 linkedId:agentId,
@@ -2095,20 +2577,26 @@ if(!result.success){
 
 list.innerHTML=
 '<div class="empty">'+
-escapeHTML(result.error||'Unable to load transactions')+
+escapeHTML(
+result.error||
+'Unable to load transactions'
+)+
 '</div>';
 
 return;
+
 }
 
 currentAgentTransactions=
-result.data&&Array.isArray(result.data.transactions)
+result.data&&
+Array.isArray(result.data.transactions)
 ?result.data.transactions:
 Array.isArray(result.data)
 ?result.data:
 [];
 
 calculateAgentSummary();
+
 renderAgentTransactions();
 
 }catch(e){
@@ -2117,8 +2605,11 @@ currentAgentTransactions=[];
 
 setAgentNumbers(0,0);
 
-list.innerHTML='<div class="empty">Connection error</div>';
+list.innerHTML=
+'<div class="empty">Connection error</div>';
+
 }
+
 }
 
 function calculateAgentSummary(){
@@ -2126,22 +2617,31 @@ function calculateAgentSummary(){
 let balance=0;
 let sales=0;
 
-const year=Number($('agentYear').value);
-const month=Number($('agentMonth').value);
+const year=
+Number($('agentYear').value);
+
+const month=
+Number($('agentMonth').value);
 
 currentAgentTransactions.forEach(t=>{
 
-const amount=getBDAmount(t);
+const amount=
+getBDAmount(t);
 
 if(isDueTransaction(t)){
+
 balance+=amount;
+
 }else if(isPaymentTransaction(t)){
+
 balance-=amount;
+
 }
 
 if(isDueTransaction(t)){
 
-const info=parseTransactionDate(
+const info=
+parseTransactionDate(
 t.date||
 t.Date||
 t.transactionDate||
@@ -2153,22 +2653,35 @@ info&&
 info.year===year&&
 info.month===month
 ){
+
 sales+=amount;
+
 }
+
 }
 
 });
 
-setAgentNumbers(balance,sales);
+setAgentNumbers(
+balance,
+sales
+);
+
 }
 
-function setAgentNumbers(balance,sales){
+function setAgentNumbers(
+balance,
+sales
+){
 
 $('agentCurrentBalance').innerHTML=
-fmtIndian(balance)+' <span>Tk</span>';
+fmtIndian(balance)+
+' <span>Tk</span>';
 
 $('agentMonthlySales').innerHTML=
-fmtIndian(sales)+' <span>Tk</span>';
+fmtIndian(sales)+
+' <span>Tk</span>';
+
 }
 
 
@@ -2185,14 +2698,20 @@ list.innerHTML=
 '<div class="empty">No BD transactions found</div>';
 
 return;
+
 }
 
-const year=Number($('agentYear').value);
-const month=Number($('agentMonth').value);
+const year=
+Number($('agentYear').value);
 
-const filtered=currentAgentTransactions.filter(t=>{
+const month=
+Number($('agentMonth').value);
 
-const info=parseTransactionDate(
+const filtered=
+currentAgentTransactions.filter(t=>{
+
+const info=
+parseTransactionDate(
 t.date||
 t.Date||
 t.transactionDate||
@@ -2204,6 +2723,7 @@ info&&
 info.year===year&&
 info.month===month
 );
+
 });
 
 calculateAgentSummary();
@@ -2214,28 +2734,33 @@ list.innerHTML=
 '<div class="empty">No transaction for this month</div>';
 
 return;
+
 }
 
 list.innerHTML='';
 
-const fragment=document.createDocumentFragment();
+const fragment=
+document.createDocumentFragment();
 
 filtered.forEach(t=>{
 
 const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
 
-const txn=document.createElement('div');
+const txn=
+document.createElement('div');
 
 txn.className=
 'txn '+
 (sale?'sale':payment?'payment':'');
 
-const top=document.createElement('div');
+const top=
+document.createElement('div');
 
 top.className='txn-top';
 
-const date=document.createElement('div');
+const date=
+document.createElement('div');
 
 date.className='txn-date';
 
@@ -2244,7 +2769,8 @@ t.date||
 t.Date||
 '';
 
-const type=document.createElement('div');
+const type=
+document.createElement('div');
 
 type.className='txn-type';
 
@@ -2255,28 +2781,44 @@ payment?'পেমেন্ট':
 
 top.append(date,type);
 
-const amount=document.createElement('div');
+const amount=
+document.createElement('div');
 
 amount.className='txn-amount';
 
-const bdAmount=getBDAmount(t);
+const bdAmount=
+getBDAmount(t);
 
-const sign=payment?'−':sale?'+':'';
+const sign=
+payment?'−':
+sale?'+':
+'';
 
 amount.textContent=
-sign+fmtIndian(bdAmount)+' Tk';
+sign+
+fmtIndian(bdAmount)+
+' Tk';
 
-const bottom=document.createElement('div');
+const bottom=
+document.createElement('div');
 
 bottom.className='txn-bottom';
-bottom.textContent=t.note||'';
 
-txn.append(top,amount,bottom);
+bottom.textContent=
+t.note||'';
+
+txn.append(
+top,
+amount,
+bottom
+);
 
 fragment.appendChild(txn);
+
 });
 
 list.appendChild(fragment);
+
 }
 
 
@@ -2285,9 +2827,11 @@ function parseTransactionDate(value){
 
 if(!value)return null;
 
-const str=String(value).trim();
+const str=
+String(value).trim();
 
-let match=str.match(
+let match=
+str.match(
 /^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/
 );
 
@@ -2298,39 +2842,50 @@ jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
 jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
 };
 
-const month=months[match[2].toLowerCase()];
+const month=
+months[match[2].toLowerCase()];
 
 if(month){
+
 return{
 year:Number(match[3]),
 month
 };
-}
+
 }
 
-match=str.match(
+}
+
+match=
+str.match(
 /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
 );
 
 if(match){
+
 return{
 year:Number(match[1]),
 month:Number(match[2])
 };
+
 }
 
-match=str.match(
+match=
+str.match(
 /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
 );
 
 if(match){
+
 return{
 year:Number(match[3]),
 month:Number(match[2])
 };
+
 }
 
-const date=new Date(str);
+const date=
+new Date(str);
 
 if(!isNaN(date.getTime())){
 
@@ -2338,30 +2893,43 @@ return{
 year:date.getFullYear(),
 month:date.getMonth()+1
 };
+
 }
 
 return null;
+
 }
 
 
 /* BD INPUT */
-$('bdAmount').addEventListener('input',function(){
+$('bdAmount').addEventListener(
+'input',
+function(){
 
-let value=this.value.replace(/[^\d]/g,'');
+let value=
+this.value.replace(/[^\d]/g,'');
 
 if(!value){
 
 this.value='';
+
 calculateProfitPopup();
 
 return;
+
 }
 
-value=value.replace(/^0+(?=\d)/,'');
+value=
+value.replace(
+/^0+(?=\d)/,
+''
+);
 
-this.value=Number(value).toLocaleString('en-IN');
+this.value=
+Number(value).toLocaleString('en-IN');
 
 calculateProfitPopup();
+
 });
 
 
@@ -2373,20 +2941,28 @@ if(getRole()!=='admin'){
 showSaveError('Access denied');
 
 return;
+
 }
 
 const date=$('date').value;
 const agentId=$('agentSelect').value;
 const customerId=$('customerSelect').value;
-const kd=number($('kdAmount').value);
-const bd=number($('bdAmount').value);
-const note=$('noteSelect').value;
+
+const kd=
+number($('kdAmount').value);
+
+const bd=
+number($('bdAmount').value);
+
+const note=
+$('noteSelect').value;
 
 if(!date){
 
 showSaveError('Date required');
 
 return;
+
 }
 
 if(kd>0&&!customerId){
@@ -2396,6 +2972,7 @@ showSaveError(
 );
 
 return;
+
 }
 
 if(bd>0&&!agentId){
@@ -2405,6 +2982,7 @@ showSaveError(
 );
 
 return;
+
 }
 
 if(kd<=0&&bd<=0){
@@ -2414,12 +2992,14 @@ showSaveError(
 );
 
 return;
+
 }
 
 const selectedDate=
 new Date(date+'T00:00:00');
 
-const today=new Date();
+const today=
+new Date();
 
 today.setHours(0,0,0,0);
 
@@ -2430,13 +3010,16 @@ showSaveError(
 );
 
 return;
+
 }
 
-const agent=agentData.find(
+const agent=
+agentData.find(
 a=>String(a.agentId)===String(agentId)
 );
 
-const customer=customerData.find(
+const customer=
+customerData.find(
 c=>String(c.customerId)===String(customerId)
 );
 
@@ -2454,7 +3037,8 @@ message.className='msg';
 
 try{
 
-const result=await postAPI({
+const result=
+await postAPI({
 
 action:'addTransaction',
 
@@ -2464,28 +3048,37 @@ role:currentUser?.role||'',
 date:formatDate(date),
 
 customerId,
-customerName:customer?.customerName||'',
 
-agentName:agent?.agentName||'',
+customerName:
+customer?.customerName||'',
+
+agentName:
+agent?.agentName||'',
 
 kdAmount:kd,
 bdAmount:bd,
 
 type:transactionType,
 note
+
 });
 
 if(!result.success){
 
 showSaveError(
-result.error||'Save failed'
+result.error||
+'Save failed'
 );
 
 return;
+
 }
 
-message.className='msg success';
-message.textContent='Transaction saved successfully';
+message.className=
+'msg success';
+
+message.textContent=
+'Transaction saved successfully';
 
 $('kdAmount').value='';
 $('bdAmount').value='';
@@ -2500,7 +3093,9 @@ $('customerPageSelect');
 if(
 savedCustomerPageId&&
 [...customerPageSelect.options]
-.some(o=>o.value===savedCustomerPageId)
+.some(
+o=>o.value===savedCustomerPageId
+)
 ){
 
 customerPageSelect.value=
@@ -2509,12 +3104,16 @@ savedCustomerPageId;
 customerPageSelect.dispatchEvent(
 new Event('change')
 );
+
 }
 
-const selectedAgent=$('agentView').value;
+const selectedAgent=
+$('agentView').value;
 
 if(selectedAgent){
+
 await agentChanged();
+
 }
 
 setTimeout(()=>{
@@ -2526,7 +3125,9 @@ message.className='msg';
 
 }catch(e){
 
-showSaveError('Connection error');
+showSaveError(
+'Connection error'
+);
 
 }finally{
 
@@ -2534,6 +3135,7 @@ button.disabled=false;
 button.textContent='💾 Save';
 
 }
+
 }
 
 function showSaveError(text){
@@ -2542,6 +3144,7 @@ const message=$('saveMsg');
 
 message.className='msg error';
 message.textContent=text;
+
 }
 
 
@@ -2562,51 +3165,68 @@ months[Number(parts[1])-1]+
 '-'+
 parts[0]
 );
+
 }
 
 
 /* HELPERS */
 function addEmpty(parent,text){
 
-const box=document.createElement('div');
+const box=
+document.createElement('div');
 
 box.className='empty';
 box.textContent=text;
 
 parent.appendChild(box);
+
 }
 
 function escapeHTML(value){
 
 return String(
-value===null||value===undefined?'':value
+value===null||value===undefined
+?''
+:value
 )
 .replace(/&/g,'&amp;')
 .replace(/</g,'&lt;')
 .replace(/>/g,'&gt;')
 .replace(/"/g,'&quot;')
 .replace(/'/g,'&#039;');
+
 }
 
 
 /* ENTER / SELECT EVENTS */
-$('bdAmount').addEventListener('keydown',function(e){
+$('bdAmount').addEventListener(
+'keydown',
+function(e){
 
-if(e.key==='Enter'||e.keyCode===13){
+if(
+e.key==='Enter'||
+e.keyCode===13
+){
 
 e.preventDefault();
 
 saveTransaction();
+
 }
+
 });
 
-$('password').addEventListener('keydown',e=>{
+$('password').addEventListener(
+'keydown',
+e=>{
 
 if(e.key==='Enter')login();
 
 });
 
-$('agentSelect').addEventListener('change',function(){
+$('agentSelect').addEventListener(
+'change',
+function(){
 
 this.classList.toggle(
 'has-value',
@@ -2615,7 +3235,9 @@ this.value!==''
 
 });
 
-$('customerSelect').addEventListener('change',function(){
+$('customerSelect').addEventListener(
+'change',
+function(){
 
 this.classList.toggle(
 'has-value',
@@ -2633,11 +3255,24 @@ restoreLogin();
 <script>
 if('serviceWorker' in navigator){
 
-window.addEventListener('load',()=>{
+window.addEventListener(
+'load',
+()=>{
 
-navigator.serviceWorker.register('./service-worker.js')
-.then(()=>console.log('PWA Service Worker registered'))
-.catch(err=>console.error('Service Worker error:',err));
+navigator.serviceWorker.register(
+'./service-worker.js'
+)
+.then(
+()=>console.log(
+'PWA Service Worker registered'
+)
+)
+.catch(
+err=>console.error(
+'Service Worker error:',
+err
+)
+);
 
 });
 
