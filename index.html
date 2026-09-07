@@ -86,7 +86,14 @@ background:#fff;padding:0 12px;outline:0;color:#172033
 }
 #agentSelect,#customerSelect{font-weight:400}
 #agentSelect.has-value,#customerSelect.has-value{font-weight:700}
-input:focus,select:focus{border-color:#111827}
+input:focus,
+select:focus{
+  border-color:#111827;
+  box-shadow:
+    0 0 0 3px rgba(17,24,39,.08),
+    0 4px 14px rgba(17,24,39,.10);
+  outline:none;
+}
 select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
 .amount{font-size:14px!important;font-weight:700}
 
