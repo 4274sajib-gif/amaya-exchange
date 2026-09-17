@@ -307,15 +307,36 @@ const DB_VERSION=2;
 const SYNC_INTERVAL=3000;
 const $=id=>document.getElementById(id);
 
+
+/* Hardcoded Note Section */
+const DUE_NOTES=[
+'Bkash',
+'Nagad',
+'Recharge',
+'Dollar Card',
+'Electricity'
+];
+
+const PAYMENT_NOTES=[
+'Bank',
+'Cash'
+];
+
+
 let currentUser=null;
 let transactionType='বাকি';
 let customerData=[];
 let agentData=[];
-let notesData={dueNotes:[],paymentNotes:[]};
+
+let notesData={
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
+};
+
 let allTransactionsData=[];
 let dueData={totalDueKD:0,customers:[]};
 let totalDueKD=0;
-let notesLoaded=false;
+let notesLoaded=true;
 let dataVersion='';
 let txVersion='';
 let customerVersion='';
@@ -485,10 +506,15 @@ customerVersion='';
 agentVersion='';
 settingsVersion='';
 lastTransactionRow=0;
-notesData={dueNotes:[],paymentNotes:[]};
+
+notesData={
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
+};
+
 dueData={totalDueKD:0,customers:[]};
 totalDueKD=0;
-notesLoaded=false;
+notesLoaded=true;
 return;
 }
 
@@ -499,18 +525,18 @@ agentVersion=await getMeta('agentVersion','');
 settingsVersion=await getMeta('settingsVersion','');
 lastTransactionRow=Number(await getMeta('lastTransactionRow',0))||0;
 
-const savedNotes=await getMeta('notesData',null);
 
-if(savedNotes&&typeof savedNotes==='object'){
+/*
+  Notes are always controlled by HTML.
+  Old IndexedDB notes are intentionally ignored.
+*/
 notesData={
-dueNotes:Array.isArray(savedNotes.dueNotes)?savedNotes.dueNotes:[],
-paymentNotes:Array.isArray(savedNotes.paymentNotes)?savedNotes.paymentNotes:[]
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
 };
+
 notesLoaded=true;
-}else{
-notesData={dueNotes:[],paymentNotes:[]};
-notesLoaded=false;
-}
+
 
 const savedDue=await getMeta('dueData',null);
 
@@ -798,8 +824,8 @@ const value=select.value;
 
 setNotes(
 transactionType==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
+?DUE_NOTES
+:PAYMENT_NOTES
 );
 
 if(value&&[...select.options].some(o=>o.value===value)){
@@ -843,10 +869,11 @@ setTimeout(safeRefreshNotes,0);
 renderTransactionCustomerDropdown();
 renderAgentDropdowns();
 updateCustomerDropdown();
+
 setNotes(
 transactionType==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
+?DUE_NOTES
+:PAYMENT_NOTES
 );
 }
 
@@ -863,8 +890,8 @@ updateTotalDue();
 
 setNotes(
 transactionType==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
+?DUE_NOTES
+:PAYMENT_NOTES
 );
 
 applyRoleAccess(activePanel);
@@ -947,82 +974,44 @@ renderAllCustomerTransactions();
 
 
 /* Notes Section */
+
+/*
+  Notes are permanently controlled by HTML.
+  Google Sheet / Code.gs notes are ignored.
+*/
+
 function normalizeNotes(data){
-const source=data?.options||{};
 return{
-dueNotes:Array.isArray(data?.dueNotes)
-?data.dueNotes
-:Array.isArray(source.dueNotes)
-?source.dueNotes
-:[],
-paymentNotes:Array.isArray(data?.paymentNotes)
-?data.paymentNotes
-:Array.isArray(source.paymentNotes)
-?source.paymentNotes
-:[]
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
 };
 }
 
 function applyIncomingNotes(data){
-if(!data)return false;
-
-const source=data.options||{};
-let changed=false;
-
-if(Array.isArray(data.dueNotes)){
-notesData.dueNotes=data.dueNotes;
-changed=true;
-}else if(Array.isArray(source.dueNotes)){
-notesData.dueNotes=source.dueNotes;
-changed=true;
-}
-
-if(Array.isArray(data.paymentNotes)){
-notesData.paymentNotes=data.paymentNotes;
-changed=true;
-}else if(Array.isArray(source.paymentNotes)){
-notesData.paymentNotes=source.paymentNotes;
-changed=true;
-}
-
-if(Array.isArray(notesData.dueNotes)&&
-Array.isArray(notesData.paymentNotes)){
-notesLoaded=true;
-}
-
-return changed;
+/*
+  Do not accept notes from backend.
+*/
+return false;
 }
 
 async function loadMissingNotes(){
-if(notesLoaded)return;
+/*
+  Notes already exist locally in HTML.
+  No API request is required.
+*/
+notesData={
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
+};
 
-try{
-const result=await getAPI('options');
-
-if(result.success){
-const data=result.data||result;
-
-if(applyIncomingNotes(data)){
-if(data.settingsVersion!==undefined){
-settingsVersion=data.settingsVersion||settingsVersion;
-}
-
-await saveLocalState();
-
-setNotes(
-transactionType==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
-);
-}
-}
-}catch(e){
-console.error('Notes loading error:',e);
-}
+notesLoaded=true;
 }
 
 function setNotes(notes){
 const select=$('noteSelect');
+
+if(!select)return;
+
 select.innerHTML='';
 
 if(!Array.isArray(notes)||!notes.length){
@@ -1034,9 +1023,14 @@ const fragment=document.createDocumentFragment();
 
 notes.forEach((note,i)=>{
 const option=document.createElement('option');
+
 option.value=note;
 option.textContent=note;
-if(i===0)option.selected=true;
+
+if(i===0){
+option.selected=true;
+}
+
 fragment.appendChild(option);
 });
 
@@ -1045,13 +1039,21 @@ select.appendChild(fragment);
 
 function setType(type){
 transactionType=type;
-$('dueBtn').classList.toggle('active',type==='বাকি');
-$('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
+
+$('dueBtn').classList.toggle(
+'active',
+type==='বাকি'
+);
+
+$('paymentBtn').classList.toggle(
+'active',
+type==='পেমেন্ট'
+);
 
 setNotes(
 type==='বাকি'
-?notesData.dueNotes
-:notesData.paymentNotes
+?DUE_NOTES
+:PAYMENT_NOTES
 );
 }
 
@@ -2141,8 +2143,14 @@ agentData=[];
 allTransactionsData=[];
 dueData={totalDueKD:0,customers:[]};
 totalDueKD=0;
-notesData={dueNotes:[],paymentNotes:[]};
-notesLoaded=false;
+
+/* Keep HTML notes after logout */
+notesData={
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
+};
+
+notesLoaded=true;
 
 dataVersion='';
 txVersion='';
@@ -2373,8 +2381,18 @@ allTransactionsData=Array.isArray(data.transactions)
 sortCustomersAZ(customerData);
 sortTransactionsNewestFirst(allTransactionsData);
 
-notesData=normalizeNotes(data);
+
+/*
+  Notes are hardcoded in HTML.
+  Backend / Google Sheet notes are ignored.
+*/
+notesData={
+dueNotes:DUE_NOTES,
+paymentNotes:PAYMENT_NOTES
+};
+
 notesLoaded=true;
+
 
 dataVersion=data.version||'';
 txVersion=data.txVersion||'';
@@ -2459,6 +2477,11 @@ if(
 return await initialBootstrap();
 }
 
+
+/*
+  Notes are already hardcoded.
+  This no longer makes an options API request.
+*/
 if(!notesLoaded){
 await loadMissingNotes();
 }
@@ -2510,9 +2533,10 @@ await saveAgentsLocal(agentData);
 flags.agentsChanged=true;
 }
 
-if(applyIncomingNotes(data)){
-flags.notesChanged=true;
-}
+
+/*
+  Backend notes are intentionally ignored.
+*/
 
 if(
 data.due||
