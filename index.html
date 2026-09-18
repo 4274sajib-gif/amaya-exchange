@@ -3,349 +3,1384 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>Amaya Exchange</title>
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0B6B4F">
+
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;background:#f5f7fa;color:#172033;font-family:Arial,sans-serif}
-body{min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.app{width:100%;max-width:520px;margin:auto;min-height:100vh}
-.header{background:#fff;padding:14px 15px;border-bottom:1px solid #e7e9ed;position:sticky;top:0;z-index:20;overflow:visible}
-.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px;overflow:visible}
-.logo{font-size:19px;font-weight:800}
-.tagline{font-size:11px;color:#858e9d;margin-top:4px}
-.logout{border:0;background:#fff1f1;color:#d66b6b;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:700}
-.header-rate-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.header-rate{position:relative;width:120px;flex-shrink:0}
-.header-rate-input{width:100%;height:34px;border:1px solid #dfe3e9;border-radius:18px;background:#EFF6FF;padding:0 10px;outline:0;color:#172033;font-size:11px;font-weight:600}
-.header-rate-popup{position:absolute;left:-10px;right:-45px;top:calc(100% + 7px);background:#111827;color:#fff;border-radius:10px;padding:12px 9px;display:flex;align-items:center;justify-content:space-between;gap:7px;opacity:0;visibility:hidden;transform:translateY(7px);transition:opacity .18s ease,transform .18s ease,visibility .18s ease;box-shadow:0 5px 16px rgba(0,0,0,.18);z-index:100}
-.header-rate-popup.show{opacity:1;visibility:visible;transform:translateY(0)}
-.header-rate-left{min-width:0}
-.header-rate-label{color:#aeb8c7;font-size:8px;line-height:1;margin-bottom:2px}
-.header-rate-amount{font-size:12px;font-weight:700;white-space:nowrap}
-.header-rate-right{text-align:right;flex-shrink:0}
-.header-rate-kd{font-size:15px;font-weight:800;line-height:1;white-space:nowrap}
-.header-rate-popup:after{content:"";position:absolute;right:35%;top:-5px;width:10px;height:10px;background:#111827;transform:rotate(45deg)}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:11px 14px 5px}
-.tab{border:0;height:43px;border-radius:11px;background:#e7ebf0;color:#687284;font-size:12px;font-weight:800}
-.tab.active{background:#111827;color:#fff}
-.content{padding:10px 14px 25px}
-.panel{display:none}
-.panel.active{display:block}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 3px 15px rgba(0,0,0,.045)}
-.field{margin-bottom:18px}
-.label{display:block;font-size:10px;font-weight:300;margin-bottom:7px}
-input,select{width:100%;height:47px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;padding:0 12px;outline:0;color:#172033}
-#agentSelect,#customerSelect{font-weight:400}
-#agentSelect.has-value,#customerSelect.has-value{font-weight:700}
-input:focus,select:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08),0 4px 14px rgba(17,24,39,.10);outline:none}
-select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
-.amount{font-size:14px!important;font-weight:700}
-.amount-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:relative}
-.type-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:3px 0 13px}
-.type-btn{height:44px;border:1px solid #dfe3e9;border-radius:11px;background:#fff;font-weight:800}
-.type-btn.active{background:#111827;color:#fff;border-color:#111827}
-.save{width:100%;height:50px;border:0;border-radius:12px;background:#111827;color:#fff;font-size:13px;font-weight:800;letter-spacing:.2px}
-.save:active{transform:scale(.98)}
-.save:disabled{opacity:.55;cursor:not-allowed}
-.msg{font-size:12px;margin-top:9px;text-align:center}
-.error{color:#d33131}
-.success{color:#16824c}
-.profit-popup{position:absolute;right:0;bottom:60px;background:#111827;color:#fff;border-radius:10px;padding:7px 11px;font-size:11px;font-weight:800;line-height:1;box-shadow:0 5px 16px rgba(0,0,0,.16);opacity:0;visibility:hidden;transform:translateY(5px) scale(.96);transition:opacity .15s ease,transform .15s ease,visibility .15s ease;z-index:30;pointer-events:none;white-space:nowrap}
-.profit-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
-.profit-popup:after{content:"";position:absolute;right:20px;bottom:-5px;width:10px;height:10px;background:#111827;transform:rotate(45deg)}
-.customer-filter-card{background:#fff;border-radius:14px;padding:10px;margin-bottom:9px;box-shadow:0 2px 10px rgba(0,0,0,.035)}
-.customer-filter-row{display:grid;grid-template-columns:1fr 105px 1.25fr;gap:6px;align-items:center;margin-bottom:7px}
-.customer-filter-row input,.customer-filter-row select{height:36px;font-size:11px;padding:0 8px;border-radius:9px}
-.customer-date-wrap{position:relative;width:100%}
-.customer-date{width:100%;height:36px;border-radius:9px;font-size:11px;padding:0 8px;background:#fff;border:1px solid #dfe3e9;outline:0;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:none!important}
-#customerDatePicker{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}
-.customer-selected-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;min-height:38px}
-.selected-customer{min-width:0}
-.selected-name{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.selected-phone{font-size:12px;color:#858e9d;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.due-amount-box{background:#f1f3f6;border-radius:9px;padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0}
-.due-amount-label{font-size:10px;color:#858e9d;margin-bottom:1px}
-.due-amount-value{font-size:13px;font-weight:800;color:#172033;line-height:1.1;white-space:nowrap}
-.due-amount-value span{font-size:8px;font-weight:700}
-.total-due-box{background:#111827;border-radius:9px;padding:6px 9px;min-width:105px;text-align:center;flex-shrink:0}
-.total-due-label{font-size:10px;color:#c8ced8;margin-bottom:1px}
-.total-due-value{font-size:14px;font-weight:800;color:#fff;line-height:1.1;white-space:nowrap}
-.total-due-value span{font-size:8px;font-weight:700}
-.list{display:flex;flex-direction:column;gap:6px}
-#customerList{max-height:calc(100vh - 300px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
-.txn{background:#fff;border-radius:11px;padding:10px 11px;box-shadow:0 1px 6px rgba(0,0,0,.035);border:1px solid #edf0f3;border-left:4px solid #dfe3e9;position:relative}
-.txn.sale{border-left-color:#111827}
-.txn.sale .txn-type,.txn.sale .txn-amount{color:#111827}
-.txn.payment{border-left-color:#f3a6a6;background:#fff5f5;border-left:4px solid #f3a6a6;border-top:1px solid #fde1e1;border-right:1px solid #fde1e1;border-bottom:1px solid #fde1e1}
-.txn-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.txn-date{font-size:11px;color:#858e9d}
-.txn-type{font-size:10px;font-weight:800;line-height:10px}
-.txn.payment .txn-type,.txn.payment .txn-amount{color:#d66b6b}
-.txn-amount{font-size:14px;font-weight:800;margin-top:4px}
-.txn-bottom{font-size:9px;color:#858e9d!important;font-weight:400!important;margin-top:4px;padding-right:45%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.txn-agent{position:absolute;right:11px;bottom:10px;font-size:9px;font-weight:600;color:#858e9d;max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
-.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1.25fr;gap:5px;margin-bottom:8px}
-.agent-filter-row select{height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0}
-.agent-summary{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
-.agent-summary-box{background:#111827;color:#fff;border-radius:10px;padding:8px 9px;border:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.agent-summary-label{font-size:10px;color:#c8ced8;margin-bottom:2px}
-.agent-summary-value{font-size:14px;font-weight:800;line-height:1.2;color:#fff}
-.agent-summary-value span{font-size:8px;font-weight:700;color:#c8ced8}
-.agent-balance{text-align:left}
-.agent-sales{text-align:right}
-#agentList{max-height:calc(100vh - 250px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
-#agentList .txn{padding:10px 11px;border-radius:11px;border-left-width:4px}
-#agentList .txn-date,#agentList .txn-type{font-size:10px}
-#agentList .txn-amount{font-size:14px;margin-top:4px}
-#agentList .txn-bottom{font-size:9px;margin-top:4px}
-.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{width:100%;max-width:390px;background:#fff;border-radius:21px;padding:25px 21px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
-.login-title{font-size:24px;font-weight:800}
-.login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
-.loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
-.sync-status{position:fixed;right:10px;bottom:10px;background:#111827;color:#fff;border-radius:20px;padding:5px 9px;font-size:8px;opacity:0;transform:translateY(5px);transition:.2s;z-index:200}
-.sync-status.show{opacity:.8;transform:translateY(0)}
-@media(max-width:360px){
-.tabs{gap:5px}.tab{font-size:11px}.amount-row{gap:6px}.customer-filter-row{gap:5px}
-.customer-filter-row input,.customer-filter-row select{font-size:10px;padding:0 7px}
-.agent-filter-row{gap:4px}.agent-filter-row select{font-size:9px;padding:0 5px}
-.agent-summary-value{font-size:13px}.total-due-box{min-width:98px}.due-amount-box{min-width:75px;padding:6px}
-.due-amount-value{font-size:12px}.selected-name{font-size:11px}.customer-selected-row{gap:5px}
-.header{padding:13px 10px}.logo{font-size:16px}.tagline{font-size:9px}.header-rate-wrap{gap:4px}
-.header-rate{width:105px}.header-rate-input{height:31px;font-size:10px;padding:0 8px}
-.logout{padding:7px 8px;font-size:10px}.header-rate-popup{padding:6px 7px}
-.header-rate-amount{font-size:11px}.header-rate-kd{font-size:14px}
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
 }
+
+html,body{
+margin:0;
+padding:0;
+background:#f5f7fa;
+color:#172033;
+font-family:Arial,sans-serif
+}
+
+body{
+min-height:100vh
+}
+
+button,input,select{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+.hidden{
+display:none!important
+}
+
+.app{
+width:100%;
+max-width:520px;
+margin:auto;
+min-height:100vh
+}
+
+.header{
+background:#fff;
+padding:14px 15px;
+border-bottom:1px solid #e7e9ed;
+position:sticky;
+top:0;
+z-index:20;
+overflow:visible
+}
+
+.header-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+overflow:visible
+}
+
+.logo{
+font-size:19px;
+font-weight:800
+}
+
+.tagline{
+font-size:11px;
+color:#858e9d;
+margin-top:4px
+}
+
+.logout{
+border:0;
+background:#fff1f1;
+color:#d66b6b;
+border-radius:9px;
+padding:8px 11px;
+font-size:11px;
+font-weight:700
+}
+
+.header-rate-wrap{
+display:flex;
+align-items:center;
+gap:6px;
+flex-shrink:0
+}
+
+.header-rate{
+position:relative;
+width:120px;
+flex-shrink:0
+}
+
+.header-rate-input{
+width:100%;
+height:34px;
+border:1px solid #dfe3e9;
+border-radius:18px;
+background:#EFF6FF;
+padding:0 10px;
+outline:0;
+color:#172033;
+font-size:11px;
+font-weight:600
+}
+
+.header-rate-popup{
+position:absolute;
+left:-10px;
+right:-45px;
+top:calc(100% + 7px);
+background:#111827;
+color:#fff;
+border-radius:10px;
+padding:12px 9px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:7px;
+opacity:0;
+visibility:hidden;
+transform:translateY(7px);
+transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+box-shadow:0 5px 16px rgba(0,0,0,.18);
+z-index:100
+}
+
+.header-rate-popup.show{
+opacity:1;
+visibility:visible;
+transform:translateY(0)
+}
+
+.header-rate-left{
+min-width:0
+}
+
+.header-rate-label{
+color:#aeb8c7;
+font-size:8px;
+line-height:1;
+margin-bottom:2px
+}
+
+.header-rate-amount{
+font-size:12px;
+font-weight:700;
+white-space:nowrap
+}
+
+.header-rate-right{
+text-align:right;
+flex-shrink:0
+}
+
+.header-rate-kd{
+font-size:15px;
+font-weight:800;
+line-height:1;
+white-space:nowrap
+}
+
+.header-rate-popup:after{
+content:"";
+position:absolute;
+right:35%;
+top:-5px;
+width:10px;
+height:10px;
+background:#111827;
+transform:rotate(45deg)
+}
+
+.tabs{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+padding:11px 14px 5px
+}
+
+.tab{
+border:0;
+height:43px;
+border-radius:11px;
+background:#e7ebf0;
+color:#687284;
+font-size:12px;
+font-weight:800
+}
+
+.tab.active{
+background:#111827;
+color:#fff
+}
+
+.content{
+padding:10px 14px 25px
+}
+
+.panel{
+display:none
+}
+
+.panel.active{
+display:block
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:16px;
+margin-bottom:12px;
+box-shadow:0 3px 15px rgba(0,0,0,.045)
+}
+
+.field{
+margin-bottom:18px
+}
+
+.label{
+display:block;
+font-size:10px;
+font-weight:300;
+margin-bottom:7px
+}
+
+input,select{
+width:100%;
+height:47px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+padding:0 12px;
+outline:0;
+color:#172033
+}
+
+#agentSelect,
+#customerSelect{
+font-weight:400
+}
+
+#agentSelect.has-value,
+#customerSelect.has-value{
+font-weight:700
+}
+
+input:focus,
+select:focus{
+border-color:#111827;
+box-shadow:
+0 0 0 3px rgba(17,24,39,.08),
+0 4px 14px rgba(17,24,39,.10);
+outline:none
+}
+
+select:disabled{
+background:#f1f3f6;
+color:#4b5563;
+opacity:1;
+cursor:not-allowed
+}
+
+.amount{
+font-size:14px!important;
+font-weight:700
+}
+
+.amount-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+position:relative
+}
+
+.type-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin:3px 0 13px
+}
+
+.type-btn{
+height:44px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+font-weight:800
+}
+
+.type-btn.active{
+background:#111827;
+color:#fff;
+border-color:#111827
+}
+
+.save{
+width:100%;
+height:50px;
+border:0;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-size:13px;
+font-weight:800;
+letter-spacing:.2px
+}
+
+.save:active{
+transform:scale(.98)
+}
+
+.save:disabled{
+opacity:.55;
+cursor:not-allowed
+}
+
+.msg{
+font-size:12px;
+margin-top:9px;
+text-align:center
+}
+
+.error{
+color:#d33131
+}
+
+.success{
+color:#16824c
+}
+
+.profit-popup{
+position:absolute;
+right:0;
+bottom:60px;
+background:#111827;
+color:#fff;
+border-radius:10px;
+padding:7px 11px;
+font-size:11px;
+font-weight:800;
+line-height:1;
+box-shadow:0 5px 16px rgba(0,0,0,.16);
+opacity:0;
+visibility:hidden;
+transform:translateY(5px) scale(.96);
+transition:opacity .15s ease,transform .15s ease,visibility .15s ease;
+z-index:30;
+pointer-events:none;
+white-space:nowrap
+}
+
+.profit-popup.show{
+opacity:1;
+visibility:visible;
+transform:translateY(0) scale(1)
+}
+
+.profit-popup:after{
+content:"";
+position:absolute;
+right:20px;
+bottom:-5px;
+width:10px;
+height:10px;
+background:#111827;
+transform:rotate(45deg)
+}
+
+.customer-filter-card{
+background:#fff;
+border-radius:14px;
+padding:10px;
+margin-bottom:9px;
+box-shadow:0 2px 10px rgba(0,0,0,.035)
+}
+
+.customer-filter-row{
+display:grid;
+grid-template-columns:1fr 105px 1.25fr;
+gap:6px;
+align-items:center;
+margin-bottom:7px
+}
+
+.customer-filter-row input,
+.customer-filter-row select{
+height:36px;
+font-size:11px;
+padding:0 8px;
+border-radius:9px
+}
+
+.customer-date-wrap{
+position:relative;
+width:100%
+}
+
+.customer-date{
+width:100%;
+height:36px;
+border-radius:9px;
+font-size:11px;
+padding:0 8px;
+background:#fff;
+border:1px solid #dfe3e9;
+outline:0;
+cursor:pointer;
+appearance:none;
+-webkit-appearance:none;
+background-image:none!important
+}
+
+#customerDatePicker{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+opacity:0;
+cursor:pointer;
+z-index:2
+}
+
+.customer-selected-row{
+display:grid;
+grid-template-columns:1fr auto auto;
+align-items:center;
+gap:7px;
+min-height:38px
+}
+
+.selected-customer{
+min-width:0
+}
+
+.selected-name{
+font-size:14px;
+font-weight:800;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+.selected-phone{
+font-size:12px;
+color:#858e9d;
+margin-top:1px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+.due-amount-box{
+background:#f1f3f6;
+border-radius:9px;
+padding:6px 8px;
+min-width:82px;
+text-align:center;
+flex-shrink:0
+}
+
+.due-amount-label{
+font-size:10px;
+color:#858e9d;
+margin-bottom:1px
+}
+
+.due-amount-value{
+font-size:13px;
+font-weight:800;
+color:#172033;
+line-height:1.1;
+white-space:nowrap
+}
+
+.due-amount-value span{
+font-size:8px;
+font-weight:700
+}
+
+.total-due-box{
+background:#111827;
+border-radius:9px;
+padding:6px 9px;
+min-width:105px;
+text-align:center;
+flex-shrink:0
+}
+
+.total-due-label{
+font-size:10px;
+color:#c8ced8;
+margin-bottom:1px
+}
+
+.total-due-value{
+font-size:14px;
+font-weight:800;
+color:#fff;
+line-height:1.1;
+white-space:nowrap
+}
+
+.total-due-value span{
+font-size:8px;
+font-weight:700
+}
+
+.list{
+display:flex;
+flex-direction:column;
+gap:6px
+}
+
+#customerList{
+max-height:calc(100vh - 300px);
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-right:1px
+}
+
+.txn{
+background:#fff;
+border-radius:11px;
+padding:10px 11px;
+box-shadow:0 1px 6px rgba(0,0,0,.035);
+border:1px solid #edf0f3;
+border-left:4px solid #dfe3e9;
+position:relative
+}
+
+.txn.sale{
+border-left-color:#111827
+}
+
+.txn.sale .txn-type,
+.txn.sale .txn-amount{
+color:#111827
+}
+
+.txn.payment{
+border-left-color:#f3a6a6;
+background:#fff5f5;
+border-top:1px solid #fde1e1;
+border-right:1px solid #fde1e1;
+border-bottom:1px solid #fde1e1
+}
+
+.txn-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px
+}
+
+.txn-date{
+font-size:11px;
+color:#858e9d
+}
+
+.txn-type{
+font-size:10px;
+font-weight:800;
+line-height:10px
+}
+
+.txn.payment .txn-type,
+.txn.payment .txn-amount{
+color:#d66b6b
+}
+
+.txn-amount{
+font-size:14px;
+font-weight:800;
+margin-top:4px
+}
+
+.txn-bottom{
+font-size:9px;
+color:#858e9d!important;
+font-weight:400!important;
+margin-top:4px;
+padding-right:45%;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+.txn-agent{
+position:absolute;
+right:11px;
+bottom:10px;
+font-size:9px;
+font-weight:600;
+color:#858e9d;
+max-width:42%;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+text-align:right
+}
+
+.agent-filter-row{
+display:grid;
+grid-template-columns:.65fr .85fr 1.25fr;
+gap:5px;
+margin-bottom:8px
+}
+
+.agent-filter-row select{
+height:34px;
+font-size:10px;
+padding:0 6px;
+border-radius:8px;
+min-width:0
+}
+
+.agent-summary{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:6px;
+margin-bottom:8px
+}
+
+.agent-summary-box{
+background:#111827;
+color:#fff;
+border-radius:10px;
+padding:8px 9px;
+border:0;
+box-shadow:0 2px 8px rgba(0,0,0,.08)
+}
+
+.agent-summary-label{
+font-size:10px;
+color:#c8ced8;
+margin-bottom:2px
+}
+
+.agent-summary-value{
+font-size:14px;
+font-weight:800;
+line-height:1.2;
+color:#fff
+}
+
+.agent-summary-value span{
+font-size:8px;
+font-weight:700;
+color:#c8ced8
+}
+
+.agent-balance{
+text-align:left
+}
+
+.agent-sales{
+text-align:right
+}
+
+#agentList{
+max-height:calc(100vh - 250px);
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-right:1px
+}
+
+#agentList .txn{
+padding:10px 11px;
+border-radius:11px;
+border-left-width:4px
+}
+
+#agentList .txn-date,
+#agentList .txn-type{
+font-size:10px
+}
+
+#agentList .txn-amount{
+font-size:14px;
+margin-top:4px
+}
+
+#agentList .txn-bottom{
+font-size:9px;
+margin-top:4px
+}
+
+.login-page{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px
+}
+
+.login-box{
+width:100%;
+max-width:390px;
+background:#fff;
+border-radius:21px;
+padding:25px 21px;
+box-shadow:0 8px 30px rgba(0,0,0,.06)
+}
+
+.login-title{
+font-size:24px;
+font-weight:800
+}
+
+.login-sub{
+font-size:13px;
+color:#8992a0;
+margin:5px 0 23px
+}
+
+.loading,
+.empty{
+padding:22px 10px;
+text-align:center;
+color:#8992a0;
+font-size:11px
+}
+
+.sync-status{
+position:fixed;
+right:10px;
+bottom:10px;
+background:#111827;
+color:#fff;
+border-radius:20px;
+padding:5px 9px;
+font-size:8px;
+opacity:0;
+transform:translateY(5px);
+transition:.2s;
+z-index:200
+}
+
+.sync-status.show{
+opacity:.8;
+transform:translateY(0)
+}
+
+@media(max-width:360px){
+
+.tabs{
+gap:5px
+}
+
+.tab{
+font-size:11px
+}
+
+.amount-row{
+gap:6px
+}
+
+.customer-filter-row{
+gap:5px
+}
+
+.customer-filter-row input,
+.customer-filter-row select{
+font-size:10px;
+padding:0 7px
+}
+
+.agent-filter-row{
+gap:4px
+}
+
+.agent-filter-row select{
+font-size:9px;
+padding:0 5px
+}
+
+.agent-summary-value{
+font-size:13px
+}
+
+.total-due-box{
+min-width:98px
+}
+
+.due-amount-box{
+min-width:75px;
+padding:6px
+}
+
+.due-amount-value{
+font-size:12px
+}
+
+.selected-name{
+font-size:11px
+}
+
+.customer-selected-row{
+gap:5px
+}
+
+.header{
+padding:13px 10px
+}
+
+.logo{
+font-size:16px
+}
+
+.tagline{
+font-size:9px
+}
+
+.header-rate-wrap{
+gap:4px
+}
+
+.header-rate{
+width:105px
+}
+
+.header-rate-input{
+height:31px;
+font-size:10px;
+padding:0 8px
+}
+
+.logout{
+padding:7px 8px;
+font-size:10px
+}
+
+.header-rate-popup{
+padding:6px 7px
+}
+
+.header-rate-amount{
+font-size:11px
+}
+
+.header-rate-kd{
+font-size:14px
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="loginPage" class="login-page">
+
 <div class="login-box">
+
 <div class="login-title">Amaya Exchange</div>
-<div class="login-sub">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
-<div class="field"><label class="label">Username</label><input id="username" type="text" autocomplete="username"></div>
-<div class="field"><label class="label">Password</label><input id="password" type="password" autocomplete="current-password"></div>
-<button id="loginBtn" class="save" onclick="login()">Login</button>
+
+<div class="login-sub">
+লেনদেনে আস্থা, সেবায় নির্ভরতা
+</div>
+
+<div class="field">
+<label class="label">Username</label>
+<input
+id="username"
+type="text"
+autocomplete="username">
+</div>
+
+<div class="field">
+<label class="label">Password</label>
+<input
+id="password"
+type="password"
+autocomplete="current-password">
+</div>
+
+<button
+id="loginBtn"
+class="save"
+onclick="login()">
+Login
+</button>
+
 <div id="loginMsg" class="msg"></div>
+
 </div>
 </div>
+
 
 <div id="app" class="app hidden">
 
 <div class="header">
+
 <div class="header-row">
+
 <div>
-<div class="logo">Amaya Exchange</div>
-<div class="tagline">লেনদেনে আস্থা, সেবায় নির্ভরতা</div>
+
+<div class="logo">
+Amaya Exchange
 </div>
+
+<div class="tagline">
+লেনদেনে আস্থা, সেবায় নির্ভরতা
+</div>
+
+</div>
+
 
 <div class="header-rate-wrap">
 
 <div id="adminRateBox" class="header-rate">
 
 <div id="headerRatePopup" class="header-rate-popup">
+
 <div class="header-rate-left">
-<div class="header-rate-label">Amount</div>
-<div id="headerRatePopupAmount" class="header-rate-amount">0 Tk</div>
+
+<div class="header-rate-label">
+Amount
+</div>
+
+<div
+id="headerRatePopupAmount"
+class="header-rate-amount">
+0 Tk
+</div>
+
 </div>
 
 <div class="header-rate-right">
-<div id="headerRatePopupKD" class="header-rate-kd">0.000 KD</div>
-</div>
+
+<div
+id="headerRatePopupKD"
+class="header-rate-kd">
+0.000 KD
 </div>
 
-<input id="headerRateAmount"
+</div>
+
+</div>
+
+
+<input
+id="headerRateAmount"
 class="header-rate-input"
 type="text"
 inputmode="numeric"
 autocomplete="off"
 placeholder="💱 Rate Check"
-oninput="calculateHeaderRate">
+oninput="calculateHeaderRate()">
 
 </div>
 
-<button class="logout" onclick="logout()">Logout</button>
+
+<button
+class="logout"
+onclick="logout()">
+Logout
+</button>
+
+</div>
 
 </div>
 </div>
-</div>
+
 
 <div class="tabs">
-<button class="tab active" onclick="openTab('transaction',this)">Add Transaction</button>
-<button class="tab" onclick="openTab('customer',this)">Customer</button>
-<button class="tab" onclick="openTab('agent',this)">Agent</button>
+
+<button
+class="tab active"
+onclick="openTab('transaction',this)">
+Add Transaction
+</button>
+
+<button
+class="tab"
+onclick="openTab('customer',this)">
+Customer
+</button>
+
+<button
+class="tab"
+onclick="openTab('agent',this)">
+Agent
+</button>
+
 </div>
+
 
 <div class="content">
 
-<section id="panelTransaction" class="panel active">
+
+<section
+id="panelTransaction"
+class="panel active">
 
 <div class="card">
 
-<div class="field">
-<label class="label">📅 Date</label>
-<input id="date" type="date" inputmode="numeric" placeholder="DD/MM/YYYY" maxlength="10" autocomplete="off">
-</div>
 
 <div class="field">
-<label class="label">👨🏻‍💼 Agent</label>
+
+<label class="label">
+📅 Date
+</label>
+
+<input
+id="date"
+type="date"
+inputmode="numeric"
+placeholder="DD/MM/YYYY"
+maxlength="10"
+autocomplete="off">
+
+</div>
+
+
+<div class="field">
+
+<label class="label">
+👨🏻‍💼 Agent
+</label>
+
 <select id="agentSelect">
-<option value="">Select Agent</option>
+
+<option value="">
+Select Agent
+</option>
+
 </select>
+
 </div>
 
+
 <div class="field">
-<label class="label">🤝 Customer</label>
+
+<label class="label">
+🤝 Customer
+</label>
+
 <select id="customerSelect">
-<option value="">Select Customer</option>
+
+<option value="">
+Select Customer
+</option>
+
 </select>
+
 </div>
+
 
 <div class="amount-row">
 
-<div class="field">
-<label class="label">🇰🇼 KD Amount</label>
-<input id="kdAmount" class="amount" type="text" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="দিনার">
-</div>
 
 <div class="field">
-<label class="label">৳ BD Amount</label>
-<input id="bdAmount" class="amount" type="text" inputmode="numeric" placeholder="টাকা">
+
+<label class="label">
+🇰🇼 KD Amount
+</label>
+
+<input
+id="kdAmount"
+class="amount"
+type="text"
+inputmode="decimal"
+autocomplete="off"
+autocorrect="off"
+spellcheck="false"
+placeholder="দিনার">
+
 </div>
 
-<div id="profitPopup" class="profit-popup">Profit 0</div>
+
+<div class="field">
+
+<label class="label">
+৳ BD Amount
+</label>
+
+<input
+id="bdAmount"
+class="amount"
+type="text"
+inputmode="numeric"
+placeholder="টাকা">
 
 </div>
+
+
+<div
+id="profitPopup"
+class="profit-popup">
+Profit 0
+</div>
+
+</div>
+
 
 <div class="type-row">
-<button id="dueBtn" class="type-btn active" onclick="setType('বাকি')">বাকি</button>
-<button id="paymentBtn" class="type-btn" onclick="setType('পেমেন্ট')">পেমেন্ট</button>
+
+<button
+id="dueBtn"
+class="type-btn active"
+onclick="setType('বাকি')">
+বাকি
+</button>
+
+<button
+id="paymentBtn"
+class="type-btn"
+onclick="setType('পেমেন্ট')">
+পেমেন্ট
+</button>
+
 </div>
+
 
 <div class="field">
-<label class="label">Note</label>
+
+<label class="label">
+Note
+</label>
+
 <select id="noteSelect">
-<option value="">Select Note</option>
+
+<option value="">
+Select Note
+</option>
+
 </select>
-</div>
-
-<button id="saveBtn" class="save" onclick="saveTransaction()">💾 Save</button>
-<div id="saveMsg" class="msg"></div>
 
 </div>
+
+
+<button
+id="saveBtn"
+class="save"
+onclick="saveTransaction()">
+💾 Save
+</button>
+
+<div
+id="saveMsg"
+class="msg">
+</div>
+
+</div>
+
 </section>
 
-<section id="panelCustomer" class="panel">
+
+<section
+id="panelCustomer"
+class="panel">
+
 
 <div class="customer-filter-card">
 
+
 <div class="customer-filter-row">
 
-<input id="customerSearch" type="search" placeholder="🔍 Search..." autocomplete="off">
+
+<input
+id="customerSearch"
+type="search"
+placeholder="🔍 Search..."
+autocomplete="off">
+
 
 <div class="customer-date-wrap">
-<input id="customerTransactionDate" class="customer-date" type="text" autocomplete="off" readonly>
-<input id="customerDatePicker" type="date" onchange="selectCustomerDate(this.value)">
+
+<input
+id="customerTransactionDate"
+class="customer-date"
+type="text"
+autocomplete="off"
+readonly>
+
+<input
+id="customerDatePicker"
+type="date"
+onchange="selectCustomerDate(this.value)">
+
 </div>
 
+
 <select id="customerPageSelect">
-<option value="">Select Customer</option>
-<option value="__ALL_TRANSACTIONS__">All Transaction</option>
+
+<option value="">
+Select Customer
+</option>
+
+<option value="ALL_TRANSACTIONS">
+All Transaction
+</option>
+
 </select>
 
 </div>
+
 
 <div class="customer-selected-row">
 
-<div id="selectedCustomerInfo" class="selected-customer">
-<div class="selected-empty">Select a customer</div>
+
+<div
+id="selectedCustomerInfo"
+class="selected-customer">
+
+<div class="selected-empty">
+Select a customer
 </div>
+
+</div>
+
 
 <div class="due-amount-box">
-<div class="due-amount-label">বর্তমান বাকি</div>
-<div id="selectedDueAmount" class="due-amount-value">
+
+<div class="due-amount-label">
+বর্তমান বাকি
+</div>
+
+<div
+id="selectedDueAmount"
+class="due-amount-value">
+
 0.000 <span>KD</span>
+
 </div>
+
 </div>
+
 
 <div class="total-due-box">
-<div class="total-due-label">সর্বমোট বাকি</div>
-<div id="allCustomerDue" class="total-due-value">
+
+<div class="total-due-label">
+সর্বমোট বাকি
+</div>
+
+<div
+id="allCustomerDue"
+class="total-due-value">
+
 0.000 <span>KD</span>
-</div>
+
 </div>
 
 </div>
+
 </div>
 
-<div id="customerList" class="list">
-<div class="empty">Select a customer</div>
+</div>
+
+
+<div
+id="customerList"
+class="list">
+
+<div class="empty">
+Select a customer
+</div>
+
 </div>
 
 </section>
 
-<section id="panelAgent" class="panel">
+
+<section
+id="panelAgent"
+class="panel">
+
 
 <div class="agent-filter-row">
+
 <select id="agentYear"></select>
+
 <select id="agentMonth"></select>
-<select id="agentView" onchange="agentChanged()">
-<option value="">Agent</option>
+
+<select
+id="agentView"
+onchange="agentChanged()">
+
+<option value="">
+Agent
+</option>
+
 </select>
+
 </div>
+
 
 <div class="agent-summary">
 
+
 <div class="agent-summary-box agent-balance">
-<div class="agent-summary-label">বর্তমান বাকি</div>
-<div id="agentCurrentBalance" class="agent-summary-value">
+
+<div class="agent-summary-label">
+বর্তমান বাকি
+</div>
+
+<div
+id="agentCurrentBalance"
+class="agent-summary-value">
+
 0 <span>Tk</span>
+
 </div>
+
 </div>
+
 
 <div class="agent-summary-box agent-sales">
-<div class="agent-summary-label">মাসিক বিক্রয়</div>
-<div id="agentMonthlySales" class="agent-summary-value">
+
+<div class="agent-summary-label">
+মাসিক বিক্রয়
+</div>
+
+<div
+id="agentMonthlySales"
+class="agent-summary-value">
+
 0 <span>Tk</span>
+
 </div>
+
 </div>
 
 </div>
 
-<div id="agentList" class="list">
-<div class="empty">Select an agent</div>
+
+<div
+id="agentList"
+class="list">
+
+<div class="empty">
+Select an agent
+</div>
+
 </div>
 
 </section>
 
+
 </div>
 </div>
 
-<div id="syncStatus" class="sync-status">Syncing...</div>
+
+<div
+id="syncStatus"
+class="sync-status">
+Syncing...
+</div>
+
 
 <script>
 
-const API='https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
+const API=
+'https://script.google.com/macros/s/AKfycbxv9Y6u320GLBP6Axvzdb8eZpKSkB25Xjbt1656GL-tj5AHuJWjVvdVfp5qRZSu8lfs/exec';
+
 
 const HEADER_RATE_1=333.333333,
 HEADER_RATE_2=363.636363,
 HEADER_RATE_3=357.142857;
 
+
 const DB_NAME='AmayaExchangeDB',
 DB_VERSION=2,
 SYNC_INTERVAL=5000,
 $=id=>document.getElementById(id);
+
 
 const DUE_NOTES=[
 'Bkash',
@@ -355,10 +1390,12 @@ const DUE_NOTES=[
 'Electricity'
 ];
 
+
 const PAYMENT_NOTES=[
 'Bank',
 'Cash'
 ];
+
 
 let currentUser=null,
 transactionType='বাকি',
@@ -393,126 +1430,309 @@ pendingAgentSelectRefresh=false,
 pendingAgentViewRefresh=false,
 pendingNotesRefresh=false;
 
-const fmtKD=v=>number(v).toLocaleString('en-US',{
+
+/* =========================================================
+HELPERS
+========================================================= */
+
+function clean(value){
+
+return String(
+value===null||
+value===undefined
+?''
+:value
+)
+.trim()
+
+}
+
+
+function fmtKD(v){
+
+return number(v).toLocaleString(
+'en-US',
+{
 minimumFractionDigits:3,
 maximumFractionDigits:3
-});
+}
+)
 
-const fmtIndian=v=>Math.floor(number(v)).toLocaleString('en-IN');
+}
+
+
+function fmtIndian(v){
+
+return Math.floor(
+number(v)
+).toLocaleString('en-IN')
+
+}
+
 
 function number(value){
+
 return parseFloat(
 String(value??'')
 .replace(/,/g,'')
 .replace(/[^\d.-]/g,'')
 )||0
+
 }
+
 
 function showSync(text='Syncing...'){
+
 const el=$('syncStatus');
+
 if(!el)return;
+
 el.textContent=text;
+
 el.classList.add('show');
+
 clearTimeout(showSync.timer);
-showSync.timer=setTimeout(()=>{
+
+showSync.timer=setTimeout(
+()=>{
 el.classList.remove('show')
-},900)
+},
+900
+)
+
 }
+
 
 function hideSync(){
+
 const el=$('syncStatus');
-if(el)el.classList.remove('show')
+
+if(el)
+el.classList.remove('show')
+
 }
+
+
+/* =========================================================
+INDEXED DB
+========================================================= */
 
 function openDB(){
-return new Promise((resolve,reject)=>{
-if(db)return resolve(db);
 
-const r=indexedDB.open(DB_NAME,DB_VERSION);
+return new Promise(
+(resolve,reject)=>{
+
+if(db)
+return resolve(db);
+
+const r=
+indexedDB.open(
+DB_NAME,
+DB_VERSION
+);
 
 r.onupgradeneeded=e=>{
+
 const d=e.target.result;
 
-if(!d.objectStoreNames.contains('meta')){
-d.createObjectStore('meta',{keyPath:'key'})
+if(
+!d.objectStoreNames.contains('meta')
+){
+d.createObjectStore(
+'meta',
+{keyPath:'key'}
+)
 }
 
-if(!d.objectStoreNames.contains('customers')){
-d.createObjectStore('customers',{keyPath:'customerId'})
+if(
+!d.objectStoreNames.contains('customers')
+){
+d.createObjectStore(
+'customers',
+{keyPath:'customerId'}
+)
 }
 
-if(!d.objectStoreNames.contains('agents')){
-d.createObjectStore('agents',{keyPath:'agentId'})
+if(
+!d.objectStoreNames.contains('agents')
+){
+d.createObjectStore(
+'agents',
+{keyPath:'agentId'}
+)
 }
 
-if(!d.objectStoreNames.contains('transactions')){
-const s=d.createObjectStore('transactions',{keyPath:'key'});
-s.createIndex('rowNumber','rowNumber',{unique:false});
-s.createIndex('customerId','customerId',{unique:false})
+if(
+!d.objectStoreNames.contains('transactions')
+){
+
+const s=
+d.createObjectStore(
+'transactions',
+{keyPath:'key'}
+);
+
+s.createIndex(
+'rowNumber',
+'rowNumber',
+{unique:false}
+);
+
+s.createIndex(
+'customerId',
+'customerId',
+{unique:false}
+)
+
 }
+
 };
+
 
 r.onsuccess=()=>{
+
 db=r.result;
+
 db.onversionchange=()=>{
+
 db.close();
+
 db=null
-};
-resolve(db)
+
 };
 
+resolve(db)
+
+};
+
+
 r.onerror=()=>reject(r.error)
+
 })
 }
+
 
 function dbPut(storeName,value){
-return new Promise((resolve,reject)=>{
-const t=db.transaction(storeName,'readwrite');
+
+return new Promise(
+(resolve,reject)=>{
+
+const t=
+db.transaction(
+storeName,
+'readwrite'
+);
+
 t.objectStore(storeName).put(value);
+
 t.oncomplete=resolve;
+
 t.onerror=()=>reject(t.error)
+
 })
 }
+
 
 function dbGet(storeName,key){
-return new Promise((resolve,reject)=>{
-const t=db.transaction(storeName,'readonly'),
-r=t.objectStore(storeName).get(key);
 
-r.onsuccess=()=>resolve(r.result||null);
+return new Promise(
+(resolve,reject)=>{
+
+const t=
+db.transaction(
+storeName,
+'readonly'
+);
+
+const r=
+t.objectStore(storeName).get(key);
+
+r.onsuccess=()=>{
+resolve(r.result||null)
+};
+
 r.onerror=()=>reject(r.error)
+
 })
 }
+
 
 function dbGetAll(storeName){
-return new Promise((resolve,reject)=>{
-const t=db.transaction(storeName,'readonly'),
-r=t.objectStore(storeName).getAll();
 
-r.onsuccess=()=>resolve(r.result||[]);
+return new Promise(
+(resolve,reject)=>{
+
+const t=
+db.transaction(
+storeName,
+'readonly'
+);
+
+const r=
+t.objectStore(storeName).getAll();
+
+r.onsuccess=()=>{
+resolve(r.result||[])
+};
+
 r.onerror=()=>reject(r.error)
+
 })
 }
+
 
 function dbClear(storeName){
-return new Promise((resolve,reject)=>{
-const t=db.transaction(storeName,'readwrite');
+
+return new Promise(
+(resolve,reject)=>{
+
+const t=
+db.transaction(
+storeName,
+'readwrite'
+);
+
 t.objectStore(storeName).clear();
+
 t.oncomplete=resolve;
+
 t.onerror=()=>reject(t.error)
+
 })
 }
 
+
 async function saveMeta(key,value){
-await dbPut('meta',{key,value})
+
+await dbPut(
+'meta',
+{
+key,
+value
+}
+)
+
 }
 
-async function getMeta(key,defaultValue=''){
-const r=await dbGet('meta',key);
+
+async function getMeta(
+key,
+defaultValue=''
+){
+
+const r=
+await dbGet(
+'meta',
+key
+);
+
 return r?r.value:defaultValue
+
 }
+
 
 async function clearUserCache(){
+
 await Promise.all([
 dbClear('customers'),
 dbClear('agents'),
@@ -533,35 +1753,96 @@ const keys=[
 ];
 
 await Promise.all(
-keys.map(k=>
-db.transaction('meta','readwrite')
+keys.map(
+k=>
+db.transaction(
+'meta',
+'readwrite'
+)
 .objectStore('meta')
 .delete(k)
 )
 )
+
 }
 
+
 async function saveLocalState(){
+
 await Promise.all([
-saveMeta('version',dataVersion),
-saveMeta('txVersion',txVersion),
-saveMeta('customerVersion',customerVersion),
-saveMeta('agentVersion',agentVersion),
-saveMeta('settingsVersion',settingsVersion),
-saveMeta('lastTransactionRow',lastTransactionRow),
-saveMeta('loggedUser',currentUser?.username||''),
-saveMeta('notesData',notesData),
-saveMeta('dueData',dueData),
-saveMeta('totalDueKD',totalDueKD)
+
+saveMeta(
+'version',
+dataVersion
+),
+
+saveMeta(
+'txVersion',
+txVersion
+),
+
+saveMeta(
+'customerVersion',
+customerVersion
+),
+
+saveMeta(
+'agentVersion',
+agentVersion
+),
+
+saveMeta(
+'settingsVersion',
+settingsVersion
+),
+
+saveMeta(
+'lastTransactionRow',
+lastTransactionRow
+),
+
+saveMeta(
+'loggedUser',
+currentUser?.username||''
+),
+
+saveMeta(
+'notesData',
+notesData
+),
+
+saveMeta(
+'dueData',
+dueData
+),
+
+saveMeta(
+'totalDueKD',
+totalDueKD
+)
+
 ])
+
 }
+
 
 async function loadLocalState(){
 
-const savedUser=await getMeta('loggedUser',''),
-currentUsername=currentUser?.username||'';
+const savedUser=
+await getMeta(
+'loggedUser',
+''
+);
 
-if(savedUser&&currentUsername&&savedUser!==currentUsername){
+const currentUsername=
+currentUser?.username||'';
+
+
+if(
+savedUser&&
+currentUsername&&
+savedUser!==currentUsername
+){
 
 await clearUserCache();
 
@@ -584,19 +1865,53 @@ customers:[]
 };
 
 totalDueKD=0;
+
 notesLoaded=true;
 
 return
+
 }
 
-dataVersion=await getMeta('version','');
-txVersion=await getMeta('txVersion','');
-customerVersion=await getMeta('customerVersion','');
-agentVersion=await getMeta('agentVersion','');
-settingsVersion=await getMeta('settingsVersion','');
+
+dataVersion=
+await getMeta(
+'version',
+''
+);
+
+txVersion=
+await getMeta(
+'txVersion',
+''
+);
+
+customerVersion=
+await getMeta(
+'customerVersion',
+''
+);
+
+agentVersion=
+await getMeta(
+'agentVersion',
+''
+);
+
+settingsVersion=
+await getMeta(
+'settingsVersion',
+''
+);
+
 
 lastTransactionRow=
-Number(await getMeta('lastTransactionRow',0))||0;
+Number(
+await getMeta(
+'lastTransactionRow',
+0
+)
+)||0;
+
 
 notesData={
 dueNotes:DUE_NOTES,
@@ -605,16 +1920,35 @@ paymentNotes:PAYMENT_NOTES
 
 notesLoaded=true;
 
-const savedDue=await getMeta('dueData',null);
 
-if(savedDue&&typeof savedDue==='object'){
+const savedDue=
+await getMeta(
+'dueData',
+null
+);
+
+
+if(
+savedDue&&
+typeof savedDue==='object'
+){
+
 dueData={
-totalDueKD:number(savedDue.totalDueKD||0),
-customers:Array.isArray(savedDue.customers)
+totalDueKD:
+number(
+savedDue.totalDueKD||0
+),
+
+customers:
+Array.isArray(
+savedDue.customers
+)
 ?savedDue.customers
 :[]
 }
+
 }
+
 
 totalDueKD=
 number(
@@ -623,21 +1957,32 @@ await getMeta(
 dueData.totalDueKD||0
 )
 )
+
 }
+
 
 async function loadLocalDatabase(){
 
 await openDB();
+
 await loadLocalState();
 
-customerData=await dbGetAll('customers');
-agentData=await dbGetAll('agents');
-allTransactionsData=await dbGetAll('transactions');
+customerData=
+await dbGetAll('customers');
+
+agentData=
+await dbGetAll('agents');
+
+allTransactionsData=
+await dbGetAll('transactions');
 
 applyDueData(dueData);
 
 sortCustomersAZ(customerData);
-sortTransactionsNewestFirst(allTransactionsData);
+
+sortTransactionsNewestFirst(
+allTransactionsData
+);
 
 dataLoaded=
 customerData.length>0||
@@ -646,36 +1991,68 @@ allTransactionsData.length>0||
 !!dataVersion;
 
 renderLocalData()
+
 }
 
+
+/* =========================================================
+CUSTOMERS / DUE
+========================================================= */
+
 function sortCustomersAZ(list){
-return list.sort((a,b)=>
-String(a.customerName||a.name||'')
+
+return list.sort(
+(a,b)=>
+String(
+a.customerName||
+a.name||
+''
+)
 .trim()
 .localeCompare(
-String(b.customerName||b.name||'')
+String(
+b.customerName||
+b.name||
+''
+)
 .trim(),
 'en',
 {
 sensitivity:'base',
 numeric:true
 }
-))
+)
+)
+
 }
+
 
 function getDueCustomer(id){
+
 return(
-Array.isArray(dueData?.customers)
+Array.isArray(
+dueData?.customers
+)
 ?dueData.customers
 :[]
-).find(
-c=>String(c.customerId)===String(id)
+)
+.find(
+c=>
+String(c.customerId)===
+String(id)
 )||null
+
 }
 
-function calculateCustomerDueFromTransactions(customerId){
 
-const id=String(customerId||'').trim();
+function calculateCustomerDueFromTransactions(
+customerId
+){
+
+const id=
+String(
+customerId||''
+).trim();
 
 if(!id)return 0;
 
@@ -687,7 +2064,8 @@ if(
 String(t.customerId||'').trim()!==id
 )return;
 
-const kd=number(
+const kd=
+number(
 t.kdAmount!==undefined
 ?t.kdAmount
 :t.amountKD!==undefined
@@ -706,8 +2084,13 @@ due-=kd
 
 });
 
-return Math.max(0,due)
+return Math.max(
+0,
+due
+)
+
 }
+
 
 function getCustomerDue(customer){
 
@@ -716,26 +2099,35 @@ if(!customer)return 0;
 return calculateCustomerDueFromTransactions(
 customer.customerId
 )
+
 }
+
 
 function applyDueData(data){
 
 if(!data)return;
 
 const source=
-data.due&&typeof data.due==='object'
+data.due&&
+typeof data.due==='object'
 ?data.due
-:data.customerDue&&typeof data.customerDue==='object'
+:data.customerDue&&
+typeof data.customerDue==='object'
 ?data.customerDue
 :data;
 
+
 const hasCustomers=
-Array.isArray(source.customers);
+Array.isArray(
+source.customers
+);
+
 
 const incomingTotal=
 source.totalDueKD!==undefined
 ?source.totalDueKD
 :data.totalDueKD;
+
 
 if(
 incomingTotal!==undefined||
@@ -746,24 +2138,36 @@ dueData={
 totalDueKD:
 incomingTotal!==undefined
 ?number(incomingTotal)
-:number(dueData.totalDueKD||0),
+:number(
+dueData.totalDueKD||0
+),
 
 customers:
 hasCustomers
 ?source.customers
-:(Array.isArray(dueData.customers)
+:(Array.isArray(
+dueData.customers
+)
 ?dueData.customers
 :[])
 };
 
-totalDueKD=number(
+totalDueKD=
+number(
 dueData.totalDueKD
 )
+
 }
 
-if(Array.isArray(dueData.customers)){
 
-const m=new Map(
+if(
+Array.isArray(
+dueData.customers
+)
+){
+
+const m=
+new Map(
 dueData.customers.map(
 c=>[
 String(c.customerId),
@@ -774,23 +2178,34 @@ number(c.totalDueKD)
 
 customerData.forEach(c=>{
 
-const id=String(c.customerId);
+const id=
+String(c.customerId);
 
 if(m.has(id)){
-c.totalDueKD=m.get(id)
+c.totalDueKD=
+m.get(id)
 }
 
 })
+
 }
+
 }
+
 
 function findCustomer(id){
+
 return customerData.find(
-c=>String(c.customerId)===String(id)
+c=>
+String(c.customerId)===
+String(id)
 )||null
+
 }
 
+
 function isActive(customer){
+
 return String(
 customer?.status||
 customer?.Status||
@@ -800,58 +2215,76 @@ customer?.Active||
 )
 .trim()
 .toLowerCase()==='active'
+
 }
+
 
 function updateTotalDue(){
 
 let total=0;
 
-customerData.forEach(customer=>{
+customerData.forEach(
+customer=>{
 
 const due=
 calculateCustomerDueFromTransactions(
 customer.customerId
 );
 
-if(due>0){
+if(due>0)
 total+=due
-}
 
 });
 
-totalDueKD=Math.max(0,total);
+totalDueKD=
+Math.max(
+0,
+total
+);
 
-const el=$('allCustomerDue');
+const el=
+$('allCustomerDue');
 
 if(el){
+
 el.innerHTML=
 fmtKD(totalDueKD)+
 ' <span>KD</span>'
+
 }
+
 }
+
 
 function renderTransactionCustomerDropdown(){
 
-const select=$('customerSelect');
+const select=
+$('customerSelect');
 
 if(!select)return;
 
-const oldValue=select.value;
+const oldValue=
+select.value;
 
 select.innerHTML=
 '<option value="">Select Customer</option>';
 
-const f=document.createDocumentFragment();
+const f=
+document.createDocumentFragment();
 
 sortCustomersAZ(
 customerData.filter(isActive)
 )
 .forEach(c=>{
 
-const o=document.createElement('option');
+const o=
+document.createElement('option');
 
-o.value=c.customerId;
-o.textContent=c.customerName;
+o.value=
+c.customerId;
+
+o.textContent=
+c.customerName;
 
 f.appendChild(o)
 
@@ -865,57 +2298,79 @@ oldValue&&
 o=>o.value===oldValue
 )
 ){
-select.value=oldValue
+
+select.value=
+oldValue
+
 }
 
 select.classList.toggle(
 'has-value',
 select.value!==''
 )
+
 }
+
 
 function updateCustomerDropdown(){
 
-const select=$('customerPageSelect');
+const select=
+$('customerPageSelect');
 
 if(!select)return;
 
 const search=
-$('customerSearch').value
+$('customerSearch')
+.value
 .trim()
 .toLowerCase();
 
-const oldValue=select.value;
+const oldValue=
+select.value;
 
 select.innerHTML=
 '<option value="">Select Customer</option>';
 
-const all=document.createElement('option');
+const all=
+document.createElement('option');
 
-all.value='__ALL_TRANSACTIONS__';
-all.textContent='All Transaction';
+all.value=
+'ALL_TRANSACTIONS';
+
+all.textContent=
+'All Transaction';
 
 select.appendChild(all);
 
-const f=document.createDocumentFragment();
+
+const f=
+document.createDocumentFragment();
 
 sortCustomersAZ(
 customerData.filter(
-c=>isActive(c)&&getCustomerDue(c)>0
+c=>
+isActive(c)&&
+getCustomerDue(c)>0
 )
 )
 .forEach(c=>{
 
 const name=
-String(c.customerName||'')
+String(
+c.customerName||''
+)
 .toLowerCase();
 
 const phone=
-String(c.phone||'')
+String(
+c.phone||''
+)
 .toLowerCase();
 
 const id=
-String(c.customerId||'')
+String(
+c.customerId||''
+)
 .toLowerCase();
 
 if(
@@ -923,16 +2378,21 @@ search&&
 !name.includes(search)&&
 !phone.includes(search)&&
 !id.includes(search)
-)return;
+)
+return;
 
-const o=document.createElement('option');
+const o=
+document.createElement('option');
 
-o.value=c.customerId;
+o.value=
+c.customerId;
 
 o.textContent=
 c.customerName+
 ' • '+
-fmtKD(getCustomerDue(c));
+fmtKD(
+getCustomerDue(c)
+);
 
 f.appendChild(o)
 
@@ -946,18 +2406,32 @@ oldValue&&
 o=>o.value===oldValue
 )
 ){
-select.value=oldValue
+
+select.value=
+oldValue
+
 }
+
 }
+
+
+/* =========================================================
+SAFE REFRESH
+========================================================= */
 
 function safeRefreshCustomerSelect(){
 
-const s=$('customerSelect');
+const s=
+$('customerSelect');
 
 if(!s)return;
 
-if(document.activeElement===s){
+if(
+document.activeElement===s
+){
+
 pendingCustomerSelectRefresh=true;
+
 return
 }
 
@@ -967,22 +2441,33 @@ renderTransactionCustomerDropdown();
 
 if(
 v&&
-[...s.options].some(o=>o.value===v)
+[...s.options].some(
+o=>o.value===v
+)
 ){
+
 s.value=v
+
 }
 
 pendingCustomerSelectRefresh=false
+
 }
+
 
 function safeRefreshCustomerPage(){
 
-const s=$('customerPageSelect');
+const s=
+$('customerPageSelect');
 
 if(!s)return;
 
-if(document.activeElement===s){
+if(
+document.activeElement===s
+){
+
 pendingCustomerPageRefresh=true;
+
 return
 }
 
@@ -992,34 +2477,52 @@ updateCustomerDropdown();
 
 if(
 v&&
-[...s.options].some(o=>o.value===v)
+[...s.options].some(
+o=>o.value===v
+)
 ){
+
 s.value=v
+
 }
 
 pendingCustomerPageRefresh=false
+
 }
+
 
 function safeRefreshAgentSelect(){
 
-const s=$('agentSelect');
+const s=
+$('agentSelect');
 
 if(!s)return;
 
-if(document.activeElement===s){
+if(
+document.activeElement===s
+){
+
 pendingAgentSelectRefresh=true;
+
 return
 }
 
 const v=s.value;
 
-fillAgentSelect(s,false);
+fillAgentSelect(
+s,
+false
+);
 
 if(
 v&&
-[...s.options].some(o=>o.value===v)
+[...s.options].some(
+o=>o.value===v
+)
 ){
+
 s.value=v
+
 }
 
 s.classList.toggle(
@@ -1028,50 +2531,76 @@ s.value!==''
 );
 
 pendingAgentSelectRefresh=false
+
 }
+
 
 function safeRefreshAgentView(){
 
-const s=$('agentView');
+const s=
+$('agentView');
 
 if(!s)return;
 
-if(document.activeElement===s){
+if(
+document.activeElement===s
+){
+
 pendingAgentViewRefresh=true;
+
 return
 }
 
 const v=s.value;
 
-if(getRole()==='agent'){
+if(
+getRole()==='agent'
+){
+
 renderAgentDropdowns()
+
 }
 else{
 
-fillAgentSelect(s,true);
+fillAgentSelect(
+s,
+true
+);
 
 if(
 v&&
-[...s.options].some(o=>o.value===v)
+[...s.options].some(
+o=>o.value===v
+)
 ){
+
 s.value=v
-}
 
 }
 
-s.disabled=getRole()==='agent';
+}
+
+s.disabled=
+getRole()==='agent';
 
 pendingAgentViewRefresh=false
+
 }
+
 
 function safeRefreshNotes(){
 
-const s=$('noteSelect');
+const s=
+$('noteSelect');
 
 if(!s)return;
 
-if(document.activeElement===s){
+if(
+document.activeElement===s
+){
+
 pendingNotesRefresh=true;
+
 return
 }
 
@@ -1085,17 +2614,24 @@ transactionType==='বাকি'
 
 if(
 v&&
-[...s.options].some(o=>o.value===v)
+[...s.options].some(
+o=>o.value===v
+)
 ){
+
 s.value=v
+
 }
 
 pendingNotesRefresh=false
+
 }
+
 
 function setupSafeSelectRefresh(){
 
-$('customerSelect').addEventListener(
+$('customerSelect')
+.addEventListener(
 'blur',
 ()=>{
 if(pendingCustomerSelectRefresh)
@@ -1106,7 +2642,9 @@ safeRefreshCustomerSelect,
 }
 );
 
-$('customerPageSelect').addEventListener(
+
+$('customerPageSelect')
+.addEventListener(
 'blur',
 ()=>{
 if(pendingCustomerPageRefresh)
@@ -1117,7 +2655,9 @@ safeRefreshCustomerPage,
 }
 );
 
-$('agentSelect').addEventListener(
+
+$('agentSelect')
+.addEventListener(
 'blur',
 ()=>{
 if(pendingAgentSelectRefresh)
@@ -1128,7 +2668,9 @@ safeRefreshAgentSelect,
 }
 );
 
-$('agentView').addEventListener(
+
+$('agentView')
+.addEventListener(
 'blur',
 ()=>{
 if(pendingAgentViewRefresh)
@@ -1139,7 +2681,9 @@ safeRefreshAgentView,
 }
 );
 
-$('noteSelect').addEventListener(
+
+$('noteSelect')
+.addEventListener(
 'blur',
 ()=>{
 if(pendingNotesRefresh)
@@ -1150,25 +2694,39 @@ safeRefreshNotes,
 }
 );
 
+
 renderTransactionCustomerDropdown();
+
 renderAgentDropdowns();
+
 updateCustomerDropdown();
+
 setNotes(
 transactionType==='বাকি'
 ?DUE_NOTES
 :PAYMENT_NOTES
 )
+
 }
+
+
+/* =========================================================
+RENDER LOCAL
+========================================================= */
 
 function renderLocalData(){
 
 const activePanel=
-document.querySelector('.panel.active')?.id||'';
+document.querySelector(
+'.panel.active'
+)?.id||'';
 
 const selected=
 $('customerPageSelect').value;
 
-sortCustomersAZ(customerData);
+sortCustomersAZ(
+customerData
+);
 
 sortTransactionsNewestFirst(
 allTransactionsData
@@ -1188,103 +2746,57 @@ transactionType==='বাকি'
 :PAYMENT_NOTES
 );
 
-applyRoleAccess(activePanel);
-
-if(selected==='__ALL_TRANSACTIONS__'){
-renderAllCustomerTransactions()
-}
-else if(selected){
-
-const c=findCustomer(selected);
-
-if(c){
-renderCustomerInfo(c);
-renderCustomerTransactionsLocal(
-c.customerId
-)
-}
-}
-
-if(
-getRole()==='agent'&&
-$('agentView').value
-){
-agentChanged()
-}
-}
-
-function refreshAfterSync(flags){
-
-const selected=
-$('customerPageSelect').value;
-
-if(flags.customersChanged){
-safeRefreshCustomerSelect();
-safeRefreshCustomerPage()
-}
-
-if(flags.agentsChanged){
-safeRefreshAgentSelect();
-safeRefreshAgentView()
-}
-
-if(flags.notesChanged){
-safeRefreshNotes()
-}
-
-if(flags.dueChanged){
-
-updateTotalDue();
-
-if(
-selected&&
-selected!=='__ALL_TRANSACTIONS__'
-){
-
-const c=findCustomer(selected);
-
-if(c){
-renderCustomerInfo(c)
-}
-
-}
-}
-
-if(flags.transactionsChanged){
-
-sortTransactionsNewestFirst(
-allTransactionsData
+applyRoleAccess(
+activePanel
 );
 
-updateTotalDue();
 
-if(selected==='__ALL_TRANSACTIONS__'){
+if(
+selected===
+'ALL_TRANSACTIONS'
+){
+
 renderAllCustomerTransactions()
+
 }
 else if(selected){
 
-const c=findCustomer(selected);
+const c=
+findCustomer(selected);
 
 if(c){
+
 renderCustomerInfo(c);
+
 renderCustomerTransactionsLocal(
 c.customerId
 )
+
 }
+
 }
+
 
 if(
 getRole()==='agent'&&
 $('agentView').value
 ){
+
 agentChanged()
+
 }
+
 }
-}
+
+
+/* =========================================================
+SET NOTES / TYPE
+========================================================= */
 
 function setNotes(notes){
 
-const s=$('noteSelect');
+const s=
+$('noteSelect');
 
 if(!s)return;
 
@@ -1299,36 +2811,46 @@ s.innerHTML=
 '<option value="">Select Note</option>';
 
 return
+
 }
 
-const f=document.createDocumentFragment();
+const f=
+document.createDocumentFragment();
 
-notes.forEach((n,i)=>{
+notes.forEach(
+(n,i)=>{
 
-const o=document.createElement('option');
+const o=
+document.createElement('option');
 
 o.value=n;
 o.textContent=n;
 
-if(i===0)o.selected=true;
+if(i===0)
+o.selected=true;
 
 f.appendChild(o)
 
 });
 
 s.appendChild(f)
+
 }
+
 
 function setType(type){
 
-transactionType=type;
+transactionType=
+type;
 
-$('dueBtn').classList.toggle(
+$('dueBtn')
+.classList.toggle(
 'active',
 type==='বাকি'
 );
 
-$('paymentBtn').classList.toggle(
+$('paymentBtn')
+.classList.toggle(
 'active',
 type==='পেমেন্ট'
 );
@@ -1338,13 +2860,23 @@ type==='বাকি'
 ?DUE_NOTES
 :PAYMENT_NOTES
 )
+
 }
+
+
+/* =========================================================
+LOCAL SAVE
+========================================================= */
 
 async function saveCustomersLocal(items){
 
-await dbClear('customers');
+await dbClear(
+'customers'
+);
 
-if(!Array.isArray(items))return;
+if(
+!Array.isArray(items)
+)return;
 
 const t=
 db.transaction(
@@ -1352,7 +2884,10 @@ db.transaction(
 'readwrite'
 );
 
-const s=t.objectStore('customers');
+const s=
+t.objectStore(
+'customers'
+);
 
 items.forEach(
 x=>s.put(x)
@@ -1360,17 +2895,27 @@ x=>s.put(x)
 
 return new Promise(
 (r,j)=>{
+
 t.oncomplete=r;
+
 t.onerror=()=>j(t.error)
+
 }
 )
+
 }
+
 
 async function saveAgentsLocal(items){
 
-await dbClear('agents');
+await dbClear(
+'agents'
+);
 
-if(!Array.isArray(items))return;
+if(
+!Array.isArray(items)
+)
+return;
 
 const t=
 db.transaction(
@@ -1378,7 +2923,10 @@ db.transaction(
 'readwrite'
 );
 
-const s=t.objectStore('agents');
+const s=
+t.objectStore(
+'agents'
+);
 
 items.forEach(
 x=>s.put(x)
@@ -1386,11 +2934,16 @@ x=>s.put(x)
 
 return new Promise(
 (r,j)=>{
+
 t.oncomplete=r;
+
 t.onerror=()=>j(t.error)
+
 }
 )
+
 }
+
 
 function transactionKey(t){
 
@@ -1401,7 +2954,8 @@ t.TransactionId||
 ''
 ).trim();
 
-if(id)return'TX:'+id;
+if(id)
+return 'TX:'+id;
 
 const row=
 Number(
@@ -1412,9 +2966,10 @@ t.RowNumber||
 0
 )||0;
 
-if(row)return'ROW:'+row;
+if(row)
+return 'ROW:'+row;
 
-return'TMP:'+
+return 'TMP:'+
 String(
 t.timestamp||
 JSON.stringify([
@@ -1425,14 +2980,17 @@ t.bdAmount||'',
 t.type||''
 ])
 )
+
 }
+
 
 async function saveTransactionsLocal(items){
 
 if(
 !Array.isArray(items)||
 !items.length
-)return;
+)
+return;
 
 const t=
 db.transaction(
@@ -1440,7 +2998,8 @@ db.transaction(
 'readwrite'
 );
 
-const s=t.objectStore(
+const s=
+t.objectStore(
 'transactions'
 );
 
@@ -1448,7 +3007,8 @@ items.forEach(item=>{
 
 const c={...item};
 
-c.key=transactionKey(c);
+c.key=
+transactionKey(c);
 
 s.put(c)
 
@@ -1456,11 +3016,16 @@ s.put(c)
 
 return new Promise(
 (r,j)=>{
+
 t.oncomplete=r;
+
 t.onerror=()=>j(t.error)
+
 }
 )
+
 }
+
 
 function getTransactionTimestamp(t){
 
@@ -1478,8 +3043,12 @@ if(!v)return 0;
 const n=
 new Date(v).getTime();
 
-return Number.isFinite(n)?n:0
+return Number.isFinite(n)
+?n
+:0
+
 }
+
 
 function getTransactionRowNumber(t){
 
@@ -1490,21 +3059,32 @@ t.rowIndex||
 t.RowNumber||
 0
 )||0
+
 }
+
 
 function sortTransactionsNewestFirst(list){
 
-return list.sort((a,b)=>{
+return list.sort(
+(a,b)=>{
 
-const ra=getTransactionRowNumber(a),
-rb=getTransactionRowNumber(b);
+const ra=
+getTransactionRowNumber(a);
 
-if(ra!==rb)return rb-ra;
+const rb=
+getTransactionRowNumber(b);
 
-const ta=getTransactionTimestamp(a),
-tb=getTransactionTimestamp(b);
+if(ra!==rb)
+return rb-ra;
 
-if(ta!==tb)return tb-ta;
+const ta=
+getTransactionTimestamp(a);
+
+const tb=
+getTransactionTimestamp(b);
+
+if(ta!==tb)
+return tb-ta;
 
 const da=
 getFullTransactionDate(
@@ -1515,7 +3095,7 @@ a.TransactionDate||
 ''
 )?.getTime()||0;
 
-const db=
+const dbDate=
 getFullTransactionDate(
 b.date||
 b.Date||
@@ -1524,75 +3104,112 @@ b.TransactionDate||
 ''
 )?.getTime()||0;
 
-if(da!==db)return db-da;
+if(da!==dbDate)
+return dbDate-da;
 
 return String(
 b.transactionId||
 b.TransactionId||
 ''
-).localeCompare(
+)
+.localeCompare(
 String(
 a.transactionId||
 a.TransactionId||
 ''
 )
 )
+
 })
+
 }
+
 
 async function loadTransactionsLocal(){
 
 allTransactionsData=
-await dbGetAll('transactions');
+await dbGetAll(
+'transactions'
+);
 
 sortTransactionsNewestFirst(
 allTransactionsData
 )
+
 }
 
-function getCustomerTransactions(customerId){
+
+function getCustomerTransactions(
+customerId
+){
 
 return allTransactionsData.filter(
-t=>String(t.customerId||'')===
+t=>
+String(t.customerId||'')===
 String(customerId)
 )
+
 }
+
+
+/* =========================================================
+CUSTOMER RENDER
+========================================================= */
 
 function renderCustomerInfo(customer){
 
 const due=
 getCustomerDue(customer);
 
-$('selectedCustomerInfo').innerHTML=
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-name">'+
-escapeHTML(customer.customerName)+
+escapeHTML(
+customer.customerName
+)+
 '</div>'+
 '<div class="selected-phone">'+
-escapeHTML(customer.phone||'')+
+escapeHTML(
+customer.phone||''
+)+
 '</div>';
 
-$('selectedDueAmount').innerHTML=
+$('selectedDueAmount')
+.innerHTML=
 fmtKD(due)+
 ' <span>KD</span>';
 
 updateTotalDue()
+
 }
 
-function renderCustomerTransactionsLocal(customerId){
 
-const list=$('customerList'),
-transactions=
-getCustomerTransactions(customerId),
-customer=
-findCustomer(customerId);
+function renderCustomerTransactionsLocal(
+customerId
+){
+
+const list=
+$('customerList');
+
+const transactions=
+getCustomerTransactions(
+customerId
+);
+
+const customer=
+findCustomer(
+customerId
+);
 
 if(customer){
 
-$('selectedDueAmount').innerHTML=
+$('selectedDueAmount')
+.innerHTML=
 fmtKD(
 getCustomerDue(customer)
 )+
 ' <span>KD</span>'
+
 }
 
 list.innerHTML='';
@@ -1605,6 +3222,7 @@ list,
 );
 
 return
+
 }
 
 sortTransactionsNewestFirst(
@@ -1625,38 +3243,47 @@ false
 );
 
 list.appendChild(f)
+
 }
+
 
 function renderAllCustomerTransactions(){
 
-const list=$('customerList'),
-selectedDate=
-$('customerTransactionDate').value,
+const list=
+$('customerList');
 
-activeIds=
+const selectedDate=
+$('customerTransactionDate').value;
+
+const activeIds=
 new Set(
 customerData
 .filter(isActive)
 .map(
-c=>String(c.customerId)
+c=>
+String(c.customerId)
 )
 );
 
 const filtered=
-allTransactionsData.filter(t=>{
+allTransactionsData.filter(
+t=>{
 
 if(
 t.customerId&&
 !activeIds.has(
 String(t.customerId)
 )
-)return false;
+)
+return false;
 
 return transactionMatchesDate(
 t,
 selectedDate
 )
-});
+
+}
+);
 
 sortTransactionsNewestFirst(
 filtered
@@ -1672,6 +3299,7 @@ list,
 );
 
 return
+
 }
 
 const f=
@@ -1688,9 +3316,14 @@ true
 );
 
 list.appendChild(f)
+
 }
 
-function createTransactionCard(t,showCustomer){
+
+function createTransactionCard(
+t,
+showCustomer
+){
 
 const sale=
 isDueTransaction(t);
@@ -1711,15 +3344,19 @@ sale
 :''
 );
 
+
 const top=
 document.createElement('div');
 
-top.className='txn-top';
+top.className=
+'txn-top';
+
 
 const date=
 document.createElement('div');
 
-date.className='txn-date';
+date.className=
+'txn-date';
 
 date.textContent=
 t.date||
@@ -1728,16 +3365,19 @@ t.transactionDate||
 t.TransactionDate||
 '';
 
+
 const typeWrap=
 document.createElement('div');
 
 typeWrap.style.textAlign='right';
 typeWrap.style.minWidth='55px';
 
+
 const type=
 document.createElement('div');
 
-type.className='txn-type';
+type.className=
+'txn-type';
 
 type.textContent=
 sale
@@ -1753,10 +3393,12 @@ date,
 typeWrap
 );
 
+
 const amount=
 document.createElement('div');
 
-amount.className='txn-amount';
+amount.className=
+'txn-amount';
 
 const kdAmount=
 number(
@@ -1778,13 +3420,17 @@ payment
 fmtKD(kdAmount)+
 ' KD';
 
+
 const bottom=
 document.createElement('div');
 
-bottom.className='txn-bottom';
+bottom.className=
+'txn-bottom';
 
 const note=
-String(t.note||'').trim();
+String(
+t.note||''
+).trim();
 
 const bdAmount=
 getBDAmount(t);
@@ -1797,6 +3443,7 @@ bt+=
 (bt?' • ':'')+
 fmtIndian(bdAmount)+
 ' TK'
+
 }
 
 if(
@@ -1807,14 +3454,18 @@ t.customerName
 bt+=
 (bt?' • ':'')+
 t.customerName
+
 }
 
-bottom.textContent=bt;
+bottom.textContent=
+bt;
+
 
 const agentName=
 document.createElement('div');
 
-agentName.className='txn-agent';
+agentName.className=
+'txn-agent';
 
 agentName.textContent=
 t.agentName||
@@ -1822,25 +3473,34 @@ t.agent||
 t.AgentName||
 '';
 
+
 txn.append(
 top,
 amount
 );
 
-if(bt)txn.append(bottom);
+if(bt)
+txn.append(bottom);
 
 if(agentName.textContent)
 txn.append(agentName);
 
 return txn
+
 }
+
+
+/* =========================================================
+DATE
+========================================================= */
 
 function transactionMatchesDate(
 transaction,
 selectedDate
 ){
 
-if(!selectedDate)return true;
+if(!selectedDate)
+return true;
 
 const td=
 getFullTransactionDate(
@@ -1856,28 +3516,41 @@ getFullTransactionDate(
 selectedDate
 );
 
-if(!td||!sd)return false;
+if(!td||!sd)
+return false;
 
 return(
-td.getFullYear()===sd.getFullYear()&&
-td.getMonth()===sd.getMonth()&&
-td.getDate()===sd.getDate()
+td.getFullYear()===
+sd.getFullYear()&&
+td.getMonth()===
+sd.getMonth()&&
+td.getDate()===
+sd.getDate()
 )
+
 }
+
 
 function getFullTransactionDate(value){
 
-if(!value)return null;
+if(!value)
+return null;
 
 const str=
 String(value).trim();
 
-if(!str)return null;
+if(!str)
+return null;
 
 let date,
+match;
+
+
+/* YYYY-MM-DD */
+
 match=
 str.match(
-/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})(?:[T\s]+(.+))?$/
+/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s]+(.+))?$/
 );
 
 if(match){
@@ -1900,17 +3573,23 @@ match[4]
 
 if(tm){
 
-let h=Number(tm[1]);
+let h=
+Number(tm[1]);
+
+const ap=
+(tm[5]||'').toUpperCase();
 
 if(
-(tm[5]||'').toUpperCase()==='PM'&&
+ap==='PM'&&
 h<12
-)h+=12;
+)
+h+=12;
 
 if(
-(tm[5]||'').toUpperCase()==='AM'&&
+ap==='AM'&&
 h===12
-)h=0;
+)
+h=0;
 
 date.setHours(
 h,
@@ -1922,17 +3601,23 @@ String(tm[4]||'')
 .slice(0,3)
 )||0
 )
+
 }
+
 }
 
 return isNaN(date.getTime())
 ?null
 :date
+
 }
+
+
+/* DD-MMM-YYYY */
 
 match=
 str.match(
-/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})(?:[T\s]+(.+))?$/
+/^(\d{1,2})-([A-Za-z]{3})-(\d{4})(?:[T\s]+(.+))?$/
 );
 
 if(match){
@@ -1977,11 +3662,23 @@ match[4]
 
 if(tm){
 
-let h=Number(tm[1]),
-ap=(tm[4]||'').toUpperCase();
+let h=
+Number(tm[1]);
 
-if(ap==='PM'&&h<12)h+=12;
-if(ap==='AM'&&h===12)h=0;
+const ap=
+(tm[4]||'').toUpperCase();
+
+if(
+ap==='PM'&&
+h<12
+)
+h+=12;
+
+if(
+ap==='AM'&&
+h===12
+)
+h=0;
 
 date.setHours(
 h,
@@ -1989,18 +3686,25 @@ Number(tm[2]),
 Number(tm[3]||0),
 0
 )
+
 }
+
 }
 
 return isNaN(date.getTime())
 ?null
 :date
+
 }
+
 }
+
+
+/* DD-MM-YYYY */
 
 match=
 str.match(
-/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})(?:[T\s]+(.+))?$/
+/^(\d{1,2})-(\d{1,2})-(\d{4})(?:[T\s]+(.+))?$/
 );
 
 if(match){
@@ -2023,11 +3727,23 @@ match[4]
 
 if(tm){
 
-let h=Number(tm[1]),
-ap=(tm[4]||'').toUpperCase();
+let h=
+Number(tm[1]);
 
-if(ap==='PM'&&h<12)h+=12;
-if(ap==='AM'&&h===12)h=0;
+const ap=
+(tm[4]||'').toUpperCase();
+
+if(
+ap==='PM'&&
+h<12
+)
+h+=12;
+
+if(
+ap==='AM'&&
+h===12
+)
+h=0;
 
 date.setHours(
 h,
@@ -2035,20 +3751,31 @@ Number(tm[2]),
 Number(tm[3]||0),
 0
 )
+
 }
+
 }
 
 return isNaN(date.getTime())
 ?null
 :date
+
 }
 
-date=new Date(str);
+
+date=
+new Date(str);
 
 return isNaN(date.getTime())
 ?null
 :date
+
 }
+
+
+/* =========================================================
+TRANSACTION TYPE
+========================================================= */
 
 function normalizeType(value){
 
@@ -2056,9 +3783,11 @@ return String(value||'')
 .trim()
 .toLowerCase()
 .replace(/\s+/g,' ')
-.replace(/^[+\-]\s*/,'')
+.replace(/^[+-]\s*/,'')
 .trim()
+
 }
+
 
 function isDueTransaction(t){
 
@@ -2077,7 +3806,9 @@ return[
 'বিক্রয়',
 'sale'
 ].includes(type)
+
 }
+
 
 function isPaymentTransaction(t){
 
@@ -2096,48 +3827,111 @@ return[
 'paid',
 'payment amount'
 ].includes(type)
+
 }
+
+
+/* =========================================================
+AGENT
+========================================================= */
 
 function renderAgentDropdowns(){
-  const selectedAgent=$('agentSelect')?.value||'';
-  const selectedAgentView=$('agentView')?.value||'';
 
-  fillAgentSelect($('agentSelect'),false);
+const selectedAgent=
+$('agentSelect')?.value||'';
 
-  if(getRole()==='agent'){
-    const linkedId=clean(currentUser?.linkedId||'');
-    if(linkedId){
-      $('agentSelect').value=linkedId;
-    }
-    $('agentSelect').disabled=true;
-    return;
-  }
+const selectedAgentView=
+$('agentView')?.value||'';
 
-  if(selectedAgent){
-    const exists=[...$('agentSelect').options]
-      .some(o=>o.value===selectedAgent);
+fillAgentSelect(
+$('agentSelect'),
+false
+);
 
-    if(exists){
-      $('agentSelect').value=selectedAgent;
-      $('agentSelect').classList.add('has-value');
-    }
-  }
 
-  fillAgentSelect($('agentView'),true);
-  $('agentView').disabled=false;
+if(
+getRole()==='agent'
+){
 
-  if(selectedAgentView){
-    const exists=[...$('agentView').options]
-      .some(o=>o.value===selectedAgentView);
+const linkedId=
+clean(
+currentUser?.linkedId||''
+);
 
-    if(exists){
-      $('agentView').value=selectedAgentView;
-      $('agentView').classList.add('has-value');
-    }
-  }
+if(linkedId){
+
+$('agentSelect').value=
+linkedId
+
 }
 
-function fillAgentSelect(select,isView=false){
+$('agentSelect').disabled=true;
+
+return
+
+}
+
+
+if(selectedAgent){
+
+const exists=
+[...$('agentSelect').options]
+.some(
+o=>o.value===selectedAgent
+);
+
+if(exists){
+
+$('agentSelect').value=
+selectedAgent;
+
+$('agentSelect')
+.classList.add(
+'has-value'
+)
+
+}
+
+}
+
+
+fillAgentSelect(
+$('agentView'),
+true
+);
+
+$('agentView').disabled=false;
+
+
+if(selectedAgentView){
+
+const exists=
+[...$('agentView').options]
+.some(
+o=>o.value===selectedAgentView
+);
+
+if(exists){
+
+$('agentView').value=
+selectedAgentView;
+
+$('agentView')
+.classList.add(
+'has-value'
+)
+
+}
+
+}
+
+}
+
+
+function fillAgentSelect(
+select,
+isView=false
+){
 
 if(!select)return;
 
@@ -2151,19 +3945,26 @@ document.createDocumentFragment();
 
 agentData.forEach(a=>{
 
-if(!isActiveAgent(a))return;
+if(!isActiveAgent(a))
+return;
 
 const o=
 document.createElement('option');
 
-o.value=a.agentId;
-o.textContent=a.agentName;
+o.value=
+a.agentId;
+
+o.textContent=
+a.agentName;
 
 f.appendChild(o)
+
 });
 
 select.appendChild(f)
+
 }
+
 
 function isActiveAgent(agent){
 
@@ -2174,26 +3975,35 @@ agent?.Status||
 )
 .trim()
 .toLowerCase()==='active'
+
 }
+
 
 function agentChanged(){
 
 const agentId=
 $('agentView').value;
 
-const list=$('agentList');
+const list=
+$('agentList');
+
 
 if(!agentId){
 
 currentAgentTransactions=[];
 
-setAgentNumbers(0,0);
+setAgentNumbers(
+0,
+0
+);
 
 list.innerHTML=
 '<div class="empty">Select an agent</div>';
 
 return
+
 }
+
 
 if(!dataLoaded){
 
@@ -2201,13 +4011,17 @@ list.innerHTML=
 '<div class="loading">Loading data...</div>';
 
 return
+
 }
+
 
 const agent=
 agentData.find(
-a=>String(a.agentId)===
+a=>
+String(a.agentId)===
 String(agentId)
 );
+
 
 if(!agent){
 
@@ -2215,53 +4029,78 @@ list.innerHTML=
 '<div class="empty">Agent not found</div>';
 
 return
+
 }
 
+
 const name=
-String(agent.agentName||'')
-.trim();
+String(
+agent.agentName||''
+).trim();
+
 
 currentAgentTransactions=
-allTransactionsData.filter(t=>{
+allTransactionsData.filter(
+t=>{
 
 const a=
-String(t.agentName||'')
-.trim();
+String(
+t.agentName||''
+).trim();
 
 return(
 a===name||
 a===String(agentId)
 )&&
-number(getBDAmount(t))>0
-});
+number(
+getBDAmount(t)
+)>0
+
+}
+);
 
 sortTransactionsNewestFirst(
 currentAgentTransactions
 );
 
 renderAgentTransactions()
+
 }
+
 
 function calculateAgentSummary(){
 
 let balance=0,
 sales=0,
 year=
-Number($('agentYear').value),
+Number(
+$('agentYear').value
+),
 month=
-Number($('agentMonth').value);
+Number(
+$('agentMonth').value
+);
 
-currentAgentTransactions.forEach(t=>{
+
+currentAgentTransactions.forEach(
+t=>{
 
 const amount=
 getBDAmount(t);
 
-if(isDueTransaction(t))
+if(
+isDueTransaction(t)
+)
 balance+=amount;
-else if(isPaymentTransaction(t))
+else if(
+isPaymentTransaction(t)
+)
 balance-=amount;
 
-if(isDueTransaction(t)){
+
+if(
+isDueTransaction(t)
+){
 
 const i=
 parseTransactionDate(
@@ -2276,31 +4115,47 @@ i&&
 i.year===year&&
 i.month===month
 ){
+
 sales+=amount
+
 }
+
 }
+
 });
+
 
 setAgentNumbers(
 balance,
 sales
 )
+
 }
 
-function setAgentNumbers(balance,sales){
 
-$('agentCurrentBalance').innerHTML=
+function setAgentNumbers(
+balance,
+sales
+){
+
+$('agentCurrentBalance')
+.innerHTML=
 fmtIndian(balance)+
 ' <span>Tk</span>';
 
-$('agentMonthlySales').innerHTML=
+$('agentMonthlySales')
+.innerHTML=
 fmtIndian(sales)+
 ' <span>Tk</span>'
+
 }
+
 
 function renderAgentTransactions(){
 
-const list=$('agentList');
+const list=
+$('agentList');
+
 
 if(!currentAgentTransactions.length){
 
@@ -2310,16 +4165,24 @@ list.innerHTML=
 '<div class="empty">No BD transactions found</div>';
 
 return
+
 }
 
+
 const year=
-Number($('agentYear').value);
+Number(
+$('agentYear').value
+);
 
 const month=
-Number($('agentMonth').value);
+Number(
+$('agentMonth').value
+);
+
 
 const filtered=
-currentAgentTransactions.filter(t=>{
+currentAgentTransactions.filter(
+t=>{
 
 const i=
 parseTransactionDate(
@@ -2334,7 +4197,10 @@ i&&
 i.year===year&&
 i.month===month
 )
-});
+
+}
+);
+
 
 sortTransactionsNewestFirst(
 filtered
@@ -2342,18 +4208,22 @@ filtered
 
 calculateAgentSummary();
 
+
 if(!filtered.length){
 
 list.innerHTML=
 '<div class="empty">No transaction for this month</div>';
 
 return
+
 }
+
 
 list.innerHTML='';
 
 const f=
 document.createDocumentFragment();
+
 
 filtered.forEach(t=>{
 
@@ -2376,25 +4246,31 @@ sale
 :''
 );
 
+
 const top=
 document.createElement('div');
 
-top.className='txn-top';
+top.className=
+'txn-top';
+
 
 const date=
 document.createElement('div');
 
-date.className='txn-date';
+date.className=
+'txn-date';
 
 date.textContent=
 t.date||
 t.Date||
 '';
 
+
 const type=
 document.createElement('div');
 
-type.className='txn-type';
+type.className=
+'txn-type';
 
 type.textContent=
 sale
@@ -2403,15 +4279,18 @@ sale
 ?'পেমেন্ট'
 :(t.type||'');
 
+
 top.append(
 date,
 type
 );
 
+
 const amount=
 document.createElement('div');
 
-amount.className='txn-amount';
+amount.className=
+'txn-amount';
 
 const bd=
 getBDAmount(t);
@@ -2427,13 +4306,16 @@ payment
 fmtIndian(bd)+
 ' Tk';
 
+
 const bottom=
 document.createElement('div');
 
-bottom.className='txn-bottom';
+bottom.className=
+'txn-bottom';
 
 bottom.textContent=
 t.note||'';
+
 
 txn.append(
 top,
@@ -2442,21 +4324,34 @@ bottom
 );
 
 f.appendChild(txn)
+
 });
 
+
 list.appendChild(f)
+
 }
+
+
+/* =========================================================
+AGENT DATE PARSER
+========================================================= */
 
 function parseTransactionDate(value){
 
-if(!value)return null;
+if(!value)
+return null;
 
 const str=
 String(value).trim();
 
+if(!str)
+return null;
+
+
 let m=
 str.match(
-/^(\d{1,2})[-\/]([A-Za-z]{3})[-\/](\d{4})$/
+/^(\d{1,2})-([A-Za-z]{3})-(\d{4})/
 );
 
 if(m){
@@ -2481,36 +4376,50 @@ months[
 m[2].toLowerCase()
 ];
 
-if(month)
+if(month){
+
 return{
 year:Number(m[3]),
 month
 }
+
 }
+
+}
+
 
 m=
 str.match(
-/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
+/^(\d{4})-(\d{1,2})-(\d{1,2})/
 );
 
-if(m)
+if(m){
+
 return{
 year:Number(m[1]),
 month:Number(m[2])
-};
+}
+
+}
+
 
 m=
 str.match(
-/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
+/^(\d{1,2})-(\d{1,2})-(\d{4})/
 );
 
-if(m)
+if(m){
+
 return{
 year:Number(m[3]),
 month:Number(m[2])
-};
+}
 
-const d=new Date(str);
+}
+
+
+const d=
+new Date(str);
 
 return isNaN(d.getTime())
 ?null
@@ -2518,7 +4427,9 @@ return isNaN(d.getTime())
 year:d.getFullYear(),
 month:d.getMonth()+1
 }
+
 }
+
 
 function getBDAmount(t){
 
@@ -2531,22 +4442,36 @@ t.amountBD!==''
 ?t.amountBD
 :t.bd
 )
+
 }
+
+
+/* =========================================================
+DATE SETUP
+========================================================= */
 
 function setToday(){
 
-const d=new Date();
+const d=
+new Date();
 
 const v=
 d.getFullYear()+
 '-'+
-String(d.getMonth()+1).padStart(2,'0')+
+String(
+d.getMonth()+1
+).padStart(2,'0')+
 '-'+
-String(d.getDate()).padStart(2,'0');
+String(
+d.getDate()
+).padStart(2,'0');
 
 $('date').value=v;
+
 $('date').max=v
+
 }
+
 
 function setCustomerToday(){
 
@@ -2556,11 +4481,14 @@ $('customerTransactionDate');
 const picker=
 $('customerDatePicker');
 
-if(!input||!picker)return;
+if(!input||!picker)
+return;
 
-const d=new Date();
+const d=
+new Date();
 
-const yyyy=d.getFullYear();
+const yyyy=
+d.getFullYear();
 
 const mm=
 String(
@@ -2575,32 +4503,42 @@ d.getDate()
 const today=
 yyyy+'-'+mm+'-'+dd;
 
-picker.max=today;
-picker.value=today;
+picker.max=
+today;
+
+picker.value=
+today;
+
 
 const months=[
 'Jan','Feb','Mar','Apr',
 'May','Jun','Jul','Aug',
 'Sep','Oct','Nov','Dec'
 ];
+
 
 input.value=
 dd+'-'+
 months[d.getMonth()]+'-'+
 yyyy
+
 }
+
 
 function selectCustomerDate(value){
 
-if(!value)return;
+if(!value)
+return;
 
-const p=value.split('-');
+const p=
+value.split('-');
 
 const months=[
 'Jan','Feb','Mar','Apr',
 'May','Jun','Jul','Aug',
 'Sep','Oct','Nov','Dec'
 ];
+
 
 $('customerTransactionDate').value=
 p[2]+'-'+
@@ -2609,27 +4547,43 @@ Number(p[1])-1
 ]+'-'+
 p[0];
 
+
 if(
 $('customerPageSelect').value===
-'__ALL_TRANSACTIONS__'
+'ALL_TRANSACTIONS'
 ){
+
 renderAllCustomerTransactions()
-}
+
 }
 
-function openTab(tab,button){
+}
+
+
+/* =========================================================
+TAB / ROLE
+========================================================= */
+
+function openTab(
+tab,
+button
+){
 
 document
 .querySelectorAll('.panel')
 .forEach(
-p=>p.classList.remove('active')
+p=>
+p.classList.remove('active')
 );
+
 
 document
 .querySelectorAll('.tab')
 .forEach(
-b=>b.classList.remove('active')
+b=>
+b.classList.remove('active')
 );
+
 
 const panel=
 $('panel'+
@@ -2637,20 +4591,28 @@ tab.charAt(0).toUpperCase()+
 tab.slice(1)
 );
 
+
 if(
 panel&&
 !panel.classList.contains('hidden')
 ){
+
 panel.classList.add('active')
+
 }
+
 
 if(
 button&&
 !button.classList.contains('hidden')
 ){
+
 button.classList.add('active')
+
 }
+
 }
+
 
 function getRole(){
 
@@ -2659,29 +4621,43 @@ currentUser?.role||''
 )
 .trim()
 .toLowerCase()
+
 }
+
 
 function applyRoleAccess(
 preferredPanel=''
 ){
 
-const role=getRole();
+const role=
+getRole();
 
 const rateBox=
 $('adminRateBox');
 
-if(rateBox)
+
+if(rateBox){
+
 rateBox.classList.toggle(
 'hidden',
 role!=='admin'
-);
+)
+
+}
+
 
 const tabs=
 document.querySelectorAll('.tab');
 
-const transactionTab=tabs[0],
-customerTab=tabs[1],
-agentTab=tabs[2];
+const transactionTab=
+tabs[0];
+
+const customerTab=
+tabs[1];
+
+const agentTab=
+tabs[2];
+
 
 const transactionPanel=
 $('panelTransaction');
@@ -2692,21 +4668,26 @@ $('panelCustomer');
 const agentPanel=
 $('panelAgent');
 
+
 [
 transactionTab,
 customerTab,
 agentTab
 ].forEach(
-x=>x.classList.remove('hidden')
+x=>
+x.classList.remove('hidden')
 );
+
 
 [
 transactionPanel,
 customerPanel,
 agentPanel
 ].forEach(
-x=>x.classList.remove('hidden')
+x=>
+x.classList.remove('hidden')
 );
+
 
 if(role==='admin'){
 
@@ -2716,6 +4697,7 @@ preferredPanel==='panelCustomer'
 :preferredPanel==='panelAgent'
 ?'agent'
 :'transaction';
+
 
 openTab(
 wanted,
@@ -2727,33 +4709,45 @@ wanted==='customer'
 );
 
 return
+
 }
+
 
 if(role==='agent'){
 
 transactionTab.classList.add('hidden');
+
 customerTab.classList.add('hidden');
+
 agentTab.classList.add('hidden');
 
 transactionPanel.classList.add('hidden');
+
 customerPanel.classList.add('hidden');
 
 agentPanel.classList.remove('hidden');
+
 agentPanel.classList.add('active');
 
-const s=$('agentView');
+
+const s=
+$('agentView');
 
 const id=
 String(
 currentUser.linkedId||''
 );
 
+
 const found=
 agentData.find(
-a=>String(a.agentId)===id
+a=>
+String(a.agentId)===id
 );
 
+
 s.innerHTML='';
+
 
 const o=
 document.createElement('option');
@@ -2767,61 +4761,106 @@ found
 currentUser.name||
 'My Agent');
 
+
 s.appendChild(o);
 
 s.value=id;
+
 s.disabled=true;
 
-if(dataLoaded&&id)
+
+if(
+dataLoaded&&
+id
+)
 agentChanged();
 
 return
+
 }
+
 
 if(
 role==='viewer'||
 role==='viewar'
 ){
 
-transactionTab.classList.add('hidden');
+transactionTab.classList.add(
+'hidden'
+);
 
-transactionPanel.classList.add('hidden');
+transactionPanel.classList.add(
+'hidden'
+);
 
-customerTab.classList.remove('hidden');
-agentTab.classList.remove('hidden');
+customerTab.classList.remove(
+'hidden'
+);
 
-customerPanel.classList.remove('hidden');
-agentPanel.classList.remove('hidden');
+agentTab.classList.remove(
+'hidden'
+);
+
+customerPanel.classList.remove(
+'hidden'
+);
+
+agentPanel.classList.remove(
+'hidden'
+);
+
 
 $('customerPageSelect').value='';
 
-$('selectedCustomerInfo').innerHTML=
+
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-$('selectedDueAmount').innerHTML=
+
+$('selectedDueAmount')
+.innerHTML=
 '0.000 <span>KD</span>';
 
-$('customerList').innerHTML=
+
+$('customerList')
+.innerHTML=
 '<div class="empty">Select a customer</div>';
+
 
 updateTotalDue();
 
+
 $('agentView').disabled=false;
+
 $('agentView').value='';
 
 currentAgentTransactions=[];
 
-setAgentNumbers(0,0);
+setAgentNumbers(
+0,
+0
+);
 
-$('agentList').innerHTML=
+
+$('agentList')
+.innerHTML=
 '<div class="empty">Select an agent</div>';
+
 
 openTab(
 'customer',
 customerTab
 )
+
 }
+
 }
+
+
+/* =========================================================
+LOGIN
+========================================================= */
 
 async function login(){
 
@@ -2831,24 +4870,36 @@ $('username').value.trim();
 const password=
 $('password').value;
 
-const msg=$('loginMsg');
+const msg=
+$('loginMsg');
 
-const btn=$('loginBtn');
+const btn=
+$('loginBtn');
 
-if(!username||!password){
 
-msg.className='msg error';
+if(
+!username||
+!password
+){
+
+msg.className=
+'msg error';
 
 msg.textContent=
 'Username and password required';
 
 return
+
 }
 
+
 btn.disabled=true;
-btn.textContent='Logging in...';
+
+btn.textContent=
+'Logging in...';
 
 msg.textContent='';
+
 
 try{
 
@@ -2861,23 +4912,32 @@ password
 }
 );
 
+
 if(!result.success){
 
-msg.className='msg error';
+msg.className=
+'msg error';
 
 msg.textContent=
 result.error||
 'Login failed';
 
 return
+
 }
 
-currentUser=result.data;
+
+currentUser=
+result.data;
+
 
 localStorage.setItem(
 'amaya_user',
-JSON.stringify(currentUser)
+JSON.stringify(
+currentUser
+)
 );
+
 
 showApp()
 
@@ -2886,7 +4946,8 @@ catch(e){
 
 console.error(e);
 
-msg.className='msg error';
+msg.className=
+'msg error';
 
 msg.textContent=
 'Connection error'
@@ -2895,9 +4956,14 @@ msg.textContent=
 finally{
 
 btn.disabled=false;
-btn.textContent='Login'
+
+btn.textContent=
+'Login'
+
 }
+
 }
+
 
 function restoreLogin(){
 
@@ -2908,18 +4974,24 @@ localStorage.getItem(
 'amaya_user'
 );
 
-if(!saved)return;
+if(!saved)
+return;
+
 
 const user=
 JSON.parse(saved);
+
 
 if(
 user&&
 user.loggedIn
 ){
 
-currentUser=user;
+currentUser=
+user;
+
 showApp()
+
 }
 
 }
@@ -2928,26 +5000,42 @@ catch(e){
 localStorage.removeItem(
 'amaya_user'
 )
+
 }
+
 }
+
+
+/* =========================================================
+SHOW APP
+========================================================= */
 
 async function showApp(){
 
-$('loginPage').classList.add('hidden');
-$('app').classList.remove('hidden');
+$('loginPage')
+.classList.add('hidden');
+
+$('app')
+.classList.remove('hidden');
+
 
 setToday();
+
 setCustomerToday();
+
 setupAgentDateFilters();
+
 applyRoleAccess();
+
 
 try{
 
 await openDB();
+
 await loadLocalDatabase();
 
 if(dataLoaded)
-renderLocalData()
+renderLocalData();
 
 }
 catch(e){
@@ -2956,16 +5044,27 @@ console.error(
 'Local DB Error:',
 e
 )
+
 }
+
 
 if(!dataLoaded){
 
-$('customerList').innerHTML=
+$('customerList')
+.innerHTML=
 '<div class="loading">Loading data...</div>'
+
 }
 
+
 startBackgroundSync()
+
 }
+
+
+/* =========================================================
+LOGOUT
+========================================================= */
 
 function logout(){
 
@@ -2977,10 +5076,15 @@ localStorage.removeItem(
 'amaya_user'
 );
 
+
 dataLoaded=false;
+
 customerData=[];
+
 agentData=[];
+
 allTransactionsData=[];
+
 
 dueData={
 totalDueKD:0,
@@ -2989,12 +5093,14 @@ customers:[]
 
 totalDueKD=0;
 
+
 notesData={
 dueNotes:DUE_NOTES,
 paymentNotes:PAYMENT_NOTES
 };
 
 notesLoaded=true;
+
 
 dataVersion=
 txVersion=
@@ -3004,59 +5110,98 @@ settingsVersion='';
 
 lastTransactionRow=0;
 
-$('app').classList.add('hidden');
-$('loginPage').classList.remove('hidden');
+
+$('app')
+.classList.add('hidden');
+
+$('loginPage')
+.classList.remove('hidden');
+
 
 $('username').value='';
+
 $('password').value='';
+
 $('loginMsg').textContent='';
+
 
 $('customerPageSelect').value='';
 
-$('selectedCustomerInfo').innerHTML=
+
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-$('selectedDueAmount').innerHTML=
+
+$('selectedDueAmount')
+.innerHTML=
 '0.000 <span>KD</span>';
 
-$('allCustomerDue').innerHTML=
+
+$('allCustomerDue')
+.innerHTML=
 '0.000 <span>KD</span>';
 
-$('customerList').innerHTML=
+
+$('customerList')
+.innerHTML=
 '<div class="empty">Select a customer</div>';
 
+
 $('agentView').value='';
+
 $('agentView').disabled=false;
 
 currentAgentTransactions=[];
 
-setAgentNumbers(0,0);
+setAgentNumbers(
+0,
+0
+);
 
-$('agentList').innerHTML=
+
+$('agentList')
+.innerHTML=
 '<div class="empty">Select an agent</div>';
+
 
 $('headerRateAmount').value='';
 
-$('headerRatePopup').classList.remove(
-'show'
-);
+$('headerRatePopup')
+.classList.remove('show');
 
-$('profitPopup').classList.remove(
-'show'
-);
+$('profitPopup')
+.classList.remove('show');
 
 setCustomerToday()
+
 }
+
+
+/* =========================================================
+AGENT FILTER
+========================================================= */
 
 function setupAgentDateFilters(){
 
-const y=$('agentYear'),
-m=$('agentMonth'),
-now=new Date(),
-cy=now.getFullYear(),
-cm=now.getMonth()+1;
+const y=
+$('agentYear');
+
+const m=
+$('agentMonth');
+
+const now=
+new Date();
+
+const cy=
+now.getFullYear();
+
+const cm=
+now.getMonth()+1;
+
 
 y.innerHTML='';
+
 
 for(
 let i=cy-5;
@@ -3068,45 +5213,79 @@ const o=
 document.createElement('option');
 
 o.value=i;
+
 o.textContent=i;
 
-if(i===cy)o.selected=true;
+if(i===cy)
+o.selected=true;
 
 y.appendChild(o)
+
 }
 
+
 const months=[
-'January','February','March',
-'April','May','June',
-'July','August','September',
-'October','November','December'
+'January',
+'February',
+'March',
+'April',
+'May',
+'June',
+'July',
+'August',
+'September',
+'October',
+'November',
+'December'
 ];
+
 
 m.innerHTML='';
 
-months.forEach((x,i)=>{
+
+months.forEach(
+(x,i)=>{
 
 const o=
 document.createElement('option');
 
 o.value=i+1;
+
 o.textContent=x;
 
-if(i+1===cm)o.selected=true;
+if(i+1===cm)
+o.selected=true;
 
 m.appendChild(o)
+
 });
 
+
 y.onchange=()=>{
-if($('agentView').value)
+
+if(
+$('agentView').value
+)
 renderAgentTransactions()
+
 };
 
+
 m.onchange=()=>{
-if($('agentView').value)
+
+if(
+$('agentView').value
+)
 renderAgentTransactions()
+
 }
+
 }
+
+
+/* =========================================================
+HEADER RATE
+========================================================= */
 
 function calculateHeaderRate(){
 
@@ -3127,21 +5306,26 @@ d=>
 ''
 );
 
+
 const popup=
 $('headerRatePopup');
+
 
 if(!value){
 
 popup.classList.remove('show');
 
 return
+
 }
+
 
 const amount=
 parseInt(
 value,
 10
 );
+
 
 if(
 !Number.isFinite(amount)||
@@ -3151,7 +5335,9 @@ amount<=0
 popup.classList.remove('show');
 
 return
+
 }
+
 
 const rate=
 amount<1000
@@ -3160,34 +5346,55 @@ amount<1000
 ?HEADER_RATE_2
 :HEADER_RATE_3;
 
-const kd=amount/rate;
+
+const kd=
+amount/rate;
+
 
 $('headerRateAmount').value=
 Math.floor(amount)
 .toLocaleString('en-IN');
 
-$('headerRatePopupAmount').textContent=
-Math.floor(amount*1.02)
+
+$('headerRatePopupAmount')
+.textContent=
+Math.floor(
+amount*1.02
+)
 .toLocaleString('en-IN')+
 ' Tk';
 
-$('headerRatePopupKD').textContent=
+
+$('headerRatePopupKD')
+.textContent=
 kd.toFixed(3)+
 ' KD';
 
+
 popup.classList.add('show')
+
 }
+
+
+/* =========================================================
+PROFIT
+========================================================= */
 
 function calculateProfitPopup(){
 
 const kd=
-number($('kdAmount').value);
+number(
+$('kdAmount').value
+);
 
 const bd=
-number($('bdAmount').value);
+number(
+$('bdAmount').value
+);
 
 const popup=
 $('profitPopup');
+
 
 if(
 kd<=0||
@@ -3197,10 +5404,13 @@ bd<=0
 popup.classList.remove('show');
 
 return
+
 }
+
 
 const profit=
 kd*400-bd;
+
 
 popup.textContent=
 'Profit '+
@@ -3217,14 +5427,23 @@ profit.toFixed(3)
 .toLocaleString('en-IN')+
 ' Tk';
 
+
 popup.classList.add('show')
+
 }
+
+
+/* =========================================================
+RATE POPUP CLOSE
+========================================================= */
 
 document.addEventListener(
 'click',
 e=>{
 
-const box=$('adminRateBox');
+const box=
+$('adminRateBox');
+
 
 if(
 box&&
@@ -3235,35 +5454,48 @@ $('headerRateAmount').value='';
 
 $('headerRatePopup')
 .classList.remove('show')
+
 }
-}
-);
+
+});
+
+
+/* =========================================================
+API
+========================================================= */
 
 async function getAPI(
 action,
 params={}
 ){
 
-const q=new URLSearchParams();
+const q=
+new URLSearchParams();
 
 q.set(
 'action',
 action
 );
 
+
 Object.keys(params)
 .forEach(k=>{
 
-const v=params[k];
+const v=
+params[k];
 
 if(
 v!==undefined&&
 v!==null&&
 v!==''
 ){
+
 q.set(k,v)
+
 }
+
 });
+
 
 const r=
 await fetch(
@@ -3276,8 +5508,11 @@ cache:'no-store'
 }
 );
 
+
 return r.json()
+
 }
+
 
 async function postAPI(data){
 
@@ -3295,24 +5530,39 @@ body:JSON.stringify(data)
 );
 
 return r.json()
+
 }
+
+
+/* =========================================================
+BOOTSTRAP
+========================================================= */
 
 async function applyBootstrap(data){
 
 customerData=
-Array.isArray(data.customers)
+Array.isArray(
+data.customers
+)
 ?data.customers
 :[];
 
+
 agentData=
-Array.isArray(data.agents)
+Array.isArray(
+data.agents
+)
 ?data.agents
 :[];
 
+
 allTransactionsData=
-Array.isArray(data.transactions)
+Array.isArray(
+data.transactions
+)
 ?data.transactions
 :[];
+
 
 sortCustomersAZ(
 customerData
@@ -3322,6 +5572,7 @@ sortTransactionsNewestFirst(
 allTransactionsData
 );
 
+
 notesData={
 dueNotes:DUE_NOTES,
 paymentNotes:PAYMENT_NOTES
@@ -3329,27 +5580,43 @@ paymentNotes:PAYMENT_NOTES
 
 notesLoaded=true;
 
-dataVersion=data.version||'';
-txVersion=data.txVersion||'';
-customerVersion=data.customerVersion||'';
-agentVersion=data.agentVersion||'';
-settingsVersion=data.settingsVersion||'';
+
+dataVersion=
+data.version||'';
+
+txVersion=
+data.txVersion||'';
+
+customerVersion=
+data.customerVersion||'';
+
+agentVersion=
+data.agentVersion||'';
+
+settingsVersion=
+data.settingsVersion||'';
+
 
 lastTransactionRow=
 Number(
 data.lastTransactionRow||0
 )||0;
 
+
 applyDueData(data);
+
 
 if(
 data.totalDueKD!==undefined
 ){
+
 totalDueKD=
 number(
 data.totalDueKD
 )
+
 }
+
 
 await saveCustomersLocal(
 customerData
@@ -3359,6 +5626,7 @@ await saveAgentsLocal(
 agentData
 );
 
+
 await dbClear(
 'transactions'
 );
@@ -3367,29 +5635,37 @@ await saveTransactionsLocal(
 allTransactionsData
 );
 
+
 dataLoaded=true;
 
 await saveLocalState();
 
 renderLocalData()
+
 }
+
 
 async function initialBootstrap(){
 
 if(bootstrapPromise)
 return bootstrapPromise;
 
+
 bootstrapPromise=
 (async()=>{
 
 try{
 
-showSync('Loading...');
+showSync(
+'Loading...'
+);
+
 
 const r=
 await getAPI(
 'bootstrap'
 );
+
 
 if(!r.success)
 throw new Error(
@@ -3397,9 +5673,11 @@ r.error||
 'Bootstrap loading failed'
 );
 
+
 await applyBootstrap(
 r.data||{}
 );
+
 
 hideSync();
 
@@ -3428,224 +5706,104 @@ bootstrapPromise=null
 
 })();
 
+
 return bootstrapPromise
-}
-
-function getLocalTransactionIds(){
-
-const s=new Set();
-
-(allTransactionsData||[])
-.forEach(t=>{
-
-const id=
-String(
-t?.transactionId||
-t?.TransactionId||
-''
-).trim();
-
-if(id)s.add(id)
-});
-
-return s
-}
-
-function getServerTransactionIds(list){
-
-const s=new Set();
-
-(
-Array.isArray(list)
-?list
-:[]
-)
-.forEach(id=>{
-
-const v=
-String(id??'').trim();
-
-if(v)s.add(v)
-
-});
-
-return s
-}
-
-function sameSet(a,b){
-
-if(a.size!==b.size)
-return false;
-
-for(const v of a){
-
-if(!b.has(v))
-return false
 
 }
 
-return true
-}
 
-function customerSignature(list){
+/* =========================================================
+FAST VERSION CHECK
+========================================================= */
 
-return(
-Array.isArray(list)
-?list
-:[]
-)
-.map(c=>
-[
-String(c.customerId||''),
-String(c.customerName||''),
-String(c.phone||''),
-String(c.status||''),
-number(c.totalDueKD||0)
-.toFixed(3)
-]
-.join('|')
-)
-.sort()
-.join('||')
-}
+/*
+IMPORTANT:
 
-function agentSignature(list){
+আগের version-এর checkSheetChanges()
+প্রতি ৫ সেকেন্ডে ৩টি বড় data request করত।
 
-return(
-Array.isArray(list)
-?list
-:[]
-)
-.map(a=>
-[
-String(a.agentId||''),
-String(a.agentName||''),
-String(a.phone||''),
-String(a.status||'')
-]
-.join('|')
-)
-.sort()
-.join('||')
-}
+এখন শুধু version endpoint check হবে।
+
+তাই Sheet-এ পরিবর্তন না হলে:
+- Transactions download হবে না
+- Customers download হবে না
+- Agents download হবে না
+- IndexedDB cache ব্যবহার হবে
+*/
 
 async function checkSheetChanges(){
 
 if(!currentUser)
 return false;
 
+
 try{
 
-const[
-txResult,
-customerResult,
-agentResult
-]=await Promise.all([
-getAPI('transactionIds'),
-getAPI('customers'),
-getAPI('agents')
-]);
-
-if(
-!txResult.success||
-!customerResult.success||
-!agentResult.success
-){
-return false
-}
-
-const transactionsChanged=
-!sameSet(
-getLocalTransactionIds(),
-getServerTransactionIds(
-txResult.data
-)
+const result=
+await getAPI(
+'version'
 );
 
-const serverCustomers=
-Array.isArray(
-customerResult.data
-)
-?customerResult.data
-:[];
 
-const serverAgents=
-Array.isArray(
-agentResult.data
-)
-?agentResult.data
-:[];
+if(!result.success)
+return false;
+
+
+const serverVersion=
+String(
+result.data?.version||''
+);
+
 
 return(
-transactionsChanged||
-customerSignature(customerData)!==
-customerSignature(serverCustomers)||
-agentSignature(agentData)!==
-agentSignature(serverAgents)
+serverVersion!==
+String(
+dataVersion||''
+)
 )
 
 }
 catch(e){
 
 console.error(
-'Sheet change check error:',
+'Version check error:',
 e
 );
 
 return false
-}
-}
-
-async function reconcileSheetData(){
-
-if(
-!currentUser||
-syncRunning
-)return false;
-
-try{
-
-if(
-!await checkSheetChanges()
-)return false;
-
-showSync('Updating...');
-
-return await initialBootstrap()
 
 }
-catch(e){
 
-console.error(
-'Reconcile Error:',
-e
-);
-
-return false
-}
 }
 
 
 /* =========================================================
-   UPDATED SYNC
-   ৫ সেকেন্ড interval অপরিবর্তিত রাখা হয়েছে।
-   Sync চলাকালীন syncRunning true থাকবে।
-   Sheet transaction delete ধরা পড়লে bootstrap-এর পর
-   Agent list সঙ্গে সঙ্গে refresh হবে।
-   ========================================================= */
+SYNC
+========================================================= */
 
-async function syncData(force=false){
+async function syncData(
+force=false
+){
 
 if(
 syncRunning||
 !currentUser
-)return false;
+)
+return false;
+
 
 syncRunning=true;
+
 
 try{
 
 await openDB();
+
+
+/*
+প্রথমবার local version না থাকলে
+full bootstrap হবে।
+*/
 
 if(
 force||
@@ -3661,40 +5819,61 @@ force||
 const result=
 await initialBootstrap();
 
+
 if(
 getRole()==='agent'&&
 $('agentView').value
 ){
+
 agentChanged()
+
 }
+
 
 return result
 
 }
 
+
+/*
+প্রতি ৫ সেকেন্ডে শুধু version check।
+*/
+
 const changed=
 await checkSheetChanges();
+
 
 if(changed){
 
 const result=
 await initialBootstrap();
 
-/* Sheet থেকে transaction delete/add/update হলে
-   Agent page-কে সঙ্গে সঙ্গে নতুন local data অনুযায়ী render করা হবে */
+
+/*
+Sheet থেকে transaction
+add/edit/delete হলে
+নতুন local data অনুযায়ী
+Agent page refresh
+*/
+
 if(
 getRole()==='agent'&&
 $('agentView').value
 ){
+
 agentChanged()
+
 }
+
 
 return result
 
 }
 
+
 if(!notesLoaded)
 notesLoaded=true;
+
 
 return true
 
@@ -3714,7 +5893,13 @@ finally{
 syncRunning=false
 
 }
+
 }
+
+
+/* =========================================================
+BACKGROUND SYNC
+========================================================= */
 
 function startBackgroundSync(){
 
@@ -3722,29 +5907,46 @@ stopBackgroundSync();
 
 syncData();
 
+
 syncTimer=
 setInterval(
 ()=>{
+
 if(
 document.visibilityState===
 'visible'
 ){
+
 syncData()
+
 }
+
 },
 SYNC_INTERVAL
 )
+
 }
+
 
 function stopBackgroundSync(){
 
 if(syncTimer){
 
-clearInterval(syncTimer);
+clearInterval(
+syncTimer
+);
 
 syncTimer=null
+
 }
+
 }
+
+
+/*
+App আবার visible হলে
+সঙ্গে সঙ্গে version check হবে।
+*/
 
 document.addEventListener(
 'visibilitychange',
@@ -3762,15 +5964,22 @@ if(!syncTimer)
 startBackgroundSync()
 
 }
-}
-);
 
-$('kdAmount').addEventListener(
+});
+
+
+/* =========================================================
+INPUTS
+========================================================= */
+
+$('kdAmount')
+.addEventListener(
 'blur',
 function(){
 
 const v=
 number(this.value);
+
 
 if(!v){
 
@@ -3779,18 +5988,23 @@ this.value='';
 calculateProfitPopup();
 
 return
+
 }
+
 
 this.value=
 Number.isInteger(v)
 ?String(v)
 :v.toFixed(3);
 
-calculateProfitPopup()
-}
-);
 
-$('bdAmount').addEventListener(
+calculateProfitPopup()
+
+});
+
+
+$('bdAmount')
+.addEventListener(
 'input',
 function(){
 
@@ -3800,6 +6014,7 @@ this.value.replace(
 ''
 );
 
+
 if(!v){
 
 this.value='';
@@ -3807,7 +6022,9 @@ this.value='';
 calculateProfitPopup();
 
 return
+
 }
+
 
 v=
 v.replace(
@@ -3815,36 +6032,64 @@ v.replace(
 ''
 );
 
+
 this.value=
 Number(v)
 .toLocaleString('en-IN');
 
+
 calculateProfitPopup()
-}
-);
+
+});
+
+
+/* =========================================================
+SAVE TRANSACTION
+========================================================= */
 
 async function saveTransaction(){
 
-if(getRole()!=='admin'){
+if(
+getRole()!=='admin'
+){
 
 showSaveError(
 'Access denied'
 );
 
 return
+
 }
 
-const date=$('date').value,
-agentId=$('agentSelect').value,
-customerId=$('customerSelect').value,
-kd=number($('kdAmount').value),
-bd=number($('bdAmount').value),
-note=$('noteSelect').value;
+
+const date=
+$('date').value;
+
+const agentId=
+$('agentSelect').value;
+
+const customerId=
+$('customerSelect').value;
+
+const kd=
+number(
+$('kdAmount').value
+);
+
+const bd=
+number(
+$('bdAmount').value
+);
+
+const note=
+$('noteSelect').value;
+
 
 if(!date)
 return showSaveError(
 'Date required'
 );
+
 
 if(
 kd>0&&
@@ -3854,6 +6099,7 @@ return showSaveError(
 'KD Amount দিলে Customer নির্বাচন করুন'
 );
 
+
 if(
 bd>0&&
 !agentId
@@ -3861,6 +6107,7 @@ bd>0&&
 return showSaveError(
 'BD Amount দিলে Agent নির্বাচন করুন'
 );
+
 
 if(
 kd<=0&&
@@ -3870,48 +6117,75 @@ return showSaveError(
 'KD অথবা BD Amount দিন'
 );
 
+
 const selectedDate=
 new Date(
 date+'T00:00:00'
 );
 
-const today=new Date();
+const today=
+new Date();
 
 today.setHours(
-0,0,0,0
+0,
+0,
+0,
+0
 );
 
-if(selectedDate>today)
+
+if(
+selectedDate>today
+)
 return showSaveError(
 'Future date দেওয়া যাবে না'
 );
 
+
 const agent=
 agentData.find(
-a=>String(a.agentId)===
+a=>
+String(a.agentId)===
 String(agentId)
 );
 
+
 const customer=
 customerData.find(
-c=>String(c.customerId)===
+c=>
+String(c.customerId)===
 String(customerId)
 );
 
-const button=$('saveBtn'),
-message=$('saveMsg'),
-savedCustomerPageId=
+
+const button=
+$('saveBtn');
+
+const message=
+$('saveMsg');
+
+const savedCustomerPageId=
 $('customerPageSelect').value;
 
-/* Save করার আগে Agent-এর current selection ধরে রাখা */
+
+/*
+Save করার আগে Agent selection রাখা
+*/
+
 const savedAgentId=
 $('agentSelect').value;
 
+
 button.disabled=true;
-button.textContent='Saving...';
+
+button.textContent=
+'Saving...';
 
 message.textContent='';
-message.className='msg';
+
+message.className=
+'msg';
+
 
 try{
 
@@ -3947,6 +6221,7 @@ note
 
 });
 
+
 if(!result.success){
 
 showSaveError(
@@ -3955,7 +6230,9 @@ result.error||
 );
 
 return
+
 }
+
 
 message.className=
 'msg success';
@@ -3963,16 +6240,22 @@ message.className=
 message.textContent=
 'Transaction saved successfully';
 
+
 $('kdAmount').value='';
+
 $('bdAmount').value='';
 
 calculateProfitPopup();
 
-const s=result.data||{};
+
+const s=
+result.data||{};
+
 
 const localTransaction={
 
-date:formatDate(date),
+date:
+formatDate(date),
 
 customerId,
 
@@ -3998,9 +6281,12 @@ agentName:
 agent?.agentName||'',
 
 rowNumber:
-Number(s.rowNumber||0)
+Number(
+s.rowNumber||0
+)
 
 };
+
 
 if(
 localTransaction.rowNumber||
@@ -4008,43 +6294,61 @@ localTransaction.transactionId
 ){
 
 await saveTransactionsLocal(
-[localTransaction]
+[
+localTransaction
+]
 )
+
 }
+
 
 if(
 s.txVersion!==undefined
 )
-txVersion=s.txVersion;
+txVersion=
+s.txVersion;
+
 
 if(
 s.version!==undefined
 )
-dataVersion=s.version;
+dataVersion=
+s.version;
+
 
 if(
 s.customerVersion!==undefined
 )
-customerVersion=s.customerVersion;
+customerVersion=
+s.customerVersion;
+
 
 if(
 s.agentVersion!==undefined
 )
-agentVersion=s.agentVersion;
+agentVersion=
+s.agentVersion;
+
 
 if(
 s.settingsVersion!==undefined
 )
-settingsVersion=s.settingsVersion;
+settingsVersion=
+s.settingsVersion;
+
 
 if(s.rowNumber){
 
 lastTransactionRow=
 Math.max(
 lastTransactionRow,
-Number(s.rowNumber)
+Number(
+s.rowNumber
 )
+)
+
 }
+
 
 if(
 s.due||
@@ -4053,7 +6357,9 @@ s.totalDueKD!==undefined
 ){
 
 applyDueData(s)
+
 }
+
 
 await saveLocalState();
 
@@ -4061,23 +6367,25 @@ await loadTransactionsLocal();
 
 renderLocalData();
 
-/* =========================================================
-   Save করার পর Agent selected থাকবে
-   Customer box খালি থাকবে
-   ========================================================= */
+
+/*
+Agent selection restore
+*/
 
 if(
 savedAgentId&&
 [...$('agentSelect').options]
 .some(
-o=>o.value===savedAgentId
+o=>
+o.value===savedAgentId
 )
 ){
 
 $('agentSelect').value=
 savedAgentId;
 
-$('agentSelect').classList.add(
+$('agentSelect')
+.classList.add(
 'has-value'
 )
 
@@ -4086,25 +6394,36 @@ else{
 
 $('agentSelect').value='';
 
-$('agentSelect').classList.remove(
+$('agentSelect')
+.classList.remove(
 'has-value'
 )
 
 }
 
-/* Customer box সবসময় নতুন transaction-এর জন্য খালি */
+
+/*
+New transaction-এর Customer box খালি
+*/
+
 $('customerSelect').value='';
 
-$('customerSelect').classList.remove(
+$('customerSelect')
+.classList.remove(
 'has-value'
 );
 
-/* Customer page আগের অবস্থায় রাখা */
+
+/*
+Customer page আগের অবস্থায়
+*/
+
 if(
 savedCustomerPageId&&
 [...$('customerPageSelect').options]
 .some(
-o=>o.value===
+o=>
+o.value===
 savedCustomerPageId
 )
 ){
@@ -4112,9 +6431,10 @@ savedCustomerPageId
 $('customerPageSelect').value=
 savedCustomerPageId;
 
+
 if(
 savedCustomerPageId===
-'__ALL_TRANSACTIONS__'
+'ALL_TRANSACTIONS'
 ){
 
 renderAllCustomerTransactions()
@@ -4127,6 +6447,7 @@ findCustomer(
 savedCustomerPageId
 );
 
+
 if(c){
 
 renderCustomerInfo(c);
@@ -4134,21 +6455,36 @@ renderCustomerInfo(c);
 renderCustomerTransactionsLocal(
 c.customerId
 )
+
 }
+
 }
+
 }
+
 
 if(
 $('agentView').value
 )
 agentChanged();
 
+
+/*
+Save হওয়ার পর background sync
+version check করবে।
+*/
+
 syncData();
+
 
 setTimeout(
 ()=>{
+
 message.textContent='';
-message.className='msg'
+
+message.className=
+'msg'
+
 },
 2500
 )
@@ -4169,22 +6505,33 @@ showSaveError(
 finally{
 
 button.disabled=false;
-button.textContent='💾 Save'
+
+button.textContent=
+'💾 Save'
 
 }
+
 }
+
 
 function showSaveError(text){
 
-const m=$('saveMsg');
+const m=
+$('saveMsg');
 
-m.className='msg error';
-m.textContent=text
+m.className=
+'msg error';
+
+m.textContent=
+text
+
 }
+
 
 function formatDate(value){
 
-const p=value.split('-');
+const p=
+value.split('-');
 
 const m=[
 'Jan','Feb','Mar','Apr',
@@ -4192,24 +6539,40 @@ const m=[
 'Sep','Oct','Nov','Dec'
 ];
 
+
 return(
 p[2]+'-'+
-m[Number(p[1])-1]+'-'+
+m[
+Number(p[1])-1
+]+'-'+
 p[0]
 )
+
 }
 
-function addEmpty(parent,text){
+
+function addEmpty(
+parent,
+text
+){
 
 const box=
 document.createElement('div');
 
-box.className='empty';
+box.className=
+'empty';
 
-box.textContent=text;
+box.textContent=
+text;
 
 parent.appendChild(box)
+
 }
+
+
+/* =========================================================
+SECURITY / HTML ESCAPE
+========================================================= */
 
 function escapeHTML(value){
 
@@ -4219,12 +6582,29 @@ value===undefined
 ?''
 :value
 )
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;')
-.replace(/'/g,'&#039;')
+.replace(
+/&/g,
+'&amp;'
+)
+.replace(
+/</g,
+'&lt;'
+)
+.replace(
+/>/g,
+'&gt;'
+)
+.replace(
+/"/g,
+'&quot;'
+)
+.replace(
+/'/g,
+'&#39;'
+)
+
 }
+
 
 function showInitialDataError(message){
 
@@ -4233,31 +6613,44 @@ $('customerList')&&
 !dataLoaded
 ){
 
-$('customerList').innerHTML=
+$('customerList')
+.innerHTML=
 '<div class="empty">'+
 escapeHTML(
 message||
 'Unable to load data'
 )+
 '</div>'
+
 }
+
 }
+
+
+/* =========================================================
+CUSTOMER EVENTS
+========================================================= */
 
 $('customerPageSelect')
 .addEventListener(
 'change',
 function(){
 
-const id=this.value;
+const id=
+this.value;
 
-const list=$('customerList');
+const list=
+$('customerList');
+
 
 if(!id){
 
-$('selectedCustomerInfo').innerHTML=
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-$('selectedDueAmount').innerHTML=
+$('selectedDueAmount')
+.innerHTML=
 '0.000 <span>KD</span>';
 
 updateTotalDue();
@@ -4266,48 +6659,61 @@ list.innerHTML=
 '<div class="empty">Select a customer</div>';
 
 return
+
 }
 
+
 if(
-id==='__ALL_TRANSACTIONS__'
+id==='ALL_TRANSACTIONS'
 ){
 
-$('selectedCustomerInfo').innerHTML=
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-name">All Transaction</div>'+
 '<div class="selected-phone">All Active Customers</div>';
 
-$('selectedDueAmount').innerHTML='All';
+$('selectedDueAmount')
+.innerHTML='All';
 
 updateTotalDue();
 
 renderAllCustomerTransactions();
 
 return
+
 }
 
-const c=findCustomer(id);
+
+const c=
+findCustomer(id);
+
 
 if(!c){
 
-$('selectedCustomerInfo').innerHTML=
+$('selectedCustomerInfo')
+.innerHTML=
 '<div class="selected-empty">Customer not found</div>';
 
-$('selectedDueAmount').innerHTML=
+$('selectedDueAmount')
+.innerHTML=
 '0.000 <span>KD</span>';
 
 list.innerHTML=
 '<div class="empty">Customer not found</div>';
 
 return
+
 }
+
 
 renderCustomerInfo(c);
 
 renderCustomerTransactionsLocal(
 c.customerId
 )
-}
-);
+
+});
+
 
 $('customerSearch')
 .addEventListener(
@@ -4319,7 +6725,9 @@ $('customerPageSelect').value;
 
 updateCustomerDropdown();
 
-const s=$('customerPageSelect');
+const s=
+$('customerPageSelect');
+
 
 if(
 id&&
@@ -4327,10 +6735,13 @@ id&&
 o=>o.value===id
 )
 ){
+
 s.value=id
+
 }
-}
-);
+
+});
+
 
 $('customerTransactionDate')
 .addEventListener(
@@ -4339,12 +6750,19 @@ function(){
 
 if(
 $('customerPageSelect').value===
-'__ALL_TRANSACTIONS__'
+'ALL_TRANSACTIONS'
 ){
+
 renderAllCustomerTransactions()
+
 }
-}
-);
+
+});
+
+
+/* =========================================================
+KEYBOARD
+========================================================= */
 
 $('bdAmount')
 .addEventListener(
@@ -4361,7 +6779,9 @@ e.preventDefault();
 saveTransaction()
 
 }
+
 });
+
 
 $('password')
 .addEventListener(
@@ -4371,8 +6791,12 @@ e=>{
 if(e.key==='Enter')
 login()
 
-}
-);
+});
+
+
+/* =========================================================
+SELECT STYLE
+========================================================= */
 
 $('agentSelect')
 .addEventListener(
@@ -4383,8 +6807,9 @@ this.classList.toggle(
 'has-value',
 this.value!==''
 )
-}
-);
+
+});
+
 
 $('customerSelect')
 .addEventListener(
@@ -4395,24 +6820,40 @@ this.classList.toggle(
 'has-value',
 this.value!==''
 )
-}
-);
+
+});
+
+
+/* =========================================================
+SAFE REFRESH SETUP
+========================================================= */
 
 setupSafeSelectRefresh();
+
+
+/* =========================================================
+RESTORE LOGIN
+========================================================= */
 
 restoreLogin();
 
 </script>
 
+
 <script>
-if('serviceWorker' in navigator){
+
+if(
+'serviceWorker' in navigator
+){
 
 window.addEventListener(
 'load',
 ()=>{
 
 navigator.serviceWorker
-.register('./service-worker.js')
+.register(
+'./service-worker.js'
+)
 .then(
 ()=>{
 console.log(
@@ -4430,8 +6871,10 @@ err
 
 }
 )
+
 }
+
 </script>
 
 </body>
-  </html>
+</html>
