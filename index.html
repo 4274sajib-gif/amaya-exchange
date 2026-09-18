@@ -962,7 +962,7 @@ type="text"
 inputmode="numeric"
 autocomplete="off"
 placeholder="💱 Rate Check"
-oninput="calculateHeaderRate()">
+oninput="calculateHeaderRate">
 
 </div>
 
@@ -1913,10 +1913,44 @@ await getMeta(
 )||0;
 
 
+/*
+Saved Settings notes load করা হচ্ছে।
+*/
+
+const savedNotes=
+await getMeta(
+'notesData',
+null
+);
+
+if(
+savedNotes&&
+typeof savedNotes==='object'
+){
+
+notesData={
+dueNotes:
+Array.isArray(savedNotes.dueNotes)&&
+savedNotes.dueNotes.length
+?savedNotes.dueNotes
+:DUE_NOTES,
+
+paymentNotes:
+Array.isArray(savedNotes.paymentNotes)&&
+savedNotes.paymentNotes.length
+?savedNotes.paymentNotes
+:PAYMENT_NOTES
+};
+
+}
+else{
+
 notesData={
 dueNotes:DUE_NOTES,
 paymentNotes:PAYMENT_NOTES
 };
+
+}
 
 notesLoaded=true;
 
@@ -2062,7 +2096,8 @@ allTransactionsData.forEach(t=>{
 
 if(
 String(t.customerId||'').trim()!==id
-)return;
+)
+return;
 
 const kd=
 number(
@@ -2358,20 +2393,17 @@ getCustomerDue(c)>0
 const name=
 String(
 c.customerName||''
-)
-.toLowerCase();
+).toLowerCase();
 
 const phone=
 String(
 c.phone||''
-)
-.toLowerCase();
+).toLowerCase();
 
 const id=
 String(
 c.customerId||''
-)
-.toLowerCase();
+).toLowerCase();
 
 if(
 search&&
@@ -2608,8 +2640,8 @@ const v=s.value;
 
 setNotes(
 transactionType==='বাকি'
-?DUE_NOTES
-:PAYMENT_NOTES
+?notesData.dueNotes
+:notesData.paymentNotes
 );
 
 if(
@@ -2703,8 +2735,8 @@ updateCustomerDropdown();
 
 setNotes(
 transactionType==='বাকি'
-?DUE_NOTES
-:PAYMENT_NOTES
+?notesData.dueNotes
+:notesData.paymentNotes
 )
 
 }
@@ -2742,8 +2774,8 @@ updateTotalDue();
 
 setNotes(
 transactionType==='বাকি'
-?DUE_NOTES
-:PAYMENT_NOTES
+?notesData.dueNotes
+:notesData.paymentNotes
 );
 
 applyRoleAccess(
@@ -2857,8 +2889,8 @@ type==='পেমেন্ট'
 
 setNotes(
 type==='বাকি'
-?DUE_NOTES
-:PAYMENT_NOTES
+?notesData.dueNotes
+:notesData.paymentNotes
 )
 
 }
@@ -2876,7 +2908,8 @@ await dbClear(
 
 if(
 !Array.isArray(items)
-)return;
+)
+return;
 
 const t=
 db.transaction(
@@ -3023,6 +3056,7 @@ t.onerror=()=>j(t.error)
 
 }
 )
+
 
 }
 
@@ -5514,7 +5548,23 @@ return r.json()
 }
 
 
-async function postAPI(data){
+async function postAPI(
+data,
+timeout=15000
+){
+
+const controller=
+new AbortController();
+
+const timer=
+setTimeout(
+()=>{
+controller.abort()
+},
+timeout
+);
+
+try{
 
 const r=
 await fetch(
@@ -5525,11 +5575,462 @@ headers:{
 'Content-Type':
 'text/plain;charset=utf-8'
 },
-body:JSON.stringify(data)
+body:JSON.stringify(data),
+cache:'no-store',
+signal:controller.signal
 }
 );
 
-return r.json()
+const text=
+await r.text();
+
+if(!text){
+
+throw new Error(
+'Empty server response'
+);
+
+}
+
+try{
+
+return JSON.parse(text);
+
+}
+catch(e){
+
+throw new Error(
+'Invalid server response'
+);
+
+}
+
+}
+finally{
+
+clearTimeout(timer);
+
+}
+
+}
+
+
+/* =========================================================
+SAFE TRANSACTION HELPERS
+========================================================= */
+
+function createTransactionId(){
+
+return(
+'TXN'+
+Date.now().toString(36).toUpperCase()+
+'-'+
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase()
+);
+
+}
+
+
+function sleep(ms){
+
+return new Promise(
+resolve=>
+setTimeout(
+resolve,
+ms
+)
+);
+
+}
+
+
+async function verifySavedTransaction(
+transactionId
+){
+
+if(!transactionId)
+return null;
+
+
+try{
+
+const result=
+await getAPI(
+'verifyTransaction',
+{
+transactionId
+}
+);
+
+
+if(
+!result||
+!result.success
+){
+
+return null
+
+}
+
+
+const data=
+result.data||{};
+
+
+if(
+data.found&&
+data.transaction
+){
+
+return data.transaction
+
+}
+
+
+return null
+
+}
+catch(e){
+
+console.error(
+'Transaction verify error:',
+e
+);
+
+return null
+
+}
+
+}
+
+
+async function verifyWithRetry(
+transactionId
+){
+
+let tx=
+await verifySavedTransaction(
+transactionId
+);
+
+if(tx)
+return tx;
+
+
+await sleep(800);
+
+
+tx=
+await verifySavedTransaction(
+transactionId
+);
+
+if(tx)
+return tx;
+
+
+return null
+
+}
+
+
+function buildLocalTransaction(
+source,
+fallback={}
+){
+
+const t=
+source||{};
+
+
+return{
+
+date:
+t.date||
+fallback.date||
+'',
+
+customerId:
+t.customerId||
+fallback.customerId||
+'',
+
+customerName:
+t.customerName||
+fallback.customerName||
+'',
+
+kdAmount:
+number(
+t.kdAmount!==undefined
+?t.kdAmount
+:fallback.kdAmount||0
+),
+
+bdAmount:
+number(
+t.bdAmount!==undefined
+?t.bdAmount
+:fallback.bdAmount||0
+),
+
+type:
+t.type||
+fallback.type||
+'',
+
+note:
+t.note||
+fallback.note||
+'',
+
+transactionId:
+t.transactionId||
+fallback.transactionId||
+'',
+
+timestamp:
+t.timestamp||
+fallback.timestamp||
+new Date().toISOString(),
+
+agentName:
+t.agentName||
+fallback.agentName||
+'',
+
+rowNumber:
+Number(
+t.rowNumber||
+fallback.rowNumber||
+0
+)||0
+
+}
+
+}
+
+
+/* =========================================================
+SAFE POST TRANSACTION
+
+Same transactionId is used for every attempt.
+========================================================= */
+
+async function safePostTransaction(
+payload
+){
+
+let lastResult=null;
+
+
+/*
+ATTEMPT 1
+*/
+
+try{
+
+lastResult=
+await postAPI(
+payload,
+15000
+);
+
+}
+catch(e){
+
+console.warn(
+'Transaction POST attempt 1 failed:',
+e
+);
+
+}
+
+
+/*
+Immediate success
+*/
+
+if(
+lastResult&&
+lastResult.success
+){
+
+return{
+success:true,
+result:lastResult,
+transaction:null
+};
+
+}
+
+
+/*
+Verify after failed / uncertain response
+*/
+
+let verified=
+await verifyWithRetry(
+payload.transactionId
+);
+
+if(verified){
+
+return{
+success:true,
+result:lastResult,
+transaction:verified,
+verified:true
+};
+
+}
+
+
+/*
+ATTEMPT 2
+Same transactionId.
+*/
+
+await sleep(500);
+
+
+try{
+
+lastResult=
+await postAPI(
+payload,
+15000
+);
+
+}
+catch(e){
+
+console.warn(
+'Transaction POST attempt 2 failed:',
+e
+);
+
+}
+
+
+/*
+Retry success
+*/
+
+if(
+lastResult&&
+lastResult.success
+){
+
+return{
+success:true,
+result:lastResult,
+transaction:null
+};
+
+}
+
+
+/*
+Verify again
+*/
+
+verified=
+await verifyWithRetry(
+payload.transactionId
+);
+
+if(verified){
+
+return{
+success:true,
+result:lastResult,
+transaction:verified,
+verified:true
+};
+
+}
+
+
+/*
+ATTEMPT 3
+Same transactionId.
+*/
+
+await sleep(700);
+
+
+try{
+
+lastResult=
+await postAPI(
+payload,
+15000
+);
+
+}
+catch(e){
+
+console.warn(
+'Transaction POST attempt 3 failed:',
+e
+);
+
+}
+
+
+/*
+Third attempt success
+*/
+
+if(
+lastResult&&
+lastResult.success
+){
+
+return{
+success:true,
+result:lastResult,
+transaction:null
+};
+
+}
+
+
+/*
+Final verify
+*/
+
+verified=
+await verifyWithRetry(
+payload.transactionId
+);
+
+if(verified){
+
+return{
+success:true,
+result:lastResult,
+transaction:verified,
+verified:true
+};
+
+}
+
+
+/*
+Not found.
+*/
+
+return{
+success:false,
+result:lastResult,
+transaction:null,
+verified:false
+};
 
 }
 
@@ -5573,9 +6074,22 @@ allTransactionsData
 );
 
 
+/*
+Backend Settings notes ব্যবহার করা হচ্ছে।
+*/
+
 notesData={
-dueNotes:DUE_NOTES,
-paymentNotes:PAYMENT_NOTES
+dueNotes:
+Array.isArray(data.dueNotes)&&
+data.dueNotes.length
+?data.dueNotes
+:DUE_NOTES,
+
+paymentNotes:
+Array.isArray(data.paymentNotes)&&
+data.paymentNotes.length
+?data.paymentNotes
+:PAYMENT_NOTES
 };
 
 notesLoaded=true;
@@ -5716,21 +6230,6 @@ return bootstrapPromise
 FAST VERSION CHECK
 ========================================================= */
 
-/*
-IMPORTANT:
-
-আগের version-এর checkSheetChanges()
-প্রতি ৫ সেকেন্ডে ৩টি বড় data request করত।
-
-এখন শুধু version endpoint check হবে।
-
-তাই Sheet-এ পরিবর্তন না হলে:
-- Transactions download হবে না
-- Customers download হবে না
-- Agents download হবে না
-- IndexedDB cache ব্যবহার হবে
-*/
-
 async function checkSheetChanges(){
 
 if(!currentUser)
@@ -5800,11 +6299,6 @@ try{
 await openDB();
 
 
-/*
-প্রথমবার local version না থাকলে
-full bootstrap হবে।
-*/
-
 if(
 force||
 (
@@ -5836,7 +6330,7 @@ return result
 
 
 /*
-প্রতি ৫ সেকেন্ডে শুধু version check।
+শুধু version check।
 */
 
 const changed=
@@ -5848,13 +6342,6 @@ if(changed){
 const result=
 await initialBootstrap();
 
-
-/*
-Sheet থেকে transaction
-add/edit/delete হলে
-নতুন local data অনুযায়ী
-Agent page refresh
-*/
 
 if(
 getRole()==='agent'&&
@@ -5942,11 +6429,6 @@ syncTimer=null
 
 }
 
-
-/*
-App আবার visible হলে
-সঙ্গে সঙ্গে version check হবে।
-*/
 
 document.addEventListener(
 'visibilitychange',
@@ -6045,6 +6527,8 @@ calculateProfitPopup()
 
 /* =========================================================
 SAVE TRANSACTION
+
+SAFE VERSION
 ========================================================= */
 
 async function saveTransaction(){
@@ -6158,6 +6642,30 @@ String(customerId)
 );
 
 
+if(
+kd>0&&
+!customer
+){
+
+return showSaveError(
+'Customer not found'
+);
+
+}
+
+
+if(
+bd>0&&
+!agent
+){
+
+return showSaveError(
+'Agent not found'
+);
+
+}
+
+
 const button=
 $('saveBtn');
 
@@ -6169,11 +6677,59 @@ $('customerPageSelect').value;
 
 
 /*
-Save করার আগে Agent selection রাখা
+Selected agent preserve
 */
 
 const savedAgentId=
 $('agentSelect').value;
+
+
+/*
+IMPORTANT:
+Generate BEFORE POST.
+*/
+
+const transactionId=
+createTransactionId();
+
+
+const formattedDate=
+formatDate(date);
+
+
+/*
+Fallback local transaction
+*/
+
+const fallbackTransaction={
+
+date:
+formattedDate,
+
+customerId,
+
+customerName:
+customer?.customerName||'',
+
+kdAmount:kd,
+
+bdAmount:bd,
+
+type:transactionType,
+
+note,
+
+transactionId,
+
+timestamp:
+new Date().toISOString(),
+
+agentName:
+agent?.agentName||'',
+
+rowNumber:0
+
+};
 
 
 button.disabled=true;
@@ -6189,8 +6745,13 @@ message.className=
 
 try{
 
-const result=
-await postAPI({
+/*
+=========================================================
+PAYLOAD
+=========================================================
+*/
+
+const payload={
 
 action:'addTransaction',
 
@@ -6201,7 +6762,7 @@ role:
 currentUser?.role||'',
 
 date:
-formatDate(date),
+formattedDate,
 
 customerId,
 
@@ -6210,57 +6771,6 @@ customer?.customerName||'',
 
 agentName:
 agent?.agentName||'',
-
-kdAmount:kd,
-
-bdAmount:bd,
-
-type:transactionType,
-
-note
-
-});
-
-
-if(!result.success){
-
-showSaveError(
-result.error||
-'Save failed'
-);
-
-return
-
-}
-
-
-message.className=
-'msg success';
-
-message.textContent=
-'Transaction saved successfully';
-
-
-$('kdAmount').value='';
-
-$('bdAmount').value='';
-
-calculateProfitPopup();
-
-
-const s=
-result.data||{};
-
-
-const localTransaction={
-
-date:
-formatDate(date),
-
-customerId,
-
-customerName:
-customer?.customerName||'',
 
 kdAmount:kd,
 
@@ -6270,85 +6780,196 @@ type:transactionType,
 
 note,
 
+/*
+Same ID for all retries.
+*/
+
+transactionId
+
+};
+
+
+/*
+=========================================================
+SAFE SAVE
+=========================================================
+*/
+
+const safeResult=
+await safePostTransaction(
+payload
+);
+
+
+if(
+!safeResult.success
+){
+
+showSaveError(
+'Transaction save নিশ্চিত করা যায়নি। আবার Save করুন।'
+);
+
+return
+
+}
+
+
+const result=
+safeResult.result||{};
+
+const s=
+result.data||{};
+
+
+/*
+Server verify response থাকলে
+সেটাই priority।
+*/
+
+const serverTransaction=
+safeResult.transaction||
+(
+s.transaction&&
+typeof s.transaction==='object'
+?s.transaction
+:null
+);
+
+
+/*
+=========================================================
+FINAL LOCAL TRANSACTION
+=========================================================
+*/
+
+const localTransaction=
+buildLocalTransaction(
+
+serverTransaction||
+{
+date:
+s.date||
+formattedDate,
+
+customerId:
+s.customerId||
+customerId,
+
+customerName:
+s.customerName||
+customer?.customerName||
+'',
+
+kdAmount:
+s.kdAmount!==undefined
+?s.kdAmount
+:kd,
+
+bdAmount:
+s.bdAmount!==undefined
+?s.bdAmount
+:bd,
+
+type:
+s.type||
+transactionType,
+
+note:
+s.note||
+note,
+
 transactionId:
-s.transactionId||'',
+s.transactionId||
+transactionId,
 
 timestamp:
 s.timestamp||
 new Date().toISOString(),
 
 agentName:
-agent?.agentName||'',
+s.agentName||
+agent?.agentName||
+'',
 
 rowNumber:
-Number(
 s.rowNumber||0
-)
+},
 
-};
+fallbackTransaction
+);
 
 
-if(
-localTransaction.rowNumber||
-localTransaction.transactionId
-){
+/*
+=========================================================
+SUCCESS
+=========================================================
+*/
+
+message.className=
+'msg success';
+
+message.textContent=
+'Transaction saved successfully';
+
+
+/*
+=========================================================
+CLEAR AMOUNT
+=========================================================
+*/
+
+$('kdAmount').value='';
+
+$('bdAmount').value='';
+
+calculateProfitPopup();
+
+
+/*
+=========================================================
+LOCAL DB
+=========================================================
+*/
 
 await saveTransactionsLocal(
 [
 localTransaction
 ]
-)
+);
+
+
+/*
+Memory-তে duplicate না থাকলে add।
+*/
+
+const localKey=
+transactionKey(
+localTransaction
+);
+
+
+const duplicateLocal=
+allTransactionsData.some(
+t=>
+transactionKey(t)===
+localKey
+);
+
+
+if(!duplicateLocal){
+
+allTransactionsData.push(
+localTransaction
+);
 
 }
 
 
-if(
-s.txVersion!==undefined
-)
-txVersion=
-s.txVersion;
-
-
-if(
-s.version!==undefined
-)
-dataVersion=
-s.version;
-
-
-if(
-s.customerVersion!==undefined
-)
-customerVersion=
-s.customerVersion;
-
-
-if(
-s.agentVersion!==undefined
-)
-agentVersion=
-s.agentVersion;
-
-
-if(
-s.settingsVersion!==undefined
-)
-settingsVersion=
-s.settingsVersion;
-
-
-if(s.rowNumber){
-
-lastTransactionRow=
-Math.max(
-lastTransactionRow,
-Number(
-s.rowNumber
-)
-)
-
-}
-
+/*
+=========================================================
+DUE UPDATE
+=========================================================
+*/
 
 if(
 s.due||
@@ -6356,20 +6977,102 @@ s.customerDue||
 s.totalDueKD!==undefined
 ){
 
-applyDueData(s)
+applyDueData(s);
+
+}
+else{
+
+customerData.forEach(
+c=>{
+
+c.totalDueKD=
+calculateCustomerDueFromTransactions(
+c.customerId
+);
+
+}
+);
+
+updateTotalDue();
 
 }
 
 
+/*
+=========================================================
+VERSION
+=========================================================
+*/
+
+if(
+s.version!==undefined
+){
+
+dataVersion=
+String(
+s.version
+);
+
+}
+
+
+if(
+result.data?.version!==undefined
+){
+
+dataVersion=
+String(
+result.data.version
+);
+
+}
+
+
+/*
+=========================================================
+ROW NUMBER
+=========================================================
+*/
+
+if(
+localTransaction.rowNumber
+){
+
+lastTransactionRow=
+Math.max(
+lastTransactionRow,
+Number(
+localTransaction.rowNumber
+)
+);
+
+}
+
+
+/*
+=========================================================
+LOCAL STATE
+=========================================================
+*/
+
 await saveLocalState();
 
-await loadTransactionsLocal();
+
+/*
+=========================================================
+IMMEDIATE RENDER
+
+NO BOOTSTRAP
+=========================================================
+*/
 
 renderLocalData();
 
 
 /*
-Agent selection restore
+=========================================================
+RESTORE AGENT
+=========================================================
 */
 
 if(
@@ -6387,7 +7090,7 @@ savedAgentId;
 $('agentSelect')
 .classList.add(
 'has-value'
-)
+);
 
 }
 else{
@@ -6397,13 +7100,15 @@ $('agentSelect').value='';
 $('agentSelect')
 .classList.remove(
 'has-value'
-)
+);
 
 }
 
 
 /*
-New transaction-এর Customer box খালি
+=========================================================
+CLEAR TRANSACTION CUSTOMER
+=========================================================
 */
 
 $('customerSelect').value='';
@@ -6415,7 +7120,9 @@ $('customerSelect')
 
 
 /*
-Customer page আগের অবস্থায়
+=========================================================
+RESTORE CUSTOMER PAGE
+=========================================================
 */
 
 if(
@@ -6463,19 +7170,44 @@ c.customerId
 }
 
 
+/*
+=========================================================
+AGENT REFRESH
+=========================================================
+*/
+
 if(
 $('agentView').value
-)
+){
+
 agentChanged();
+
+}
 
 
 /*
-Save হওয়ার পর background sync
-version check করবে।
+=========================================================
+BACKGROUND SYNC
+
+No immediate bootstrap.
+=========================================================
 */
+
+setTimeout(
+()=>{
 
 syncData();
 
+},
+100
+);
+
+
+/*
+=========================================================
+CLEAR SUCCESS
+=========================================================
+*/
 
 setTimeout(
 ()=>{
@@ -6483,11 +7215,12 @@ setTimeout(
 message.textContent='';
 
 message.className=
-'msg'
+'msg';
 
 },
 2500
-)
+);
+
 
 }
 catch(e){
@@ -6497,9 +7230,122 @@ console.error(
 e
 );
 
+
+/*
+=========================================================
+FINAL VERIFY
+
+Connection error দেখানোর আগে
+transaction verify করা হবে।
+=========================================================
+*/
+
+try{
+
+const verified=
+await verifyWithRetry(
+transactionId
+);
+
+
+if(verified){
+
+const localTransaction=
+buildLocalTransaction(
+verified,
+fallbackTransaction
+);
+
+
+await saveTransactionsLocal(
+[
+localTransaction
+]
+);
+
+
+const exists=
+allTransactionsData.some(
+t=>
+transactionKey(t)===
+transactionKey(localTransaction)
+);
+
+
+if(!exists){
+
+allTransactionsData.push(
+localTransaction
+);
+
+}
+
+
+sortTransactionsNewestFirst(
+allTransactionsData
+);
+
+
+customerData.forEach(
+c=>{
+
+c.totalDueKD=
+calculateCustomerDueFromTransactions(
+c.customerId
+);
+
+}
+);
+
+
+updateTotalDue();
+
+await saveLocalState();
+
+renderLocalData();
+
+
+message.className=
+'msg success';
+
+message.textContent=
+'Transaction saved successfully';
+
+
+setTimeout(
+()=>{
+
+message.textContent='';
+
+message.className=
+'msg';
+
+},
+2500
+);
+
+return
+
+}
+
+}
+catch(verifyError){
+
+console.error(
+'Final verify error:',
+verifyError
+);
+
+}
+
+
+/*
+শুধু তখনই failure।
+*/
+
 showSaveError(
-'Connection error'
-)
+'Transaction save নিশ্চিত করা যায়নি। আবার চেষ্টা করুন।'
+);
 
 }
 finally{
@@ -6507,7 +7353,7 @@ finally{
 button.disabled=false;
 
 button.textContent=
-'💾 Save'
+'💾 Save';
 
 }
 
