@@ -2293,6 +2293,15 @@ o=>o.value===oldValue
 ){
 select.value=oldValue
 }
+else{
+
+/*
+Default: All Transaction
+*/
+
+select.value='ALL_TRANSACTIONS';
+
+}
 
 }
 
@@ -2541,8 +2550,39 @@ document.querySelector(
 '.panel.active'
 )?.id||'';
 
-const selected=
+/*
+=========================================================
+Customer dropdown default: All Transaction
+
+প্রথমে existing value রাখি।
+না থাকলে 'ALL_TRANSACTIONS' সেট করি।
+=========================================================
+*/
+
+let selected=
 $('customerPageSelect').value;
+
+if(
+!selected||
+![...$('customerPageSelect').options].some(
+o=>o.value===selected
+)
+){
+
+const allOption=
+[...$('customerPageSelect').options]
+.find(o=>o.value==='ALL_TRANSACTIONS');
+
+if(allOption){
+
+$('customerPageSelect').value=
+'ALL_TRANSACTIONS';
+
+selected='ALL_TRANSACTIONS';
+
+}
+
+}
 
 sortCustomersAZ(customerData);
 
@@ -2590,7 +2630,6 @@ agentChanged()
 }
 
 }
-
 
 /* =========================================================
    SET NOTES / TYPE
@@ -4311,7 +4350,46 @@ setCustomerToday();
 setupAgentDateFilters();
 
 applyRoleAccess();
+/*
+=========================================================
+Customer page default: All Transaction
+=========================================================
+*/
 
+if(getRole()==='admin'){
+
+setTimeout(()=>{
+
+const s=$('customerPageSelect');
+
+if(s&&!s.value){
+s.value='ALL_TRANSACTIONS';
+}
+
+const info=$('selectedCustomerInfo');
+
+if(
+info&&
+info.querySelector('.selected-empty')
+){
+
+info.innerHTML=
+'<div class="selected-name">All Transaction</div>'+
+'<div class="selected-phone">All Active Customers</div>';
+
+const due=$('selectedDueAmount');
+
+if(due){
+due.innerHTML='All';
+}
+
+renderAllCustomerTransactions();
+
+}
+
+},500);
+
+}
 
 try{
 
