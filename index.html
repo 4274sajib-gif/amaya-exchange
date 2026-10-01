@@ -66,7 +66,7 @@ position:relative;
 
 .header{
 background:#fff;
-padding:12px 14px;
+padding:8px 14px 10px;
 border-bottom:1px solid #e7e9ed;
 position:sticky;
 top:0;
@@ -87,7 +87,7 @@ display:flex;
 align-items:center;
 justify-content:flex-start;
 gap:8px;
-margin-top:4px;
+margin-top:-3px;
 min-width:0
 }
 
@@ -109,6 +109,7 @@ flex-shrink:0
 font-size:10px;
 color:#858e9d;
 margin-top:0;
+line-height:1;
 white-space:nowrap;
 overflow:hidden;
 text-overflow:ellipsis;
@@ -143,14 +144,14 @@ flex-shrink:0
 
 .header-rate-input{
 width:100%;
-height:36px;
+height:30px;
 border:1px solid #dfe3e9;
-border-radius:18px;
+border-radius:15px;
 background:#EFF6FF;
 padding:0 12px;
 outline:0;
 color:#172033;
-font-size:12px;
+font-size:11px;
 font-weight:600
 }
 
@@ -281,7 +282,7 @@ color:#fff
 }
 
 .content{
-padding:10px 14px 25px
+padding:10px 14px 5px
 }
 
 .panel{
@@ -458,7 +459,7 @@ transform:rotate(45deg)
 background:#fff;
 border-radius:14px;
 padding:10px;
-margin-bottom:9px;
+margin-bottom:6px;
 box-shadow:0 2px 10px rgba(0,0,0,.035)
 }
 
@@ -600,8 +601,7 @@ gap:6px
 }
 
 #customerList{
-max-height:calc(100vh - 300px);
-max-height:calc(100dvh - 300px);
+/* max-height সরানো হলো — JS dynamic সেট করবে */
 overflow-y:auto;
 -webkit-overflow-scrolling:touch;
 padding-right:1px
@@ -747,8 +747,6 @@ text-align:right
 }
 
 #agentList{
-max-height:calc(100vh - 250px);
-max-height:calc(100dvh - 250px);
 overflow-y:auto;
 -webkit-overflow-scrolling:touch;
 padding-right:1px
@@ -815,7 +813,7 @@ font-size:11px
 @media(max-width:400px){
 
 .header{
-padding:11px 12px
+padding:8px 12px 9px
 }
 
 .logo{
@@ -839,7 +837,7 @@ width:115px
 .header-rate-input{
 font-size:11px;
 padding:0 10px;
-height:34px
+height:28px
 }
 
 .logout{
@@ -908,7 +906,7 @@ gap:5px
 }
 
 .header{
-padding:10px 10px
+padding:7px 10px 8px
 }
 
 .logo{
@@ -934,7 +932,7 @@ width:105px
 }
 
 .header-rate-input{
-height:32px;
+height:26px;
 font-size:10px;
 padding:0 9px
 }
@@ -2479,6 +2477,9 @@ $('agentView').value
 agentChanged()
 }
 
+/* List height adjust */
+setTimeout(adjustListHeights, 50);
+
 }
 
 
@@ -2723,7 +2724,9 @@ transactions.forEach(
 t=>f.appendChild(createTransactionCard(t,false))
 );
 
-list.appendChild(f)
+list.appendChild(f);
+
+setTimeout(adjustListHeights, 30);
 
 }
 
@@ -2761,7 +2764,9 @@ filtered.forEach(
 t=>f.appendChild(createTransactionCard(t,true))
 );
 
-list.appendChild(f)
+list.appendChild(f);
+
+setTimeout(adjustListHeights, 30);
 
 }
 
@@ -3220,6 +3225,7 @@ const list=$('agentList');
 if(!currentAgentTransactions.length){
 calculateAgentSummary();
 list.innerHTML='<div class="empty">No BD transactions found</div>';
+setTimeout(adjustListHeights, 30);
 return
 }
 
@@ -3238,6 +3244,7 @@ calculateAgentSummary();
 
 if(!filtered.length){
 list.innerHTML='<div class="empty">No transaction for this month</div>';
+setTimeout(adjustListHeights, 30);
 return
 }
 
@@ -3287,7 +3294,9 @@ f.appendChild(txn)
 
 });
 
-list.appendChild(f)
+list.appendChild(f);
+
+setTimeout(adjustListHeights, 30);
 
 }
 
@@ -3344,6 +3353,97 @@ t.bdAmount!==undefined&&t.bdAmount!==''
 ?t.amountBD
 :t.bd
 )
+}
+
+
+/* =========================================================
+   DYNAMIC LIST HEIGHT
+========================================================= */
+
+function adjustListHeights(){
+
+const app = document.querySelector('.app');
+if(!app) return;
+
+const appBottom = app.getBoundingClientRect().bottom;
+
+/* ---------- Customer list ---------- */
+const customerPanel = $('panelCustomer');
+const customerList = $('customerList');
+
+if(
+customerPanel &&
+customerList &&
+customerPanel.classList.contains('active')
+){
+
+const filterCard =
+customerPanel.querySelector('.customer-filter-card');
+
+const filterBottom = filterCard
+? filterCard.getBoundingClientRect().bottom
+: customerPanel.getBoundingClientRect().top;
+
+/* List এর নিচে একটু padding রাখি */
+const bottomPadding = 8;
+
+const available = appBottom - filterBottom - bottomPadding - 6;
+
+if(available > 100){
+customerList.style.maxHeight = available + 'px';
+}
+else{
+customerList.style.maxHeight = '';
+}
+
+}
+
+/* ---------- Agent list ---------- */
+const agentPanel = $('panelAgent');
+const agentList = $('agentList');
+
+if(
+agentPanel &&
+agentList &&
+agentPanel.classList.contains('active')
+){
+
+const summaryBox =
+agentPanel.querySelector('.agent-summary');
+
+const summaryBottom = summaryBox
+? summaryBox.getBoundingClientRect().bottom
+: agentPanel.getBoundingClientRect().top;
+
+const bottomPadding = 8;
+
+const available = appBottom - summaryBottom - bottomPadding - 6;
+
+if(available > 100){
+agentList.style.maxHeight = available + 'px';
+}
+else{
+agentList.style.maxHeight = '';
+}
+
+}
+
+}
+
+
+/* Resize / orientation change এ আবার হিসাব করি */
+window.addEventListener('resize', ()=>{
+adjustListHeights();
+});
+
+window.addEventListener('orientationchange', ()=>{
+setTimeout(adjustListHeights, 250);
+});
+
+if(window.visualViewport){
+window.visualViewport.addEventListener('resize', ()=>{
+adjustListHeights();
+});
 }
 
 
@@ -3445,6 +3545,9 @@ if(button&&!button.classList.contains('hidden')){
 button.classList.add('active')
 }
 
+/* Tab switch হলে list height re-calculate */
+setTimeout(adjustListHeights, 50);
+
 }
 
 
@@ -3532,6 +3635,9 @@ s.value=id;
 s.disabled=true;
 
 if(dataLoaded&&id)agentChanged();
+
+setTimeout(adjustListHeights, 50);
+
 return
 }
 
@@ -3567,7 +3673,7 @@ setAgentNumbers(0,0);
 $('agentList').innerHTML=
 '<div class="empty">Select an agent</div>';
 
-openTab('customer',customerTab)
+openTab('customer',customerTab);
 
 }
 
@@ -3729,6 +3835,10 @@ if(!dataLoaded){
 $('customerList').innerHTML=
 '<div class="loading">Loading data...</div>'
 }
+
+/* Initial height calculation */
+setTimeout(adjustListHeights, 300);
+setTimeout(adjustListHeights, 800);
 
 startBackgroundSync()
 
@@ -4012,16 +4122,29 @@ function setupKeyboardSaveButton(){
 const kdInput = $('kdAmount');
 const bdInput = $('bdAmount');
 const saveBtn = $('saveBtn');
+const app = document.querySelector('.app');
 
 function scrollSaveIntoView(){
 setTimeout(()=>{
-if(saveBtn && (document.activeElement === kdInput || document.activeElement === bdInput)){
-saveBtn.scrollIntoView({
-behavior:'smooth',
-block:'center'
+
+const active = document.activeElement;
+
+if(!saveBtn || (active !== kdInput && active !== bdInput)) return;
+
+const vv = window.visualViewport;
+const visibleBottom = vv ? vv.height : window.innerHeight;
+
+const btnRect = saveBtn.getBoundingClientRect();
+const diff = btnRect.bottom - visibleBottom + 3;
+
+if(diff > 0 && app){
+app.scrollBy({
+top: diff,
+behavior:'smooth'
 });
 }
-}, 250);
+
+}, 350);
 }
 
 if(kdInput){
@@ -4033,12 +4156,8 @@ bdInput.addEventListener('focus', scrollSaveIntoView);
 }
 
 if(window.visualViewport){
-window.visualViewport.addEventListener('resize', ()=>{
-const active = document.activeElement;
-if(active === kdInput || active === bdInput){
-scrollSaveIntoView();
-}
-});
+window.visualViewport.addEventListener('resize', scrollSaveIntoView);
+window.visualViewport.addEventListener('scroll', scrollSaveIntoView);
 }
 
 }
@@ -4997,6 +5116,8 @@ updateTotalDue();
 
 list.innerHTML='<div class="empty">Select a customer</div>';
 
+setTimeout(adjustListHeights, 30);
+
 return
 
 }
@@ -5029,6 +5150,8 @@ $('selectedDueAmount').innerHTML=
 
 list.innerHTML='<div class="empty">Customer not found</div>';
 
+setTimeout(adjustListHeights, 30);
+
 return
 
 }
@@ -5051,6 +5174,8 @@ const s=$('customerPageSelect');
 if(id&&[...s.options].some(o=>o.value===id)){
 s.value=id
 }
+
+setTimeout(adjustListHeights, 50);
 
 });
 
