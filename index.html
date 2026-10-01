@@ -55,7 +55,7 @@ min-height:100vh
 
 .header{
 background:#fff;
-padding:14px 15px;
+padding:12px 14px;
 border-bottom:1px solid #e7e9ed;
 position:sticky;
 top:0;
@@ -63,33 +63,58 @@ z-index:20;
 overflow:visible
 }
 
-.header-row{
+.header-row-top{
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:10px;
+gap:6px;
 overflow:visible
 }
 
+.header-row-bottom{
+display:flex;
+align-items:center;
+justify-content:flex-start;
+gap:8px;
+margin-top:4px;
+min-width:0
+}
+
+.header-top-right{
+display:flex;
+align-items:center;
+gap:6px;
+flex-shrink:0
+}
+
 .logo{
-font-size:19px;
-font-weight:800
+font-size:17px;
+font-weight:800;
+white-space:nowrap;
+flex-shrink:0
 }
 
 .tagline{
-font-size:11px;
+font-size:10px;
 color:#858e9d;
-margin-top:4px
+margin-top:0;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+min-width:0;
+flex-shrink:1
 }
 
 .logout{
 border:0;
 background:#fff1f1;
 color:#d66b6b;
-border-radius:9px;
-padding:8px 11px;
-font-size:11px;
-font-weight:700
+border-radius:8px;
+padding:6px 9px;
+font-size:10px;
+font-weight:700;
+white-space:nowrap;
+flex-shrink:0
 }
 
 .header-rate-wrap{
@@ -101,20 +126,20 @@ flex-shrink:0
 
 .header-rate{
 position:relative;
-width:120px;
+width:100px;
 flex-shrink:0
 }
 
 .header-rate-input{
 width:100%;
-height:34px;
+height:30px;
 border:1px solid #dfe3e9;
-border-radius:18px;
+border-radius:15px;
 background:#EFF6FF;
-padding:0 10px;
+padding:0 9px;
 outline:0;
 color:#172033;
-font-size:11px;
+font-size:10px;
 font-weight:600
 }
 
@@ -183,6 +208,43 @@ width:10px;
 height:10px;
 background:#111827;
 transform:rotate(45deg)
+}
+
+.sync-status{
+display:inline-block;
+background:#16824c;
+color:#fff;
+border-radius:6px;
+padding:5px 8px;
+font-size:9px;
+font-weight:700;
+line-height:1;
+letter-spacing:.2px;
+white-space:nowrap;
+max-width:85px;
+overflow:hidden;
+text-overflow:ellipsis;
+text-align:center;
+opacity:.95;
+transition:background .25s ease;
+box-shadow:0 1px 3px rgba(0,0,0,.10);
+flex-shrink:0
+}
+
+.sync-status.syncing{
+background:#3b82f6
+}
+
+.sync-status.pending{
+background:#f59e0b
+}
+
+.sync-status.error{
+background:#d33131
+}
+
+.sync-status.synced{
+background:#16824c
 }
 
 .tabs{
@@ -736,24 +798,41 @@ color:#8992a0;
 font-size:11px
 }
 
-.sync-status{
-position:fixed;
-right:10px;
-bottom:10px;
-background:#111827;
-color:#fff;
-border-radius:20px;
-padding:5px 9px;
-font-size:8px;
-opacity:0;
-transform:translateY(5px);
-transition:.2s;
-z-index:200
+@media(max-width:400px){
+
+.header{
+padding:11px 12px
 }
 
-.sync-status.show{
-opacity:.8;
-transform:translateY(0)
+.logo{
+font-size:15px
+}
+
+.tagline{
+font-size:9px
+}
+
+.sync-status{
+font-size:8px;
+padding:4px 6px;
+max-width:70px
+}
+
+.header-rate{
+width:90px
+}
+
+.header-rate-input{
+font-size:9px;
+padding:0 8px;
+height:28px
+}
+
+.logout{
+padding:5px 7px;
+font-size:9px
+}
+
 }
 
 @media(max-width:360px){
@@ -815,34 +894,40 @@ gap:5px
 }
 
 .header{
-padding:13px 10px
+padding:10px 10px
 }
 
 .logo{
-font-size:16px
+font-size:14px
 }
 
 .tagline{
-font-size:9px
+font-size:8px
 }
 
-.header-rate-wrap{
+.sync-status{
+font-size:8px;
+padding:3px 5px;
+max-width:65px
+}
+
+.header-top-right{
 gap:4px
 }
 
 .header-rate{
-width:105px
+width:80px
 }
 
 .header-rate-input{
-height:31px;
-font-size:10px;
-padding:0 8px
+height:26px;
+font-size:9px;
+padding:0 7px
 }
 
 .logout{
-padding:7px 8px;
-font-size:10px
+padding:5px 6px;
+font-size:9px
 }
 
 .header-rate-popup{
@@ -907,20 +992,19 @@ Login
 
 <div class="header">
 
-<div class="header-row">
-
-<div>
+<div class="header-row-top">
 
 <div class="logo">
 Amaya Exchange
 </div>
 
-<div class="tagline">
-লেনদেনে আস্থা, সেবায় নির্ভরতা
+
+<div id="syncStatus" class="sync-status synced">
+Synced ✓
 </div>
 
-</div>
 
+<div class="header-top-right">
 
 <div class="header-rate-wrap">
 
@@ -966,6 +1050,8 @@ oninput="calculateHeaderRate()">
 
 </div>
 
+</div>
+
 
 <button
 class="logout"
@@ -976,6 +1062,16 @@ Logout
 </div>
 
 </div>
+
+
+<div class="header-row-bottom">
+
+<div class="tagline">
+লেনদেনে আস্থা, সেবায় নির্ভরতা
+</div>
+
+</div>
+
 </div>
 
 
@@ -1358,13 +1454,6 @@ Select an agent
 </div>
 
 
-<div
-id="syncStatus"
-class="sync-status">
-Syncing...
-</div>
-
-
 <script>
 
 /* =========================================================
@@ -1379,14 +1468,6 @@ const HEADER_RATE_1=333.333333,
 HEADER_RATE_2=363.636363,
 HEADER_RATE_3=357.142857;
 
-
-/*
-=========================================================
-DB VERSION 3
-
-v3 adds transaction-level sync tracking.
-=========================================================
-*/
 
 const DB_NAME='AmayaExchangeDB',
 DB_VERSION=3,
@@ -1486,23 +1567,35 @@ String(value??'')
 }
 
 
-function showSync(text='Syncing...'){
+/* =========================================================
+   SYNC STATUS
+========================================================= */
+
+function showSync(text,type){
+
+text=text||'Syncing...';
+type=type||'syncing';
+
 const el=$('syncStatus');
+
 if(!el)return;
+
 el.textContent=text;
-el.classList.add('show');
-clearTimeout(showSync.timer);
-showSync.timer=setTimeout(
-()=>{el.classList.remove('show')},
-900
-)
+
+el.classList.remove(
+'syncing',
+'pending',
+'error',
+'synced'
+);
+
+el.classList.add(type);
+
 }
 
 
 function hideSync(){
-const el=$('syncStatus');
-if(el)
-el.classList.remove('show')
+showSync('Synced ✓','synced');
 }
 
 
@@ -1783,14 +1876,10 @@ saveMeta('totalDueKD',totalDueKD)
 async function loadLocalState(){
 
 const savedUser=
-await getMeta(
-'loggedUser',
-''
-);
+await getMeta('loggedUser','');
 
 const currentUsername=
 currentUser?.username||'';
-
 
 if(
 savedUser&&
@@ -1833,26 +1922,13 @@ customerVersion=await getMeta('customerVersion','');
 agentVersion=await getMeta('agentVersion','');
 settingsVersion=await getMeta('settingsVersion','');
 
-
 lastTransactionRow=
-Number(
-await getMeta(
-'lastTransactionRow',
-0
-)
-)||0;
-
+Number(await getMeta('lastTransactionRow',0))||0;
 
 const savedNotes=
-await getMeta(
-'notesData',
-null
-);
+await getMeta('notesData',null);
 
-if(
-savedNotes&&
-typeof savedNotes==='object'
-){
+if(savedNotes&&typeof savedNotes==='object'){
 
 notesData={
 dueNotes:
@@ -1880,18 +1956,10 @@ paymentNotes:PAYMENT_NOTES
 
 notesLoaded=true;
 
-
 const savedDue=
-await getMeta(
-'dueData',
-null
-);
+await getMeta('dueData',null);
 
-
-if(
-savedDue&&
-typeof savedDue==='object'
-){
+if(savedDue&&typeof savedDue==='object'){
 
 dueData={
 totalDueKD:number(savedDue.totalDueKD||0),
@@ -1903,14 +1971,8 @@ Array.isArray(savedDue.customers)
 
 }
 
-
 totalDueKD=
-number(
-await getMeta(
-'totalDueKD',
-dueData.totalDueKD||0
-)
-)
+number(await getMeta('totalDueKD',dueData.totalDueKD||0))
 
 }
 
@@ -1921,22 +1983,15 @@ await openDB();
 
 await loadLocalState();
 
-customerData=
-await dbGetAll('customers');
-
-agentData=
-await dbGetAll('agents');
-
-allTransactionsData=
-await dbGetAll('transactions');
+customerData=await dbGetAll('customers');
+agentData=await dbGetAll('agents');
+allTransactionsData=await dbGetAll('transactions');
 
 applyDueData(dueData);
 
 sortCustomersAZ(customerData);
 
-sortTransactionsNewestFirst(
-allTransactionsData
-);
+sortTransactionsNewestFirst(allTransactionsData);
 
 dataLoaded=
 customerData.length>0||
@@ -1956,18 +2011,10 @@ renderLocalData()
 function sortCustomersAZ(list){
 return list.sort(
 (a,b)=>
-String(
-a.customerName||
-a.name||
-''
-)
+String(a.customerName||a.name||'')
 .trim()
 .localeCompare(
-String(
-b.customerName||
-b.name||
-''
-)
+String(b.customerName||b.name||'')
 .trim(),
 'en',
 {
@@ -1981,24 +2028,16 @@ numeric:true
 
 function calculateCustomerDueFromTransactions(customerId){
 
-const id=
-String(
-customerId||''
-).trim();
-
+const id=String(customerId||'').trim();
 if(!id)return 0;
 
 let due=0;
 
 allTransactionsData.forEach(t=>{
 
-if(
-String(t.customerId||'').trim()!==id
-)
-return;
+if(String(t.customerId||'').trim()!==id)return;
 
-const kd=
-number(
+const kd=number(
 t.kdAmount!==undefined
 ?t.kdAmount
 :t.amountKD!==undefined
@@ -2017,19 +2056,14 @@ due-=kd
 
 });
 
-return Math.max(
-0,
-due
-)
+return Math.max(0,due)
 
 }
 
 
 function getCustomerDue(customer){
 if(!customer)return 0;
-return calculateCustomerDueFromTransactions(
-customer.customerId
-)
+return calculateCustomerDueFromTransactions(customer.customerId)
 }
 
 
@@ -2038,27 +2072,20 @@ function applyDueData(data){
 if(!data)return;
 
 const source=
-data.due&&
-typeof data.due==='object'
+data.due&&typeof data.due==='object'
 ?data.due
-:data.customerDue&&
-typeof data.customerDue==='object'
+:data.customerDue&&typeof data.customerDue==='object'
 ?data.customerDue
 :data;
 
-const hasCustomers=
-Array.isArray(source.customers);
+const hasCustomers=Array.isArray(source.customers);
 
 const incomingTotal=
 source.totalDueKD!==undefined
 ?source.totalDueKD
 :data.totalDueKD;
 
-
-if(
-incomingTotal!==undefined||
-hasCustomers
-){
+if(incomingTotal!==undefined||hasCustomers){
 
 dueData={
 totalDueKD:
@@ -2074,11 +2101,9 @@ hasCustomers
 :[])
 };
 
-totalDueKD=
-number(dueData.totalDueKD)
+totalDueKD=number(dueData.totalDueKD)
 
 }
-
 
 if(Array.isArray(dueData.customers)){
 
@@ -2106,9 +2131,7 @@ c.totalDueKD=m.get(id)
 
 function findCustomer(id){
 return customerData.find(
-c=>
-String(c.customerId)===
-String(id)
+c=>String(c.customerId)===String(id)
 )||null
 }
 
@@ -2130,23 +2153,16 @@ function updateTotalDue(){
 
 let total=0;
 
-customerData.forEach(
-customer=>{
-
-const due=
-calculateCustomerDueFromTransactions(
+customerData.forEach(customer=>{
+const due=calculateCustomerDueFromTransactions(
 customer.customerId
 );
-
-if(due>0)
-total+=due
-
+if(due>0)total+=due
 });
 
 totalDueKD=Math.max(0,total);
 
 const el=$('allCustomerDue');
-
 if(el){
 el.innerHTML=
 fmtKD(totalDueKD)+
@@ -2158,34 +2174,24 @@ fmtKD(totalDueKD)+
 
 function renderTransactionCustomerDropdown(){
 
-const select=
-$('customerSelect');
-
+const select=$('customerSelect');
 if(!select)return;
 
-const oldValue=
-select.value;
+const oldValue=select.value;
 
 select.innerHTML=
 '<option value="">Select Customer</option>';
 
-const f=
-document.createDocumentFragment();
+const f=document.createDocumentFragment();
 
 sortCustomersAZ(
 customerData.filter(isActive)
 )
 .forEach(c=>{
 
-const o=
-document.createElement('option');
-
-o.value=
-c.customerId;
-
-o.textContent=
-c.customerName;
-
+const o=document.createElement('option');
+o.value=c.customerId;
+o.textContent=c.customerName;
 f.appendChild(o)
 
 });
@@ -2194,9 +2200,7 @@ select.appendChild(f);
 
 if(
 oldValue&&
-[...select.options].some(
-o=>o.value===oldValue
-)
+[...select.options].some(o=>o.value===oldValue)
 ){
 select.value=oldValue
 }
@@ -2211,74 +2215,44 @@ select.value!==''
 
 function updateCustomerDropdown(){
 
-const select=
-$('customerPageSelect');
-
+const select=$('customerPageSelect');
 if(!select)return;
 
-const search=
-$('customerSearch')
-.value
-.trim()
-.toLowerCase();
-
-const oldValue=
-select.value;
+const search=$('customerSearch').value.trim().toLowerCase();
+const oldValue=select.value;
 
 select.innerHTML=
 '<option value="">Select Customer</option>';
 
-const all=
-document.createElement('option');
-
-all.value=
-'ALL_TRANSACTIONS';
-
-all.textContent=
-'All Transaction';
-
+const all=document.createElement('option');
+all.value='ALL_TRANSACTIONS';
+all.textContent='All Transaction';
 select.appendChild(all);
 
-
-const f=
-document.createDocumentFragment();
+const f=document.createDocumentFragment();
 
 sortCustomersAZ(
 customerData.filter(
-c=>
-isActive(c)&&
-getCustomerDue(c)>0
+c=>isActive(c)&&getCustomerDue(c)>0
 )
 )
 .forEach(c=>{
 
-const name=
-String(c.customerName||'').toLowerCase();
-
-const phone=
-String(c.phone||'').toLowerCase();
-
-const id=
-String(c.customerId||'').toLowerCase();
+const name=String(c.customerName||'').toLowerCase();
+const phone=String(c.phone||'').toLowerCase();
+const id=String(c.customerId||'').toLowerCase();
 
 if(
 search&&
 !name.includes(search)&&
 !phone.includes(search)&&
 !id.includes(search)
-)
-return;
+)return;
 
-const o=
-document.createElement('option');
-
+const o=document.createElement('option');
 o.value=c.customerId;
-
 o.textContent=
-c.customerName+
-' • '+
-fmtKD(getCustomerDue(c));
-
+c.customerName+' • '+fmtKD(getCustomerDue(c));
 f.appendChild(o)
 
 });
@@ -2287,20 +2261,12 @@ select.appendChild(f);
 
 if(
 oldValue&&
-[...select.options].some(
-o=>o.value===oldValue
-)
+[...select.options].some(o=>o.value===oldValue)
 ){
 select.value=oldValue
 }
 else{
-
-/*
-Default: All Transaction
-*/
-
 select.value='ALL_TRANSACTIONS';
-
 }
 
 }
@@ -2311,225 +2277,111 @@ select.value='ALL_TRANSACTIONS';
 ========================================================= */
 
 function safeRefreshCustomerSelect(){
-
 const s=$('customerSelect');
 if(!s)return;
-
 if(document.activeElement===s){
 pendingCustomerSelectRefresh=true;
 return
 }
-
 const v=s.value;
-
 renderTransactionCustomerDropdown();
-
-if(
-v&&
-[...s.options].some(o=>o.value===v)
-){
-s.value=v
-}
-
+if(v&&[...s.options].some(o=>o.value===v))s.value=v;
 pendingCustomerSelectRefresh=false
-
 }
 
 
 function safeRefreshCustomerPage(){
-
 const s=$('customerPageSelect');
 if(!s)return;
-
 if(document.activeElement===s){
 pendingCustomerPageRefresh=true;
 return
 }
-
 const v=s.value;
-
 updateCustomerDropdown();
-
-if(
-v&&
-[...s.options].some(o=>o.value===v)
-){
-s.value=v
-}
-
+if(v&&[...s.options].some(o=>o.value===v))s.value=v;
 pendingCustomerPageRefresh=false
-
 }
 
 
 function safeRefreshAgentSelect(){
-
 const s=$('agentSelect');
 if(!s)return;
-
 if(document.activeElement===s){
 pendingAgentSelectRefresh=true;
 return
 }
-
 const v=s.value;
-
 fillAgentSelect(s,false);
-
-if(
-v&&
-[...s.options].some(o=>o.value===v)
-){
-s.value=v
-}
-
-s.classList.toggle(
-'has-value',
-s.value!==''
-);
-
+if(v&&[...s.options].some(o=>o.value===v))s.value=v;
+s.classList.toggle('has-value',s.value!=='');
 pendingAgentSelectRefresh=false
-
 }
 
 
 function safeRefreshAgentView(){
-
 const s=$('agentView');
 if(!s)return;
-
 if(document.activeElement===s){
 pendingAgentViewRefresh=true;
 return
 }
-
 const v=s.value;
-
 if(getRole()==='agent'){
 renderAgentDropdowns()
 }
 else{
 fillAgentSelect(s,true);
-
-if(
-v&&
-[...s.options].some(o=>o.value===v)
-){
-s.value=v
+if(v&&[...s.options].some(o=>o.value===v))s.value=v;
 }
-}
-
-s.disabled=
-getRole()==='agent';
-
+s.disabled=getRole()==='agent';
 pendingAgentViewRefresh=false
-
 }
 
 
 function safeRefreshNotes(){
-
 const s=$('noteSelect');
 if(!s)return;
-
 if(document.activeElement===s){
 pendingNotesRefresh=true;
 return
 }
-
 const v=s.value;
-
 setNotes(
 transactionType==='বাকি'
 ?notesData.dueNotes
 :notesData.paymentNotes
 );
-
-if(
-v&&
-[...s.options].some(o=>o.value===v)
-){
-s.value=v
-}
-
+if(v&&[...s.options].some(o=>o.value===v))s.value=v;
 pendingNotesRefresh=false
-
 }
 
 
 function setupSafeSelectRefresh(){
 
-$('customerSelect')
-.addEventListener(
-'blur',
-()=>{
-if(pendingCustomerSelectRefresh)
-setTimeout(
-safeRefreshCustomerSelect,
-0
-)
-}
-);
+$('customerSelect').addEventListener('blur',()=>{
+if(pendingCustomerSelectRefresh)setTimeout(safeRefreshCustomerSelect,0)
+});
 
+$('customerPageSelect').addEventListener('blur',()=>{
+if(pendingCustomerPageRefresh)setTimeout(safeRefreshCustomerPage,0)
+});
 
-$('customerPageSelect')
-.addEventListener(
-'blur',
-()=>{
-if(pendingCustomerPageRefresh)
-setTimeout(
-safeRefreshCustomerPage,
-0
-)
-}
-);
+$('agentSelect').addEventListener('blur',()=>{
+if(pendingAgentSelectRefresh)setTimeout(safeRefreshAgentSelect,0)
+});
 
+$('agentView').addEventListener('blur',()=>{
+if(pendingAgentViewRefresh)setTimeout(safeRefreshAgentView,0)
+});
 
-$('agentSelect')
-.addEventListener(
-'blur',
-()=>{
-if(pendingAgentSelectRefresh)
-setTimeout(
-safeRefreshAgentSelect,
-0
-)
-}
-);
-
-
-$('agentView')
-.addEventListener(
-'blur',
-()=>{
-if(pendingAgentViewRefresh)
-setTimeout(
-safeRefreshAgentView,
-0
-)
-}
-);
-
-
-$('noteSelect')
-.addEventListener(
-'blur',
-()=>{
-if(pendingNotesRefresh)
-setTimeout(
-safeRefreshNotes,
-0
-)
-}
-);
-
+$('noteSelect').addEventListener('blur',()=>{
+if(pendingNotesRefresh)setTimeout(safeRefreshNotes,0)
+});
 
 renderTransactionCustomerDropdown();
-
 renderAgentDropdowns();
-
 updateCustomerDropdown();
-
 setNotes(
 transactionType==='বাকি'
 ?notesData.dueNotes
@@ -2546,27 +2398,13 @@ transactionType==='বাকি'
 function renderLocalData(){
 
 const activePanel=
-document.querySelector(
-'.panel.active'
-)?.id||'';
+document.querySelector('.panel.active')?.id||'';
 
-/*
-=========================================================
-Customer dropdown default: All Transaction
-
-প্রথমে existing value রাখি।
-না থাকলে 'ALL_TRANSACTIONS' সেট করি।
-=========================================================
-*/
-
-let selected=
-$('customerPageSelect').value;
+let selected=$('customerPageSelect').value;
 
 if(
 !selected||
-![...$('customerPageSelect').options].some(
-o=>o.value===selected
-)
+![...$('customerPageSelect').options].some(o=>o.value===selected)
 ){
 
 const allOption=
@@ -2574,28 +2412,18 @@ const allOption=
 .find(o=>o.value==='ALL_TRANSACTIONS');
 
 if(allOption){
-
-$('customerPageSelect').value=
-'ALL_TRANSACTIONS';
-
+$('customerPageSelect').value='ALL_TRANSACTIONS';
 selected='ALL_TRANSACTIONS';
-
 }
 
 }
 
 sortCustomersAZ(customerData);
-
-sortTransactionsNewestFirst(
-allTransactionsData
-);
+sortTransactionsNewestFirst(allTransactionsData);
 
 renderTransactionCustomerDropdown();
-
 renderAgentDropdowns();
-
 updateCustomerDropdown();
-
 updateTotalDue();
 
 setNotes(
@@ -2606,21 +2434,16 @@ transactionType==='বাকি'
 
 applyRoleAccess(activePanel);
 
-
 if(selected==='ALL_TRANSACTIONS'){
 renderAllCustomerTransactions()
 }
 else if(selected){
-
 const c=findCustomer(selected);
-
 if(c){
 renderCustomerInfo(c);
 renderCustomerTransactionsLocal(c.customerId)
 }
-
 }
-
 
 if(
 getRole()==='agent'&&
@@ -2631,70 +2454,40 @@ agentChanged()
 
 }
 
+
 /* =========================================================
    SET NOTES / TYPE
 ========================================================= */
 
 function setNotes(notes){
-
 const s=$('noteSelect');
 if(!s)return;
-
 s.innerHTML='';
-
-if(
-!Array.isArray(notes)||
-!notes.length
-){
+if(!Array.isArray(notes)||!notes.length){
 s.innerHTML='<option value="">Select Note</option>';
 return
 }
-
-const f=
-document.createDocumentFragment();
-
+const f=document.createDocumentFragment();
 notes.forEach((n,i)=>{
-
-const o=
-document.createElement('option');
-
+const o=document.createElement('option');
 o.value=n;
 o.textContent=n;
-
-if(i===0)
-o.selected=true;
-
+if(i===0)o.selected=true;
 f.appendChild(o)
-
 });
-
 s.appendChild(f)
-
 }
 
 
 function setType(type){
-
 transactionType=type;
-
-$('dueBtn')
-.classList.toggle(
-'active',
-type==='বাকি'
-);
-
-$('paymentBtn')
-.classList.toggle(
-'active',
-type==='পেমেন্ট'
-);
-
+$('dueBtn').classList.toggle('active',type==='বাকি');
+$('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 setNotes(
 type==='বাকি'
 ?notesData.dueNotes
 :notesData.paymentNotes
 )
-
 }
 
 
@@ -2703,82 +2496,46 @@ type==='বাকি'
 ========================================================= */
 
 async function saveCustomersLocal(items){
-
 await dbClear('customers');
-
 if(!Array.isArray(items))return;
-
 const t=db.transaction('customers','readwrite');
 const s=t.objectStore('customers');
-
 items.forEach(x=>s.put(x));
-
-return new Promise(
-(r,j)=>{
+return new Promise((r,j)=>{
 t.oncomplete=r;
 t.onerror=()=>j(t.error)
-}
-)
-
+})
 }
 
 
 async function saveAgentsLocal(items){
-
 await dbClear('agents');
-
 if(!Array.isArray(items))return;
-
 const t=db.transaction('agents','readwrite');
 const s=t.objectStore('agents');
-
 items.forEach(x=>s.put(x));
-
-return new Promise(
-(r,j)=>{
+return new Promise((r,j)=>{
 t.oncomplete=r;
 t.onerror=()=>j(t.error)
-}
-)
-
+})
 }
 
-
-/*
-=========================================================
-TRANSACTION KEY
-
-Same transactionId থেকে সবসময় same key তৈরি হবে।
-এটা duplicate protection-এর মূল ভিত্তি।
-=========================================================
-*/
 
 function transactionKey(t){
 
-const id=
-String(
-t.transactionId||
-t.TransactionId||
-''
+const id=String(
+t.transactionId||t.TransactionId||''
 ).trim();
 
-if(id)
-return 'TX:'+id;
+if(id)return 'TX:'+id;
 
-const row=
-Number(
-t.rowNumber||
-t.row||
-t.rowIndex||
-t.RowNumber||
-0
+const row=Number(
+t.rowNumber||t.row||t.rowIndex||t.RowNumber||0
 )||0;
 
-if(row)
-return 'ROW:'+row;
+if(row)return 'ROW:'+row;
 
-return 'TMP:'+
-String(
+return 'TMP:'+String(
 t.timestamp||
 JSON.stringify([
 t.date||'',
@@ -2794,66 +2551,35 @@ t.type||''
 
 async function saveTransactionsLocal(items){
 
-if(
-!Array.isArray(items)||
-!items.length
-)
-return;
+if(!Array.isArray(items)||!items.length)return;
 
 const t=db.transaction('transactions','readwrite');
 const s=t.objectStore('transactions');
 
 items.forEach(item=>{
-
 const c={...item};
-
 c.key=transactionKey(c);
-
 s.put(c)
-
 });
 
-return new Promise(
-(r,j)=>{
+return new Promise((r,j)=>{
 t.oncomplete=r;
 t.onerror=()=>j(t.error)
-}
-)
+})
 
 }
 
-
-/*
-=========================================================
-DUPLICATE-CHECK BEFORE INSERT
-
-একই transactionId আগে থেকে থাকলে
-নতুন insert করবে না।
-=========================================================
-*/
 
 async function transactionExistsLocal(transactionId){
-
-const id=
-String(transactionId||'').trim();
-
+const id=String(transactionId||'').trim();
 if(!id)return false;
-
 const key='TX:'+id;
-
-const existing=
-await dbGet(
-'transactions',
-key
-);
-
+const existing=await dbGet('transactions',key);
 return !!existing
-
 }
 
 
 function getTransactionTimestamp(t){
-
 const v=
 t.timestamp||
 t.Timestamp||
@@ -2862,77 +2588,45 @@ t.created_at||
 t.time||
 t.createdTime||
 '';
-
 if(!v)return 0;
-
 const n=new Date(v).getTime();
-
 return Number.isFinite(n)?n:0
-
 }
 
 
 function getTransactionRowNumber(t){
 return Number(
-t.rowNumber||
-t.row||
-t.rowIndex||
-t.RowNumber||
-0
+t.rowNumber||t.row||t.rowIndex||t.RowNumber||0
 )||0
 }
 
 
 function sortTransactionsNewestFirst(list){
 
-return list.sort(
-(a,b)=>{
+return list.sort((a,b)=>{
 
 const ra=getTransactionRowNumber(a);
 const rb=getTransactionRowNumber(b);
 
-if(ra!==rb)
-return rb-ra;
+if(ra!==rb)return rb-ra;
 
 const ta=getTransactionTimestamp(a);
 const tb=getTransactionTimestamp(b);
 
-if(ta!==tb)
-return tb-ta;
+if(ta!==tb)return tb-ta;
 
-const da=
-getFullTransactionDate(
-a.date||
-a.Date||
-a.transactionDate||
-a.TransactionDate||
-''
+const da=getFullTransactionDate(
+a.date||a.Date||a.transactionDate||a.TransactionDate||''
 )?.getTime()||0;
 
-const dbDate=
-getFullTransactionDate(
-b.date||
-b.Date||
-b.transactionDate||
-b.TransactionDate||
-''
+const dbDate=getFullTransactionDate(
+b.date||b.Date||b.transactionDate||b.TransactionDate||''
 )?.getTime()||0;
 
-if(da!==dbDate)
-return dbDate-da;
+if(da!==dbDate)return dbDate-da;
 
-return String(
-b.transactionId||
-b.TransactionId||
-''
-)
-.localeCompare(
-String(
-a.transactionId||
-a.TransactionId||
-''
-)
-)
+return String(b.transactionId||b.TransactionId||'')
+.localeCompare(String(a.transactionId||a.TransactionId||''))
 
 })
 
@@ -2940,20 +2634,14 @@ a.TransactionId||
 
 
 async function loadTransactionsLocal(){
-allTransactionsData=
-await dbGetAll('transactions');
-
-sortTransactionsNewestFirst(
-allTransactionsData
-)
+allTransactionsData=await dbGetAll('transactions');
+sortTransactionsNewestFirst(allTransactionsData)
 }
 
 
 function getCustomerTransactions(customerId){
 return allTransactionsData.filter(
-t=>
-String(t.customerId||'')===
-String(customerId)
+t=>String(t.customerId||'')===String(customerId)
 )
 }
 
@@ -2966,8 +2654,7 @@ function renderCustomerInfo(customer){
 
 const due=getCustomerDue(customer);
 
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-name">'+
 escapeHTML(customer.customerName)+
 '</div>'+
@@ -2975,10 +2662,8 @@ escapeHTML(customer.customerName)+
 escapeHTML(customer.phone||'')+
 '</div>';
 
-$('selectedDueAmount')
-.innerHTML=
-fmtKD(due)+
-' <span>KD</span>';
+$('selectedDueAmount').innerHTML=
+fmtKD(due)+' <span>KD</span>';
 
 updateTotalDue()
 
@@ -2988,18 +2673,12 @@ updateTotalDue()
 function renderCustomerTransactionsLocal(customerId){
 
 const list=$('customerList');
-
-const transactions=
-getCustomerTransactions(customerId);
-
-const customer=
-findCustomer(customerId);
+const transactions=getCustomerTransactions(customerId);
+const customer=findCustomer(customerId);
 
 if(customer){
-$('selectedDueAmount')
-.innerHTML=
-fmtKD(getCustomerDue(customer))+
-' <span>KD</span>'
+$('selectedDueAmount').innerHTML=
+fmtKD(getCustomerDue(customer))+' <span>KD</span>'
 }
 
 list.innerHTML='';
@@ -3014,10 +2693,7 @@ sortTransactionsNewestFirst(transactions);
 const f=document.createDocumentFragment();
 
 transactions.forEach(
-t=>
-f.appendChild(
-createTransactionCard(t,false)
-)
+t=>f.appendChild(createTransactionCard(t,false))
 );
 
 list.appendChild(f)
@@ -3028,31 +2704,20 @@ list.appendChild(f)
 function renderAllCustomerTransactions(){
 
 const list=$('customerList');
+const selectedDate=$('customerTransactionDate').value;
 
-const selectedDate=
-$('customerTransactionDate').value;
-
-const activeIds=
-new Set(
-customerData
-.filter(isActive)
-.map(c=>String(c.customerId))
+const activeIds=new Set(
+customerData.filter(isActive).map(c=>String(c.customerId))
 );
 
-const filtered=
-allTransactionsData.filter(
-t=>{
+const filtered=allTransactionsData.filter(t=>{
 
-if(
-t.customerId&&
-!activeIds.has(String(t.customerId))
-)
+if(t.customerId&&!activeIds.has(String(t.customerId)))
 return false;
 
 return transactionMatchesDate(t,selectedDate)
 
-}
-);
+});
 
 sortTransactionsNewestFirst(filtered);
 
@@ -3066,10 +2731,7 @@ return
 const f=document.createDocumentFragment();
 
 filtered.forEach(
-t=>
-f.appendChild(
-createTransactionCard(t,true)
-)
+t=>f.appendChild(createTransactionCard(t,true))
 );
 
 list.appendChild(f)
@@ -3086,13 +2748,7 @@ const txn=document.createElement('div');
 
 txn.className=
 'txn '+
-(
-sale
-?'sale'
-:payment
-?'payment'
-:''
-);
+(sale?'sale':payment?'payment':'');
 
 
 const top=document.createElement('div');
@@ -3103,11 +2759,7 @@ const date=document.createElement('div');
 date.className='txn-date';
 
 date.textContent=
-t.date||
-t.Date||
-t.transactionDate||
-t.TransactionDate||
-'';
+t.date||t.Date||t.transactionDate||t.TransactionDate||'';
 
 
 const typeWrap=document.createElement('div');
@@ -3119,22 +2771,18 @@ const type=document.createElement('div');
 type.className='txn-type';
 
 type.textContent=
-sale
-?'বিক্রয়'
-:payment
-?'পেমেন্ট'
+sale?'বিক্রয়'
+:payment?'পেমেন্ট'
 :(t.type||'');
 
 typeWrap.appendChild(type);
-
 top.append(date,typeWrap);
 
 
 const amount=document.createElement('div');
 amount.className='txn-amount';
 
-const kdAmount=
-number(
+const kdAmount=number(
 t.kdAmount!==undefined
 ?t.kdAmount
 :t.amountKD!==undefined
@@ -3143,38 +2791,24 @@ t.kdAmount!==undefined
 );
 
 amount.textContent=
-(
-payment
-?'−'
-:sale
-?'+'
-:''
-)+
-fmtKD(kdAmount)+
-' KD';
+(payment?'−':sale?'+':'')+
+fmtKD(kdAmount)+' KD';
 
 
 const bottom=document.createElement('div');
 bottom.className='txn-bottom';
 
-const note=
-String(t.note||'').trim();
-
+const note=String(t.note||'').trim();
 const bdAmount=getBDAmount(t);
 
 let bt=note;
 
 if(bdAmount){
-bt+=
-(bt?' • ':'')+
-fmtIndian(bdAmount)+
-' TK'
+bt+=(bt?' • ':'')+fmtIndian(bdAmount)+' TK'
 }
 
 if(showCustomer&&t.customerName){
-bt+=
-(bt?' • ':'')+
-t.customerName
+bt+=(bt?' • ':'')+t.customerName
 }
 
 bottom.textContent=bt;
@@ -3184,35 +2818,18 @@ const agentName=document.createElement('div');
 agentName.className='txn-agent';
 
 agentName.textContent=
-t.agentName||
-t.agent||
-t.AgentName||
-'';
+t.agentName||t.agent||t.AgentName||'';
 
 
 txn.append(top,amount);
 
-if(bt)
-txn.append(bottom);
+if(bt)txn.append(bottom);
+if(agentName.textContent)txn.append(agentName);
 
-if(agentName.textContent)
-txn.append(agentName);
-
-
-/*
-=========================================================
-PENDING BADGE
-
-যে transaction এখনো Sheet-এ যায়নি
-তার উপরে ⏳ দেখাবে।
-Sync হলে নিজে থেকে মুছে যাবে।
-=========================================================
-*/
 
 if(t.pending===true){
 
-const pendingBadge=
-document.createElement('div');
+const pendingBadge=document.createElement('div');
 
 pendingBadge.style.cssText=
 'position:absolute;top:6px;right:8px;'+
@@ -3223,7 +2840,6 @@ pendingBadge.style.cssText=
 'box-shadow:0 1px 3px rgba(0,0,0,.15);';
 
 pendingBadge.textContent='⏳';
-
 pendingBadge.title='Syncing to server...';
 
 txn.appendChild(pendingBadge);
@@ -3244,20 +2860,16 @@ function transactionMatchesDate(transaction,selectedDate){
 
 if(!selectedDate)return true;
 
-const td=
-getFullTransactionDate(
+const td=getFullTransactionDate(
 transaction.date||
 transaction.Date||
 transaction.transactionDate||
-transaction.TransactionDate||
-''
+transaction.TransactionDate||''
 );
 
-const sd=
-getFullTransactionDate(selectedDate);
+const sd=getFullTransactionDate(selectedDate);
 
-if(!td||!sd)
-return false;
+if(!td||!sd)return false;
 
 return(
 td.getFullYear()===sd.getFullYear()&&
@@ -3273,149 +2885,111 @@ function getFullTransactionDate(value){
 if(!value)return null;
 
 const str=String(value).trim();
-
 if(!str)return null;
 
 let date,match;
-
 
 match=str.match(
 /^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s]+(.+))?$/
 );
 
 if(match){
-
 date=new Date(
 Number(match[1]),
 Number(match[2])-1,
 Number(match[3])
 );
-
 if(match[4]){
 const tm=match[4].trim().match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\.(\d+))?(?:\s*(AM|PM))?/i
 );
-
 if(tm){
-
 let h=Number(tm[1]);
 const ap=(tm[5]||'').toUpperCase();
-
 if(ap==='PM'&&h<12)h+=12;
 if(ap==='AM'&&h===12)h=0;
-
 date.setHours(
 h,
 Number(tm[2]),
 Number(tm[3]||0),
 Number(
 String(tm[4]||'')
-.padEnd(3,'0')
-.slice(0,3)
+.padEnd(3,'0').slice(0,3)
 )||0
 )
-
 }
 }
-
 return isNaN(date.getTime())?null:date
-
 }
-
 
 match=str.match(
 /^(\d{1,2})-([A-Za-z]{3})-(\d{4})(?:[T\s]+(.+))?$/
 );
 
 if(match){
-
 const months={
 jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
 jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
 };
-
 const m=months[match[2].toLowerCase()];
-
 if(m){
-
 date=new Date(
 Number(match[3]),
 m-1,
 Number(match[1])
 );
-
 if(match[4]){
 const tm=match[4].trim().match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?/i
 );
-
 if(tm){
-
 let h=Number(tm[1]);
 const ap=(tm[4]||'').toUpperCase();
-
 if(ap==='PM'&&h<12)h+=12;
 if(ap==='AM'&&h===12)h=0;
-
 date.setHours(
 h,
 Number(tm[2]),
 Number(tm[3]||0),
 0
 )
-
 }
 }
-
 return isNaN(date.getTime())?null:date
-
 }
-
 }
-
 
 match=str.match(
 /^(\d{1,2})-(\d{1,2})-(\d{4})(?:[T\s]+(.+))?$/
 );
 
 if(match){
-
 date=new Date(
 Number(match[3]),
 Number(match[2])-1,
 Number(match[1])
 );
-
 if(match[4]){
 const tm=match[4].trim().match(
 /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*(AM|PM))?/i
 );
-
 if(tm){
-
 let h=Number(tm[1]);
 const ap=(tm[4]||'').toUpperCase();
-
 if(ap==='PM'&&h<12)h+=12;
 if(ap==='AM'&&h===12)h=0;
-
 date.setHours(
 h,
 Number(tm[2]),
 Number(tm[3]||0),
 0
 )
-
 }
 }
-
 return isNaN(date.getTime())?null:date
-
 }
-
 
 date=new Date(str);
-
 return isNaN(date.getTime())?null:date
 
 }
@@ -3436,34 +3010,18 @@ return String(value||'')
 
 
 function isDueTransaction(t){
-
 const type=normalizeType(
-t.type||
-t.Type||
-t.transactionType||
-t.TransactionType
+t.type||t.Type||t.transactionType||t.TransactionType
 );
-
-return[
-'বাকি',
-'due',
-'due amount',
-'বিক্রয়',
-'sale'
-].includes(type)
-
+return['বাকি','due','due amount','বিক্রয়','sale']
+.includes(type)
 }
 
 
 function isPaymentTransaction(t){
-
 const type=normalizeType(
-t.type||
-t.Type||
-t.transactionType||
-t.TransactionType
+t.type||t.Type||t.transactionType||t.TransactionType
 );
-
 return[
 'পেমেন্ট',
 'payment',
@@ -3471,7 +3029,6 @@ return[
 'paid',
 'payment amount'
 ].includes(type)
-
 }
 
 
@@ -3486,60 +3043,32 @@ const selectedAgentView=$('agentView')?.value||'';
 
 fillAgentSelect($('agentSelect'),false);
 
-
 if(getRole()==='agent'){
-
 const linkedId=clean(currentUser?.linkedId||'');
-
-if(linkedId){
-$('agentSelect').value=linkedId
-}
-
+if(linkedId)$('agentSelect').value=linkedId;
 $('agentSelect').disabled=true;
-
 return
-
 }
-
 
 if(selectedAgent){
-
-const exists=
-[...$('agentSelect').options]
+const exists=[...$('agentSelect').options]
 .some(o=>o.value===selectedAgent);
-
 if(exists){
-
 $('agentSelect').value=selectedAgent;
-
-$('agentSelect')
-.classList.add('has-value')
-
+$('agentSelect').classList.add('has-value')
 }
-
 }
-
 
 fillAgentSelect($('agentView'),true);
-
 $('agentView').disabled=false;
 
-
 if(selectedAgentView){
-
-const exists=
-[...$('agentView').options]
+const exists=[...$('agentView').options]
 .some(o=>o.value===selectedAgentView);
-
 if(exists){
-
 $('agentView').value=selectedAgentView;
-
-$('agentView')
-.classList.add('has-value')
-
+$('agentView').classList.add('has-value')
 }
-
 }
 
 }
@@ -3557,16 +3086,11 @@ isView
 const f=document.createDocumentFragment();
 
 agentData.forEach(a=>{
-
 if(!isActiveAgent(a))return;
-
 const o=document.createElement('option');
-
 o.value=a.agentId;
 o.textContent=a.agentName;
-
 f.appendChild(o)
-
 });
 
 select.appendChild(f)
@@ -3576,9 +3100,7 @@ select.appendChild(f)
 
 function isActiveAgent(agent){
 return String(
-agent?.status||
-agent?.Status||
-''
+agent?.status||agent?.Status||''
 )
 .trim()
 .toLowerCase()==='active'
@@ -3590,64 +3112,37 @@ function agentChanged(){
 const agentId=$('agentView').value;
 const list=$('agentList');
 
-
 if(!agentId){
-
 currentAgentTransactions=[];
-
 setAgentNumbers(0,0);
-
-list.innerHTML=
-'<div class="empty">Select an agent</div>';
-
+list.innerHTML='<div class="empty">Select an agent</div>';
 return
-
 }
-
 
 if(!dataLoaded){
-list.innerHTML=
-'<div class="loading">Loading data...</div>';
+list.innerHTML='<div class="loading">Loading data...</div>';
 return
 }
 
-
-const agent=
-agentData.find(
+const agent=agentData.find(
 a=>String(a.agentId)===String(agentId)
 );
 
-
 if(!agent){
-list.innerHTML=
-'<div class="empty">Agent not found</div>';
+list.innerHTML='<div class="empty">Agent not found</div>';
 return
 }
 
-
-const name=
-String(agent.agentName||'').trim();
-
+const name=String(agent.agentName||'').trim();
 
 currentAgentTransactions=
-allTransactionsData.filter(
-t=>{
-
-const a=
-String(t.agentName||'').trim();
-
-return(
-a===name||
-a===String(agentId)
-)&&
+allTransactionsData.filter(t=>{
+const a=String(t.agentName||'').trim();
+return(a===name||a===String(agentId))&&
 number(getBDAmount(t))>0
+});
 
-}
-);
-
-sortTransactionsNewestFirst(
-currentAgentTransactions
-);
+sortTransactionsNewestFirst(currentAgentTransactions);
 
 renderAgentTransactions()
 
@@ -3660,31 +3155,23 @@ let balance=0,sales=0,
 year=Number($('agentYear').value),
 month=Number($('agentMonth').value);
 
-
 currentAgentTransactions.forEach(t=>{
 
 const amount=getBDAmount(t);
 
-if(isDueTransaction(t))
-balance+=amount;
-else if(isPaymentTransaction(t))
-balance-=amount;
-
+if(isDueTransaction(t))balance+=amount;
+else if(isPaymentTransaction(t))balance-=amount;
 
 if(isDueTransaction(t)){
-
 const i=parseTransactionDate(
 t.date||t.Date||t.transactionDate||t.TransactionDate
 );
-
 if(i&&i.year===year&&i.month===month){
 sales+=amount
 }
-
 }
 
 });
-
 
 setAgentNumbers(balance,sales)
 
@@ -3692,17 +3179,10 @@ setAgentNumbers(balance,sales)
 
 
 function setAgentNumbers(balance,sales){
-
-$('agentCurrentBalance')
-.innerHTML=
-fmtIndian(balance)+
-' <span>Tk</span>';
-
-$('agentMonthlySales')
-.innerHTML=
-fmtIndian(sales)+
-' <span>Tk</span>'
-
+$('agentCurrentBalance').innerHTML=
+fmtIndian(balance)+' <span>Tk</span>';
+$('agentMonthlySales').innerHTML=
+fmtIndian(sales)+' <span>Tk</span>'
 }
 
 
@@ -3710,57 +3190,32 @@ function renderAgentTransactions(){
 
 const list=$('agentList');
 
-
 if(!currentAgentTransactions.length){
-
 calculateAgentSummary();
-
-list.innerHTML=
-'<div class="empty">No BD transactions found</div>';
-
+list.innerHTML='<div class="empty">No BD transactions found</div>';
 return
-
 }
-
 
 const year=Number($('agentYear').value);
 const month=Number($('agentMonth').value);
 
-
-const filtered=
-currentAgentTransactions.filter(
-t=>{
-
+const filtered=currentAgentTransactions.filter(t=>{
 const i=parseTransactionDate(
 t.date||t.Date||t.transactionDate||t.TransactionDate
 );
-
-return(
-i&&
-i.year===year&&
-i.month===month
-)
-
-}
-);
-
+return(i&&i.year===year&&i.month===month)
+});
 
 sortTransactionsNewestFirst(filtered);
-
 calculateAgentSummary();
 
-
 if(!filtered.length){
-list.innerHTML=
-'<div class="empty">No transaction for this month</div>';
+list.innerHTML='<div class="empty">No transaction for this month</div>';
 return
 }
 
-
 list.innerHTML='';
-
 const f=document.createDocumentFragment();
-
 
 filtered.forEach(t=>{
 
@@ -3768,69 +3223,42 @@ const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
 
 const txn=document.createElement('div');
-
 txn.className=
-'txn '+
-(
-sale
-?'sale'
-:payment
-?'payment'
-:''
-);
-
+'txn '+(sale?'sale':payment?'payment':'');
 
 const top=document.createElement('div');
 top.className='txn-top';
-
 
 const date=document.createElement('div');
 date.className='txn-date';
 date.textContent=t.date||t.Date||'';
 
-
 const type=document.createElement('div');
 type.className='txn-type';
 
 type.textContent=
-sale
-?'বিক্রয়'
-:payment
-?'পেমেন্ট'
+sale?'বিক্রয়'
+:payment?'পেমেন্ট'
 :(t.type||'');
 
-
 top.append(date,type);
-
 
 const amount=document.createElement('div');
 amount.className='txn-amount';
 
 const bd=getBDAmount(t);
-
 amount.textContent=
-(
-payment
-?'−'
-:sale
-?'+'
-:''
-)+
-fmtIndian(bd)+
-' Tk';
-
+(payment?'−':sale?'+':'')+
+fmtIndian(bd)+' Tk';
 
 const bottom=document.createElement('div');
 bottom.className='txn-bottom';
 bottom.textContent=t.note||'';
 
-
 txn.append(top,amount,bottom);
-
 f.appendChild(txn)
 
 });
-
 
 list.appendChild(f)
 
@@ -3844,83 +3272,51 @@ list.appendChild(f)
 function parseTransactionDate(value){
 
 if(!value)return null;
-
 const str=String(value).trim();
-
 if(!str)return null;
-
 
 let m=str.match(
 /^(\d{1,2})-([A-Za-z]{3})-(\d{4})/
 );
 
 if(m){
-
 const months={
 jan:1,feb:2,mar:3,apr:4,may:5,jun:6,
 jul:7,aug:8,sep:9,oct:10,nov:11,dec:12
 };
-
 const month=months[m[2].toLowerCase()];
-
 if(month){
-return{
-year:Number(m[3]),
-month
+return{year:Number(m[3]),month}
 }
 }
-
-}
-
 
 m=str.match(
 /^(\d{4})-(\d{1,2})-(\d{1,2})/
 );
-
-if(m){
-return{
-year:Number(m[1]),
-month:Number(m[2])
-}
-}
-
+if(m)return{year:Number(m[1]),month:Number(m[2])};
 
 m=str.match(
 /^(\d{1,2})-(\d{1,2})-(\d{4})/
 );
-
-if(m){
-return{
-year:Number(m[3]),
-month:Number(m[2])
-}
-}
-
+if(m)return{year:Number(m[3]),month:Number(m[2])};
 
 const d=new Date(str);
 
 return isNaN(d.getTime())
 ?null
-:{
-year:d.getFullYear(),
-month:d.getMonth()+1
-}
+:{year:d.getFullYear(),month:d.getMonth()+1}
 
 }
 
 
 function getBDAmount(t){
-
 return number(
-t.bdAmount!==undefined&&
-t.bdAmount!==''
+t.bdAmount!==undefined&&t.bdAmount!==''
 ?t.bdAmount
-:t.amountBD!==undefined&&
-t.amountBD!==''
+:t.amountBD!==undefined&&t.amountBD!==''
 ?t.amountBD
 :t.bd
 )
-
 }
 
 
@@ -3929,20 +3325,15 @@ t.amountBD!==''
 ========================================================= */
 
 function setToday(){
-
 const d=new Date();
-
 const v=
 d.getFullYear()+
 '-'+
 String(d.getMonth()+1).padStart(2,'0')+
 '-'+
 String(d.getDate()).padStart(2,'0');
-
 $('date').value=v;
-
 $('date').max=v
-
 }
 
 
@@ -3951,11 +3342,9 @@ function setCustomerToday(){
 const input=$('customerTransactionDate');
 const picker=$('customerDatePicker');
 
-if(!input||!picker)
-return;
+if(!input||!picker)return;
 
 const d=new Date();
-
 const yyyy=d.getFullYear();
 const mm=String(d.getMonth()+1).padStart(2,'0');
 const dd=String(d.getDate()).padStart(2,'0');
@@ -3965,13 +3354,11 @@ const today=yyyy+'-'+mm+'-'+dd;
 picker.max=today;
 picker.value=today;
 
-
 const months=[
 'Jan','Feb','Mar','Apr',
 'May','Jun','Jul','Aug',
 'Sep','Oct','Nov','Dec'
 ];
-
 
 input.value=
 dd+'-'+
@@ -3993,16 +3380,13 @@ const months=[
 'Sep','Oct','Nov','Dec'
 ];
 
-
 $('customerTransactionDate').value=
 p[2]+'-'+
 months[Number(p[1])-1]+'-'+
 p[0];
 
-
 if(
-$('customerPageSelect').value===
-'ALL_TRANSACTIONS'
+$('customerPageSelect').value==='ALL_TRANSACTIONS'
 ){
 renderAllCustomerTransactions()
 }
@@ -4016,35 +3400,21 @@ renderAllCustomerTransactions()
 
 function openTab(tab,button){
 
-document
-.querySelectorAll('.panel')
+document.querySelectorAll('.panel')
 .forEach(p=>p.classList.remove('active'));
 
-
-document
-.querySelectorAll('.tab')
+document.querySelectorAll('.tab')
 .forEach(b=>b.classList.remove('active'));
 
-
-const panel=
-$('panel'+
+const panel=$('panel'+
 tab.charAt(0).toUpperCase()+
-tab.slice(1)
-);
+tab.slice(1));
 
-
-if(
-panel&&
-!panel.classList.contains('hidden')
-){
+if(panel&&!panel.classList.contains('hidden')){
 panel.classList.add('active')
 }
 
-
-if(
-button&&
-!button.classList.contains('hidden')
-){
+if(button&&!button.classList.contains('hidden')){
 button.classList.add('active')
 }
 
@@ -4061,54 +3431,34 @@ return String(currentUser?.role||'')
 function applyRoleAccess(preferredPanel=''){
 
 const role=getRole();
-
 const rateBox=$('adminRateBox');
 
-
 if(rateBox){
-rateBox.classList.toggle(
-'hidden',
-role!=='admin'
-)
+rateBox.classList.toggle('hidden',role!=='admin')
 }
 
-
 const tabs=document.querySelectorAll('.tab');
-
 const transactionTab=tabs[0];
 const customerTab=tabs[1];
 const agentTab=tabs[2];
-
 
 const transactionPanel=$('panelTransaction');
 const customerPanel=$('panelCustomer');
 const agentPanel=$('panelAgent');
 
+[transactionTab,customerTab,agentTab]
+.forEach(x=>x.classList.remove('hidden'));
 
-[
-transactionTab,
-customerTab,
-agentTab
-].forEach(x=>x.classList.remove('hidden'));
-
-
-[
-transactionPanel,
-customerPanel,
-agentPanel
-].forEach(x=>x.classList.remove('hidden'));
-
+[transactionPanel,customerPanel,agentPanel]
+.forEach(x=>x.classList.remove('hidden'));
 
 if(role==='admin'){
-
 const wanted=
 preferredPanel==='panelCustomer'
 ?'customer'
 :preferredPanel==='panelAgent'
 ?'agent'
 :'transaction';
-
-
 openTab(
 wanted,
 wanted==='customer'
@@ -4117,11 +3467,8 @@ wanted==='customer'
 ?agentTab
 :transactionTab
 );
-
 return
-
 }
-
 
 if(role==='agent'){
 
@@ -4134,18 +3481,14 @@ customerPanel.classList.add('hidden');
 agentPanel.classList.remove('hidden');
 agentPanel.classList.add('active');
 
-
 const s=$('agentView');
 const id=String(currentUser.linkedId||'');
 
-const found=
-agentData.find(
+const found=agentData.find(
 a=>String(a.agentId)===id
 );
 
-
 s.innerHTML='';
-
 
 const o=document.createElement('option');
 o.value=id;
@@ -4157,19 +3500,13 @@ found
 currentUser.name||
 'My Agent');
 
-
 s.appendChild(o);
 s.value=id;
 s.disabled=true;
 
-
-if(dataLoaded&&id)
-agentChanged();
-
+if(dataLoaded&&id)agentChanged();
 return
-
 }
-
 
 if(role==='viewer'||role==='viewar'){
 
@@ -4181,40 +3518,27 @@ agentTab.classList.remove('hidden');
 customerPanel.classList.remove('hidden');
 agentPanel.classList.remove('hidden');
 
-
 $('customerPageSelect').value='';
 
-
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-
-$('selectedDueAmount')
-.innerHTML=
+$('selectedDueAmount').innerHTML=
 '0.000 <span>KD</span>';
 
-
-$('customerList')
-.innerHTML=
+$('customerList').innerHTML=
 '<div class="empty">Select a customer</div>';
 
-
 updateTotalDue();
-
 
 $('agentView').disabled=false;
 $('agentView').value='';
 
 currentAgentTransactions=[];
-
 setAgentNumbers(0,0);
 
-
-$('agentList')
-.innerHTML=
+$('agentList').innerHTML=
 '<div class="empty">Select an agent</div>';
-
 
 openTab('customer',customerTab)
 
@@ -4235,50 +3559,39 @@ const password=$('password').value;
 const msg=$('loginMsg');
 const btn=$('loginBtn');
 
-
 if(!username||!password){
-
 msg.className='msg error';
-msg.textContent=
-'Username and password required';
-
+msg.textContent='Username and password required';
 return
-
 }
-
 
 btn.disabled=true;
 btn.textContent='Logging in...';
 
 msg.textContent='';
 
+showSync('Logging in...','syncing');
 
 try{
 
-const result=
-await getAPI(
+const result=await getAPI(
 'login',
 {username,password}
 );
 
-
 if(!result.success){
 msg.className='msg error';
-msg.textContent=
-result.error||
-'Login failed';
+msg.textContent=result.error||'Login failed';
+showSync('Login failed','error');
 return
 }
 
-
 currentUser=result.data;
-
 
 localStorage.setItem(
 'amaya_user',
 JSON.stringify(currentUser)
 );
-
 
 showApp()
 
@@ -4288,7 +3601,9 @@ catch(e){
 console.error(e);
 
 msg.className='msg error';
-msg.textContent='Connection error'
+msg.textContent='Connection error';
+
+showSync('Connection error','error');
 
 }
 finally{
@@ -4308,12 +3623,9 @@ try{
 const saved=
 localStorage.getItem('amaya_user');
 
-if(!saved)
-return;
-
+if(!saved)return;
 
 const user=JSON.parse(saved);
-
 
 if(user&&user.loggedIn){
 currentUser=user;
@@ -4322,9 +3634,7 @@ showApp()
 
 }
 catch(e){
-
 localStorage.removeItem('amaya_user')
-
 }
 
 }
@@ -4336,25 +3646,13 @@ localStorage.removeItem('amaya_user')
 
 async function showApp(){
 
-$('loginPage')
-.classList.add('hidden');
-
-$('app')
-.classList.remove('hidden');
-
+$('loginPage').classList.add('hidden');
+$('app').classList.remove('hidden');
 
 setToday();
-
 setCustomerToday();
-
 setupAgentDateFilters();
-
 applyRoleAccess();
-/*
-=========================================================
-Customer page default: All Transaction
-=========================================================
-*/
 
 if(getRole()==='admin'){
 
@@ -4368,10 +3666,7 @@ s.value='ALL_TRANSACTIONS';
 
 const info=$('selectedCustomerInfo');
 
-if(
-info&&
-info.querySelector('.selected-empty')
-){
+if(info&&info.querySelector('.selected-empty')){
 
 info.innerHTML=
 '<div class="selected-name">All Transaction</div>'+
@@ -4394,26 +3689,19 @@ renderAllCustomerTransactions();
 try{
 
 await openDB();
-
 await loadLocalDatabase();
 
-if(dataLoaded)
-renderLocalData();
+if(dataLoaded)renderLocalData();
 
 }
 catch(e){
 console.error('Local DB Error:',e)
 }
 
-
 if(!dataLoaded){
-
-$('customerList')
-.innerHTML=
+$('customerList').innerHTML=
 '<div class="loading">Loading data...</div>'
-
 }
-
 
 startBackgroundSync()
 
@@ -4432,13 +3720,10 @@ currentUser=null;
 
 localStorage.removeItem('amaya_user');
 
-
 dataLoaded=false;
-
 customerData=[];
 agentData=[];
 allTransactionsData=[];
-
 
 dueData={
 totalDueKD:0,
@@ -4447,14 +3732,12 @@ customers:[]
 
 totalDueKD=0;
 
-
 notesData={
 dueNotes:DUE_NOTES,
 paymentNotes:PAYMENT_NOTES
 };
 
 notesLoaded=true;
-
 
 dataVersion=
 txVersion=
@@ -4464,59 +3747,39 @@ settingsVersion='';
 
 lastTransactionRow=0;
 
-
 $('app').classList.add('hidden');
 $('loginPage').classList.remove('hidden');
-
 
 $('username').value='';
 $('password').value='';
 $('loginMsg').textContent='';
 
-
 $('customerPageSelect').value='';
 
-
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-
-$('selectedDueAmount')
-.innerHTML=
+$('selectedDueAmount').innerHTML=
 '0.000 <span>KD</span>';
 
-
-$('allCustomerDue')
-.innerHTML=
+$('allCustomerDue').innerHTML=
 '0.000 <span>KD</span>';
 
-
-$('customerList')
-.innerHTML=
+$('customerList').innerHTML=
 '<div class="empty">Select a customer</div>';
-
 
 $('agentView').value='';
 $('agentView').disabled=false;
 
 currentAgentTransactions=[];
-
 setAgentNumbers(0,0);
 
-
-$('agentList')
-.innerHTML=
+$('agentList').innerHTML=
 '<div class="empty">Select an agent</div>';
 
-
 $('headerRateAmount').value='';
-
-$('headerRatePopup')
-.classList.remove('show');
-
-$('profitPopup')
-.classList.remove('show');
+$('headerRatePopup').classList.remove('show');
+$('profitPopup').classList.remove('show');
 
 setCustomerToday()
 
@@ -4533,28 +3796,20 @@ const y=$('agentYear');
 const m=$('agentMonth');
 
 const now=new Date();
-
 const cy=now.getFullYear();
 const cm=now.getMonth()+1;
 
-
 y.innerHTML='';
-
 
 for(let i=cy-5;i<=cy;i++){
 
 const o=document.createElement('option');
-
 o.value=i;
 o.textContent=i;
-
-if(i===cy)
-o.selected=true;
-
+if(i===cy)o.selected=true;
 y.appendChild(o)
 
 }
-
 
 const months=[
 'January','February','March',
@@ -4563,34 +3818,24 @@ const months=[
 'November','December'
 ];
 
-
 m.innerHTML='';
-
 
 months.forEach((x,i)=>{
 
 const o=document.createElement('option');
-
 o.value=i+1;
 o.textContent=x;
-
-if(i+1===cm)
-o.selected=true;
-
+if(i+1===cm)o.selected=true;
 m.appendChild(o)
 
 });
 
-
 y.onchange=()=>{
-if($('agentView').value)
-renderAgentTransactions()
+if($('agentView').value)renderAgentTransactions()
 };
 
-
 m.onchange=()=>{
-if($('agentView').value)
-renderAgentTransactions()
+if($('agentView').value)renderAgentTransactions()
 }
 
 }
@@ -4602,32 +3847,26 @@ renderAgentTransactions()
 
 function calculateHeaderRate(){
 
-let value=
-String($('headerRateAmount').value)
+let value=String($('headerRateAmount').value)
 .replace(
 /[০-৯]/g,
 d=>'0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]
 )
 .replace(/[^0-9]/g,'');
 
-
 const popup=$('headerRatePopup');
-
 
 if(!value){
 popup.classList.remove('show');
 return
 }
 
-
 const amount=parseInt(value,10);
-
 
 if(!Number.isFinite(amount)||amount<=0){
 popup.classList.remove('show');
 return
 }
-
 
 const rate=
 amount<1000
@@ -4636,27 +3875,18 @@ amount<1000
 ?HEADER_RATE_2
 :HEADER_RATE_3;
 
-
 const kd=amount/rate;
-
 
 $('headerRateAmount').value=
 Math.floor(amount)
 .toLocaleString('en-IN');
 
-
-$('headerRatePopupAmount')
-.textContent=
+$('headerRatePopupAmount').textContent=
 Math.floor(amount*1.02)
-.toLocaleString('en-IN')+
-' Tk';
+.toLocaleString('en-IN')+' Tk';
 
-
-$('headerRatePopupKD')
-.textContent=
-kd.toFixed(3)+
-' KD';
-
+$('headerRatePopupKD').textContent=
+kd.toFixed(3)+' KD';
 
 popup.classList.add('show')
 
@@ -4674,25 +3904,18 @@ const bd=number($('bdAmount').value);
 
 const popup=$('profitPopup');
 
-
 if(kd<=0||bd<=0){
 popup.classList.remove('show');
 return
 }
 
-
 const profit=kd*400-bd;
-
 
 popup.textContent=
 'Profit '+
 (profit<0?'-':'')+
-Number(
-Math.abs(profit.toFixed(3))
-)
-.toLocaleString('en-IN')+
-' Tk';
-
+Number(Math.abs(profit.toFixed(3)))
+.toLocaleString('en-IN')+' Tk';
 
 popup.classList.add('show')
 
@@ -4703,18 +3926,14 @@ popup.classList.add('show')
    RATE POPUP CLOSE
 ========================================================= */
 
-document.addEventListener(
-'click',
-e=>{
+document.addEventListener('click',e=>{
 
 const box=$('adminRateBox');
 
 if(box&&!box.contains(e.target)){
 
 $('headerRateAmount').value='';
-
-$('headerRatePopup')
-.classList.remove('show')
+$('headerRatePopup').classList.remove('show')
 
 }
 
@@ -4728,35 +3947,22 @@ $('headerRatePopup')
 async function getAPI(action,params={}){
 
 const q=new URLSearchParams();
-
 q.set('action',action);
 
-
-Object.keys(params)
-.forEach(k=>{
-
+Object.keys(params).forEach(k=>{
 const v=params[k];
-
-if(
-v!==undefined&&
-v!==null&&
-v!==''
-){
+if(v!==undefined&&v!==null&&v!==''){
 q.set(k,v)
 }
-
 });
 
-
-const r=
-await fetch(
+const r=await fetch(
 API+'?'+q.toString(),
 {
 method:'GET',
 cache:'no-store'
 }
 );
-
 
 return r.json()
 
@@ -4767,22 +3973,19 @@ async function postAPI(data,timeout=15000){
 
 const controller=new AbortController();
 
-const timer=
-setTimeout(
+const timer=setTimeout(
 ()=>{controller.abort()},
 timeout
 );
 
 try{
 
-const r=
-await fetch(
+const r=await fetch(
 API,
 {
 method:'POST',
 headers:{
-'Content-Type':
-'text/plain;charset=utf-8'
+'Content-Type':'text/plain;charset=utf-8'
 },
 body:JSON.stringify(data),
 cache:'no-store',
@@ -4815,19 +4018,7 @@ clearTimeout(timer)
    TRANSACTION HELPERS
 ========================================================= */
 
-/*
-=========================================================
-UNIQUE TRANSACTION ID
-
-প্রতিটি save-এ একবার তৈরি হবে।
-Save button disabled থাকবে যতক্ষণ পর্যন্ত
-save complete না হয় — তাই একই transaction-এ
-দুইবার ID তৈরি হবে না।
-=========================================================
-*/
-
 function createTransactionId(){
-
 return(
 'TXN-'+
 Date.now().toString(36).toUpperCase()+
@@ -4837,55 +4028,41 @@ Math.random()
 .substring(2,10)
 .toUpperCase()
 )
-
 }
 
 
 function sleep(ms){
-return new Promise(
-resolve=>setTimeout(resolve,ms)
-)
+return new Promise(resolve=>setTimeout(resolve,ms))
 }
 
 
 async function verifySavedTransaction(transactionId){
 
-if(!transactionId)
-return null;
-
+if(!transactionId)return null;
 
 try{
 
-const result=
-await getAPI(
+const result=await getAPI(
 'verifyTransaction',
 {transactionId}
 );
-
 
 if(!result||!result.success){
 return null
 }
 
-
 const data=result.data||{};
-
 
 if(data.found&&data.transaction){
 return data.transaction
 }
-
 
 return null
 
 }
 catch(e){
 
-console.error(
-'Transaction verify error:',
-e
-);
-
+console.error('Transaction verify error:',e);
 return null
 
 }
@@ -4896,16 +4073,12 @@ return null
 async function verifyWithRetry(transactionId){
 
 let tx=await verifySavedTransaction(transactionId);
-
 if(tx)return tx;
-
 
 await sleep(900);
 
 tx=await verifySavedTransaction(transactionId);
-
 if(tx)return tx;
-
 
 return null
 
@@ -4916,14 +4089,12 @@ async function safePostTransaction(payload){
 
 let lastResult=null;
 
-
 try{
 lastResult=await postAPI(payload,15000);
 }
 catch(e){
 console.warn('POST attempt 1 failed:',e);
 }
-
 
 if(lastResult&&lastResult.success){
 return{
@@ -4932,7 +4103,6 @@ result:lastResult,
 transaction:null
 }
 }
-
 
 let verified=
 await verifyWithRetry(payload.transactionId);
@@ -4945,40 +4115,6 @@ transaction:verified,
 verified:true
 }
 }
-
-
-await sleep(500);
-
-
-try{
-lastResult=await postAPI(payload,15000);
-}
-catch(e){
-console.warn('POST attempt 2 failed:',e);
-}
-
-
-if(lastResult&&lastResult.success){
-return{
-success:true,
-result:lastResult,
-transaction:null
-}
-}
-
-
-verified=
-await verifyWithRetry(payload.transactionId);
-
-if(verified){
-return{
-success:true,
-result:lastResult,
-transaction:verified,
-verified:true
-}
-}
-
 
 return{
 success:false,
@@ -4996,105 +4132,52 @@ verified:false
 
 async function applyBootstrap(data){
 
-/*
-=========================================================
-Local pending transactions কে আগে বের করি।
+const localAll=await dbGetAll('transactions');
 
-এমনিতে server data দিয়ে overwrite হয়ে যাবে,
-তাই pending গুলো প্রথমে memory-তে রাখি।
-=========================================================
-*/
-
-const localAll=
-await dbGetAll('transactions');
-
-const pendingLocal=
-localAll.filter(
-t=>t.pending===true
-);
-
+const pendingLocal=localAll.filter(t=>t.pending===true);
 
 const serverCustomers=
-Array.isArray(data.customers)
-?data.customers
-:[];
-
+Array.isArray(data.customers)?data.customers:[];
 
 const serverAgents=
-Array.isArray(data.agents)
-?data.agents
-:[];
-
+Array.isArray(data.agents)?data.agents:[];
 
 const serverTransactions=
-Array.isArray(data.transactions)
-?data.transactions
-:[];
+Array.isArray(data.transactions)?data.transactions:[];
 
-
-/*
-=========================================================
-MERGE
-
-Server transactions + Local pending
-Server-এ না থাকা pending transaction গুলো
-উপরে যোগ হবে।
-=========================================================
-*/
-
-const serverIds=
-new Set(
+const serverIds=new Set(
 serverTransactions.map(
 t=>String(t.transactionId||'').trim()
 )
 );
 
-
 const mergedTransactions=[
-...serverTransactions.map(
-t=>({
-...t,
-pending:false
-})
-),
+...serverTransactions.map(t=>({...t,pending:false})),
 ...pendingLocal.filter(
-pt=>!serverIds.has(
-String(pt.transactionId||'').trim()
-)
+pt=>!serverIds.has(String(pt.transactionId||'').trim())
 )
 ];
 
-
 customerData=serverCustomers;
-
 agentData=serverAgents;
-
 allTransactionsData=mergedTransactions;
 
-
 sortCustomersAZ(customerData);
-
-sortTransactionsNewestFirst(
-allTransactionsData
-);
-
+sortTransactionsNewestFirst(allTransactionsData);
 
 notesData={
 dueNotes:
-Array.isArray(data.dueNotes)&&
-data.dueNotes.length
+Array.isArray(data.dueNotes)&&data.dueNotes.length
 ?data.dueNotes
 :DUE_NOTES,
 
 paymentNotes:
-Array.isArray(data.paymentNotes)&&
-data.paymentNotes.length
+Array.isArray(data.paymentNotes)&&data.paymentNotes.length
 ?data.paymentNotes
 :PAYMENT_NOTES
 };
 
 notesLoaded=true;
-
 
 dataVersion=data.version||'';
 txVersion=data.txVersion||'';
@@ -5102,28 +4185,21 @@ customerVersion=data.customerVersion||'';
 agentVersion=data.agentVersion||'';
 settingsVersion=data.settingsVersion||'';
 
-
 lastTransactionRow=
 Number(data.lastTransactionRow||0)||0;
 
-
 applyDueData(data);
-
 
 if(data.totalDueKD!==undefined){
 totalDueKD=number(data.totalDueKD)
 }
 
-
 await saveCustomersLocal(customerData);
-
 await saveAgentsLocal(agentData);
-
 
 await dbClear('transactions');
 
 await saveTransactionsLocal(allTransactionsData);
-
 
 dataLoaded=true;
 
@@ -5136,33 +4212,25 @@ renderLocalData()
 
 async function initialBootstrap(){
 
-if(bootstrapPromise)
-return bootstrapPromise;
-
+if(bootstrapPromise)return bootstrapPromise;
 
 bootstrapPromise=
 (async()=>{
 
 try{
 
-showSync('Loading...');
+showSync('Loading...','syncing');
 
-
-const r=
-await getAPI('bootstrap');
-
+const r=await getAPI('bootstrap');
 
 if(!r.success)
 throw new Error(
-r.error||
-'Bootstrap loading failed'
+r.error||'Bootstrap loading failed'
 );
-
 
 await applyBootstrap(r.data||{});
 
-
-hideSync();
+showSync('Synced ✓','synced');
 
 return true
 
@@ -5171,11 +4239,10 @@ catch(e){
 
 console.error(e);
 
-hideSync();
+showSync('Load error','error');
 
 showInitialDataError(
-e.message||
-'Data loading error'
+e.message||'Data loading error'
 );
 
 return false
@@ -5187,7 +4254,6 @@ bootstrapPromise=null
 
 })();
 
-
 return bootstrapPromise
 
 }
@@ -5197,26 +4263,10 @@ return bootstrapPromise
    SYNC PENDING TRANSACTIONS
 ========================================================= */
 
-/*
-=========================================================
-একদম CRITICAL FUNCTION
-
-Local-এ pending transaction গুলো Sheet-এ পাঠায়।
-
-Duplicate protection:
-  1. Backend transactionId check করে
-  2. Local-এ ইতিমধ্যেই transactionId থাকলে
-     নতুন করে পাঠায় না
-=========================================================
-*/
-
 async function syncPendingTransactions(){
 
-if(!navigator.onLine||!currentUser)
-return false;
-
-if(pendingSyncRunning)
-return false;
+if(!navigator.onLine||!currentUser)return false;
+if(pendingSyncRunning)return false;
 
 pendingSyncRunning=true;
 
@@ -5224,146 +4274,89 @@ try{
 
 await openDB();
 
-const all=
-await dbGetAll('transactions');
+const all=await dbGetAll('transactions');
+const pending=all.filter(t=>t.pending===true);
 
-const pending=
-all.filter(t=>t.pending===true);
+if(!pending.length)return true;
 
-if(!pending.length){
-return true
-}
+console.log('Syncing '+pending.length+' pending...');
 
-console.log(
-'Syncing '+pending.length+' pending transactions...'
-);
+showSync('Syncing...','syncing');
 
 let changed=false;
 
 for(const tx of pending){
 
-if(!navigator.onLine||!currentUser)
-break;
+if(!navigator.onLine||!currentUser)break;
 
 const transactionId=
 String(tx.transactionId||'').trim();
 
-if(!transactionId)
-continue;
+if(!transactionId)continue;
 
 const payload={
-
 action:'addTransaction',
-
 username:currentUser?.username||'',
-
 role:currentUser?.role||'',
-
 date:tx.date,
-
 customerId:tx.customerId,
-
 customerName:tx.customerName||'',
-
 agentName:tx.agentName||'',
-
 kdAmount:tx.kdAmount,
-
 bdAmount:tx.bdAmount,
-
 type:tx.type,
-
 note:tx.note,
-
 transactionId
-
 };
-
 
 let safeResult=null;
 
 try{
-
-safeResult=
-await safePostTransaction(payload);
-
+safeResult=await safePostTransaction(payload);
 }
 catch(e){
-console.warn(
-'Sync failed for '+transactionId+':',
-e
-);
+console.warn('Sync failed for '+transactionId+':',e);
 }
 
+if(safeResult&&safeResult.success){
 
-if(
-safeResult&&
-safeResult.success
-){
-
-const s=
-safeResult.result?.data||{};
+const s=safeResult.result?.data||{};
 
 const serverTransaction=
 safeResult.transaction||
 (
-s.transaction&&
-typeof s.transaction==='object'
+s.transaction&&typeof s.transaction==='object'
 ?s.transaction
 :null
 );
 
-
 const updated={
-
 ...tx,
-
 rowNumber:
 serverTransaction?.rowNumber||
 s.rowNumber||
-tx.rowNumber||
-0,
-
+tx.rowNumber||0,
 timestamp:
 serverTransaction?.timestamp||
 s.timestamp||
 tx.timestamp,
-
 pending:false
-
 };
-
 
 await saveTransactionsLocal([updated]);
 
-
-const idx=
-allTransactionsData.findIndex(
-t=>
-String(t.transactionId||'').trim()===
-transactionId
+const idx=allTransactionsData.findIndex(
+t=>String(t.transactionId||'').trim()===transactionId
 );
 
+if(idx>=0)allTransactionsData[idx]=updated;
+else allTransactionsData.push(updated);
 
-if(idx>=0){
-allTransactionsData[idx]=updated
-}
-else{
-allTransactionsData.push(updated)
-}
-
-
-if(s.version!==undefined){
-dataVersion=String(s.version)
-}
-
-if(s.txVersion!==undefined){
-txVersion=String(s.txVersion)
-}
+if(s.version!==undefined)dataVersion=String(s.version);
+if(s.txVersion!==undefined)txVersion=String(s.txVersion);
 
 if(updated.rowNumber){
-lastTransactionRow=
-Math.max(
+lastTransactionRow=Math.max(
 lastTransactionRow,
 Number(updated.rowNumber)
 );
@@ -5375,22 +4368,15 @@ console.log('✓ Synced:',transactionId);
 
 }
 else{
-
 console.warn('✗ Still pending:',transactionId);
-
 }
 
 }
-
 
 if(changed){
-
 await saveLocalState();
-
 renderLocalData();
-
-showSync('Synced');
-
+showSync('Synced ✓','synced');
 }
 
 return changed
@@ -5399,6 +4385,8 @@ return changed
 catch(e){
 
 console.error('syncPendingTransactions error:',e);
+
+showSync('Sync failed','error');
 
 return false
 
@@ -5416,8 +4404,7 @@ pendingSyncRunning=false
 
 async function syncData(force=false){
 
-if(syncRunning||!currentUser)
-return false;
+if(syncRunning||!currentUser)return false;
 
 syncRunning=true;
 
@@ -5425,33 +4412,19 @@ try{
 
 await openDB();
 
-
-/*
-Pending প্রথমে sync করো
-*/
-
 await syncPendingTransactions();
-
-
-/*
-Version check
-*/
 
 if(force||!dataVersion){
 
 const result=await initialBootstrap();
 
-if(
-getRole()==='agent'&&
-$('agentView').value
-){
+if(getRole()==='agent'&&$('agentView').value){
 agentChanged();
 }
 
 return result;
 
 }
-
 
 let serverVersion='';
 let serverTxVersion='';
@@ -5461,26 +4434,19 @@ try{
 const result=await getAPI('version');
 
 if(result&&result.success){
-
 serverVersion=String(
 result.data?.version||''
 );
-
 serverTxVersion=String(
 result.data?.txVersion||''
 );
-
 }
 
 }
 catch(e){
-
 console.log('Version check failed:',e);
-
 return false;
-
 }
-
 
 const versionChanged=
 serverVersion&&
@@ -5494,10 +4460,7 @@ if(versionChanged||txVersionChanged){
 
 const result=await initialBootstrap();
 
-if(
-getRole()==='agent'&&
-$('agentView').value
-){
+if(getRole()==='agent'&&$('agentView').value){
 agentChanged();
 }
 
@@ -5587,17 +4550,23 @@ syncData()
 });
 
 
+window.addEventListener(
+'offline',
+()=>{
+
+showSync('Offline','pending');
+
+});
+
+
 /* =========================================================
    INPUTS
 ========================================================= */
 
 $('kdAmount')
-.addEventListener(
-'blur',
-function(){
+.addEventListener('blur',function(){
 
 const v=number(this.value);
-
 
 if(!v){
 this.value='';
@@ -5605,12 +4574,10 @@ calculateProfitPopup();
 return
 }
 
-
 this.value=
 Number.isInteger(v)
 ?String(v)
 :v.toFixed(3);
-
 
 calculateProfitPopup()
 
@@ -5618,13 +4585,9 @@ calculateProfitPopup()
 
 
 $('bdAmount')
-.addEventListener(
-'input',
-function(){
+.addEventListener('input',function(){
 
-let v=
-this.value.replace(/[^\d]/g,'');
-
+let v=this.value.replace(/[^\d]/g,'');
 
 if(!v){
 this.value='';
@@ -5632,14 +4595,11 @@ calculateProfitPopup();
 return
 }
 
-
 v=v.replace(/^0+(?=\d)/,'');
-
 
 this.value=
 Number(v)
 .toLocaleString('en-IN');
-
 
 calculateProfitPopup()
 
@@ -5647,34 +4607,17 @@ calculateProfitPopup()
 
 
 /* =========================================================
-   SAVE TRANSACTION (LOCAL-FIRST + DUPLICATE SAFE)
+   SAVE TRANSACTION
 ========================================================= */
-
-/*
-=========================================================
-Flow:
-
-1. Validation
-2. Transaction ID তৈরি (একবার)
-3. isSavingTransaction lock
-4. Local DB-তে pending save
-5. UI আপডেট
-6. Save success message
-7. Background-এ sync trigger
-8. unlock
-=========================================================
-*/
 
 async function saveTransaction(){
 
-if(isSavingTransaction)
-return;
+if(isSavingTransaction)return;
 
 if(getRole()!=='admin'){
 showSaveError('Access denied');
 return
 }
-
 
 const date=$('date').value;
 const agentId=$('agentSelect').value;
@@ -5683,71 +4626,40 @@ const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
 const note=$('noteSelect').value;
 
-
-if(!date)
-return showSaveError('Date required');
-
+if(!date)return showSaveError('Date required');
 
 if(kd>0&&!customerId)
 return showSaveError(
 'KD Amount দিলে Customer নির্বাচন করুন'
 );
 
-
 if(bd>0&&!agentId)
 return showSaveError(
 'BD Amount দিলে Agent নির্বাচন করুন'
 );
 
-
 if(kd<=0&&bd<=0)
-return showSaveError(
-'KD অথবা BD Amount দিন'
-);
-
+return showSaveError('KD অথবা BD Amount দিন');
 
 const selectedDate=new Date(date+'T00:00:00');
 const today=new Date();
 today.setHours(0,0,0,0);
 
-
 if(selectedDate>today)
 return showSaveError('Future date দেওয়া যাবে না');
 
-
-const agent=
-agentData.find(
+const agent=agentData.find(
 a=>String(a.agentId)===String(agentId)
 );
 
-
-const customer=
-customerData.find(
+const customer=customerData.find(
 c=>String(c.customerId)===String(customerId)
 );
 
-
-if(kd>0&&!customer){
-return showSaveError('Customer not found')
-}
-
-
-if(bd>0&&!agent){
-return showSaveError('Agent not found')
-}
-
-
-/*
-=========================================================
-SAVE LOCK
-
-একই সময়ে দুইবার save চাপলে
-একবারই কাজ করবে।
-=========================================================
-*/
+if(kd>0&&!customer)return showSaveError('Customer not found');
+if(bd>0&&!agent)return showSaveError('Agent not found');
 
 isSavingTransaction=true;
-
 
 const button=$('saveBtn');
 const message=$('saveMsg');
@@ -5755,48 +4667,26 @@ const message=$('saveMsg');
 const savedCustomerPageId=
 $('customerPageSelect').value;
 
-const savedAgentId=
-$('agentSelect').value;
+const savedAgentId=$('agentSelect').value;
 
+const transactionId=createTransactionId();
 
-const transactionId=
-createTransactionId();
-
-
-const formattedDate=
-formatDate(date);
-
+const formattedDate=formatDate(date);
 
 const localTransaction={
-
 date:formattedDate,
-
 customerId,
-
-customerName:
-customer?.customerName||'',
-
+customerName:customer?.customerName||'',
 kdAmount:kd,
-
 bdAmount:bd,
-
 type:transactionType,
-
 note,
-
 transactionId,
-
 timestamp:new Date().toISOString(),
-
-agentName:
-agent?.agentName||'',
-
+agentName:agent?.agentName||'',
 rowNumber:0,
-
 pending:true
-
 };
-
 
 button.disabled=true;
 button.textContent='Saving...';
@@ -5804,61 +4694,27 @@ button.textContent='Saving...';
 message.textContent='';
 message.className='msg';
 
-
 try{
 
-/*
-=========================================================
-Duplicate safety check
+const exists=await transactionExistsLocal(transactionId);
 
-এই ID Local-এ আগেই থাকলে
-নতুন করে save করব না।
-=========================================================
-*/
-
-const exists=
-await transactionExistsLocal(
-transactionId
-);
-
-if(exists){
-
-throw new Error(
+if(exists)throw new Error(
 'Duplicate transaction id detected'
 );
 
-}
-
-
-/*
-=========================================================
-LOCAL FIRST
-=========================================================
-*/
-
 await saveTransactionsLocal([localTransaction]);
 
+const localKey=transactionKey(localTransaction);
 
-const localKey=
-transactionKey(localTransaction);
-
-
-const duplicateLocal=
-allTransactionsData.some(
+const duplicateLocal=allTransactionsData.some(
 t=>transactionKey(t)===localKey
 );
 
-
-if(!duplicateLocal){
-allTransactionsData.push(localTransaction)
-}
-
+if(!duplicateLocal)allTransactionsData.push(localTransaction);
 
 customerData.forEach(c=>{
 c.totalDueKD=
-calculateCustomerDueFromTransactions(
-c.customerId
-);
+calculateCustomerDueFromTransactions(c.customerId);
 });
 
 updateTotalDue();
@@ -5867,79 +4723,46 @@ await saveLocalState();
 
 renderLocalData();
 
-
-/*
-=========================================================
-CLEAR FORM
-=========================================================
-*/
-
 $('kdAmount').value='';
 $('bdAmount').value='';
 
 calculateProfitPopup();
 
-
-/*
-=========================================================
-Success message
-=========================================================
-*/
-
 message.className='msg success';
-message.textContent=
-'✓ Saved — Syncing...';
+message.textContent='✓ Saved';
 
-
-/*
-=========================================================
-RESTORE AGENT
-=========================================================
-*/
+showSync('Syncing...','syncing');
 
 if(
 savedAgentId&&
-[...$('agentSelect').options]
-.some(o=>o.value===savedAgentId)
+[...$('agentSelect').options].some(
+o=>o.value===savedAgentId
+)
 ){
 
 $('agentSelect').value=savedAgentId;
-
-$('agentSelect')
-.classList.add('has-value');
+$('agentSelect').classList.add('has-value');
 
 }
 
-
 $('customerSelect').value='';
-
-$('customerSelect')
-.classList.remove('has-value');
-
-
-/*
-=========================================================
-RESTORE CUSTOMER PAGE
-=========================================================
-*/
+$('customerSelect').classList.remove('has-value');
 
 if(
 savedCustomerPageId&&
-[...$('customerPageSelect').options]
-.some(o=>o.value===savedCustomerPageId)
+[...$('customerPageSelect').options].some(
+o=>o.value===savedCustomerPageId
+)
 ){
 
-$('customerPageSelect').value=
-savedCustomerPageId;
-
+$('customerPageSelect').value=savedCustomerPageId;
 
 if(savedCustomerPageId==='ALL_TRANSACTIONS'){
 renderAllCustomerTransactions()
 }
 else{
 
-const c=
-findCustomer(savedCustomerPageId);
+const c=findCustomer(savedCustomerPageId);
 
 if(c){
 renderCustomerInfo(c);
@@ -5950,74 +4773,25 @@ renderCustomerTransactionsLocal(c.customerId)
 
 }
 
+if($('agentView').value)agentChanged();
 
-if($('agentView').value){
-agentChanged()
-}
-
-
-/*
-=========================================================
-BACKGROUND SYNC
-
-await নেই — user-কে অপেক্ষা করাব না
-=========================================================
-*/
-
-setTimeout(
-()=>{
+setTimeout(()=>{
 syncPendingTransactions();
-},
-50
-);
-
-
-/*
-=========================================================
-Hide success message
-=========================================================
-*/
-
-setTimeout(
-()=>{
-
-if(
-message.textContent===
-'✓ Saved — Syncing...'
-){
-message.textContent='✓ Saved';
-}
-
-},
-900
-);
-
-
-setTimeout(
-()=>{
-message.textContent='';
-message.className='msg';
-},
-2500
-);
-
+},50);
 
 }
 catch(e){
 
 console.error('Save Error:',e);
 
-showSaveError(
-'Save failed: '+
-(e.message||e)
-);
+showSaveError('Save failed: '+(e.message||e));
+showSync('Save failed','error');
 
 }
 finally{
 
 button.disabled=false;
 button.textContent='💾 Save';
-
 isSavingTransaction=false;
 
 }
@@ -6026,12 +4800,9 @@ isSavingTransaction=false;
 
 
 function showSaveError(text){
-
 const m=$('saveMsg');
-
 m.className='msg error';
 m.textContent=text
-
 }
 
 
@@ -6045,25 +4816,18 @@ const m=[
 'Sep','Oct','Nov','Dec'
 ];
 
-
-return(
-p[2]+'-'+
+return(p[2]+'-'+
 m[Number(p[1])-1]+'-'+
-p[0]
-)
+p[0])
 
 }
 
 
 function addEmpty(parent,text){
-
 const box=document.createElement('div');
-
 box.className='empty';
 box.textContent=text;
-
 parent.appendChild(box)
-
 }
 
 
@@ -6074,10 +4838,7 @@ parent.appendChild(box)
 function escapeHTML(value){
 
 return String(
-value===null||
-value===undefined
-?''
-:value
+value===null||value===undefined?'':value
 )
 .replace(/&/g,'&amp;')
 .replace(/</g,'&lt;')
@@ -6090,18 +4851,11 @@ value===undefined
 
 function showInitialDataError(message){
 
-if(
-$('customerList')&&
-!dataLoaded
-){
+if($('customerList')&&!dataLoaded){
 
-$('customerList')
-.innerHTML=
+$('customerList').innerHTML=
 '<div class="empty">'+
-escapeHTML(
-message||
-'Unable to load data'
-)+
+escapeHTML(message||'Unable to load data')+
 '</div>'
 
 }
@@ -6114,43 +4868,34 @@ message||
 ========================================================= */
 
 $('customerPageSelect')
-.addEventListener(
-'change',
-function(){
+.addEventListener('change',function(){
 
 const id=this.value;
 const list=$('customerList');
 
-
 if(!id){
 
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-empty">Select a customer</div>';
 
-$('selectedDueAmount')
-.innerHTML=
+$('selectedDueAmount').innerHTML=
 '0.000 <span>KD</span>';
 
 updateTotalDue();
 
-list.innerHTML=
-'<div class="empty">Select a customer</div>';
+list.innerHTML='<div class="empty">Select a customer</div>';
 
 return
 
 }
 
-
 if(id==='ALL_TRANSACTIONS'){
 
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-name">All Transaction</div>'+
 '<div class="selected-phone">All Active Customers</div>';
 
-$('selectedDueAmount')
-.innerHTML='All';
+$('selectedDueAmount').innerHTML='All';
 
 updateTotalDue();
 
@@ -6160,39 +4905,30 @@ return
 
 }
 
-
 const c=findCustomer(id);
-
 
 if(!c){
 
-$('selectedCustomerInfo')
-.innerHTML=
+$('selectedCustomerInfo').innerHTML=
 '<div class="selected-empty">Customer not found</div>';
 
-$('selectedDueAmount')
-.innerHTML=
+$('selectedDueAmount').innerHTML=
 '0.000 <span>KD</span>';
 
-list.innerHTML=
-'<div class="empty">Customer not found</div>';
+list.innerHTML='<div class="empty">Customer not found</div>';
 
 return
 
 }
 
-
 renderCustomerInfo(c);
-
 renderCustomerTransactionsLocal(c.customerId)
 
 });
 
 
 $('customerSearch')
-.addEventListener(
-'input',
-function(){
+.addEventListener('input',function(){
 
 const id=$('customerPageSelect').value;
 
@@ -6200,11 +4936,7 @@ updateCustomerDropdown();
 
 const s=$('customerPageSelect');
 
-
-if(
-id&&
-[...s.options].some(o=>o.value===id)
-){
+if(id&&[...s.options].some(o=>o.value===id)){
 s.value=id
 }
 
@@ -6212,14 +4944,9 @@ s.value=id
 
 
 $('customerTransactionDate')
-.addEventListener(
-'change',
-function(){
+.addEventListener('change',function(){
 
-if(
-$('customerPageSelect').value===
-'ALL_TRANSACTIONS'
-){
+if($('customerPageSelect').value==='ALL_TRANSACTIONS'){
 renderAllCustomerTransactions()
 }
 
@@ -6231,9 +4958,7 @@ renderAllCustomerTransactions()
 ========================================================= */
 
 $('bdAmount')
-.addEventListener(
-'keydown',
-e=>{
+.addEventListener('keydown',e=>{
 
 if(e.key==='Enter'||e.keyCode===13){
 e.preventDefault();
@@ -6244,12 +4969,9 @@ saveTransaction()
 
 
 $('password')
-.addEventListener(
-'keydown',
-e=>{
+.addEventListener('keydown',e=>{
 
-if(e.key==='Enter')
-login()
+if(e.key==='Enter')login()
 
 });
 
@@ -6259,28 +4981,14 @@ login()
 ========================================================= */
 
 $('agentSelect')
-.addEventListener(
-'change',
-function(){
-
-this.classList.toggle(
-'has-value',
-this.value!==''
-)
-
+.addEventListener('change',function(){
+this.classList.toggle('has-value',this.value!=='')
 });
 
 
 $('customerSelect')
-.addEventListener(
-'change',
-function(){
-
-this.classList.toggle(
-'has-value',
-this.value!==''
-)
-
+.addEventListener('change',function(){
+this.classList.toggle('has-value',this.value!=='')
 });
 
 
@@ -6304,9 +5012,7 @@ restoreLogin();
 
 if('serviceWorker' in navigator){
 
-window.addEventListener(
-'load',
-()=>{
+window.addEventListener('load',()=>{
 
 navigator.serviceWorker
 .register('./service-worker.js')
@@ -6314,14 +5020,10 @@ navigator.serviceWorker
 console.log('PWA Service Worker registered')
 })
 .catch(err=>
-console.error(
-'Service Worker error:',
-err
-)
+console.error('Service Worker error:',err)
 )
 
-}
-)
+})
 
 }
 
