@@ -4098,15 +4098,7 @@ input.setAttribute('data-form-type', 'other');
 input.setAttribute('data-lpignore', 'true');
 input.setAttribute('data-1p-ignore', 'true');
 
-input.addEventListener('focus', function(){
-this.removeAttribute('readonly');
-});
-
-input.addEventListener('blur', function(){
-this.setAttribute('readonly', 'readonly');
-});
-
-input.setAttribute('readonly', 'readonly');
+/* readonly trick বাদ দেওয়া হলো */
 
 });
 
@@ -4129,7 +4121,8 @@ setTimeout(()=>{
 
 const active = document.activeElement;
 
-if(!saveBtn || (active !== kdInput && active !== bdInput)) return;
+if(!saveBtn) return;
+if(active !== kdInput && active !== bdInput) return;
 
 const vv = window.visualViewport;
 const visibleBottom = vv ? vv.height : window.innerHeight;
@@ -4144,20 +4137,28 @@ behavior:'smooth'
 });
 }
 
-}, 350);
+}, 500);
 }
 
-if(kdInput){
-kdInput.addEventListener('focus', scrollSaveIntoView);
-}
+/* focusin + click + touchstart — তিনটাই */
+[kdInput, bdInput].forEach(input=>{
 
-if(bdInput){
-bdInput.addEventListener('focus', scrollSaveIntoView);
-}
+if(!input) return;
 
+input.addEventListener('focusin', scrollSaveIntoView);
+input.addEventListener('click', scrollSaveIntoView);
+input.addEventListener('touchstart', scrollSaveIntoView, {passive:true});
+
+});
+
+/* কীবোর্ড resize হলে */
 if(window.visualViewport){
-window.visualViewport.addEventListener('resize', scrollSaveIntoView);
-window.visualViewport.addEventListener('scroll', scrollSaveIntoView);
+window.visualViewport.addEventListener('resize', ()=>{
+const active = document.activeElement;
+if(active === kdInput || active === bdInput){
+scrollSaveIntoView();
+}
+});
 }
 
 }
