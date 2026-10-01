@@ -4113,6 +4113,10 @@ input.setAttribute('data-1p-ignore', 'true');
    KEYBOARD HANDLING FOR SAVE BUTTON
 ========================================================= */
 
+/* =========================================================
+   KEYBOARD HANDLING FOR SAVE BUTTON
+========================================================= */
+
 function setupKeyboardSaveButton(){
 
 const kdInput = $('kdAmount');
@@ -4130,16 +4134,23 @@ if(!saveBtn || !app) return;
 const active = document.activeElement;
 if(active !== kdInput && active !== bdInput) return;
 
+/* .app এর visible area বের করি */
+const appRect = app.getBoundingClientRect();
+
+/* keyboard এর উপরের প্রান্ত (viewport এর সাপেক্ষে) */
 const vv = window.visualViewport;
 const visibleBottom = vv ? vv.height : window.innerHeight;
 
+/* Save বাটনের position (viewport এর সাপেক্ষে) */
 const btnRect = saveBtn.getBoundingClientRect();
+
+/* যদি Save বাটন visible area এর নিচে পড়ে */
 const diff = btnRect.bottom - visibleBottom + 3;
 
 if(diff > 0){
 app.scrollBy({
 top: diff,
-behavior:'auto'      /* smooth বাদ, instant scroll */
+behavior:'auto'
 });
 }
 
@@ -4151,7 +4162,6 @@ stopWatching();
 
 watchCount = 0;
 
-/* প্রতি 100ms এ চেক করবো, 20 বার (মানে 2 সেকেন্ড) */
 watchTimer = setInterval(()=>{
 
 watchCount++;
@@ -4164,11 +4174,11 @@ return;
 
 bringSaveIntoView();
 
-if(watchCount >= 20){
+if(watchCount >= 30){
 stopWatching();
 }
 
-}, 100);
+}, 80);
 
 }
 
@@ -4181,7 +4191,6 @@ watchTimer = null;
 
 }
 
-/* তিনটাই ইভেন্ট */
 [kdInput, bdInput].forEach(input=>{
 
 if(!input) return;
@@ -4200,10 +4209,16 @@ startWatching();
 
 });
 
-/* visualViewport resize হলেও চেক করি */
 if(window.visualViewport){
 
 window.visualViewport.addEventListener('resize', ()=>{
+const active = document.activeElement;
+if(active === kdInput || active === bdInput){
+startWatching();
+}
+});
+
+window.visualViewport.addEventListener('scroll', ()=>{
 const active = document.activeElement;
 if(active === kdInput || active === bdInput){
 bringSaveIntoView();
@@ -4212,7 +4227,6 @@ bringSaveIntoView();
 
 }
 
-/* Blur হলে বন্ধ */
 [kdInput, bdInput].forEach(input=>{
 if(!input) return;
 input.addEventListener('blur', ()=>{
