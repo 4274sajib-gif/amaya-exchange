@@ -403,6 +403,22 @@ opacity:.55;
 cursor:not-allowed
 }
 
+.save.keyboard-fixed{
+position:fixed;
+z-index:9999;
+width:calc(100% - 32px);
+max-width:488px;
+left:50%;
+transform:translateX(-50%);
+bottom:0;
+transition:bottom .15s ease;
+}
+
+.save-placeholder{
+visibility:hidden;
+pointer-events:none;
+}
+
 .msg{
 font-size:12px;
 margin-top:9px;
@@ -4117,6 +4133,10 @@ input.setAttribute('data-1p-ignore', 'true');
    KEYBOARD HANDLING FOR SAVE BUTTON
 ========================================================= */
 
+/* =========================================================
+   KEYBOARD HANDLING FOR SAVE BUTTON (PWA SAFE)
+========================================================= */
+
 function setupKeyboardSaveButton(){
 
 const kdInput = $('kdAmount');
@@ -4124,34 +4144,65 @@ const bdInput = $('bdAmount');
 const saveBtn = $('saveBtn');
 const app = document.querySelector('.app');
 
-let watchTimer = null;
-let watchCount = 0;
-
-function bringSaveIntoView(){
-
 if(!saveBtn || !app) return;
 
-const active = document.activeElement;
-if(active !== kdInput && active !== bdInput) return;
+/* placeholder তৈরি করি */
+const placeholder = document.createElement('div');
+placeholder.className = 'save-placeholder';
+saveBtn.parentNode.insertBefore(placeholder, saveBtn.nextSibling);
 
-/* .app এর visible area বের করি */
-const appRect = app.getBoundingClientRect();
+let isFixed = false;
+let watchTimer = null;
 
-/* keyboard এর উপরের প্রান্ত (viewport এর সাপেক্ষে) */
+function activateFixed(){
+
+if(isFixed) return;
+isFixed = true;
+
+/* placeholder এর height মিলিয়ে রাখি */
+placeholder.style.height = saveBtn.offsetHeight + 'px';
+placeholder.style.marginTop =
+window.getComputedStyle(saveBtn).marginTop;
+
+/* Save বাটনকে fixed করি */
+saveBtn.classList.add('keyboard-fixed');
+
+updatePosition();
+
+}
+
+function deactivateFixed(){
+
+if(!isFixed) return;
+isFixed = false;
+
+saveBtn.classList.remove('keyboard-fixed');
+saveBtn.style.bottom = '';
+
+if(watchTimer){
+clearInterval(watchTimer);
+watchTimer = null;
+}
+
+}
+
+function updatePosition(){
+
+if(!isFixed) return;
+
 const vv = window.visualViewport;
-const visibleBottom = vv ? vv.height : window.innerHeight;
+if(!vv) return;
 
-/* Save বাটনের position (viewport এর সাপেক্ষে) */
-const btnRect = saveBtn.getBoundingClientRect();
+/* কীবোর্ডের উচ্চতা */
+const windowHeight = window.innerHeight;
+const keyboardHeight = windowHeight - vv.height - vv.offsetTop;
 
-/* যদি Save বাটন visible area এর নিচে পড়ে */
-const diff = btnRect.bottom - visibleBottom + 3;
-
-if(diff > 0){
-app.scrollBy({
-top: diff,
-behavior:'auto'
-});
+/* কীবোর্ডের উপরে Save বাটন বসাই */
+if(keyboardHeight > 50){
+saveBtn.style.bottom = (keyboardHeight + 8) + 'px';
+}
+else{
+saveBtn.style.bottom = '0px';
 }
 
 }
@@ -4160,25 +4211,19 @@ function startWatching(){
 
 stopWatching();
 
-watchCount = 0;
+updatePosition();
 
 watchTimer = setInterval(()=>{
 
-watchCount++;
-
 const active = document.activeElement;
+
 if(active !== kdInput && active !== bdInput){
-stopWatching();
 return;
 }
 
-bringSaveIntoView();
+updatePosition();
 
-if(watchCount >= 30){
-stopWatching();
-}
-
-}, 80);
+}, 100);
 
 }
 
@@ -4191,46 +4236,83 @@ watchTimer = null;
 
 }
 
+/* ফোকাস ইভেন্ট */
 [kdInput, bdInput].forEach(input=>{
 
 if(!input) return;
 
 input.addEventListener('focusin', ()=>{
+activateFixed();
 startWatching();
 }, {passive:true});
 
 input.addEventListener('click', ()=>{
+activateFixed();
 startWatching();
 }, {passive:true});
 
 input.addEventListener('touchstart', ()=>{
+activateFixed();
 startWatching();
 }, {passive:true});
 
 });
 
+/* Blur হলে কীবোর্ড বন্ধ হয়েছে কিনা চেক */
+[kdInput, bdInput].forEach(input=>{
+
+if(!input) return;
+
+input.addEventListener('blur', ()=>{
+
+/* Blur এর সাথে সাথে keyboard বন্ধ হয় না, তাই delay দিয়ে চেক */
+setTimeout(()=>{
+
+const active = document.activeElement;
+
+/* যদি অন্য কোনো input এ ফোকাস না থাকে, deactivate করি */
+if(active !== kdInput && active !== bdInput){
+deactivateFixed();
+}
+
+}, 250);
+
+});
+
+});
+
+/* viewport resize — কীবোর্ড খোলা/বন্ধ হলে */
 if(window.visualViewport){
 
 window.visualViewport.addEventListener('resize', ()=>{
+
 const active = document.activeElement;
+
 if(active === kdInput || active === bdInput){
-startWatching();
+activateFixed();
+updatePosition();
 }
+else{
+deactivateFixed();
+}
+
 });
 
 window.visualViewport.addEventListener('scroll', ()=>{
-const active = document.activeElement;
-if(active === kdInput || active === bdInput){
-bringSaveIntoView();
-}
+if(isFixed) updatePosition();
 });
 
 }
 
-[kdInput, bdInput].forEach(input=>{
-if(!input) return;
-input.addEventListener('blur', ()=>{
-setTimeout(stopWatching, 200);
+/* window resize (orientation change) */
+window.addEventListener('resize', ()=>{
+if(isFixed) updatePosition();
+});
+
+/* ট্যাব change / panel hide হলে deactivate */
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.addEventListener('click', ()=>{
+setTimeout(deactivateFixed, 100);
 });
 });
 
