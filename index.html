@@ -4109,6 +4109,10 @@ input.setAttribute('data-1p-ignore', 'true');
    KEYBOARD HANDLING FOR SAVE BUTTON
 ========================================================= */
 
+/* =========================================================
+   KEYBOARD HANDLING FOR SAVE BUTTON
+========================================================= */
+
 function setupKeyboardSaveButton(){
 
 const kdInput = $('kdAmount');
@@ -4116,12 +4120,14 @@ const bdInput = $('bdAmount');
 const saveBtn = $('saveBtn');
 const app = document.querySelector('.app');
 
-function scrollSaveIntoView(){
-setTimeout(()=>{
+let watchTimer = null;
+let watchCount = 0;
+
+function bringSaveIntoView(){
+
+if(!saveBtn || !app) return;
 
 const active = document.activeElement;
-
-if(!saveBtn) return;
 if(active !== kdInput && active !== bdInput) return;
 
 const vv = window.visualViewport;
@@ -4130,36 +4136,89 @@ const visibleBottom = vv ? vv.height : window.innerHeight;
 const btnRect = saveBtn.getBoundingClientRect();
 const diff = btnRect.bottom - visibleBottom + 3;
 
-if(diff > 0 && app){
+if(diff > 0){
 app.scrollBy({
 top: diff,
-behavior:'smooth'
+behavior:'auto'      /* smooth বাদ, instant scroll */
 });
 }
 
-}, 500);
 }
 
-/* focusin + click + touchstart — তিনটাই */
+function startWatching(){
+
+stopWatching();
+
+watchCount = 0;
+
+/* প্রতি 100ms এ চেক করবো, 20 বার (মানে 2 সেকেন্ড) */
+watchTimer = setInterval(()=>{
+
+watchCount++;
+
+const active = document.activeElement;
+if(active !== kdInput && active !== bdInput){
+stopWatching();
+return;
+}
+
+bringSaveIntoView();
+
+if(watchCount >= 20){
+stopWatching();
+}
+
+}, 100);
+
+}
+
+function stopWatching(){
+
+if(watchTimer){
+clearInterval(watchTimer);
+watchTimer = null;
+}
+
+}
+
+/* তিনটাই ইভেন্ট */
 [kdInput, bdInput].forEach(input=>{
 
 if(!input) return;
 
-input.addEventListener('focusin', scrollSaveIntoView);
-input.addEventListener('click', scrollSaveIntoView);
-input.addEventListener('touchstart', scrollSaveIntoView, {passive:true});
+input.addEventListener('focusin', ()=>{
+startWatching();
+}, {passive:true});
+
+input.addEventListener('click', ()=>{
+startWatching();
+}, {passive:true});
+
+input.addEventListener('touchstart', ()=>{
+startWatching();
+}, {passive:true});
 
 });
 
-/* কীবোর্ড resize হলে */
+/* visualViewport resize হলেও চেক করি */
 if(window.visualViewport){
+
 window.visualViewport.addEventListener('resize', ()=>{
 const active = document.activeElement;
 if(active === kdInput || active === bdInput){
-scrollSaveIntoView();
+bringSaveIntoView();
 }
 });
+
 }
+
+/* Blur হলে বন্ধ */
+[kdInput, bdInput].forEach(input=>{
+if(!input) return;
+input.addEventListener('blur', ()=>{
+setTimeout(stopWatching, 200);
+});
+});
 
 }
 
