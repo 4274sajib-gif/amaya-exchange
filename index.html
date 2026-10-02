@@ -155,6 +155,17 @@ flex-shrink:0
 transform:scale(.92)
 }
 
+.refresh-btn.spinning{
+animation:refreshSpin .8s linear infinite;
+pointer-events:none;
+opacity:.7
+}
+
+@keyframes refreshSpin{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
 .header-rate-wrap{
 display:flex;
 align-items:center;
@@ -349,14 +360,18 @@ outline:0;
 color:#172033
 }
 
-#agentSelect,
 #customerSelect{
 font-weight:400
 }
 
-#agentSelect.has-value,
 #customerSelect.has-value{
 font-weight:700
+}
+
+#agentOptionSelect{
+font-weight:700;
+background:#FFFBEB;
+border-color:#FCD34D
 }
 
 input:focus,
@@ -373,6 +388,46 @@ background:#f1f3f6;
 color:#4b5563;
 opacity:1;
 cursor:not-allowed
+}
+
+/* =========================================================
+   AGENT BUTTONS
+========================================================= */
+
+.agent-btn-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px
+}
+
+.agent-btn{
+height:47px;
+border:1px solid #dfe3e9;
+border-radius:11px;
+background:#fff;
+font-weight:800;
+font-size:15px;
+color:#172033;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:0 8px;
+cursor:pointer;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+transition:all .15s ease;
+-webkit-tap-highlight-color:transparent;
+}
+
+.agent-btn:active{
+transform:scale(.97)
+}
+
+.agent-btn.active{
+background:#111827;
+color:#fff;
+border-color:#111827
 }
 
 .amount{
@@ -997,6 +1052,11 @@ select{
 appearance:auto;
 }
 
+.agent-btn{
+font-size:12px;
+height:44px;
+}
+
 }
 
 </style>
@@ -1062,8 +1122,9 @@ Synced ✓
 <div class="header-top-right">
 
 <button
+id="refreshBtn"
 class="refresh-btn"
-onclick="manualRefresh()"
+onclick="manualRefresh(this)"
 title="Refresh">
 🔄
 </button>
@@ -1193,13 +1254,15 @@ autocomplete="off">
 👨🏻‍💼 Agent
 </label>
 
-<select id="agentSelect">
+<div
+id="agentButtonRow"
+class="agent-btn-row">
+</div>
 
-<option value="">
-Select Agent
-</option>
-
-</select>
+<input
+type="hidden"
+id="agentSelect"
+value="">
 
 </div>
 
@@ -1311,6 +1374,21 @@ Note
 <option value="">
 Select Note
 </option>
+
+</select>
+
+</div>
+
+
+<div
+id="agentOptionField"
+class="field hidden">
+
+<label class="label">
+🏷️ Agent Option
+</label>
+
+<select id="agentOptionSelect">
 
 </select>
 
@@ -1565,6 +1643,13 @@ const PAYMENT_NOTES=[
 ];
 
 
+/* এজেন্ট এর নাম lowercase এ লিখতে হবে */
+const AGENT_OPTIONS={
+'harun':['7449','7448'],
+'sajib':['1208','Bank']
+};
+
+
 let currentUser=null,
 transactionType='বাকি',
 customerData=[],
@@ -1598,7 +1683,9 @@ pendingCustomerPageRefresh=false,
 pendingAgentSelectRefresh=false,
 pendingAgentViewRefresh=false,
 pendingNotesRefresh=false,
-isSavingTransaction=false;
+isSavingTransaction=false,
+savedAgentSelection='',
+savedAgentOptionSelection='';
 
 
 /* =========================================================
@@ -2380,16 +2467,7 @@ pendingCustomerPageRefresh=false
 
 
 function safeRefreshAgentSelect(){
-const s=$('agentSelect');
-if(!s)return;
-if(document.activeElement===s){
-pendingAgentSelectRefresh=true;
-return
-}
-const v=s.value;
-fillAgentSelect(s,false);
-if(v&&[...s.options].some(o=>o.value===v))s.value=v;
-s.classList.toggle('has-value',s.value!=='');
+renderAgentButtons();
 pendingAgentSelectRefresh=false
 }
 
@@ -2442,10 +2520,6 @@ $('customerPageSelect').addEventListener('blur',()=>{
 if(pendingCustomerPageRefresh)setTimeout(safeRefreshCustomerPage,0)
 });
 
-$('agentSelect').addEventListener('blur',()=>{
-if(pendingAgentSelectRefresh)setTimeout(safeRefreshAgentSelect,0)
-});
-
 $('agentView').addEventListener('blur',()=>{
 if(pendingAgentViewRefresh)setTimeout(safeRefreshAgentView,0)
 });
@@ -2462,6 +2536,96 @@ transactionType==='বাকি'
 ?notesData.dueNotes
 :notesData.paymentNotes
 )
+
+}
+
+
+/* =========================================================
+   AGENT BUTTONS (REPLACE DROPDOWN)
+========================================================= */
+
+function renderAgentButtons(){
+
+const row=$('agentButtonRow');
+const hidden=$('agentSelect');
+if(!row||!hidden)return;
+
+const currentValue=
+savedAgentSelection||
+hidden.value||
+'';
+
+row.innerHTML='';
+
+/* যদি agent role হয় — শুধু একটা agent দেখাবে */
+const role=getRole();
+
+let activeAgents;
+
+if(role==='agent'){
+const linkedId=clean(currentUser?.linkedId||'');
+activeAgents=agentData.filter(
+a=>isActiveAgent(a)&&String(a.agentId)===linkedId
+);
+}
+else{
+activeAgents=agentData.filter(isActiveAgent);
+}
+
+/* কোনো agent না থাকলে */
+if(!activeAgents.length){
+const empty=document.createElement('div');
+empty.className='loading';
+empty.textContent='No agent';
+empty.style.gridColumn='1 / -1';
+row.appendChild(empty);
+return;
+}
+
+const f=document.createDocumentFragment();
+
+activeAgents.forEach(agent=>{
+
+const btn=document.createElement('button');
+btn.type='button';
+btn.className='agent-btn';
+btn.dataset.agentId=agent.agentId;
+btn.textContent=agent.agentName;
+
+if(String(agent.agentId)===String(currentValue)){
+btn.classList.add('active');
+}
+
+/* agent role এ ক্লিক disabled */
+if(role==='agent'){
+btn.style.pointerEvents='none';
+}
+
+btn.addEventListener('click',()=>{
+
+/* সব active সরাই */
+row.querySelectorAll('.agent-btn')
+.forEach(b=>b.classList.remove('active'));
+
+/* এইটা active করি */
+btn.classList.add('active');
+
+/* hidden input এ value সেট করি */
+hidden.value=agent.agentId;
+
+/* memory তে সেভ */
+savedAgentSelection=agent.agentId;
+
+/* agent option dropdown আপডেট */
+setTimeout(updateAgentOptionDropdown, 30);
+
+});
+
+f.appendChild(btn);
+
+});
+
+row.appendChild(f);
 
 }
 
@@ -2508,6 +2672,8 @@ transactionType==='বাকি'
 );
 
 applyRoleAccess(activePanel);
+
+updateAgentOptionDropdown();
 
 if(selected==='ALL_TRANSACTIONS'){
 renderAllCustomerTransactions()
@@ -2565,6 +2731,82 @@ type==='বাকি'
 ?notesData.dueNotes
 :notesData.paymentNotes
 )
+}
+
+
+/* =========================================================
+   AGENT OPTION DROPDOWN
+========================================================= */
+
+function updateAgentOptionDropdown(){
+
+const agentId=$('agentSelect').value;
+const field=$('agentOptionField');
+const select=$('agentOptionSelect');
+
+if(!field||!select)return;
+
+/* Agent না সিলেক্ট থাকলে লুকাই */
+if(!agentId){
+field.classList.add('hidden');
+select.innerHTML='';
+return
+}
+
+const agent=agentData.find(
+a=>String(a.agentId)===String(agentId)
+);
+
+if(!agent){
+field.classList.add('hidden');
+select.innerHTML='';
+return
+}
+
+const agentName=String(agent.agentName||'')
+.trim()
+.toLowerCase();
+
+const options=AGENT_OPTIONS[agentName];
+
+/* এই agent এর জন্য option না থাকলে লুকাই */
+if(!options||!options.length){
+field.classList.add('hidden');
+select.innerHTML='';
+return
+}
+
+/* বর্তমান value অথবা সংরক্ষিত value */
+const oldValue=
+savedAgentOptionSelection||
+select.value;
+
+/* placeholder ছাড়া খালি করে দিলাম */
+select.innerHTML='';
+
+const f=document.createDocumentFragment();
+
+options.forEach(opt=>{
+const o=document.createElement('option');
+o.value=opt;
+o.textContent=opt;
+f.appendChild(o)
+});
+
+select.appendChild(f);
+
+/* আগের value থাকলে restore, না থাকলে প্রথমটা auto-select */
+if(oldValue&&[...select.options].some(o=>o.value===oldValue)){
+select.value=oldValue;
+savedAgentOptionSelection=oldValue;
+}
+else if(select.options.length){
+select.selectedIndex=0;
+savedAgentOptionSelection=select.value;
+}
+
+field.classList.remove('hidden');
+
 }
 
 
@@ -3119,27 +3361,12 @@ return[
 
 function renderAgentDropdowns(){
 
-const selectedAgent=$('agentSelect')?.value||'';
 const selectedAgentView=$('agentView')?.value||'';
 
-fillAgentSelect($('agentSelect'),false);
+/* Agent buttons রেন্ডার করি (dropdown এর বদলে) */
+renderAgentButtons();
 
-if(getRole()==='agent'){
-const linkedId=clean(currentUser?.linkedId||'');
-if(linkedId)$('agentSelect').value=linkedId;
-$('agentSelect').disabled=true;
-return
-}
-
-if(selectedAgent){
-const exists=[...$('agentSelect').options]
-.some(o=>o.value===selectedAgent);
-if(exists){
-$('agentSelect').value=selectedAgent;
-$('agentSelect').classList.add('has-value')
-}
-}
-
+/* Agent View dropdown এর জন্য আগের মতো */
 fillAgentSelect($('agentView'),true);
 $('agentView').disabled=false;
 
@@ -3900,6 +4127,9 @@ currentUser=null;
 
 localStorage.removeItem('amaya_user');
 
+savedAgentSelection='';
+savedAgentOptionSelection='';
+
 dataLoaded=false;
 customerData=[];
 agentData=[];
@@ -3960,6 +4190,11 @@ $('agentList').innerHTML=
 $('headerRateAmount').value='';
 $('headerRatePopup').classList.remove('show');
 $('profitPopup').classList.remove('show');
+
+$('agentOptionField').classList.add('hidden');
+$('agentOptionSelect').innerHTML='';
+$('agentButtonRow').innerHTML='';
+$('agentSelect').value='';
 
 setCustomerToday()
 
@@ -4568,6 +4803,7 @@ date:tx.date,
 customerId:tx.customerId,
 customerName:tx.customerName||'',
 agentName:tx.agentName||'',
+agentOption:tx.agentOption||'',
 kdAmount:tx.kdAmount,
 bdAmount:tx.bdAmount,
 type:tx.type,
@@ -4892,6 +5128,15 @@ const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
 const note=$('noteSelect').value;
 
+const agentOptionField=$('agentOptionField');
+const agentOptionVisible=
+agentOptionField &&
+!agentOptionField.classList.contains('hidden');
+
+const agentOption=agentOptionVisible
+? ($('agentOptionSelect')?.value||'')
+: '';
+
 if(!date)return showSaveError('Date required');
 
 if(kd>0&&!customerId)
@@ -4947,6 +5192,7 @@ kdAmount:kd,
 bdAmount:bd,
 type:transactionType,
 note,
+agentOption,
 transactionId,
 timestamp:new Date().toISOString(),
 agentName:agent?.agentName||'',
@@ -5001,13 +5247,22 @@ showSync('Syncing...','syncing');
 
 if(
 savedAgentId&&
-[...$('agentSelect').options].some(
-o=>o.value===savedAgentId
-)
+[...$('agentButtonRow').querySelectorAll('.agent-btn')]
+.some(b=>b.dataset.agentId===savedAgentId)
 ){
 
+/* আগের মতোই Agent active থাকবে */
+savedAgentSelection=savedAgentId;
 $('agentSelect').value=savedAgentId;
-$('agentSelect').classList.add('has-value');
+
+$('agentButtonRow')
+.querySelectorAll('.agent-btn')
+.forEach(b=>{
+b.classList.toggle(
+'active',
+b.dataset.agentId===savedAgentId
+);
+});
 
 }
 
@@ -5101,13 +5356,21 @@ parent.appendChild(box)
    MANUAL REFRESH
 ========================================================= */
 
-function manualRefresh(){
+function manualRefresh(btn){
+
+if(!btn) btn = $('refreshBtn');
+
+if(btn) btn.classList.add('spinning');
 
 showSync('Refreshing...','syncing');
 
+/* session memory reset */
+savedAgentSelection='';
+savedAgentOptionSelection='';
+
 setTimeout(()=>{
 location.reload();
-},150);
+},400);
 
 }
 
@@ -5267,15 +5530,17 @@ if(e.key==='Enter')login()
    SELECT STYLE
 ========================================================= */
 
-$('agentSelect')
+$('customerSelect')
 .addEventListener('change',function(){
 this.classList.toggle('has-value',this.value!=='')
 });
 
 
-$('customerSelect')
+$('agentOptionSelect')
 .addEventListener('change',function(){
-this.classList.toggle('has-value',this.value!=='')
+
+savedAgentOptionSelection=this.value;
+
 });
 
 
