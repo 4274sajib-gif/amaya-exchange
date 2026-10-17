@@ -404,7 +404,7 @@ position:relative
 
 .type-row{
 display:grid;
-grid-template-columns:1fr 1fr;
+grid-template-columns:1fr 1fr 1fr;
 gap:8px;
 margin:3px 0 13px
 }
@@ -414,13 +414,30 @@ height:44px;
 border:1px solid #dfe3e9;
 border-radius:11px;
 background:#fff;
-font-weight:800
+font-weight:800;
+font-size:13px;
+transition:all .15s ease;
 }
 
-.type-btn.active{
-background:#111827;
+/* ⭐ বাকি বাটন — সবুজ */
+#dueBtn.active{
+background:#16A34A;
 color:#fff;
-border-color:#111827
+border-color:#16A34A;
+}
+
+/* ⭐ পেমেন্ট বাটন — লাল */
+#paymentBtn.active{
+background:#DC2626;
+color:#fff;
+border-color:#DC2626;
+}
+
+/* ⭐ নগদ বাটন — বেগুনি */
+#cashBtn.active{
+background:#7C3AED;
+color:#fff;
+border-color:#7C3AED;
 }
 
 .save{
@@ -441,7 +458,8 @@ letter-spacing:.2px
 .msg{
 font-size:12px;
 margin-top:9px;
-text-align:center
+text-align:center;
+transition:opacity .3s ease;
 }
 .error{color:#d33131}
 .success{color:#16824c}
@@ -639,7 +657,7 @@ padding-right:1px
 }
 
 /* =========================================================
-   TRANSACTION CARD — V1 with Year
+   TRANSACTION CARD
 ========================================================= */
 
 .tl{
@@ -663,7 +681,12 @@ border-color:#FDE1E1;
 border-left-color:#DC2626;
 }
 
-/* ===== Date block ===== */
+.tl.cash{
+background:#F5F3FF;
+border-color:#E9D5FF;
+border-left-color:#7C3AED;
+}
+
 .tl-date{
 display:flex;
 flex-direction:column;
@@ -704,8 +727,10 @@ display:block;
 .tl.payment .tl-date .d{color:#B91C1C}
 .tl.payment .tl-date .m{color:#DC2626}
 .tl.payment .tl-date .y{color:#d08a8a}
+.tl.cash .tl-date .d{color:#6D28D9}
+.tl.cash .tl-date .m{color:#7C3AED}
+.tl.cash .tl-date .y{color:#a78bfa}
 
-/* Divider */
 .tl-line{
 width:1px;
 height:36px;
@@ -719,7 +744,6 @@ transparent 100%
 align-self:center;
 }
 
-/* Mid */
 .tl-mid{
 display:flex;
 flex-direction:column;
@@ -736,6 +760,7 @@ line-height:1;
 display:block;
 }
 .tl.payment .tl-amt-left{color:#DC2626}
+.tl.cash .tl-amt-left{color:#7C3AED}
 .tl-note{
 font-size:10px;
 color:#8a93a2;
@@ -761,8 +786,11 @@ letter-spacing:.1px;
 background:#FEE2E2;
 color:#991B1B;
 }
+.tl.cash .tl-bal-bottom{
+background:#EDE9FE;
+color:#6D28D9;
+}
 
-/* Right */
 .tl-right{
 text-align:right;
 display:flex;
@@ -771,7 +799,6 @@ gap:3px;
 align-items:flex-end;
 }
 
-/* Customer line */
 .tl-cust-line{
 font-size:12.5px;
 font-weight:800;
@@ -800,7 +827,6 @@ background:#E0E7FF;
 transform:scale(.97);
 }
 
-/* Type inline */
 .tl-type-inline{
 display:inline-flex;
 align-items:center;
@@ -824,8 +850,17 @@ flex-shrink:0;
 background:#DC2626;
 box-shadow:0 0 0 2px rgba(220,38,38,.15);
 }
+.tl-type-inline.cash{color:#7C3AED}
+.tl-type-inline.cash:before{
+background:#7C3AED;
+box-shadow:0 0 0 2px rgba(124,58,237,.15);
+}
 
-/* Agent pill */
+.tl-type-inline[style*="cursor"]:hover{
+opacity:.75;
+text-decoration:underline;
+}
+
 .tl-agent-right{
 font-size:9.5px;
 font-weight:800;
@@ -849,7 +884,6 @@ opacity:.65;
 flex-shrink:0;
 }
 
-/* All Transaction — agent below */
 .all .tl-agent-below{
 display:flex;
 justify-content:flex-end;
@@ -860,7 +894,6 @@ padding-left:8px;
 padding-right:2px;
 }
 
-/* Single Customer — agent inline */
 .single .tl-right{
 gap:4px;
 }
@@ -871,7 +904,6 @@ gap:7px;
 white-space:nowrap;
 }
 
-/* Pending badge */
 .tl .pending-badge{
 position:absolute;
 top:6px;
@@ -908,6 +940,11 @@ align-items:center;
 background:#FFF7F7;
 border-color:#FDE1E1;
 border-left-color:#DC2626;
+}
+.ag-card.cash{
+background:#F5F3FF;
+border-color:#E9D5FF;
+border-left-color:#7C3AED;
 }
 
 .ag-date{
@@ -950,6 +987,9 @@ display:block;
 .ag-card.payment .ag-date .d{color:#B91C1C}
 .ag-card.payment .ag-date .m{color:#DC2626}
 .ag-card.payment .ag-date .y{color:#d08a8a}
+.ag-card.cash .ag-date .d{color:#6D28D9}
+.ag-card.cash .ag-date .m{color:#7C3AED}
+.ag-card.cash .ag-date .y{color:#a78bfa}
 
 .ag-line{
 width:1px;
@@ -980,6 +1020,7 @@ line-height:1;
 display:block;
 }
 .ag-card.payment .ag-amt{color:#DC2626}
+.ag-card.cash .ag-amt{color:#7C3AED}
 .ag-note{
 font-size:10px;
 color:#8a93a2;
@@ -1086,6 +1127,72 @@ overflow-y:auto;
 padding-right:1px
 }
 
+/* ===== TYPE TOGGLE POPUP ===== */
+.type-toggle-popup{
+position:fixed;
+background:#111827;
+color:#fff;
+border-radius:10px;
+padding:6px;
+display:flex;
+flex-direction:column;
+gap:4px;
+box-shadow:0 8px 24px rgba(0,0,0,.28);
+z-index:9999;
+opacity:0;
+visibility:hidden;
+transform:scale(.92);
+transition:opacity .15s ease,transform .15s ease,visibility .15s ease;
+min-width:130px;
+}
+
+.type-toggle-popup.show{
+opacity:1;
+visibility:visible;
+transform:scale(1);
+}
+
+.type-toggle-popup button{
+border:0;
+background:rgba(255,255,255,.08);
+color:#fff;
+padding:9px 12px;
+border-radius:7px;
+font-size:12px;
+font-weight:800;
+text-align:left;
+display:flex;
+align-items:center;
+gap:7px;
+cursor:pointer;
+transition:background .12s ease;
+}
+
+.type-toggle-popup button:active{
+background:rgba(255,255,255,.18);
+}
+
+.type-toggle-popup button.active{
+background:#16A34A;
+}
+
+.type-toggle-popup button.active.cash{
+background:#7C3AED;
+}
+
+.type-toggle-popup button:before{
+content:"";
+width:8px;
+height:8px;
+border-radius:50%;
+background:#16A34A;
+flex-shrink:0;
+}
+
+.type-toggle-popup button.cash-btn:before{
+background:#7C3AED;
+}
+
 /* ===== LOGIN ===== */
 .login-page{
 min-height:100vh;
@@ -1171,6 +1278,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .tl-cust-line{font-size:11.5px;max-width:110px}
 .tl-agent-right{font-size:9px;padding:1.5px 6px 1.5px 4px}
 .tl-type-inline{font-size:8.5px}
+.type-btn{font-size:12px;height:42px}
 }
 
 </style>
@@ -1282,6 +1390,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <div class="type-row">
 <button id="dueBtn" class="type-btn active" onclick="setType('বাকি')">বাকি</button>
 <button id="paymentBtn" class="type-btn" onclick="setType('পেমেন্ট')">পেমেন্ট</button>
+<button id="cashBtn" class="type-btn" onclick="setType('নগদ')">নগদ</button>
 </div>
 
 <div class="field">
@@ -1428,7 +1537,8 @@ pendingAgentViewRefresh=false,
 pendingNotesRefresh=false,
 isSavingTransaction=false,
 savedAgentSelection='',
-savedAgentOptionSelection='';
+savedAgentOptionSelection='',
+saveMsgTimeout=null;
 
 
 /* =========================================================
@@ -1458,7 +1568,7 @@ String(value??'').replace(/,/g,'').replace(/[^\d.-]/g,'')
 
 
 /* =========================================================
-   DATE PARSER — day + month + year
+   DATE PARSER
 ========================================================= */
 
 function parseDateParts(value){
@@ -1466,13 +1576,11 @@ if(!value)return{day:'',month:'',year:''};
 
 const str=String(value).trim();
 
-/* 16-Oct-2026 */
 let m=str.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})/);
 if(m){
 return{day:m[1],month:fullMonthName(m[2]),year:m[3]};
 }
 
-/* 2026-10-16 */
 m=str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
 if(m){
 return{
@@ -1482,7 +1590,6 @@ year:m[1]
 };
 }
 
-/* fallback */
 const d=new Date(str);
 if(!isNaN(d.getTime())){
 return{
@@ -1749,6 +1856,7 @@ t.amountKD!==undefined?t.amountKD:t.kd
 if(kd<=0)return;
 if(isDueTransaction(t))due+=kd;
 else if(isPaymentTransaction(t))due-=kd;
+/* নগদ → প্রভাব নেই */
 });
 return Math.max(0,due)
 }
@@ -1929,7 +2037,8 @@ const s=$('noteSelect');
 if(!s)return;
 if(document.activeElement===s){pendingNotesRefresh=true;return}
 const v=s.value;
-setNotes(transactionType==='বাকি'?notesData.dueNotes:notesData.paymentNotes);
+const notes=transactionType==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes;
+setNotes(notes);
 if(v&&[...s.options].some(o=>o.value===v))s.value=v;
 pendingNotesRefresh=false
 }
@@ -1951,7 +2060,7 @@ if(pendingNotesRefresh)setTimeout(safeRefreshNotes,0)
 renderTransactionCustomerDropdown();
 renderAgentDropdowns();
 updateCustomerDropdown();
-setNotes(transactionType==='বাকি'?notesData.dueNotes:notesData.paymentNotes)
+setNotes(transactionType==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes)
 }
 
 
@@ -2045,7 +2154,7 @@ renderAgentDropdowns();
 updateCustomerDropdown();
 updateTotalDue();
 
-setNotes(transactionType==='বাকি'?notesData.dueNotes:notesData.paymentNotes);
+setNotes(transactionType==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes);
 
 applyRoleAccess(activePanel);
 updateAgentOptionDropdown();
@@ -2095,7 +2204,13 @@ function setType(type){
 transactionType=type;
 $('dueBtn').classList.toggle('active',type==='বাকি');
 $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
-setNotes(type==='বাকি'?notesData.dueNotes:notesData.paymentNotes)
+$('cashBtn').classList.toggle('active',type==='নগদ');
+
+setNotes(
+type==='পেমেন্ট'
+  ? notesData.paymentNotes
+  : notesData.dueNotes
+)
 }
 
 
@@ -2374,7 +2489,6 @@ const activeIds=new Set(
 customerData.filter(isActive).map(c=>String(c.customerId))
 );
 
-/* ✅ FIX: customer ছাড়া (agent-only / BD-only) transaction ও include */
 const allForActiveCustomers=allTransactionsData.filter(t=>{
 const cid=String(t.customerId||'').trim();
 if(cid && activeIds.has(cid)) return true;
@@ -2464,16 +2578,20 @@ setTimeout(adjustListHeights,30)
 
 
 /* =========================================================
-   TRANSACTION CARD — with Year
+   TRANSACTION CARD
 ========================================================= */
 
 function createTransactionCard(t,showCustomer,runningBalance){
 
 const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
+const cash=isCashTransaction(t);
+
+/* ⭐ Agent login করলে customer নাম hide করি */
+const isAgentRole = getRole()==='agent';
 
 const txn=document.createElement('div');
-txn.className='tl '+(sale?'sale':payment?'payment':'')+(showCustomer?' all':' single');
+txn.className='tl '+(sale?'sale':payment?'payment':cash?'cash':'')+(showCustomer?' all':' single');
 
 /* -------- 1. DATE -------- */
 
@@ -2507,7 +2625,7 @@ const line=document.createElement('div');
 line.className='tl-line';
 txn.appendChild(line);
 
-/* -------- 3. MID (amount + note + বাকি) -------- */
+/* -------- 3. MID -------- */
 
 const mid=document.createElement('div');
 mid.className='tl-mid';
@@ -2520,7 +2638,7 @@ t.amountKD!==undefined?t.amountKD:t.kd
 const amtEl=document.createElement('span');
 amtEl.className='tl-amt-left';
 amtEl.textContent=
-(payment?'−':sale?'+':'')+fmtKD(kdAmount)+' KD';
+(payment?'−':sale?'+':cash?'+':'')+fmtKD(kdAmount)+' KD';
 mid.appendChild(amtEl);
 
 const note=String(t.note||'').trim();
@@ -2553,31 +2671,53 @@ const right=document.createElement('div');
 right.className='tl-right';
 
 if(showCustomer){
-/* All Transaction — customer line clickable */
 const custLine=document.createElement('div');
 custLine.className='tl-cust-line';
 
-const custName=document.createElement('span');
-custName.textContent=t.customerName||'';
-custLine.appendChild(custName);
+const hasCustomer=!!String(t.customerId||'').trim();
 
-if(sale||payment){
+/* ⭐ Agent হলে customer নাম hide */
+if(!isAgentRole){
+const custName=document.createElement('span');
+custName.textContent=hasCustomer
+  ?(t.customerName||'Unknown')
+  :'(No Customer)';
+custLine.appendChild(custName);
+}
+
+/* type badge — বিক্রয়/পেমেন্ট/নগদ ক্লিকেবল */
+if(sale||payment||cash){
 const typeSpan=document.createElement('span');
-typeSpan.className='tl-type-inline';
-typeSpan.textContent=sale?'বিক্রয়':'পেমেন্ট';
+typeSpan.className='tl-type-inline'+(cash?' cash':'');
+typeSpan.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':cash?'নগদ':'';
+
+if(sale||cash){
+typeSpan.style.cursor='pointer';
+typeSpan.title='টাইপ পরিবর্তন করুন';
+typeSpan.addEventListener('click',e=>{
+e.stopPropagation();
+openTypeTogglePopup(e,t);
+});
+}
+
 custLine.appendChild(typeSpan);
 }
 
-custLine.addEventListener('click',e=>{
-e.stopPropagation();
-filterByCustomer(t.customerId)
-});
+if(hasCustomer && !isAgentRole){
+  custLine.style.cursor='pointer';
+  custLine.addEventListener('click',e=>{
+    e.stopPropagation();
+    filterByCustomer(t.customerId)
+  });
+}else if(!isAgentRole){
+  custLine.style.cursor='default';
+  custLine.style.opacity='0.65';
+}
 
 right.appendChild(custLine);
 
-/* Agent pill নিচে */
 const agentText=t.agentName||t.agent||t.AgentName||'';
-if(agentText){
+if(agentText && !isAgentRole){
 const agentBelow=document.createElement('div');
 agentBelow.className='tl-agent-below';
 
@@ -2598,13 +2738,12 @@ right.appendChild(agentBelow);
 }
 
 }else{
-/* Single Customer — agent pill + type এক লাইনে */
 const agentText=t.agentName||t.agent||t.AgentName||'';
 
 const lineEl=document.createElement('div');
 lineEl.className='tl-agent-type-line';
 
-if(agentText){
+if(agentText && !isAgentRole){
 const aPill=document.createElement('span');
 aPill.className='tl-agent-right';
 aPill.textContent=agentText;
@@ -2620,10 +2759,20 @@ filterByAgent(agent?.agentId||'')
 lineEl.appendChild(aPill);
 }
 
-if(sale||payment){
+if(sale||payment||cash){
 const typeSpan=document.createElement('span');
-typeSpan.className='tl-type-inline';
-typeSpan.textContent=sale?'বিক্রয়':'পেমেন্ট';
+typeSpan.className='tl-type-inline'+(cash?' cash':'');
+typeSpan.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':cash?'নগদ':'';
+
+if(sale||cash){
+typeSpan.style.cursor='pointer';
+typeSpan.title='টাইপ পরিবর্তন করুন';
+typeSpan.addEventListener('click',e=>{
+e.stopPropagation();
+openTypeTogglePopup(e,t);
+});
+}
+
 lineEl.appendChild(typeSpan);
 }
 
@@ -2645,6 +2794,184 @@ txn.appendChild(pb);
 }
 
 return txn
+}
+
+
+/* =========================================================
+   TYPE TOGGLE POPUP
+========================================================= */
+
+let typeTogglePopupEl=null;
+let typeToggleTransaction=null;
+
+function openTypeTogglePopup(event, transaction){
+closeTypeTogglePopup();
+
+if(getRole()!=='admin'){
+showToast('⚠️ Only admin can change type');
+return;
+}
+
+typeToggleTransaction=transaction;
+const currentType=normalizeType(transaction.type);
+
+const popup=document.createElement('div');
+popup.className='type-toggle-popup';
+
+const dueBtn=document.createElement('button');
+dueBtn.type='button';
+dueBtn.innerHTML='বিক্রয়';
+if(currentType==='বাকি') dueBtn.classList.add('active');
+dueBtn.addEventListener('click',e=>{
+e.stopPropagation();
+selectType('বাকি');
+});
+popup.appendChild(dueBtn);
+
+const cashBtn=document.createElement('button');
+cashBtn.type='button';
+cashBtn.className='cash-btn';
+cashBtn.innerHTML='নগদ';
+if(currentType==='নগদ') cashBtn.classList.add('active','cash');
+cashBtn.addEventListener('click',e=>{
+e.stopPropagation();
+selectType('নগদ');
+});
+popup.appendChild(cashBtn);
+
+document.body.appendChild(popup);
+typeTogglePopupEl=popup;
+
+const rect=event.target.getBoundingClientRect();
+let left=rect.left;
+let top=rect.bottom+6;
+
+const popupRect=popup.getBoundingClientRect();
+if(left+popupRect.width>window.innerWidth-10){
+left=window.innerWidth-popupRect.width-10;
+}
+if(top+popupRect.height>window.innerHeight-10){
+top=rect.top-popupRect.height-6;
+}
+if(left<10) left=10;
+
+popup.style.left=left+'px';
+popup.style.top=top+'px';
+
+requestAnimationFrame(()=>{
+popup.classList.add('show');
+});
+
+setTimeout(()=>{
+document.addEventListener('click',outsideClickClose,{once:false});
+},10);
+}
+
+function outsideClickClose(e){
+if(typeTogglePopupEl&&!typeTogglePopupEl.contains(e.target)){
+closeTypeTogglePopup();
+}
+}
+
+function closeTypeTogglePopup(){
+if(typeTogglePopupEl){
+typeTogglePopupEl.remove();
+typeTogglePopupEl=null;
+}
+typeToggleTransaction=null;
+document.removeEventListener('click',outsideClickClose);
+}
+
+async function selectType(newType){
+const t=typeToggleTransaction;
+if(!t) return;
+
+const currentType=normalizeType(t.type);
+if(currentType===newType){
+closeTypeTogglePopup();
+return;
+}
+
+if(getRole()!=='admin'){
+showToast('⚠️ Only admin can change type');
+closeTypeTogglePopup();
+return;
+}
+
+closeTypeTogglePopup();
+
+showSync('Updating...','syncing');
+
+try{
+const updated={...t, type:newType};
+updated.key=transactionKey(updated);
+await saveTransactionsLocal([updated]);
+
+const idx=allTransactionsData.findIndex(
+ tx=>String(tx.transactionId||'').trim()===String(t.transactionId||'').trim()
+);
+if(idx>=0) allTransactionsData[idx]=updated;
+
+customerData.forEach(c=>{
+  c.totalDueKD=calculateCustomerDueFromTransactions(c.customerId);
+});
+updateTotalDue();
+renderLocalData();
+
+showToast('✓ '+newType);
+
+try{
+const result=await postAPI({
+  action:'updateTransactionType',
+  username:currentUser?.username||'',
+  role:currentUser?.role||'',
+  transactionId:t.transactionId,
+  type:newType
+});
+
+if(result&&result.success){
+  showSync('Synced ✓','synced');
+}else{
+  showSync('Server pending','pending');
+}
+}catch(e){
+console.warn('Server update failed:',e);
+showSync('Server pending','pending');
+await dbPut('transactions',{
+  ...updated,
+  pending:true,
+  pendingTypeUpdate:true
+});
+}
+
+}catch(e){
+console.error('selectType error:',e);
+showSync('Update failed','error');
+showToast('⚠️ '+(e.message||e));
+}
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(msg){
+const t=document.createElement('div');
+t.textContent=msg;
+t.style.cssText=`
+position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+background:#111827;color:#fff;padding:10px 16px;border-radius:10px;
+font-size:12px;font-weight:700;z-index:99999;
+box-shadow:0 4px 20px rgba(0,0,0,.25);opacity:0;
+transition:opacity .2s ease;
+`;
+document.body.appendChild(t);
+requestAnimationFrame(()=>{t.style.opacity='1'});
+setTimeout(()=>{
+t.style.opacity='0';
+setTimeout(()=>t.remove(),220);
+},2200);
 }
 
 
@@ -2746,6 +3073,13 @@ t.type||t.Type||t.transactionType||t.TransactionType
 return['পেমেন্ট','payment','জমা','paid','payment amount'].includes(type)
 }
 
+function isCashTransaction(t){
+const type=normalizeType(
+t.type||t.Type||t.transactionType||t.TransactionType
+);
+return['নগদ','cash','cash sale','cash payment'].includes(type)
+}
+
 
 /* =========================================================
    AGENT
@@ -2832,10 +3166,11 @@ month=Number($('agentMonth').value);
 currentAgentTransactions.forEach(t=>{
 const amount=getBDAmount(t);
 
-if(isDueTransaction(t))balance+=amount;
+if(isDueTransaction(t) || isCashTransaction(t))balance+=amount;
 else if(isPaymentTransaction(t))balance-=amount;
+/* নগদ → balance-এ যোগ হবে (বিক্রয়ের মতো) */
 
-if(isDueTransaction(t)){
+if(isDueTransaction(t) || isCashTransaction(t)){
 const i=parseTransactionDate(
 t.date||t.Date||t.transactionDate||t.TransactionDate
 );
@@ -2890,11 +3225,11 @@ const f=document.createDocumentFragment();
 filtered.forEach(t=>{
 const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
+const cash=isCashTransaction(t);
 
 const card=document.createElement('div');
-card.className='ag-card '+(sale?'sale':payment?'payment':'');
+card.className='ag-card '+(sale?'sale':payment?'payment':cash?'cash':'');
 
-/* Date */
 const date=document.createElement('div');
 date.className='ag-date';
 
@@ -2918,19 +3253,17 @@ date.appendChild(monthSpan);
 date.appendChild(yearSpan);
 card.appendChild(date);
 
-/* Divider */
 const line=document.createElement('div');
 line.className='ag-line';
 card.appendChild(line);
 
-/* Mid — amount + note */
 const mid=document.createElement('div');
 mid.className='ag-mid';
 
 const amtEl=document.createElement('span');
 amtEl.className='ag-amt';
 const bd=getBDAmount(t);
-amtEl.textContent=(payment?'−':sale?'+':'')+fmtIndian(bd)+' Tk';
+amtEl.textContent=(payment?'−':sale||cash?'+':'')+fmtIndian(bd)+' Tk';
 mid.appendChild(amtEl);
 
 const noteEl=document.createElement('span');
@@ -2940,28 +3273,32 @@ mid.appendChild(noteEl);
 
 card.appendChild(mid);
 
-/* Right — customer name + type */
 const right=document.createElement('div');
 right.className='ag-right';
 
 const custLine=document.createElement('div');
 custLine.className='ag-cust-line';
 
+/* ⭐ Agent login করলে customer নাম hide */
+if(getRole()!=='agent'){
 const custName=document.createElement('span');
-custName.textContent=t.customerName||'';
+custName.textContent=t.customerName||'(No Customer)';
 custLine.appendChild(custName);
+}
 
-if(sale||payment){
+if(sale||payment||cash){
 const typeSpan=document.createElement('span');
-typeSpan.className='tl-type-inline';
-typeSpan.textContent=sale?'বিক্রয়':'পেমেন্ট';
+typeSpan.className='tl-type-inline'+(cash?' cash':'');
+typeSpan.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':cash?'নগদ':'';
 custLine.appendChild(typeSpan);
 }
 
+if(getRole()!=='agent'){
 custLine.addEventListener('click',e=>{
 e.stopPropagation();
-filterByCustomer(t.customerId)
+if(t.customerId)filterByCustomer(t.customerId)
 });
+}
 
 right.appendChild(custLine);
 card.appendChild(right);
@@ -3852,6 +4189,28 @@ if(!navigator.onLine||!currentUser)break;
 const transactionId=String(tx.transactionId||'').trim();
 if(!transactionId)continue;
 
+if(tx.pendingTypeUpdate===true){
+try{
+const r=await postAPI({
+  action:'updateTransactionType',
+  username:currentUser?.username||'',
+  role:currentUser?.role||'',
+  transactionId,
+  type:tx.type
+});
+if(r&&r.success){
+const updated={...tx,pending:false,pendingTypeUpdate:false};
+await saveTransactionsLocal([updated]);
+const idx=allTransactionsData.findIndex(
+ t=>String(t.transactionId||'').trim()===transactionId
+);
+if(idx>=0)allTransactionsData[idx]=updated;
+changed=true;
+}
+}catch(e){console.warn('Type update sync failed:',e)}
+continue;
+}
+
 const payload={
 action:'addTransaction',
 username:currentUser?.username||'',
@@ -4155,6 +4514,17 @@ calculateProfitPopup();
 message.className='msg success';
 message.textContent='✓ Saved';
 
+/* ⭐ Saved message 2 সেকেন্ড পর চলে যাবে */
+if(saveMsgTimeout){
+clearTimeout(saveMsgTimeout);
+saveMsgTimeout=null;
+}
+saveMsgTimeout=setTimeout(()=>{
+message.textContent='';
+message.className='msg';
+saveMsgTimeout=null;
+},3000);
+
 showSync('Syncing...','syncing');
 
 if(
@@ -4214,7 +4584,18 @@ isSavingTransaction=false
 function showSaveError(text){
 const m=$('saveMsg');
 m.className='msg error';
-m.textContent=text
+m.textContent=text;
+
+/* ⭐ Error message 4 সেকেন্ড পর চলে যাবে */
+if(saveMsgTimeout){
+clearTimeout(saveMsgTimeout);
+saveMsgTimeout=null;
+}
+saveMsgTimeout=setTimeout(()=>{
+m.textContent='';
+m.className='msg';
+saveMsgTimeout=null;
+},4000);
 }
 
 function formatDate(value){
