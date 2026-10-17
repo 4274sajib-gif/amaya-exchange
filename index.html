@@ -2374,12 +2374,14 @@ const activeIds=new Set(
 customerData.filter(isActive).map(c=>String(c.customerId))
 );
 
-/* সব active customer এর সব transaction (date filter ছাড়া) */
-const allForActiveCustomers=allTransactionsData.filter(t=>
-t.customerId&&activeIds.has(String(t.customerId))
-);
+/* ✅ FIX: customer ছাড়া (agent-only / BD-only) transaction ও include */
+const allForActiveCustomers=allTransactionsData.filter(t=>{
+const cid=String(t.customerId||'').trim();
+if(cid && activeIds.has(cid)) return true;
+if(!cid) return true;
+return false;
+});
 
-/* প্রতিটা customer এর জন্য Customer Tab এর মতো সেম হিসাব */
 const balanceMap=new Map();
 
 const uniqueCustomerIds=new Set();
