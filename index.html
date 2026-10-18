@@ -3249,24 +3249,31 @@ renderAgentTransactions()
 }
 
 function calculateAgentSummary(){
-let balance=0,sales=0,
-year=Number($('agentYear').value),
-month=Number($('agentMonth').value);
+let balance=0,sales=0;
+
+const yearRaw=$('agentYear').value;
+const monthRaw=$('agentMonth').value;
+
+const allYears = yearRaw==='all';
+const allMonths = monthRaw==='all';
+
+const year=allYears ? null : Number(yearRaw);
+const month=allMonths ? null : Number(monthRaw);
 
 currentAgentTransactions.forEach(t=>{
 const amount=getBDAmount(t);
 
 if(isDueTransaction(t) || isCashTransaction(t))balance+=amount;
 else if(isPaymentTransaction(t))balance-=amount;
-/* নগদ → balance-এ যোগ হবে (বিক্রয়ের মতো) */
 
 if(isDueTransaction(t) || isCashTransaction(t)){
 const i=parseTransactionDate(
 t.date||t.Date||t.transactionDate||t.TransactionDate
 );
-if(i&&i.year===year&&i.month===month){
+if(!i) return;
+if(!allYears && i.year!==year) return;
+if(!allMonths && i.month!==month) return;
 sales+=amount
-}
 }
 });
 
@@ -3290,21 +3297,30 @@ setTimeout(adjustListHeights,30);
 return
 }
 
-const year=Number($('agentYear').value);
-const month=Number($('agentMonth').value);
+const yearRaw=$('agentYear').value;
+const monthRaw=$('agentMonth').value;
+
+const allYears = yearRaw==='all';
+const allMonths = monthRaw==='all';
+
+const year=allYears ? null : Number(yearRaw);
+const month=allMonths ? null : Number(monthRaw);
 
 const filtered=currentAgentTransactions.filter(t=>{
 const i=parseTransactionDate(
 t.date||t.Date||t.transactionDate||t.TransactionDate
 );
-return(i&&i.year===year&&i.month===month)
+if(!i) return false;
+if(!allYears && i.year!==year) return false;
+if(!allMonths && i.month!==month) return false;
+return true;
 });
 
 sortTransactionsNewestFirst(filtered);
 calculateAgentSummary();
 
 if(!filtered.length){
-list.innerHTML='<div class="empty">No transaction for this month</div>';
+list.innerHTML='<div class="empty">No transaction for this period</div>';
 setTimeout(adjustListHeights,30);
 return
 }
@@ -3887,21 +3903,52 @@ const now=new Date();
 const cy=now.getFullYear();
 const cm=now.getMonth()+1;
 
-y.innerHTML='';
-for(let i=cy-5;i<=cy;i++){
-const o=document.createElement('option');
-o.value=i;
-o.textContent=i;
-if(i===cy)o.selected=true;
-y.appendChild(o)
-}
+/* ⭐ ডাটাবেস থেকে শুধু সেই বছরগুলো বের করি যেগুলোতে ট্রানজেকশন আছে */
+const yearsSet=new Set();
+allTransactionsData.forEach(t=>{
+  const i=parseTransactionDate(
+    t.date||t.Date||t.transactionDate||t.TransactionDate
+  );
+  if(i && i.year) yearsSet.add(i.year);
+});
 
+/* যদি কোনো ট্রানজেকশন না থাকে, বর্তমান বছর দেখাই */
+if(!yearsSet.size) yearsSet.add(cy);
+
+const sortedYears=Array.from(yearsSet).sort((a,b)=>b-a);
+
+/* ── Year dropdown ── */
+y.innerHTML='';
+
+const allOpt=document.createElement('option');
+allOpt.value='all';
+allOpt.textContent='All Transaction';
+y.appendChild(allOpt);
+
+sortedYears.forEach(year=>{
+  const o=document.createElement('option');
+  o.value=year;
+  o.textContent=year;
+  if(year===cy) o.selected=true;
+  y.appendChild(o);
+});
+
+/* যদি বর্তমান বছর খুঁজে না পাও, তবে সব থেকে নতুন বছর সিলেক্ট */
+if(!sortedYears.includes(cy)) y.value=String(sortedYears[0]);
+
+/* ── Month dropdown ── */
 const months=[
 'January','February','March','April','May','June',
 'July','August','September','October','November','December'
 ];
 
 m.innerHTML='';
+
+const allMOpt=document.createElement('option');
+allMOpt.value='all';
+allMOpt.textContent='All Transaction';
+m.appendChild(allMOpt);
+
 months.forEach((x,i)=>{
 const o=document.createElement('option');
 o.value=i+1;
