@@ -3188,14 +3188,12 @@ $('agentView').value=selectedAgentView;
 $('agentView').classList.add('has-value')
 }
 }
+if($('agentView').value)agentChanged()
 }
 
 function fillAgentSelect(select,isView=false){
 if(!select)return;
-select.innerHTML=
-isView?
-'<option value="">Agent</option>':
-'<option value="">Select Agent</option>';
+select.innerHTML='';
 
 const f=document.createDocumentFragment();
 agentData.forEach(a=>{
