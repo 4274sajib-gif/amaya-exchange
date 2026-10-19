@@ -359,6 +359,56 @@ opacity:1;
 cursor:not-allowed
 }
 
+/* ===== DESCRIPTION FIELD ===== */
+.desc-field{
+margin-top:14px;
+margin-bottom:14px;
+}
+
+.desc-wrap{
+position:relative;
+display:flex;
+align-items:center;
+}
+
+.desc-input{
+height:36px;
+font-size:12px;
+padding:0 40px 0 12px;
+border-radius:9px;
+font-weight:500;
+}
+
+.desc-input::placeholder{
+font-size:11px;
+color:#9ca3af;
+}
+
+.desc-clear{
+position:absolute;
+right:8px;
+top:50%;
+transform:translateY(-50%);
+background:#eef1f4;
+border:0;
+border-radius:50%;
+width:20px;
+height:20px;
+display:none;
+align-items:center;
+justify-content:center;
+font-size:10px;
+color:#6b7280;
+cursor:pointer;
+padding:0;
+z-index:2;
+font-weight:900;
+line-height:1;
+}
+
+.desc-clear.show{display:flex}
+.desc-clear:active{transform:translateY(-50%) scale(.85)}
+
 /* ===== AGENT BUTTONS ===== */
 .agent-btn-row{
 display:grid;
@@ -419,21 +469,18 @@ font-size:13px;
 transition:all .15s ease;
 }
 
-/* ⭐ বাকি বাটন — সবুজ */
 #dueBtn.active{
 background:#16A34A;
 color:#fff;
 border-color:#16A34A;
 }
 
-/* ⭐ পেমেন্ট বাটন — লাল */
 #paymentBtn.active{
 background:#DC2626;
 color:#fff;
 border-color:#DC2626;
 }
 
-/* ⭐ নগদ বাটন — বেগুনি */
 #cashBtn.active{
 background:#7C3AED;
 color:#fff;
@@ -594,7 +641,6 @@ overflow:hidden;
 text-overflow:ellipsis
 }
 
-/* ⭐ WhatsApp Row Layout */
 .customer-wa-row{
 display:flex;
 align-items:center;
@@ -608,7 +654,6 @@ min-width:0;
 flex:1;
 }
 
-/* ⭐ WhatsApp Button — Rounded Square */
 .wa-c{
 display:inline-flex;
 align-items:center;
@@ -813,18 +858,31 @@ overflow:hidden;
 text-overflow:ellipsis;
 display:block;
 }
+
+/* ===== PILLS ROW (বাকি + Description একই লাইনে) ===== */
+.tl-pills-row{
+display:flex;
+flex-wrap:wrap;
+gap:4px;
+margin-top:2px;
+align-items:center;
+max-width:100%;
+}
 .tl-bal-bottom{
-  font-size:9.5px;
-  color:#4B5563;
-  font-weight:800;
-  background:#F3F4F6;
-  border-radius:5px;
-  padding:2px 6px;
-  display:inline-block;
-  line-height:1;
-  width:fit-content;
-  letter-spacing:.1px;
-  margin-top:2px;
+font-size:9.5px;
+color:#4B5563;
+font-weight:800;
+background:#F3F4F6;
+border-radius:5px;
+padding:2px 6px;
+display:inline-block;
+line-height:1;
+width:fit-content;
+letter-spacing:.1px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+max-width:100%;
 }
 .tl.sale .tl-bal-bottom{
 background:#DCFCE7;
@@ -837,6 +895,29 @@ color:#991B1B;
 .tl.cash .tl-bal-bottom{
 background:#EDE9FE;
 color:#6D28D9;
+}
+
+/* ★ Description পিল — বাকির মতোই সাইজ ★ */
+.tl-desc-pill{
+  font-size:9.5px;
+  color:#374151;
+  font-weight:800;
+  background:#F3F4F6;
+  border:1px solid #E5E7EB;
+  border-radius:5px;
+  padding:2px 6px;
+  display:inline-block;
+  line-height:1;
+  width:fit-content;
+  letter-spacing:.1px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:100%;
+}
+.tl-desc-pill:before{
+  content:"👤 ";
+  font-size:8.5px;
 }
 
 .tl-right{
@@ -1114,7 +1195,6 @@ background:#E0E7FF;
 transform:scale(.97);
 }
 
-/* Agent tab filter + summary */
 .agent-filter-row{
 display:grid;
 grid-template-columns:.65fr .85fr 1.25fr;
@@ -1420,6 +1500,15 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </select>
 </div>
 
+<!-- ★ DESCRIPTION FIELD ★ -->
+<div class="desc-field">
+<div class="desc-wrap">
+<input id="description" class="desc-input" type="text" placeholder="📝 সংক্ষিপ্ত বিবরণ লিখুন..." maxlength="200" autocomplete="off" oninput="updateDescriptionClear()">
+<button type="button" id="descClear" class="desc-clear" onclick="clearDescription()">✕</button>
+</div>
+</div>
+<!-- ★ এখানেই শেষ ★ -->
+
 <div class="amount-row">
 
 <div class="field">
@@ -1587,6 +1676,31 @@ isSavingTransaction=false,
 savedAgentSelection='',
 savedAgentOptionSelection='',
 saveMsgTimeout=null;
+
+
+/* =========================================================
+   DESCRIPTION HELPERS
+========================================================= */
+
+function updateDescriptionClear(){
+const input=$('description');
+const clearBtn=$('descClear');
+if(!input||!clearBtn)return;
+
+if(input.value.length>0){
+clearBtn.classList.add('show');
+}else{
+clearBtn.classList.remove('show');
+}
+}
+
+function clearDescription(){
+const input=$('description');
+if(!input)return;
+input.value='';
+input.focus();
+updateDescriptionClear();
+}
 
 
 /* =========================================================
@@ -1904,7 +2018,6 @@ t.amountKD!==undefined?t.amountKD:t.kd
 if(kd<=0)return;
 if(isDueTransaction(t))due+=kd;
 else if(isPaymentTransaction(t))due-=kd;
-/* নগদ → প্রভাব নেই */
 });
 return Math.max(0,due)
 }
@@ -2445,7 +2558,6 @@ t=>String(t.customerId||'')===String(customerId)
 function renderCustomerInfo(customer){
 const due=getCustomerDue(customer);
 
-/* ⭐ Smart phone → WhatsApp number (BD + Kuwait) */
 function toWhatsAppNumber(phone){
   let p = String(phone||'').trim();
   if(!p) return '';
@@ -2677,13 +2789,10 @@ const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
 const cash=isCashTransaction(t);
 
-/* ⭐ Agent login করলে customer নাম hide করি */
 const isAgentRole = getRole()==='agent';
 
 const txn=document.createElement('div');
 txn.className='tl '+(sale?'sale':payment?'payment':cash?'cash':'')+(showCustomer?' all':' single');
-
-/* -------- 1. DATE -------- */
 
 const date=document.createElement('div');
 date.className='tl-date';
@@ -2709,13 +2818,9 @@ date.appendChild(monthSpan);
 date.appendChild(yearSpan);
 txn.appendChild(date);
 
-/* -------- 2. DIVIDER -------- */
-
 const line=document.createElement('div');
 line.className='tl-line';
 txn.appendChild(line);
-
-/* -------- 3. MID -------- */
 
 const mid=document.createElement('div');
 mid.className='tl-mid';
@@ -2746,16 +2851,29 @@ noteEl.textContent=noteText;
 mid.appendChild(noteEl);
 }
 
+/* ★ বাকি + Description — একই লাইনে ★ */
 if(runningBalance!==undefined&&runningBalance!==null){
+const pillsRow=document.createElement('div');
+pillsRow.className='tl-pills-row';
+
 const bal=document.createElement('span');
 bal.className='tl-bal-bottom';
 bal.textContent='বাকি '+fmtKD(Math.max(0,runningBalance));
-mid.appendChild(bal);
+pillsRow.appendChild(bal);
+
+const description=String(t.description||'').trim();
+if(description){
+const descPill=document.createElement('span');
+descPill.className='tl-desc-pill';
+descPill.textContent=description;
+pillsRow.appendChild(descPill);
 }
 
-txn.appendChild(mid);
+mid.appendChild(pillsRow);
+}
+/* ★ এখানেই শেষ ★ */
 
-/* -------- 4. RIGHT -------- */
+txn.appendChild(mid);
 
 const right=document.createElement('div');
 right.className='tl-right';
@@ -2766,7 +2884,6 @@ custLine.className='tl-cust-line';
 
 const hasCustomer=!!String(t.customerId||'').trim();
 
-/* ⭐ Agent হলে customer নাম hide */
 if(!isAgentRole){
 const custName=document.createElement('span');
 custName.textContent=hasCustomer
@@ -2775,7 +2892,6 @@ custName.textContent=hasCustomer
 custLine.appendChild(custName);
 }
 
-/* type badge — বিক্রয়/পেমেন্ট/নগদ ক্লিকেবল */
 if(sale||payment||cash){
 const typeSpan=document.createElement('span');
 typeSpan.className='tl-type-inline'+(cash?' cash':'');
@@ -2872,8 +2988,6 @@ right.appendChild(lineEl);
 }
 
 txn.appendChild(right);
-
-/* -------- 5. PENDING BADGE -------- */
 
 if(t.pending===true){
 const pb=document.createElement('div');
@@ -3383,7 +3497,6 @@ right.className='ag-right';
 const custLine=document.createElement('div');
 custLine.className='ag-cust-line';
 
-/* ⭐ Agent login করলে customer নাম hide */
 if(getRole()!=='agent'){
 const custName=document.createElement('span');
 custName.textContent=t.customerName||'(No Customer)';
@@ -3885,6 +3998,9 @@ $('agentOptionSelect').innerHTML='';
 $('agentButtonRow').innerHTML='';
 $('agentSelect').value='';
 
+$('description').value='';
+$('descClear').classList.remove('show');
+
 setCustomerToday()
 }
 
@@ -3901,7 +4017,6 @@ const now=new Date();
 const cy=now.getFullYear();
 const cm=now.getMonth()+1;
 
-/* ⭐ ডাটাবেস থেকে শুধু সেই বছরগুলো বের করি যেগুলোতে ট্রানজেকশন আছে */
 const yearsSet=new Set();
 allTransactionsData.forEach(t=>{
   const i=parseTransactionDate(
@@ -3910,12 +4025,10 @@ allTransactionsData.forEach(t=>{
   if(i && i.year) yearsSet.add(i.year);
 });
 
-/* যদি কোনো ট্রানজেকশন না থাকে, বর্তমান বছর দেখাই */
 if(!yearsSet.size) yearsSet.add(cy);
 
 const sortedYears=Array.from(yearsSet).sort((a,b)=>b-a);
 
-/* ── Year dropdown ── */
 y.innerHTML='';
 
 const allOpt=document.createElement('option');
@@ -3931,10 +4044,8 @@ sortedYears.forEach(year=>{
   y.appendChild(o);
 });
 
-/* যদি বর্তমান বছর খুঁজে না পাও, তবে সব থেকে নতুন বছর সিলেক্ট */
 if(!sortedYears.includes(cy)) y.value=String(sortedYears[0]);
 
-/* ── Month dropdown ── */
 const months=[
 'January','February','March','April','May','June',
 'July','August','September','October','November','December'
@@ -4359,6 +4470,7 @@ kdAmount:tx.kdAmount,
 bdAmount:tx.bdAmount,
 type:tx.type,
 note:tx.note,
+description:tx.description||'',
 transactionId
 };
 
@@ -4558,6 +4670,8 @@ const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
 const note=$('noteSelect').value;
 
+const description=String($('description')?.value||'').trim();
+
 const agentOptionField=$('agentOptionField');
 const agentOptionVisible=
 agentOptionField&&!agentOptionField.classList.contains('hidden');
@@ -4608,6 +4722,7 @@ kdAmount:kd,
 bdAmount:bd,
 type:transactionType,
 note,
+description,
 agentOption,
 transactionId,
 timestamp:new Date().toISOString(),
@@ -4646,10 +4761,12 @@ $('kdAmount').value='';
 $('bdAmount').value='';
 calculateProfitPopup();
 
+$('description').value='';
+updateDescriptionClear();
+
 message.className='msg success';
 message.textContent='✓ Saved';
 
-/* ⭐ Saved message 2 সেকেন্ড পর চলে যাবে */
 if(saveMsgTimeout){
 clearTimeout(saveMsgTimeout);
 saveMsgTimeout=null;
@@ -4721,7 +4838,6 @@ const m=$('saveMsg');
 m.className='msg error';
 m.textContent=text;
 
-/* ⭐ Error message 4 সেকেন্ড পর চলে যাবে */
 if(saveMsgTimeout){
 clearTimeout(saveMsgTimeout);
 saveMsgTimeout=null;
