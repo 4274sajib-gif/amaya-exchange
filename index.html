@@ -862,12 +862,14 @@ display:block;
 /* ===== PILLS ROW (বাকি + Description একই লাইনে) ===== */
 .tl-pills-row{
 display:flex;
-flex-wrap:wrap;
+flex-wrap:nowrap;
 gap:4px;
 margin-top:2px;
 align-items:center;
 max-width:100%;
+overflow:hidden;
 }
+
 .tl-bal-bottom{
 font-size:9.5px;
 color:#4B5563;
@@ -883,6 +885,7 @@ overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap;
 max-width:100%;
+flex-shrink:0;
 }
 .tl.sale .tl-bal-bottom{
 background:#DCFCE7;
@@ -897,27 +900,28 @@ background:#EDE9FE;
 color:#6D28D9;
 }
 
-/* ★ Description পিল — বাকির মতোই সাইজ ★ */
 .tl-desc-pill{
-  font-size:9.5px;
-  color:#374151;
-  font-weight:800;
-  background:#F3F4F6;
-  border:1px solid #E5E7EB;
-  border-radius:5px;
-  padding:2px 6px;
-  display:inline-block;
-  line-height:1;
-  width:fit-content;
-  letter-spacing:.1px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  max-width:100%;
+font-size:9.5px;
+color:#374151;
+font-weight:800;
+background:#F3F4F6;
+border:1px solid #E5E7EB;
+border-radius:5px;
+padding:2px 6px;
+display:inline-block;
+line-height:1;
+width:fit-content;
+letter-spacing:.1px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+max-width:100%;
+flex-shrink:1;
+min-width:0;
 }
 .tl-desc-pill:before{
-  content:"👤 ";
-  font-size:8.5px;
+content:"👤 ";
+font-size:8.5px;
 }
 
 .tl-right{
