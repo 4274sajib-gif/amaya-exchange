@@ -335,7 +335,14 @@ color:#172033
 #agentOptionSelect{
 font-weight:700;
 background:#FFFBEB;
-border-color:#FCD34D
+border-color:#FCD34D;
+height:38px;
+font-size:13px;
+}
+
+#noteSelect{
+height:38px;
+font-size:13px;
 }
 
 input:focus,select:focus{
@@ -361,8 +368,8 @@ cursor:not-allowed
 
 /* ===== DESCRIPTION FIELD ===== */
 .desc-field{
-margin-top:14px;
-margin-bottom:14px;
+margin-top:6px;
+margin-bottom:6px;
 }
 
 .desc-wrap{
@@ -1525,18 +1532,18 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <section id="panelTransaction" class="panel active">
 <div class="card">
 
-<div class="field">
+<div class="field" style="margin-bottom:10px">
 <label class="label">📅 Date</label>
 <input id="date" type="date" inputmode="numeric" placeholder="DD/MM/YYYY" maxlength="10" autocomplete="off">
 </div>
 
-<div class="field">
+<div class="field" style="margin-bottom:10px">
 <label class="label">👨🏻‍💼 Agent</label>
 <div id="agentButtonRow" class="agent-btn-row"></div>
 <input type="hidden" id="agentSelect" value="">
 </div>
 
-<div class="field">
+<div class="field" style="margin-bottom:6px">
 <label class="label">🤝 Customer</label>
 <select id="customerSelect">
 <option value="">Select Customer</option>
@@ -4223,95 +4230,38 @@ input.setAttribute('readonly','readonly')
 
 
 /* =========================================================
-   SMART KEYBOARD SCROLL — Save বাটন কীবোর্ডের ঠিক উপরে
+   KEYBOARD SAVE BUTTON
 ========================================================= */
+
 function setupKeyboardSaveButton(){
-  const txPanel = $('panelTransaction');
-  const app = document.querySelector('.app');
-  const saveBtn = $('saveBtn');
-  
-  if(!txPanel || !app || !saveBtn) return;
-  
-  let previousScroll = 0;
-  let isKeyboardOpen = false;
-  
-  // কীবোর্ডের উপরের প্রান্ত বের করার ফাংশন
-  function getKeyboardTop(){
-    const vv = window.visualViewport;
-    if(!vv) return window.innerHeight;
-    // visualViewport.height = দৃশ্যমান এলাকার height (কীবোর্ড বাদে)
-    // offsetTop = top থেকে কতটুকু scroll হয়েছে
-    return vv.height + vv.offsetTop;
-  }
-  
-  // Save বাটন কীবোর্ডের ঠিক উপরে আনো
-  function alignSaveToKeyboard(){
-    if(!txPanel.classList.contains('active')) return;
-    
-    // কীবোর্ড খোলার জন্য অপেক্ষা
-    setTimeout(()=>{
-      const keyboardTop = getKeyboardTop();
-      const saveRect = saveBtn.getBoundingClientRect();
-      
-      // Save বাটনের bottom আর কীবোর্ডের top-এর পার্থক্য
-      // 12px extra padding রাখছি breathing room এর জন্য
-      const diff = saveRect.bottom - keyboardTop + 12;
-      
-      if(diff > 0){
-        app.scrollBy({top: diff, behavior: 'smooth'});
-      }
-    }, 350);
-  }
-  
-  // সব ইনপুট/সিলেক্টে focus listener
-  const allInputs = txPanel.querySelectorAll('input, select, textarea');
-  
-  allInputs.forEach(inp => {
-    inp.addEventListener('focus', ()=>{
-      if(previousScroll === 0){
-        previousScroll = app.scrollTop;
-      }
-      alignSaveToKeyboard();
-    });
-  });
-  
-  // কীবোর্ড খোলা/বন্ধ track
-  if(window.visualViewport){
-    window.visualViewport.addEventListener('resize', ()=>{
-      const vv = window.visualViewport;
-      const keyboardHeight = window.innerHeight - vv.height;
-      const nowOpen = keyboardHeight > 100;
-      
-      if(nowOpen && !isKeyboardOpen){
-        isKeyboardOpen = true;
-        alignSaveToKeyboard();
-      } else if(!nowOpen && isKeyboardOpen){
-        isKeyboardOpen = false;
-        // কীবোর্ড বন্ধ হলে আগের scroll position-এ ফিরে যাও
-        setTimeout(()=>{
-          if(previousScroll > 0){
-            app.scrollTo({top: previousScroll, behavior: 'smooth'});
-            previousScroll = 0;
-          }
-        }, 100);
-      }
-    });
-  }
-  
-  // Save বাটন ক্লিক → কীবোর্ড বন্ধ + scroll reset
-  saveBtn.addEventListener('click', ()=>{
-    if(document.activeElement && document.activeElement.blur){
-      document.activeElement.blur();
-    }
-    setTimeout(()=>{
-      if(previousScroll > 0){
-        app.scrollTo({top: previousScroll, behavior: 'smooth'});
-        previousScroll = 0;
-      }
-    }, 150);
-  });
-  
-  console.log('✓ Smart keyboard scroll (v3) initialized');
+const kdInput=$('kdAmount');
+const bdInput=$('bdAmount');
+const saveBtn=$('saveBtn');
+const app=document.querySelector('.app');
+
+function scrollSaveIntoView(){
+setTimeout(()=>{
+const active=document.activeElement;
+if(!saveBtn||(active!==kdInput&&active!==bdInput))return;
+
+const vv=window.visualViewport;
+const visibleBottom=vv?vv.height:window.innerHeight;
+const btnRect=saveBtn.getBoundingClientRect();
+const diff=btnRect.bottom-visibleBottom+3;
+
+if(diff>0&&app){
+app.scrollBy({top:diff,behavior:'smooth'})
+}
+},350)
+}
+
+if(kdInput)kdInput.addEventListener('focus',scrollSaveIntoView);
+if(bdInput)bdInput.addEventListener('focus',scrollSaveIntoView);
+
+if(window.visualViewport){
+window.visualViewport.addEventListener('resize',scrollSaveIntoView);
+window.visualViewport.addEventListener('scroll',scrollSaveIntoView)
+}
 }
 
 
