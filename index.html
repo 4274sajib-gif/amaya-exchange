@@ -4223,131 +4223,126 @@ input.setAttribute('readonly','readonly')
 
 
 /* =========================================================
-   KEYBOARD SAVE BUTTON
-========================================================= */
-
-/* =========================================================
    SMART KEYBOARD SCROLL — শুধু Add Transaction পেজে
+   (v2 — scrollIntoView ভিত্তিক, সব ব্রাউজারে কাজ করে)
 ========================================================= */
 function setupKeyboardSaveButton(){
-const kdInput=$('kdAmount');
-const bdInput=$('bdAmount');
-const saveBtn=$('saveBtn');
-const app=document.querySelector('.app');
-const txPanel=$('panelTransaction');
-
-if(!txPanel)return;
-
-/* বর্তমান scroll position সংরক্ষণ (undo-এর জন্য) */
-let previousScroll = 0;
-let scrollLocked = false;
-
-/* স্মার্ট স্ক্রল ফাংশন — active element দেখে নিচের সবকিছু দৃশ্যমান করে */
-function ensureVisible(){
-  if(!txPanel.classList.contains('active'))return;
+  const kdInput = $('kdAmount');
+  const bdInput = $('bdAmount');
+  const saveBtn = $('saveBtn');
+  const txPanel = $('panelTransaction');
+  const app = document.querySelector('.app');
   
-  const active = document.activeElement;
-  if(!active || !txPanel.contains(active))return;
+  if(!txPanel || !app) return;
   
-  // FIX: scroll lock thakle bar bar scroll hobe na
-  if(scrollLocked)return;
-  scrollLocked = true;
+  // কীবোর্ড খোলার সময় scroll position মনে রাখব
+  let previousScroll = 0;
   
-  setTimeout(()=>{
-    const vv = window.visualViewport;
-    const visibleBottom = vv ? vv.height + vv.offsetTop : window.innerHeight;
+  // নির্দিষ্ট element কে দৃশ্যমান করার ফাংশন
+  function scrollElementIntoView(element){
+    if(!element) return;
     
-    /* সবচেয়ে নিচের element যেটা দেখা দরকার */
-    let bottomMost = active;
-    
-    // Save button visible থাকা দরকার
-    if(saveBtn){
-      const saveRect = saveBtn.getBoundingClientRect();
-      if(saveRect.bottom > bottomMost.getBoundingClientRect().bottom){
-        bottomMost = saveBtn;
-      }
-    }
-    
-    // Note select, Agent Option, Save — সবগুলো চেক
-    const allFields = txPanel.querySelectorAll('#noteSelect, #agentOptionField, #saveBtn');
-    allFields.forEach(el=>{
-      const r = el.getBoundingClientRect();
-      const bmRect = bottomMost.getBoundingClientRect();
-      if(r.bottom > bmRect.bottom){
-        bottomMost = el;
-      }
-    });
-    
-    const targetRect = bottomMost.getBoundingClientRect();
-    const diff = targetRect.bottom - visibleBottom + 20;
-    
-    if(diff > 0 && app){
-      app.scrollBy({top: diff, behavior: 'smooth'});
-    }
-    
-    scrollLocked = false;
-  }, 350);
-}
-
-/* Input focus হলে scroll */
-if(kdInput)kdInput.addEventListener('focus', ensureVisible);
-if(bdInput)bdInput.addEventListener('focus', ensureVisible);
-
-/* Note, Agent Option, Description সব ফিল্ডেও কাজ করবে */
-const allInputs = txPanel.querySelectorAll('input, select, textarea');
-allInputs.forEach(inp=>{
-  inp.addEventListener('focus', ensureVisible);
-});
-
-/* কীবোর্ড খোলা/বন্ধ tracking */
-if(window.visualViewport){
-  let keyboardOpen = false;
-  
-  window.visualViewport.addEventListener('resize', ()=>{
-    const vv = window.visualViewport;
-    const keyboardHeight = window.innerHeight - vv.height;
-    const nowOpen = keyboardHeight > 100;
-    
-    if(nowOpen && !keyboardOpen){
-      keyboardOpen = true;
-      previousScroll = app.scrollTop;
-      ensureVisible();
-    } else if(!nowOpen && keyboardOpen){
-      keyboardOpen = false;
-      // কীবোর্ড বন্ধ → আগের scroll position-এ ফিরে যাও
-      setTimeout(()=>{
-        app.scrollTo({top: previousScroll, behavior: 'smooth'});
-      }, 100);
-    }
-  });
-  
-  window.visualViewport.addEventListener('scroll', ()=>{
-    if(!scrollLocked) ensureVisible();
-  });
-}
-
-/* Save বাটন ক্লিক করলে কীবোর্ড বন্ধ */
-if(saveBtn){
-  saveBtn.addEventListener('click', ()=>{
-    // Active input থেকে blur করলে কীবোর্ড বন্ধ হবে
-    if(document.activeElement && document.activeElement.blur){
-      document.activeElement.blur();
-    }
-    // আগের scroll position-এ ফিরে যাও
+    // ছোট delay দিয়ে কীবোর্ড খোলার জন্য অপেক্ষা
     setTimeout(()=>{
-      app.scrollTo({top: previousScroll, behavior: 'smooth'});
-    }, 150);
-  });
-}
-
-/* Outside tap করলেও কীবোর্ড বন্ধ + scroll reset */
-txPanel.addEventListener('touchstart', (e)=>{
-  if(e.target === txPanel || (e.target.closest && e.target.closest('.label'))){
-    if(document.activeElement && document.activeElement.blur){
-      document.activeElement.blur();
-    }
+      try{
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      }catch(e){
+        // পুরানো ব্রাউজারে fallback
+        element.scrollIntoView(false);
+      }
+    }, 300);
   }
-}, {passive: true});
+  
+  // ফোকাস হ্যান্ডলার
+  function onFocus(e){
+    if(!txPanel.classList.contains('active')) return;
+    
+    const target = e.target;
+    
+    // প্রথম focus হলে আগের scroll position সংরক্ষণ করি
+    if(previousScroll === 0){
+      previousScroll = app.scrollTop;
+    }
+    
+    // কীবোর্ড খোলার জন্য অপেক্ষা করি
+    // তারপর Save বাটন দৃশ্যমান করি (সবচেয়ে নিচে)
+    setTimeout(()=>{
+      if(saveBtn && saveBtn.getBoundingClientRect){
+        scrollElementIntoView(saveBtn);
+      }
+    }, 400);
+  }
+  
+  // সব ইনপুট/সিলেক্টে focus listener
+  const allInputs = txPanel.querySelectorAll('input, select, textarea');
+  allInputs.forEach(inp => {
+    inp.addEventListener('focus', onFocus);
+  });
+  
+  // কীবোর্ড বন্ধ হলে scroll reset
+  function onBlur(){
+    // সব input blur হলে scroll reset করি
+    setTimeout(()=>{
+      const active = document.activeElement;
+      if(!active || !txPanel.contains(active)){
+        if(previousScroll > 0){
+          try{
+            app.scrollTo({
+              top: previousScroll,
+              behavior: 'smooth'
+            });
+          }catch(e){
+            app.scrollTop = previousScroll;
+          }
+          previousScroll = 0;
+        }
+      }
+    }, 150);
+  }
+  
+  allInputs.forEach(inp => {
+    inp.addEventListener('blur', onBlur);
+  });
+  
+  // Save বাটন ক্লিক — কীবোর্ড বন্ধ + scroll reset
+  if(saveBtn){
+    saveBtn.addEventListener('click', ()=>{
+      // Active input থেকে blur (কীবোর্ড বন্ধ)
+      if(document.activeElement && document.activeElement.blur){
+        document.activeElement.blur();
+      }
+      
+      // Scroll reset
+      setTimeout(()=>{
+        if(previousScroll > 0){
+          try{
+            app.scrollTo({
+              top: previousScroll,
+              behavior: 'smooth'
+            });
+          }catch(e){
+            app.scrollTop = previousScroll;
+          }
+          previousScroll = 0;
+        }
+      }, 200);
+    });
+  }
+  
+  // Overlay tap করলে কীবোর্ড বন্ধ (optional)
+  txPanel.addEventListener('touchstart', (e)=>{
+    if(e.target && e.target.classList && e.target.classList.contains('label')){
+      if(document.activeElement && document.activeElement.blur){
+        document.activeElement.blur();
+      }
+    }
+  }, {passive: true});
+  
+  console.log('✓ Smart keyboard scroll initialized');
 }
 
 
