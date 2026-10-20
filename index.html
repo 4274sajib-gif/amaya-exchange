@@ -449,7 +449,27 @@ border-color:#111827
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:8px;
-position:relative
+position:relative;
+align-items:start;
+}
+
+.amount-row .field{
+margin-bottom:18px;
+display:flex;
+flex-direction:column;
+}
+
+.amount-row .label{
+height:16px;
+line-height:16px;
+display:flex;
+align-items:center;
+margin-bottom:7px;
+}
+
+.amount-row .amount{
+height:47px;
+width:100%;
 }
 
 .type-row{
@@ -467,6 +487,13 @@ background:#fff;
 font-weight:800;
 font-size:13px;
 transition:all .15s ease;
+-webkit-tap-highlight-color:transparent;
+user-select:none;
+-webkit-user-select:none;
+}
+
+.type-btn:active{
+transform:scale(.95);
 }
 
 #dueBtn.active{
@@ -4199,35 +4226,128 @@ input.setAttribute('readonly','readonly')
    KEYBOARD SAVE BUTTON
 ========================================================= */
 
+/* =========================================================
+   SMART KEYBOARD SCROLL — শুধু Add Transaction পেজে
+========================================================= */
 function setupKeyboardSaveButton(){
 const kdInput=$('kdAmount');
 const bdInput=$('bdAmount');
 const saveBtn=$('saveBtn');
 const app=document.querySelector('.app');
+const txPanel=$('panelTransaction');
 
-function scrollSaveIntoView(){
-setTimeout(()=>{
-const active=document.activeElement;
-if(!saveBtn||(active!==kdInput&&active!==bdInput))return;
+if(!txPanel)return;
 
-const vv=window.visualViewport;
-const visibleBottom=vv?vv.height:window.innerHeight;
-const btnRect=saveBtn.getBoundingClientRect();
-const diff=btnRect.bottom-visibleBottom+3;
+/* বর্তমান scroll position সংরক্ষণ (undo-এর জন্য) */
+let previousScroll = 0;
+let scrollLocked = false;
 
-if(diff>0&&app){
-app.scrollBy({top:diff,behavior:'smooth'})
+/* স্মার্ট স্ক্রল ফাংশন — active element দেখে নিচের সবকিছু দৃশ্যমান করে */
+function ensureVisible(){
+  if(!txPanel.classList.contains('active'))return;
+  
+  const active = document.activeElement;
+  if(!active || !txPanel.contains(active))return;
+  
+  // FIX: scroll lock thakle bar bar scroll hobe na
+  if(scrollLocked)return;
+  scrollLocked = true;
+  
+  setTimeout(()=>{
+    const vv = window.visualViewport;
+    const visibleBottom = vv ? vv.height + vv.offsetTop : window.innerHeight;
+    
+    /* সবচেয়ে নিচের element যেটা দেখা দরকার */
+    let bottomMost = active;
+    
+    // Save button visible থাকা দরকার
+    if(saveBtn){
+      const saveRect = saveBtn.getBoundingClientRect();
+      if(saveRect.bottom > bottomMost.getBoundingClientRect().bottom){
+        bottomMost = saveBtn;
+      }
+    }
+    
+    // Note select, Agent Option, Save — সবগুলো চেক
+    const allFields = txPanel.querySelectorAll('#noteSelect, #agentOptionField, #saveBtn');
+    allFields.forEach(el=>{
+      const r = el.getBoundingClientRect();
+      const bmRect = bottomMost.getBoundingClientRect();
+      if(r.bottom > bmRect.bottom){
+        bottomMost = el;
+      }
+    });
+    
+    const targetRect = bottomMost.getBoundingClientRect();
+    const diff = targetRect.bottom - visibleBottom + 20;
+    
+    if(diff > 0 && app){
+      app.scrollBy({top: diff, behavior: 'smooth'});
+    }
+    
+    scrollLocked = false;
+  }, 350);
 }
-},350)
-}
 
-if(kdInput)kdInput.addEventListener('focus',scrollSaveIntoView);
-if(bdInput)bdInput.addEventListener('focus',scrollSaveIntoView);
+/* Input focus হলে scroll */
+if(kdInput)kdInput.addEventListener('focus', ensureVisible);
+if(bdInput)bdInput.addEventListener('focus', ensureVisible);
 
+/* Note, Agent Option, Description সব ফিল্ডেও কাজ করবে */
+const allInputs = txPanel.querySelectorAll('input, select, textarea');
+allInputs.forEach(inp=>{
+  inp.addEventListener('focus', ensureVisible);
+});
+
+/* কীবোর্ড খোলা/বন্ধ tracking */
 if(window.visualViewport){
-window.visualViewport.addEventListener('resize',scrollSaveIntoView);
-window.visualViewport.addEventListener('scroll',scrollSaveIntoView)
+  let keyboardOpen = false;
+  
+  window.visualViewport.addEventListener('resize', ()=>{
+    const vv = window.visualViewport;
+    const keyboardHeight = window.innerHeight - vv.height;
+    const nowOpen = keyboardHeight > 100;
+    
+    if(nowOpen && !keyboardOpen){
+      keyboardOpen = true;
+      previousScroll = app.scrollTop;
+      ensureVisible();
+    } else if(!nowOpen && keyboardOpen){
+      keyboardOpen = false;
+      // কীবোর্ড বন্ধ → আগের scroll position-এ ফিরে যাও
+      setTimeout(()=>{
+        app.scrollTo({top: previousScroll, behavior: 'smooth'});
+      }, 100);
+    }
+  });
+  
+  window.visualViewport.addEventListener('scroll', ()=>{
+    if(!scrollLocked) ensureVisible();
+  });
 }
+
+/* Save বাটন ক্লিক করলে কীবোর্ড বন্ধ */
+if(saveBtn){
+  saveBtn.addEventListener('click', ()=>{
+    // Active input থেকে blur করলে কীবোর্ড বন্ধ হবে
+    if(document.activeElement && document.activeElement.blur){
+      document.activeElement.blur();
+    }
+    // আগের scroll position-এ ফিরে যাও
+    setTimeout(()=>{
+      app.scrollTo({top: previousScroll, behavior: 'smooth'});
+    }, 150);
+  });
+}
+
+/* Outside tap করলেও কীবোর্ড বন্ধ + scroll reset */
+txPanel.addEventListener('touchstart', (e)=>{
+  if(e.target === txPanel || (e.target.closest && e.target.closest('.label'))){
+    if(document.activeElement && document.activeElement.blur){
+      document.activeElement.blur();
+    }
+  }
+}, {passive: true});
 }
 
 
