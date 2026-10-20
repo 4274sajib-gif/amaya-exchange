@@ -336,13 +336,13 @@ color:#172033
 font-weight:700;
 background:#FFFBEB;
 border-color:#FCD34D;
-height:38px;
-font-size:13px;
+height:42px;
+font-size:14px;
 }
 
 #noteSelect{
-height:38px;
-font-size:13px;
+height:42px;
+font-size:14px;
 }
 
 input:focus,select:focus{
@@ -5018,6 +5018,18 @@ renderAllCustomerTransactions()
 /* =========================================================
    KEYBOARD
 ========================================================= */
+
+/* ★ KD Amount → Enter → BD Amount ★ */
+$('kdAmount').addEventListener('keydown',e=>{
+if(e.key==='Enter'||e.keyCode===13){
+e.preventDefault();
+const bdInput=$('bdAmount');
+if(bdInput){
+bdInput.focus();
+bdInput.select&&bdInput.select();
+}
+}
+});
 
 $('bdAmount').addEventListener('keydown',e=>{
 if(e.key==='Enter'||e.keyCode===13){
