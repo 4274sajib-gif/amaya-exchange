@@ -883,6 +883,7 @@ overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap;
 max-width:100%;
+flex-shrink:0;
 }
 .tl.sale .tl-bal-bottom{
 background:#DCFCE7;
@@ -914,10 +915,13 @@ color:#6D28D9;
   text-overflow:ellipsis;
   white-space:nowrap;
   max-width:100%;
+  flex-shrink:1;
+  min-width:0;
 }
 .tl-desc-pill:before{
   content:"👤 ";
   font-size:8.5px;
+  flex-shrink:0;
 }
 
 .tl-right{
@@ -1407,6 +1411,18 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .tl-agent-right{font-size:9px;padding:1.5px 6px 1.5px 4px}
 .tl-type-inline{font-size:8.5px}
 .type-btn{font-size:12px;height:42px}
+}
+
+/* ===== শুধু Description-এর font-size ছোট ===== */
+
+@media(max-width:420px){
+.tl-desc-pill{font-size:8px;padding:2px 4px}
+.tl-desc-pill:before{font-size:7.5px}
+}
+
+@media(max-width:360px){
+.tl-desc-pill{font-size:7.5px;padding:1.5px 4px}
+.tl-desc-pill:before{font-size:7px}
 }
 
 </style>
