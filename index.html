@@ -408,8 +408,12 @@ transition:background .12s ease,color .12s ease;
 .tl-cust-line:hover{background:#EEF2FF;color:#4338CA}
 .tl-cust-line:active{background:#E0E7FF;transform:scale(.97)}
 
+/* ★ Type inline label — Hold এখানে কাজ করবে ★ */
 .tl-type-inline{display:inline-flex;align-items:center;gap:3px;
-font-size:9px;font-weight:800;color:#166534;white-space:nowrap}
+font-size:9px;font-weight:800;color:#166534;white-space:nowrap;
+position:relative;overflow:hidden;
+-webkit-user-select:none;user-select:none;
+-webkit-touch-callout:none}
 .tl-type-inline:before{content:"";width:5px;height:5px;border-radius:50%;
 background:#16A34A;box-shadow:0 0 0 2px rgba(22,163,74,.15);flex-shrink:0}
 .tl.payment .tl-type-inline{color:#B91C1C}
@@ -419,6 +423,29 @@ box-shadow:0 0 0 2px rgba(220,38,38,.15)}
 .tl-type-inline.cash:before{background:#7C3AED;
 box-shadow:0 0 0 2px rgba(124,58,237,.15)}
 .tl-type-inline[style*="cursor"]:hover{opacity:.75;text-decoration:underline}
+
+/* ★ Hold animation ★ */
+.tl-type-inline.holding{
+transform:scale(.95);
+background:rgba(74,222,128,.15);
+border-radius:6px;
+padding:2px 4px;
+}
+.tl-type-inline.holding:after{
+content:"";
+position:absolute;
+left:0;top:0;
+height:100%;
+width:0;
+background:linear-gradient(90deg,rgba(74,222,128,.5),rgba(74,222,128,.2));
+border-radius:6px;
+animation:holdFill 2s linear forwards;
+z-index:-1;
+}
+@keyframes holdFill{
+from{width:0}
+to{width:100%}
+}
 
 .tl-agent-right{font-size:9.5px;font-weight:800;color:#4B5563;
 background:#F3F4F6;border-radius:999px;padding:1.5px 7px 1.5px 5px;
@@ -501,7 +528,7 @@ color:#fff;font-variant-numeric:tabular-nums}
 .agent-sales{text-align:right}
 #agentList{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
-/* ===== TYPE TOGGLE POPUP ===== */
+/* ===== TYPE TOGGLE POPUP (পুরনো style) ===== */
 .type-toggle-popup{position:fixed;background:#111827;color:#fff;
 border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:4px;
 box-shadow:0 8px 24px rgba(0,0,0,.28);z-index:9999;
@@ -521,7 +548,149 @@ border-radius:50%;background:#16A34A;flex-shrink:0}
 .type-toggle-popup button.cash-btn:before{background:#7C3AED}
 
 /* =========================================================
-   ★ SELECT POPUP (Confirm/Warning) — ENHANCED ★
+   ★ TYPE CONFIRM POPUP (নতুন) ★
+========================================================= */
+.type-confirm-overlay{
+position:fixed;inset:0;
+background:rgba(15,23,42,.6);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+display:flex;align-items:center;justify-content:center;
+padding:20px;z-index:10000;
+opacity:0;visibility:hidden;
+transition:all .2s ease;
+}
+.type-confirm-overlay.show{opacity:1;visibility:visible}
+
+.type-confirm-popup{
+background:#111827;color:#fff;
+border-radius:16px;
+padding:18px;
+width:100%;max-width:300px;
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+text-align:center;
+transform:scale(.9);
+transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.type-confirm-overlay.show .type-confirm-popup{
+transform:scale(1);
+}
+
+.type-confirm-icon{
+width:48px;height:48px;
+border-radius:50%;
+margin:0 auto 10px;
+display:flex;align-items:center;justify-content:center;
+font-size:22px;
+background:linear-gradient(135deg,#F59E0B,#D97706);
+box-shadow:0 4px 16px rgba(245,158,11,.4);
+}
+
+.type-confirm-title{
+font-size:14px;
+font-weight:900;
+color:#fff;
+margin-bottom:6px;
+}
+
+.type-confirm-sub{
+font-size:11px;
+color:#94A3B8;
+font-weight:600;
+margin-bottom:14px;
+line-height:1.4;
+}
+
+.type-confirm-change{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+margin-bottom:16px;
+padding:12px;
+background:rgba(255,255,255,.05);
+border-radius:10px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.type-confirm-from,
+.type-confirm-to{
+padding:8px 16px;
+border-radius:20px;
+font-size:15px;
+font-weight:900;
+letter-spacing:.3px;
+color:#fff;
+text-shadow:0 1px 2px rgba(0,0,0,.25);
+}
+
+.type-confirm-from{
+background:linear-gradient(135deg,#4ADE80,#16A34A);
+color:#fff;
+border:1px solid rgba(74,222,128,.6);
+box-shadow:0 3px 10px rgba(74,222,128,.4);
+}
+.type-confirm-from.cash{
+background:linear-gradient(135deg,#A78BFA,#7C3AED);
+border-color:rgba(167,139,250,.6);
+box-shadow:0 3px 10px rgba(167,139,250,.4);
+}
+
+.type-confirm-to{
+background:linear-gradient(135deg,#A78BFA,#7C3AED);
+color:#fff;
+border:1px solid rgba(167,139,250,.6);
+box-shadow:0 3px 10px rgba(167,139,250,.4);
+}
+.type-confirm-to.due{
+background:linear-gradient(135deg,#4ADE80,#16A34A);
+border-color:rgba(74,222,128,.6);
+box-shadow:0 3px 10px rgba(74,222,128,.4);
+}
+
+.type-confirm-arrow{
+color:#64748B;
+font-size:16px;
+font-weight:900;
+}
+
+.type-confirm-actions{
+display:flex;
+gap:8px;
+}
+
+.type-confirm-btn{
+flex:1;
+height:42px;
+border:0;
+border-radius:10px;
+font-size:12px;
+font-weight:800;
+cursor:pointer;
+transition:all .15s ease;
+font-family:inherit;
+}
+.type-confirm-btn:active{transform:scale(.96)}
+
+.type-confirm-btn.cancel{
+background:rgba(255,255,255,.08);
+color:#CBD5E1;
+border:1px solid rgba(255,255,255,.15);
+}
+.type-confirm-btn.cancel:active{background:rgba(255,255,255,.15)}
+
+.type-confirm-btn.ok{
+background:linear-gradient(135deg,#16A34A,#15803D);
+color:#fff;
+box-shadow:0 4px 12px rgba(22,163,74,.4);
+}
+.type-confirm-btn.ok.cash-ok{
+background:linear-gradient(135deg,#7C3AED,#6D28D9);
+box-shadow:0 4px 12px rgba(124,58,237,.4);
+}
+
+/* =========================================================
+   ★ SELECT POPUP (Confirm/Warning) ★
 ========================================================= */
 .mini-popup{
 position:fixed;bottom:18px;left:50%;
@@ -537,7 +706,6 @@ transform:translateX(-50%) translateY(0)}
 .popup-info{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .popup-left{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
 
-/* ★ Dynamic Icon — সবুজ ✓ / কমলা ⚠️ ★ */
 .popup-icon{
 width:26px;height:26px;border-radius:50%;
 display:flex;align-items:center;justify-content:center;
@@ -557,7 +725,6 @@ box-shadow:0 2px 8px rgba(245,158,11,.5);
 
 .popup-text{min-width:0}
 
-/* ★ Dynamic Amount Color ★ */
 .popup-total{
 font-size:16px;font-weight:900;line-height:1;
 white-space:nowrap;transition:color .25s ease;
@@ -569,7 +736,6 @@ white-space:nowrap;transition:color .25s ease;
 .popup-count{font-size:10px;color:#94A3B8;font-weight:700;
 margin-top:2px;line-height:1}
 
-/* ★ Right Side — Badge + Arrow ★ */
 .popup-right-side{
 display:flex;align-items:center;gap:6px;
 flex-shrink:0;transition:opacity .2s ease;
@@ -894,7 +1060,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 </div>
 
-<!-- ★ SELECT POPUP (Enhanced) ★ -->
+<!-- ★ SELECT POPUP (Confirm/Warning) ★ -->
 <div id="miniPopup" class="mini-popup" onclick="toggleSelectExpand(event)">
 <div class="popup-info">
 <div class="popup-left">
@@ -913,6 +1079,24 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <div id="popupStatus"></div>
 <button class="popup-menu-btn danger" onclick="clearAllSelected()">🗑️ সব মুছুন</button>
 <button class="popup-menu-btn success" onclick="closeSelectMode()">✓ সম্পন্ন</button>
+</div>
+</div>
+
+<!-- ★ TYPE CONFIRM POPUP (নতুন) ★ -->
+<div id="typeConfirmOverlay" class="type-confirm-overlay" onclick="closeTypeConfirm()">
+<div class="type-confirm-popup" onclick="event.stopPropagation()">
+<div class="type-confirm-icon">⚠️</div>
+<div class="type-confirm-title">Type পরিবর্তন করবেন?</div>
+<div class="type-confirm-sub">এই লেনদেনের type পরিবর্তন হবে</div>
+<div class="type-confirm-change">
+<div id="typeConfirmFrom" class="type-confirm-from">বিক্রয়</div>
+<div class="type-confirm-arrow">→</div>
+<div id="typeConfirmTo" class="type-confirm-to">নগদ</div>
+</div>
+<div class="type-confirm-actions">
+<button class="type-confirm-btn cancel" onclick="closeTypeConfirm()">বাতিল</button>
+<button id="typeConfirmOkBtn" class="type-confirm-btn ok" onclick="confirmTypeChange()">হ্যাঁ</button>
+</div>
 </div>
 </div>
 
@@ -954,6 +1138,12 @@ savedAgentSelection='',savedAgentOptionSelection='',saveMsgTimeout=null;
 let selectMode=false;
 let selectedKeys=new Set();
 let popupTimeout=null;
+
+/* ★ TYPE HOLD + CONFIRM STATE ★ */
+let typeHoldTimer=null;
+const TYPE_HOLD_DURATION=2000;
+let pendingTypeTransaction=null;
+let pendingNewType=null;
 
 /* =========================================================
    DESCRIPTION HELPERS
@@ -1448,7 +1638,6 @@ uniqueDescs:Array.from(uniqueDescs)
 };
 }
 
-/* ★ ENHANCED SELECT POPUP ★ */
 function updateSelectPopup(){
 const popup=$('miniPopup');
 if(!popup)return;
@@ -1457,29 +1646,21 @@ if(!selectMode || selectedKeys.size===0){hideSelectPopup();return}
 const calc=calcSelected();
 const mode=calc.allSame?'confirm':'warning';
 
-/* Amount — dynamic color */
 const totalEl=$('popupTotal');
 totalEl.className='popup-total '+mode;
 totalEl.innerHTML=(calc.totalKD<0?'−':'')+Math.abs(calc.totalKD).toFixed(3)+'<small>KD</small>';
 
-/* Count — বাংলা */
 $('popupCount').textContent=toBn(calc.count)+' টি নির্বাচিত';
 
-/* Icon — dynamic */
 const iconEl=$('popupIcon');
 iconEl.className='popup-icon '+mode;
 iconEl.textContent=calc.allSame?'✓':'⚠️';
 
-/* Badge — dynamic */
 updatePopupBadge(calc);
-
-/* Status box */
 renderPopupStatus(calc);
-
 popup.classList.add('show');
 }
 
-/* ★ Badge update ★ */
 function updatePopupBadge(calc){
 const badgeEl=$('popupBadge');
 if(!badgeEl)return;
@@ -1492,7 +1673,6 @@ badgeEl.textContent='⚠️ '+toBn(calc.uniqueDescs.length)+' আলাদা';
 }
 }
 
-/* ★ WARNING / CONFIRM ★ */
 function renderPopupStatus(calc){
 const el=$('popupStatus');
 if(!el)return;
@@ -1840,7 +2020,7 @@ setTimeout(adjustListHeights,30)
 }
 
 /* =========================================================
-   TRANSACTION CARD (With Select Checkbox)
+   TRANSACTION CARD
 ========================================================= */
 function createTransactionCard(t,showCustomer,runningBalance){
 const sale=isDueTransaction(t);
@@ -1935,11 +2115,8 @@ typeSpan.className='tl-type-inline'+(cash?' cash':'');
 typeSpan.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':cash?'নগদ':'';
 if(sale||cash){
 typeSpan.style.cursor='pointer';
-typeSpan.title='টাইপ পরিবর্তন করুন';
-typeSpan.addEventListener('click',e=>{
-e.stopPropagation();
-openTypeTogglePopup(e,t);
-});
+typeSpan.title='২ সেকেন্ড চেপে ধরুন';
+setupTypeHoldHandlers(typeSpan, t);
 }
 custLine.appendChild(typeSpan);
 }
@@ -1990,11 +2167,8 @@ typeSpan.className='tl-type-inline'+(cash?' cash':'');
 typeSpan.textContent=sale?'বিক্রয়':payment?'পেমেন্ট':cash?'নগদ':'';
 if(sale||cash){
 typeSpan.style.cursor='pointer';
-typeSpan.title='টাইপ পরিবর্তন করুন';
-typeSpan.addEventListener('click',e=>{
-e.stopPropagation();
-openTypeTogglePopup(e,t);
-});
+typeSpan.title='২ সেকেন্ড চেপে ধরুন';
+setupTypeHoldHandlers(typeSpan, t);
 }
 lineEl.appendChild(typeSpan);
 }
@@ -2012,23 +2186,80 @@ return txn
 }
 
 /* =========================================================
-   TYPE TOGGLE POPUP
+   ★ TYPE HOLD HANDLERS (NEW)
+========================================================= */
+function setupTypeHoldHandlers(element, transaction){
+element.addEventListener('touchstart',e=>{
+e.stopPropagation();
+startTypeHold(e, transaction);
+}, {passive:false});
+element.addEventListener('touchend',e=>{
+e.stopPropagation();
+endTypeHold(e);
+});
+element.addEventListener('touchcancel',e=>{
+e.stopPropagation();
+endTypeHold(e);
+});
+element.addEventListener('mousedown',e=>{
+e.stopPropagation();
+startTypeHold(e, transaction);
+});
+element.addEventListener('mouseup',e=>{
+e.stopPropagation();
+endTypeHold(e);
+});
+element.addEventListener('mouseleave',e=>{
+endTypeHold(e);
+});
+}
+
+function startTypeHold(event, transaction){
+event.preventDefault();
+const target = event.currentTarget;
+target.classList.add('holding');
+if(navigator.vibrate) navigator.vibrate(10);
+
+typeHoldTimer = setTimeout(()=>{
+target.classList.remove('holding');
+if(navigator.vibrate) navigator.vibrate(50);
+showTypeTogglePopup(target, transaction);
+}, TYPE_HOLD_DURATION);
+}
+
+function endTypeHold(event){
+if(typeHoldTimer){
+clearTimeout(typeHoldTimer);
+typeHoldTimer = null;
+}
+if(event.currentTarget){
+event.currentTarget.classList.remove('holding');
+}
+}
+
+/* =========================================================
+   ★ TYPE TOGGLE POPUP (পুরনো style)
 ========================================================= */
 let typeTogglePopupEl=null;
 let typeToggleTransaction=null;
-function openTypeTogglePopup(event,transaction){
+
+function showTypeTogglePopup(targetEl, transaction){
 closeTypeTogglePopup();
 if(getRole()!=='admin'){showToast('⚠️ Only admin can change type');return}
+
 typeToggleTransaction=transaction;
 const currentType=normalizeType(transaction.type);
+
 const popup=document.createElement('div');
 popup.className='type-toggle-popup';
+
 const dueBtn=document.createElement('button');
 dueBtn.type='button';
 dueBtn.innerHTML='বিক্রয়';
 if(currentType==='বাকি')dueBtn.classList.add('active');
 dueBtn.addEventListener('click',e=>{e.stopPropagation();selectType('বাকি')});
 popup.appendChild(dueBtn);
+
 const cashBtn=document.createElement('button');
 cashBtn.type='button';
 cashBtn.className='cash-btn';
@@ -2036,9 +2267,11 @@ cashBtn.innerHTML='নগদ';
 if(currentType==='নগদ')cashBtn.classList.add('active','cash');
 cashBtn.addEventListener('click',e=>{e.stopPropagation();selectType('নগদ')});
 popup.appendChild(cashBtn);
+
 document.body.appendChild(popup);
 typeTogglePopupEl=popup;
-const rect=event.target.getBoundingClientRect();
+
+const rect=targetEl.getBoundingClientRect();
 let left=rect.left;let top=rect.bottom+6;
 const popupRect=popup.getBoundingClientRect();
 if(left+popupRect.width>window.innerWidth-10)left=window.innerWidth-popupRect.width-10;
@@ -2049,43 +2282,127 @@ popup.style.top=top+'px';
 requestAnimationFrame(()=>{popup.classList.add('show')});
 setTimeout(()=>{document.addEventListener('click',outsideClickClose,{once:false})},10);
 }
+
 function outsideClickClose(e){
 if(typeTogglePopupEl&&!typeTogglePopupEl.contains(e.target))closeTypeTogglePopup()
 }
+
 function closeTypeTogglePopup(){
 if(typeTogglePopupEl){typeTogglePopupEl.remove();typeTogglePopupEl=null}
 typeToggleTransaction=null;
 document.removeEventListener('click',outsideClickClose)
 }
+
+/* =========================================================
+   ★ SELECT TYPE → CONFIRM (NEW)
+========================================================= */
 async function selectType(newType){
 const t=typeToggleTransaction;
 if(!t)return;
 const currentType=normalizeType(t.type);
 if(currentType===newType){closeTypeTogglePopup();return}
 if(getRole()!=='admin'){showToast('⚠️ Only admin can change type');closeTypeTogglePopup();return}
+
+/* Store pending */
+pendingTypeTransaction = t;
+pendingNewType = newType;
+
 closeTypeTogglePopup();
+showTypeConfirm(t, newType);
+}
+
+function showTypeConfirm(transaction, newType){
+const overlay = $('typeConfirmOverlay');
+if(!overlay) return;
+
+const currentType = normalizeType(transaction.type);
+const isCurrentCash = (currentType === 'নগদ');
+const isNewCash = (newType === 'নগদ');
+const isNewDue = (newType === 'বিক্রয়' || newType === 'বাকি');
+
+const fromText = isCurrentCash ? 'নগদ' : 'বিক্রয়';
+
+const fromEl = $('typeConfirmFrom');
+const toEl = $('typeConfirmTo');
+const okBtn = $('typeConfirmOkBtn');
+
+/* From */
+fromEl.textContent = fromText;
+fromEl.className = 'type-confirm-from' + (isCurrentCash ? ' cash' : '');
+
+/* To — স্পষ্ট সবুজ (বিক্রয়) বা বেগুনি (নগদ) */
+toEl.textContent = isNewCash ? 'নগদ' : 'বিক্রয়';
+toEl.className = 'type-confirm-to' + (isNewDue ? ' due' : '');
+
+/* OK Button */
+okBtn.className = 'type-confirm-btn ok' + (isNewCash ? ' cash-ok' : '');
+
+overlay.classList.add('show');
+}
+
+function closeTypeConfirm(){
+const overlay = $('typeConfirmOverlay');
+if(overlay) overlay.classList.remove('show');
+pendingTypeTransaction = null;
+pendingNewType = null;
+}
+
+async function confirmTypeChange(){
+const t = pendingTypeTransaction;
+const newType = pendingNewType;
+
+if(!t || !newType){
+closeTypeConfirm();
+return;
+}
+
+closeTypeConfirm();
 showSync('Updating...','syncing');
+
 try{
 const updated={...t,type:newType};
 updated.key=transactionKey(updated);
 await saveTransactionsLocal([updated]);
-const idx=allTransactionsData.findIndex(tx=>String(tx.transactionId||'').trim()===String(t.transactionId||'').trim());
-if(idx>=0)allTransactionsData[idx]=updated;
-customerData.forEach(c=>{c.totalDueKD=calculateCustomerDueFromTransactions(c.customerId)});
+
+const idx=allTransactionsData.findIndex(
+tx=>String(tx.transactionId||'').trim()===String(t.transactionId||'').trim()
+);
+if(idx>=0) allTransactionsData[idx]=updated;
+
+customerData.forEach(c=>{
+c.totalDueKD=calculateCustomerDueFromTransactions(c.customerId);
+});
 updateTotalDue();
 renderLocalData();
+
 showToast('✓ '+newType);
+
 try{
-const result=await postAPI({action:'updateTransactionType',username:currentUser?.username||'',role:currentUser?.role||'',transactionId:t.transactionId,type:newType});
-if(result&&result.success)showSync('Synced ✓','synced');
-else showSync('Server pending','pending');
+const result=await postAPI({
+action:'updateTransactionType',
+username:currentUser?.username||'',
+role:currentUser?.role||'',
+transactionId:t.transactionId,
+type:newType
+});
+
+if(result&&result.success){
+showSync('Synced ✓','synced');
+}else{
+showSync('Server pending','pending');
+}
 }catch(e){
 console.warn('Server update failed:',e);
 showSync('Server pending','pending');
-await dbPut('transactions',{...updated,pending:true,pendingTypeUpdate:true});
+await dbPut('transactions',{
+...updated,
+pending:true,
+pendingTypeUpdate:true
+});
 }
+
 }catch(e){
-console.error('selectType error:',e);
+console.error('confirmTypeChange error:',e);
 showSync('Update failed','error');
 showToast('⚠️ '+(e.message||e));
 }
