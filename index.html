@@ -1315,16 +1315,12 @@ customerVersion=await getMeta('customerVersion','');
 agentVersion=await getMeta('agentVersion','');
 settingsVersion=await getMeta('settingsVersion','');
 lastTransactionRow=Number(await getMeta('lastTransactionRow',0))||0;
-const savedNotes=await getMeta('notesData',null);
-if(savedNotes&&typeof savedNotes==='object'){
-notesData={
-dueNotes:Array.isArray(savedNotes.dueNotes)&&savedNotes.dueNotes.length?savedNotes.dueNotes:DUE_NOTES,
-paymentNotes:Array.isArray(savedNotes.paymentNotes)&&savedNotes.paymentNotes.length?savedNotes.paymentNotes:PAYMENT_NOTES
+/* ★ Notes সবসময় নতুন array থেকে ★ */
+notesData = {
+dueNotes: DUE_NOTES,
+paymentNotes: PAYMENT_NOTES
 };
-}else{
-notesData={dueNotes:DUE_NOTES,paymentNotes:PAYMENT_NOTES};
-}
-notesLoaded=true;
+notesLoaded = true;
 const savedDue=await getMeta('dueData',null);
 if(savedDue&&typeof savedDue==='object'){
 dueData={totalDueKD:number(savedDue.totalDueKD||0),
