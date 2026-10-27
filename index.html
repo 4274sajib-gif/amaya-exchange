@@ -1762,7 +1762,9 @@ transactionType=type;
 $('dueBtn').classList.toggle('active',type==='বাকি');
 $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 $('cashBtn').classList.toggle('active',type==='নগদ');
-setNotes(type==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes)
+setNotes(type==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes);
+/* ★ Type বদলালে Agent Option আপডেট ★ */
+setTimeout(updateAgentOptionDropdown,0)
 }
 
 /* =========================================================
@@ -1773,7 +1775,28 @@ const agentId=$('agentSelect').value;
 const field=$('agentOptionField');
 const select=$('agentOptionSelect');
 if(!field||!select)return;
+
+/* ★ নতুন শর্ত: Agent না থাকলে লুকানো ★ */
 if(!agentId){field.classList.add('hidden');select.innerHTML='';return}
+
+/* ★ নতুন শর্ত: Payment হলে কখনোই দেখাবে না ★ */
+if(transactionType==='পেমেন্ট'){
+field.classList.add('hidden');
+select.innerHTML='';
+savedAgentOptionSelection='';
+return
+}
+
+/* ★ নতুন শর্ত: Note অবশ্যই Bkash বা Nagad হতে হবে (বাকি/নগদ উভয়ের জন্য) ★ */
+const noteValue=String($('noteSelect')?.value||'').trim();
+const isBkashOrNagad=(noteValue==='Bkash'||noteValue==='Nagad');
+if(!isBkashOrNagad){
+field.classList.add('hidden');
+select.innerHTML='';
+savedAgentOptionSelection='';
+return
+}
+
 const agent=agentData.find(a=>String(a.agentId)===String(agentId));
 if(!agent){field.classList.add('hidden');select.innerHTML='';return}
 const agentName=String(agent.agentName||'').trim().toLowerCase();
@@ -3604,6 +3627,10 @@ this.classList.toggle('has-value',this.value!=='')
 });
 $('agentOptionSelect').addEventListener('change',function(){
 savedAgentOptionSelection=this.value
+});
+/* ★ Note বদলালে Agent Option show/hide আপডেট ★ */
+$('noteSelect').addEventListener('change',function(){
+updateAgentOptionDropdown()
 });
 
 /* =========================================================
