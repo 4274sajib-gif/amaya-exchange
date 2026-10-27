@@ -2384,7 +2384,7 @@ custLine.className='tl-cust-line';
 const hasCustomer=!!String(t.customerId||'').trim();
 if(!isAgentRole){
 const custName=document.createElement('span');
-custName.textContent=hasCustomer?(t.customerName||'Unknown'):'(No Customer)';
+custName.textContent = hasCustomer ? (t.customerName || 'Unknown') : '';
 custLine.appendChild(custName);
 }
 if(sale||payment||cash){
@@ -2875,7 +2875,7 @@ const custLine=document.createElement('div');
 custLine.className='ag-cust-line';
 if(getRole()!=='agent'){
 const custName=document.createElement('span');
-custName.textContent=t.customerName||'(No Customer)';
+custName.textContent = t.customerName || '';
 custLine.appendChild(custName);
 }
 if(sale||payment||cash){
