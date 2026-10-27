@@ -1031,14 +1031,20 @@ box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
 .note-dd-trigger.type-payment .nd-icon{color:#DC2626}
 
 .note-dd-pop{
-position:absolute;top:calc(100% + 8px);left:0;right:0;
+position:absolute;left:0;right:0;
+top:50%;
 background:#e8ecf3;border-radius:14px;padding:6px;
 box-shadow:6px 6px 18px #c5cad3,-6px -6px 18px #ffffff;
-opacity:0;visibility:hidden;transform:translateY(-6px);
-transition:all .2s cubic-bezier(.34,1.56,.64,1);
+opacity:0;visibility:hidden;
+transform:translateY(-50%) scale(.92);
+transform-origin:center center;
+transition:all .22s cubic-bezier(.34,1.56,.64,1);
 z-index:200;max-height:260px;overflow-y:auto;
 }
-.note-dd-pop.show{opacity:1;visibility:visible;transform:translateY(0)}
+.note-dd-pop.show{
+opacity:1;visibility:visible;
+transform:translateY(-50%) scale(1);
+}
 
 .note-dd-item{
 display:flex;align-items:center;justify-content:space-between;
