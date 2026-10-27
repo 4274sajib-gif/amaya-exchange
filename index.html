@@ -943,16 +943,29 @@ padding:0 18px max(20px,env(safe-area-inset-bottom));
 padding:18px 16px;
 font-size:17px;
 font-weight:700;
-margin-bottom:4px;
-border-radius:10px;
+margin-bottom:10px;
+border-radius:12px;
+background:#e8ecf3;
+box-shadow:
+  4px 4px 10px #c5cad3,
+  -4px -4px 10px #ffffff,
+  inset 0 0 0 1px rgba(255,255,255,.5);
+}
+.customer-fs-list .customer-dd-opt:last-child{
+margin-bottom:0;
 }
 
 .customer-fs-list .customer-dd-opt:active{
-box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+box-shadow:
+  inset 4px 4px 8px #c5cad3,
+  inset -4px -4px 8px #fff;
+transform:scale(.98);
 }
 
 .customer-fs-list .customer-dd-opt.selected{
-box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+box-shadow:
+  inset 4px 4px 8px #c5cad3,
+  inset -4px -4px 8px #fff;
 font-weight:800;
 }
 
