@@ -159,19 +159,45 @@ margin-bottom:12px;box-shadow:0 3px 15px rgba(0,0,0,.045)}
 input,select{width:100%;height:47px;
 border:1px solid #dfe3e9;border-radius:11px;
 background:#fff;padding:0 12px;outline:0;color:#172033}
-#customerSelect{font-weight:400}
-#customerSelect.has-value{font-weight:700}
-#agentOptionSelect{font-weight:700;background:#FFFBEB;
-border-color:#FCD34D;height:42px;font-size:14px}
-#noteSelect{height:42px;font-size:14px}
 input:focus,select:focus{
 border-color:#111827;
 box-shadow:0 0 0 3px rgba(17,24,39,.08),
 0 4px 14px rgba(17,24,39,.10);
 outline:none;
 }
-#customerSelect.has-value{font-weight:700;background:#FFFBEB;border-color:#FCD34D}
 select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
+
+/* ★ Customer Select — Type Color ★ */
+.customer-type-select{
+background:#fff!important;
+font-weight:400;
+transition:border-color .25s ease,color .25s ease,box-shadow .25s ease;
+}
+.customer-type-select.has-value{font-weight:700}
+.customer-type-select.type-due{
+border-color:#86EFAC!important;
+color:#15803D;
+}
+.customer-type-select.type-cash{
+border-color:#C4B5FD!important;
+color:#6D28D9;
+}
+.customer-type-select.type-payment{
+border-color:#FCA5A5!important;
+color:#B91C1C;
+}
+.customer-type-select.type-due:focus{
+border-color:#16A34A!important;
+box-shadow:0 0 0 3px rgba(22,163,74,.15),0 4px 14px rgba(22,163,74,.15);
+}
+.customer-type-select.type-cash:focus{
+border-color:#7C3AED!important;
+box-shadow:0 0 0 3px rgba(124,58,237,.15),0 4px 14px rgba(124,58,237,.15);
+}
+.customer-type-select.type-payment:focus{
+border-color:#DC2626!important;
+box-shadow:0 0 0 3px rgba(220,38,38,.15),0 4px 14px rgba(220,38,38,.15);
+}
 
 .desc-field{margin-top:6px;margin-bottom:10px}
 .desc-wrap{position:relative;display:flex;align-items:center}
@@ -408,7 +434,6 @@ transition:background .12s ease,color .12s ease;
 .tl-cust-line:hover{background:#EEF2FF;color:#4338CA}
 .tl-cust-line:active{background:#E0E7FF;transform:scale(.97)}
 
-/* ★ Type inline label — Hold এখানে কাজ করবে ★ */
 .tl-type-inline{display:inline-flex;align-items:center;gap:3px;
 font-size:9px;font-weight:800;color:#166534;white-space:nowrap;
 position:relative;overflow:hidden;
@@ -424,7 +449,6 @@ box-shadow:0 0 0 2px rgba(220,38,38,.15)}
 box-shadow:0 0 0 2px rgba(124,58,237,.15)}
 .tl-type-inline[style*="cursor"]:hover{opacity:.75;text-decoration:underline}
 
-/* ★ Hold animation ★ */
 .tl-type-inline.holding{
 transform:scale(.95);
 background:rgba(74,222,128,.15);
@@ -528,7 +552,6 @@ color:#fff;font-variant-numeric:tabular-nums}
 .agent-sales{text-align:right}
 #agentList{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
-/* ===== TYPE TOGGLE POPUP (পুরনো style) ===== */
 .type-toggle-popup{position:fixed;background:#111827;color:#fff;
 border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:4px;
 box-shadow:0 8px 24px rgba(0,0,0,.28);z-index:9999;
@@ -547,9 +570,6 @@ cursor:pointer;transition:background .12s ease}
 border-radius:50%;background:#16A34A;flex-shrink:0}
 .type-toggle-popup button.cash-btn:before{background:#7C3AED}
 
-/* =========================================================
-   ★ TYPE CONFIRM POPUP (নতুন) ★
-========================================================= */
 .type-confirm-overlay{
 position:fixed;inset:0;
 background:rgba(15,23,42,.6);
@@ -689,9 +709,6 @@ background:linear-gradient(135deg,#7C3AED,#6D28D9);
 box-shadow:0 4px 12px rgba(124,58,237,.4);
 }
 
-/* =========================================================
-   ★ SELECT POPUP (Confirm/Warning) ★
-========================================================= */
 .mini-popup{
 position:fixed;bottom:18px;left:50%;
 transform:translateX(-50%) translateY(30px);
@@ -805,7 +822,6 @@ cursor:pointer;margin-bottom:6px;transition:background .12s ease}
 .popup-menu-btn.danger{color:#FCA5A5;background:rgba(220,38,38,.15)}
 .popup-menu-btn.success{background:#16A34A;color:#fff}
 
-/* ===== LOGIN ===== */
 .login-page{min-height:100vh;min-height:100dvh;
 display:flex;align-items:center;justify-content:center;padding:20px}
 .login-box{width:100%;max-width:390px;background:#fff;
@@ -814,6 +830,73 @@ box-shadow:0 8px 30px rgba(0,0,0,.06)}
 .login-title{font-size:24px;font-weight:800;letter-spacing:-.3px}
 .login-sub{font-size:13px;color:#8992a0;margin:5px 0 23px}
 .loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
+
+/* =========================================================
+   ★ CUSTOM NOTE / AGENT OPTION DROPDOWN ★
+========================================================= */
+.note-dd-wrap{position:relative;width:100%}
+.note-dd-trigger{
+width:100%;height:42px;border:0;border-radius:10px;
+background:#e8ecf3;padding:0 12px;
+display:flex;align-items:center;justify-content:space-between;
+cursor:pointer;font-size:14px;font-weight:600;color:#334155;
+font-family:inherit;transition:all .15s ease;
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff;
+}
+.note-dd-trigger:active{
+box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #ffffff;
+}
+.note-dd-trigger .nd-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.note-dd-trigger .nd-icon{font-size:14px;flex-shrink:0;transition:color .25s ease}
+.note-dd-trigger .nd-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .25s ease}
+.note-dd-trigger .nd-chevron{color:#94a3b8;font-size:10px;transition:transform .2s;flex-shrink:0;margin-left:4px}
+.note-dd-trigger.open .nd-chevron{transform:rotate(180deg)}
+
+.note-dd-trigger.type-due .nd-text{color:#16A34A}
+.note-dd-trigger.type-cash .nd-text{color:#7C3AED}
+.note-dd-trigger.type-payment .nd-text{color:#DC2626}
+.note-dd-trigger.type-due .nd-icon{color:#16A34A}
+.note-dd-trigger.type-cash .nd-icon{color:#7C3AED}
+.note-dd-trigger.type-payment .nd-icon{color:#DC2626}
+
+.note-dd-pop{
+position:absolute;top:calc(100% + 8px);left:0;right:0;
+background:#e8ecf3;border-radius:14px;padding:6px;
+box-shadow:6px 6px 18px #c5cad3,-6px -6px 18px #ffffff;
+opacity:0;visibility:hidden;transform:translateY(-6px);
+transition:all .2s cubic-bezier(.34,1.56,.64,1);
+z-index:200;max-height:260px;overflow-y:auto;
+}
+.note-dd-pop.show{opacity:1;visibility:visible;transform:translateY(0)}
+
+.note-dd-item{
+display:flex;align-items:center;justify-content:space-between;
+padding:11px 12px;font-size:13px;font-weight:600;color:#334155;
+cursor:pointer;border-radius:8px;transition:all .15s ease;
+margin-bottom:3px;
+}
+.note-dd-item:last-child{margin-bottom:0}
+.note-dd-item:active{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+}
+.note-dd-item.selected{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+font-weight:800;
+}
+.note-dd-item .nd-check{opacity:0;font-weight:900;font-size:12px;color:transparent;transition:all .15s ease}
+.note-dd-item.selected .nd-check{opacity:1}
+
+.note-dd-item.selected{color:#15803D}
+.note-dd-item.selected .nd-check{color:#15803D}
+.note-dd-pop.type-cash .note-dd-item.selected{color:#6D28D9}
+.note-dd-pop.type-cash .note-dd-item.selected .nd-check{color:#6D28D9}
+.note-dd-pop.type-payment .note-dd-item.selected{color:#B91C1C}
+.note-dd-pop.type-payment .note-dd-item.selected .nd-check{color:#B91C1C}
+
+#noteSelect,#agentOptionSelect{
+position:absolute;opacity:0;pointer-events:none;
+width:1px;height:1px;left:-9999px;
+}
 
 @media(max-width:400px){
 .header{padding:8px 12px 9px}
@@ -956,7 +1039,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 <div class="field" style="margin-bottom:6px">
 <label class="label">🤝 Customer</label>
-<select id="customerSelect">
+<select id="customerSelect" class="customer-type-select type-due">
 <option value="">Select Customer</option>
 </select>
 </div>
@@ -984,13 +1067,33 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 <div class="field">
 <label class="label">Note</label>
-<select id="noteSelect">
+<div class="note-dd-wrap" id="noteDropdownWrap">
+<button type="button" class="note-dd-trigger type-due" id="noteTrigger">
+<span class="nd-left">
+<span class="nd-icon">💳</span>
+<span class="nd-text" id="noteTriggerText">Select Note</span>
+</span>
+<span class="nd-chevron">▼</span>
+</button>
+<div class="note-dd-pop" id="notePop"></div>
+</div>
+<select id="noteSelect" style="display:none">
 <option value="">Select Note</option>
 </select>
 </div>
 <div id="agentOptionField" class="field hidden">
 <label class="label">🏷️ Agent Option</label>
-<select id="agentOptionSelect"></select>
+<div class="note-dd-wrap" id="agentOptionDropdownWrap">
+<button type="button" class="note-dd-trigger type-due" id="agentOptionTrigger">
+<span class="nd-left">
+<span class="nd-icon">💳</span>
+<span class="nd-text" id="agentOptionTriggerText">Select Option</span>
+</span>
+<span class="nd-chevron">▼</span>
+</button>
+<div class="note-dd-pop" id="agentOptionPop"></div>
+</div>
+<select id="agentOptionSelect" style="display:none"></select>
 </div>
 <button id="saveBtn" class="save" onclick="saveTransaction()">💾 Save</button>
 <div id="saveMsg" class="msg"></div>
@@ -1060,7 +1163,6 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 </div>
 
-<!-- ★ SELECT POPUP (Confirm/Warning) ★ -->
 <div id="miniPopup" class="mini-popup" onclick="toggleSelectExpand(event)">
 <div class="popup-info">
 <div class="popup-left">
@@ -1082,7 +1184,6 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 </div>
 
-<!-- ★ TYPE CONFIRM POPUP (নতুন) ★ -->
 <div id="typeConfirmOverlay" class="type-confirm-overlay" onclick="closeTypeConfirm()">
 <div class="type-confirm-popup" onclick="event.stopPropagation()">
 <div class="type-confirm-icon">⚠️</div>
@@ -1134,12 +1235,10 @@ pendingAgentSelectRefresh=false,pendingAgentViewRefresh=false,
 pendingNotesRefresh=false,isSavingTransaction=false,
 savedAgentSelection='',savedAgentOptionSelection='',saveMsgTimeout=null;
 
-/* ★ SELECT MODE STATE ★ */
 let selectMode=false;
 let selectedKeys=new Set();
 let popupTimeout=null;
 
-/* ★ TYPE HOLD + CONFIRM STATE ★ */
 let typeHoldTimer=null;
 const TYPE_HOLD_DURATION=2000;
 let pendingTypeTransaction=null;
@@ -1171,9 +1270,6 @@ function fmtKD(v){return number(v).toLocaleString('en-US',{minimumFractionDigits
 function fmtIndian(v){return Math.floor(number(v)).toLocaleString('en-IN')}
 function number(value){return parseFloat(String(value??'').replace(/,/g,'').replace(/[^\d.-]/g,''))||0}
 
-/* =========================================================
-   DATE PARSER
-========================================================= */
 function parseDateParts(value){
 if(!value)return{day:'',month:'',year:''};
 const str=String(value).trim();
@@ -1196,9 +1292,6 @@ const names=['January','February','March','April','May','June','July','August','
 return names[num-1]||'';
 }
 
-/* =========================================================
-   SYNC STATUS
-========================================================= */
 function showSync(text,type){
 text=text||'Syncing...';type=type||'syncing';
 const el=$('syncStatus');if(!el)return;
@@ -1208,7 +1301,6 @@ el.classList.add(type);
 }
 function hideSync(){showSync('Synced ✓','synced')}
 
-/* ★ বাংলা সংখ্যা ★ */
 function toBn(num){
 const en='0123456789';
 const bn='০১২৩৪৫৬৭৮৯';
@@ -1315,7 +1407,6 @@ customerVersion=await getMeta('customerVersion','');
 agentVersion=await getMeta('agentVersion','');
 settingsVersion=await getMeta('settingsVersion','');
 lastTransactionRow=Number(await getMeta('lastTransactionRow',0))||0;
-/* ★ Notes সবসময় নতুন array থেকে ★ */
 notesData = {
 dueNotes: DUE_NOTES,
 paymentNotes: PAYMENT_NOTES
@@ -1341,9 +1432,6 @@ dataLoaded=customerData.length>0||agentData.length>0||allTransactionsData.length
 renderLocalData()
 }
 
-/* =========================================================
-   CUSTOMERS / DUE
-========================================================= */
 function sortCustomersAZ(list){
 return list.sort((a,b)=>String(a.customerName||a.name||'').trim()
 .localeCompare(String(b.customerName||b.name||'').trim(),'en',{sensitivity:'base',numeric:true}))
@@ -1417,7 +1505,8 @@ f.appendChild(o)
 });
 select.appendChild(f);
 if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldValue;
-select.classList.toggle('has-value',select.value!=='')
+select.classList.toggle('has-value',select.value!=='');
+refreshCustomerSelectColor();
 }
 function updateCustomerDropdown(){
 const select=$('customerPageSelect');
@@ -1445,9 +1534,6 @@ if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldVal
 else select.value='ALL_TRANSACTIONS';
 }
 
-/* =========================================================
-   SAFE REFRESH
-========================================================= */
 function safeRefreshCustomerSelect(){
 const s=$('customerSelect');
 if(!s)return;
@@ -1502,9 +1588,6 @@ updateCustomerDropdown();
 setNotes(transactionType==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes)
 }
 
-/* =========================================================
-   AGENT BUTTONS
-========================================================= */
 function renderAgentButtons(){
 const row=$('agentButtonRow');
 const hidden=$('agentSelect');
@@ -1547,9 +1630,6 @@ f.appendChild(btn)
 row.appendChild(f)
 }
 
-/* =========================================================
-   RENDER LOCAL
-========================================================= */
 function renderLocalData(){
 const activePanel=document.querySelector('.panel.active')?.id||'';
 let selected=$('customerPageSelect').value;
@@ -1580,9 +1660,6 @@ if(getRole()==='agent'&&$('agentView').value){agentChanged()}
 setTimeout(adjustListHeights,50)
 }
 
-/* =========================================================
-   SELECT MODE — CORE FUNCTIONS
-========================================================= */
 function updateSelectIcon(){
 const btn=$('searchSelectBtn');
 if(!btn)return;
@@ -1738,15 +1815,14 @@ if(id==='ALL_TRANSACTIONS'){renderAllCustomerTransactions()}
 else{const c=findCustomer(id);if(c){renderCustomerTransactionsLocal(c.customerId)}}
 }
 
-/* =========================================================
-   SET NOTES / TYPE
-========================================================= */
 function setNotes(notes){
 const s=$('noteSelect');
 if(!s)return;
 s.innerHTML='';
 if(!Array.isArray(notes)||!notes.length){
-s.innerHTML='<option value="">Select Note</option>';return
+s.innerHTML='<option value="">Select Note</option>';
+refreshNoteCustomUI();
+return
 }
 const f=document.createDocumentFragment();
 notes.forEach((n,i)=>{
@@ -1755,7 +1831,8 @@ o.value=n;o.textContent=n;
 if(i===0)o.selected=true;
 f.appendChild(o)
 });
-s.appendChild(f)
+s.appendChild(f);
+refreshNoteCustomUI();
 }
 function setType(type){
 transactionType=type;
@@ -1763,45 +1840,42 @@ $('dueBtn').classList.toggle('active',type==='বাকি');
 $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 $('cashBtn').classList.toggle('active',type==='নগদ');
 setNotes(type==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes);
-/* ★ Type বদলালে Agent Option আপডেট ★ */
-setTimeout(updateAgentOptionDropdown,0)
+refreshAllDropdownColors();
+setTimeout(()=>{
+updateAgentOptionDropdown();
+},0);
 }
 
-/* =========================================================
-   AGENT OPTION DROPDOWN
-========================================================= */
 function updateAgentOptionDropdown(){
 const agentId=$('agentSelect').value;
 const field=$('agentOptionField');
 const select=$('agentOptionSelect');
 if(!field||!select)return;
 
-/* ★ নতুন শর্ত: Agent না থাকলে লুকানো ★ */
-if(!agentId){field.classList.add('hidden');select.innerHTML='';return}
-
-/* ★ নতুন শর্ত: Payment হলে কখনোই দেখাবে না ★ */
-if(transactionType==='পেমেন্ট'){
-field.classList.add('hidden');
-select.innerHTML='';
-savedAgentOptionSelection='';
-return
+if(!agentId){
+field.classList.add('hidden');select.innerHTML='';
+refreshAgentOptionCustomUI();return
 }
 
-/* ★ নতুন শর্ত: Note অবশ্যই Bkash বা Nagad হতে হবে (বাকি/নগদ উভয়ের জন্য) ★ */
+if(transactionType==='পেমেন্ট'){
+field.classList.add('hidden');select.innerHTML='';
+savedAgentOptionSelection='';
+refreshAgentOptionCustomUI();return
+}
+
 const noteValue=String($('noteSelect')?.value||'').trim();
 const isBkashOrNagad=(noteValue==='Bkash'||noteValue==='Nagad');
 if(!isBkashOrNagad){
-field.classList.add('hidden');
-select.innerHTML='';
+field.classList.add('hidden');select.innerHTML='';
 savedAgentOptionSelection='';
-return
+refreshAgentOptionCustomUI();return
 }
 
 const agent=agentData.find(a=>String(a.agentId)===String(agentId));
-if(!agent){field.classList.add('hidden');select.innerHTML='';return}
+if(!agent){field.classList.add('hidden');select.innerHTML='';refreshAgentOptionCustomUI();return}
 const agentName=String(agent.agentName||'').trim().toLowerCase();
 const options=AGENT_OPTIONS[agentName];
-if(!options||!options.length){field.classList.add('hidden');select.innerHTML='';return}
+if(!options||!options.length){field.classList.add('hidden');select.innerHTML='';refreshAgentOptionCustomUI();return}
 const oldValue=savedAgentOptionSelection||select.value;
 select.innerHTML='';
 const f=document.createDocumentFragment();
@@ -1818,12 +1892,10 @@ savedAgentOptionSelection=oldValue;
 select.selectedIndex=0;
 savedAgentOptionSelection=select.value;
 }
-field.classList.remove('hidden')
+field.classList.remove('hidden');
+refreshAgentOptionCustomUI();
 }
 
-/* =========================================================
-   LOCAL SAVE
-========================================================= */
 async function saveCustomersLocal(items){
 await dbClear('customers');
 if(!Array.isArray(items))return;
@@ -1896,9 +1968,6 @@ function getCustomerTransactions(customerId){
 return allTransactionsData.filter(t=>String(t.customerId||'')===String(customerId))
 }
 
-/* =========================================================
-   CUSTOMER RENDER
-========================================================= */
 function renderCustomerInfo(customer){
 const due=getCustomerDue(customer);
 function toWhatsAppNumber(phone){
@@ -2038,9 +2107,6 @@ list.appendChild(f);
 setTimeout(adjustListHeights,30)
 }
 
-/* =========================================================
-   TRANSACTION CARD
-========================================================= */
 function createTransactionCard(t,showCustomer,runningBalance){
 const sale=isDueTransaction(t);
 const payment=isPaymentTransaction(t);
@@ -2204,9 +2270,6 @@ txn.appendChild(pb);
 return txn
 }
 
-/* =========================================================
-   ★ TYPE HOLD HANDLERS (NEW)
-========================================================= */
 function setupTypeHoldHandlers(element, transaction){
 element.addEventListener('touchstart',e=>{
 e.stopPropagation();
@@ -2256,9 +2319,6 @@ event.currentTarget.classList.remove('holding');
 }
 }
 
-/* =========================================================
-   ★ TYPE TOGGLE POPUP (পুরনো style)
-========================================================= */
 let typeTogglePopupEl=null;
 let typeToggleTransaction=null;
 
@@ -2312,9 +2372,6 @@ typeToggleTransaction=null;
 document.removeEventListener('click',outsideClickClose)
 }
 
-/* =========================================================
-   ★ SELECT TYPE → CONFIRM (NEW)
-========================================================= */
 async function selectType(newType){
 const t=typeToggleTransaction;
 if(!t)return;
@@ -2322,7 +2379,6 @@ const currentType=normalizeType(t.type);
 if(currentType===newType){closeTypeTogglePopup();return}
 if(getRole()!=='admin'){showToast('⚠️ Only admin can change type');closeTypeTogglePopup();return}
 
-/* Store pending */
 pendingTypeTransaction = t;
 pendingNewType = newType;
 
@@ -2345,15 +2401,12 @@ const fromEl = $('typeConfirmFrom');
 const toEl = $('typeConfirmTo');
 const okBtn = $('typeConfirmOkBtn');
 
-/* From */
 fromEl.textContent = fromText;
 fromEl.className = 'type-confirm-from' + (isCurrentCash ? ' cash' : '');
 
-/* To — স্পষ্ট সবুজ (বিক্রয়) বা বেগুনি (নগদ) */
 toEl.textContent = isNewCash ? 'নগদ' : 'বিক্রয়';
 toEl.className = 'type-confirm-to' + (isNewDue ? ' due' : '');
 
-/* OK Button */
 okBtn.className = 'type-confirm-btn ok' + (isNewCash ? ' cash-ok' : '');
 
 overlay.classList.add('show');
@@ -2427,9 +2480,6 @@ showToast('⚠️ '+(e.message||e));
 }
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
 function showToast(msg){
 const t=document.createElement('div');
 t.textContent=msg;
@@ -2445,9 +2495,6 @@ requestAnimationFrame(()=>{t.style.opacity='1'});
 setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),220)},2200);
 }
 
-/* =========================================================
-   DATE MATCHING
-========================================================= */
 function transactionMatchesDate(transaction,selectedDate){
 if(!selectedDate)return true;
 const td=getFullTransactionDate(transaction.date||transaction.Date||transaction.transactionDate||transaction.TransactionDate||'');
@@ -2474,9 +2521,6 @@ date=new Date(str);
 return isNaN(date.getTime())?null:date
 }
 
-/* =========================================================
-   TRANSACTION TYPE
-========================================================= */
 function normalizeType(value){
 return String(value||'').trim().toLowerCase().replace(/\s+/g,' ').replace(/^[+-]\s*/,'').trim()
 }
@@ -2493,9 +2537,6 @@ const type=normalizeType(t.type||t.Type||t.transactionType||t.TransactionType);
 return['নগদ','cash','cash sale','cash payment'].includes(type)
 }
 
-/* =========================================================
-   AGENT
-========================================================= */
 function renderAgentDropdowns(){
 const selectedAgentView=$('agentView')?.value||'';
 renderAgentButtons();
@@ -2664,9 +2705,6 @@ list.appendChild(f);
 setTimeout(adjustListHeights,30)
 }
 
-/* =========================================================
-   AGENT DATE PARSER
-========================================================= */
 function parseTransactionDate(value){
 if(!value)return null;
 const str=String(value).trim();
@@ -2688,9 +2726,6 @@ function getBDAmount(t){
 return number(t.bdAmount!==undefined&&t.bdAmount!==''?t.bdAmount:t.amountBD!==undefined&&t.amountBD!==''?t.amountBD:t.bd)
 }
 
-/* =========================================================
-   TAG CLICK HANDLERS
-========================================================= */
 function filterByCustomer(customerId){
 if(!customerId)return;
 const customerTab=document.querySelectorAll('.tab')[1];
@@ -2719,9 +2754,6 @@ agentChanged()
 }
 }
 
-/* =========================================================
-   DYNAMIC LIST HEIGHT
-========================================================= */
 function adjustListHeights(){
 const app=document.querySelector('.app');
 if(!app)return;
@@ -2751,9 +2783,6 @@ if(window.visualViewport){
 window.visualViewport.addEventListener('resize',()=>adjustListHeights())
 }
 
-/* =========================================================
-   DATE SETUP
-========================================================= */
 function setToday(){
 const d=new Date();
 const v=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -2781,9 +2810,6 @@ $('customerTransactionDate').value=p[2]+'-'+months[Number(p[1])-1]+'-'+p[0];
 if($('customerPageSelect').value==='ALL_TRANSACTIONS')renderAllCustomerTransactions()
 }
 
-/* =========================================================
-   TAB / ROLE
-========================================================= */
 function openTab(tab,button){
 document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
 document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -2852,9 +2878,6 @@ openTab('customer',customerTab)
 }
 }
 
-/* =========================================================
-   LOGIN
-========================================================= */
 async function login(){
 const username=$('username').value.trim();
 const password=$('password').value;
@@ -2895,9 +2918,6 @@ localStorage.removeItem('amaya_user')
 }
 }
 
-/* =========================================================
-   SHOW APP
-========================================================= */
 async function showApp(){
 $('loginPage').classList.add('hidden');
 $('app').classList.remove('hidden');
@@ -2933,9 +2953,6 @@ setTimeout(adjustListHeights,800);
 startBackgroundSync()
 }
 
-/* =========================================================
-   LOGOUT
-========================================================= */
 function logout(){
 stopBackgroundSync();
 currentUser=null;
@@ -2975,12 +2992,10 @@ $('agentButtonRow').innerHTML='';
 $('agentSelect').value='';
 $('description').value='';
 $('descClear').classList.remove('show');
+closeAllNoteDropdowns();
 setCustomerToday()
 }
 
-/* =========================================================
-   AGENT FILTER
-========================================================= */
 function setupAgentDateFilters(){
 const y=$('agentYear');const m=$('agentMonth');
 const now=new Date();const cy=now.getFullYear();const cm=now.getMonth()+1;
@@ -3017,9 +3032,6 @@ y.onchange=()=>{if($('agentView').value)renderAgentTransactions()};
 m.onchange=()=>{if($('agentView').value)renderAgentTransactions()}
 }
 
-/* =========================================================
-   HEADER RATE
-========================================================= */
 function calculateHeaderRate(){
 let value=String($('headerRateAmount').value).replace(/[০-৯]/g,d=>'0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)]).replace(/[^0-9]/g,'');
 const popup=$('headerRatePopup');
@@ -3034,9 +3046,6 @@ $('headerRatePopupKD').textContent=kd.toFixed(3)+' KD';
 popup.classList.add('show')
 }
 
-/* =========================================================
-   PROFIT
-========================================================= */
 function calculateProfitPopup(){
 const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
@@ -3047,9 +3056,6 @@ popup.textContent='Profit '+(profit<0?'-':'')+Number(Math.abs(profit.toFixed(3))
 popup.classList.add('show')
 }
 
-/* =========================================================
-   RATE POPUP CLOSE
-========================================================= */
 document.addEventListener('click',e=>{
 const box=$('adminRateBox');
 if(box&&!box.contains(e.target)){
@@ -3058,9 +3064,6 @@ $('headerRatePopup').classList.remove('show')
 }
 });
 
-/* =========================================================
-   DISABLE AUTOFILL
-========================================================= */
 function disableAutofill(){
 const kdInput=$('kdAmount');
 const bdInput=$('bdAmount');
@@ -3079,9 +3082,6 @@ input.setAttribute('readonly','readonly')
 });
 }
 
-/* =========================================================
-   KEYBOARD SAVE BUTTON
-========================================================= */
 function setupKeyboardSaveButton(){
 const kdInput=$('kdAmount');
 const bdInput=$('bdAmount');
@@ -3106,9 +3106,6 @@ window.visualViewport.addEventListener('scroll',scrollSaveIntoView)
 }
 }
 
-/* =========================================================
-   API
-========================================================= */
 async function getAPI(action,params={}){
 const q=new URLSearchParams();
 q.set('action',action);
@@ -3137,9 +3134,6 @@ catch(e){throw new Error('Invalid server response')}
 }finally{clearTimeout(timer)}
 }
 
-/* =========================================================
-   TRANSACTION HELPERS
-========================================================= */
 function createTransactionId(){
 return('TXN-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).substring(2,10).toUpperCase())
 }
@@ -3175,9 +3169,6 @@ if(verified){return{success:true,result:lastResult,transaction:verified,verified
 return{success:false,result:lastResult,transaction:null,verified:false}
 }
 
-/* =========================================================
-   BOOTSTRAP
-========================================================= */
 async function applyBootstrap(data){
 const localAll=await dbGetAll('transactions');
 const pendingLocal=localAll.filter(t=>t.pending===true);
@@ -3235,9 +3226,6 @@ return false
 return bootstrapPromise
 }
 
-/* =========================================================
-   SYNC PENDING
-========================================================= */
 async function syncPendingTransactions(){
 if(!navigator.onLine||!currentUser)return false;
 if(pendingSyncRunning)return false;
@@ -3317,9 +3305,6 @@ return false
 }finally{pendingSyncRunning=false}
 }
 
-/* =========================================================
-   SYNC DATA
-========================================================= */
 async function syncData(force=false){
 if(syncRunning||!currentUser)return false;
 syncRunning=true;
@@ -3355,9 +3340,6 @@ return false
 }finally{syncRunning=false}
 }
 
-/* =========================================================
-   BACKGROUND SYNC
-========================================================= */
 function startBackgroundSync(){
 stopBackgroundSync();
 syncData();
@@ -3377,9 +3359,6 @@ if(!syncTimer)startBackgroundSync()
 window.addEventListener('online',()=>{if(currentUser)syncData()});
 window.addEventListener('offline',()=>{showSync('Offline','pending')});
 
-/* =========================================================
-   INPUTS
-========================================================= */
 $('kdAmount').addEventListener('blur',function(){
 const v=number(this.value);
 if(!v){this.value='';calculateProfitPopup();return}
@@ -3394,9 +3373,6 @@ this.value=Number(v).toLocaleString('en-IN');
 calculateProfitPopup()
 });
 
-/* =========================================================
-   SAVE TRANSACTION
-========================================================= */
 async function saveTransaction(){
 if(isSavingTransaction)return;
 if(getRole()!=='admin'){showSaveError('Access denied');return}
@@ -3482,6 +3458,7 @@ b.classList.toggle('active',b.dataset.agentId===savedAgentId)
 }
 $('customerSelect').value='';
 $('customerSelect').classList.remove('has-value');
+refreshCustomerSelectColor();
 if(savedCustomerPageId&&[...$('customerPageSelect').options].some(o=>o.value===savedCustomerPageId)){
 $('customerPageSelect').value=savedCustomerPageId;
 if(savedCustomerPageId==='ALL_TRANSACTIONS'){renderAllCustomerTransactions()}
@@ -3525,9 +3502,6 @@ box.textContent=text;
 parent.appendChild(box)
 }
 
-/* =========================================================
-   MANUAL REFRESH
-========================================================= */
 function manualRefresh(btn){
 if(!btn)btn=$('refreshBtn');
 if(btn)btn.classList.add('spinning');
@@ -3537,9 +3511,6 @@ savedAgentOptionSelection='';
 setTimeout(()=>{location.reload()},400)
 }
 
-/* =========================================================
-   SECURITY / HTML ESCAPE
-========================================================= */
 function escapeHTML(value){
 return String(value===null||value===undefined?'':value)
 .replace(/&/g,'&amp;')
@@ -3554,9 +3525,6 @@ $('customerList').innerHTML='<div class="empty">'+escapeHTML(message||'Unable to
 }
 }
 
-/* =========================================================
-   CUSTOMER EVENTS
-========================================================= */
 $('customerPageSelect').addEventListener('change',function(){
 const id=this.value;
 const list=$('customerList');
@@ -3599,9 +3567,6 @@ $('customerTransactionDate').addEventListener('change',function(){
 if($('customerPageSelect').value==='ALL_TRANSACTIONS'){renderAllCustomerTransactions()}
 });
 
-/* =========================================================
-   KEYBOARD
-========================================================= */
 $('kdAmount').addEventListener('keydown',e=>{
 if(e.key==='Enter'||e.keyCode===13){
 e.preventDefault();
@@ -3619,19 +3584,171 @@ $('password').addEventListener('keydown',e=>{
 if(e.key==='Enter')login()
 });
 
-/* =========================================================
-   SELECT STYLE
-========================================================= */
 $('customerSelect').addEventListener('change',function(){
-this.classList.toggle('has-value',this.value!=='')
+this.classList.toggle('has-value',this.value!=='');
+refreshCustomerSelectColor();
 });
-$('agentOptionSelect').addEventListener('change',function(){
-savedAgentOptionSelection=this.value
+
+/* =========================================================
+   ★ CUSTOM NOTE / AGENT OPTION DROPDOWN ★
+========================================================= */
+function getTypeClass(){
+if(transactionType==='পেমেন্ট')return 'type-payment';
+if(transactionType==='নগদ')return 'type-cash';
+return 'type-due';
+}
+
+function refreshCustomerSelectColor(){
+const select=$('customerSelect');
+if(!select)return;
+select.classList.remove('type-due','type-cash','type-payment');
+select.classList.add(getTypeClass());
+}
+
+function refreshAllDropdownColors(){
+const triggers=['noteTrigger','agentOptionTrigger'];
+const pops=['notePop','agentOptionPop'];
+const typeClass=getTypeClass();
+triggers.forEach(id=>{
+const el=$(id);
+if(!el)return;
+el.classList.remove('type-due','type-cash','type-payment');
+el.classList.add(typeClass);
 });
-/* ★ Note বদলালে Agent Option show/hide আপডেট ★ */
+pops.forEach(id=>{
+const el=$(id);
+if(!el)return;
+el.classList.remove('type-cash','type-payment');
+if(transactionType==='পেমেন্ট')el.classList.add('type-payment');
+else if(transactionType==='নগদ')el.classList.add('type-cash');
+});
+refreshCustomerSelectColor();
+}
+
+function buildCustomDropdown(popEl, selectEl, onSelect){
+if(!popEl||!selectEl)return;
+popEl.innerHTML='';
+const currentValue=selectEl.value;
+Array.from(selectEl.options).forEach(opt=>{
+if(!opt.value)return;
+const item=document.createElement('div');
+item.className='note-dd-item';
+item.dataset.val=opt.value;
+const label=document.createElement('span');
+label.textContent=opt.textContent;
+const check=document.createElement('span');
+check.className='nd-check';
+check.textContent='✓';
+item.appendChild(label);
+item.appendChild(check);
+if(opt.value===currentValue)item.classList.add('selected');
+item.addEventListener('click',e=>{
+e.stopPropagation();
+popEl.querySelectorAll('.note-dd-item').forEach(x=>x.classList.remove('selected'));
+item.classList.add('selected');
+selectEl.value=opt.value;
+selectEl.dispatchEvent(new Event('change',{bubbles:true}));
+closeAllNoteDropdowns();
+if(typeof onSelect==='function')onSelect(opt.value);
+});
+popEl.appendChild(item);
+});
+}
+
+function refreshNoteCustomUI(){
+const select=$('noteSelect');
+const trigger=$('noteTrigger');
+const triggerText=$('noteTriggerText');
+const pop=$('notePop');
+if(!select||!trigger||!triggerText||!pop)return;
+const selOpt=select.options[select.selectedIndex];
+triggerText.textContent=selOpt?selOpt.textContent:'Select Note';
+buildCustomDropdown(pop,select,function(val){
+if(typeof updateAgentOptionDropdown==='function')updateAgentOptionDropdown();
+});
+refreshAllDropdownColors();
+}
+
+function refreshAgentOptionCustomUI(){
+const select=$('agentOptionSelect');
+const trigger=$('agentOptionTrigger');
+const triggerText=$('agentOptionTriggerText');
+const pop=$('agentOptionPop');
+if(!select||!trigger||!triggerText||!pop)return;
+const selOpt=select.options[select.selectedIndex];
+triggerText.textContent=selOpt?selOpt.textContent:'Select Option';
+buildCustomDropdown(pop,select,null);
+refreshAllDropdownColors();
+}
+
+function closeAllNoteDropdowns(){
+['notePop','agentOptionPop'].forEach(id=>{
+const el=$(id);if(el)el.classList.remove('show')
+});
+['noteTrigger','agentOptionTrigger'].forEach(id=>{
+const el=$(id);if(el)el.classList.remove('open')
+});
+}
+
+function setupCustomNoteDropdowns(){
+const noteTrigger=$('noteTrigger');
+const notePop=$('notePop');
+const agentOptionTrigger=$('agentOptionTrigger');
+const agentOptionPop=$('agentOptionPop');
+
+if(noteTrigger&&notePop){
+noteTrigger.addEventListener('click',e=>{
+e.stopPropagation();
+const wasOpen=notePop.classList.contains('show');
+closeAllNoteDropdowns();
+if(!wasOpen){
+refreshNoteCustomUI();
+notePop.classList.add('show');
+noteTrigger.classList.add('open');
+}
+});
+}
+
+if(agentOptionTrigger&&agentOptionPop){
+agentOptionTrigger.addEventListener('click',e=>{
+e.stopPropagation();
+const wasOpen=agentOptionPop.classList.contains('show');
+closeAllNoteDropdowns();
+if(!wasOpen){
+refreshAgentOptionCustomUI();
+agentOptionPop.classList.add('show');
+agentOptionTrigger.classList.add('open');
+}
+});
+}
+
+document.addEventListener('click',e=>{
+const nw=$('noteDropdownWrap');
+const aw=$('agentOptionDropdownWrap');
+const insideN=nw&&nw.contains(e.target);
+const insideA=aw&&aw.contains(e.target);
+if(!insideN&&!insideA){
+closeAllNoteDropdowns();
+}
+});
+}
+
 $('noteSelect').addEventListener('change',function(){
-updateAgentOptionDropdown()
+refreshNoteCustomUI();
+updateAgentOptionDropdown();
 });
+
+$('agentOptionSelect').addEventListener('change',function(){
+savedAgentOptionSelection=this.value;
+refreshAgentOptionCustomUI();
+});
+
+setupCustomNoteDropdowns();
+setTimeout(()=>{
+refreshNoteCustomUI();
+refreshAgentOptionCustomUI();
+refreshCustomerSelectColor();
+},100);
 
 /* =========================================================
    SETUP
