@@ -167,36 +167,10 @@ outline:none;
 }
 select:disabled{background:#f1f3f6;color:#4b5563;opacity:1;cursor:not-allowed}
 
-/* ★ Customer Select — Type Color ★ */
-.customer-type-select{
-background:#fff!important;
-font-weight:400;
-transition:border-color .25s ease,color .25s ease,box-shadow .25s ease;
-}
-.customer-type-select.has-value{font-weight:700}
-.customer-type-select.type-due{
-border-color:#86EFAC!important;
-color:#15803D;
-}
-.customer-type-select.type-cash{
-border-color:#C4B5FD!important;
-color:#6D28D9;
-}
-.customer-type-select.type-payment{
-border-color:#FCA5A5!important;
-color:#B91C1C;
-}
-.customer-type-select.type-due:focus{
-border-color:#16A34A!important;
-box-shadow:0 0 0 3px rgba(22,163,74,.15),0 4px 14px rgba(22,163,74,.15);
-}
-.customer-type-select.type-cash:focus{
-border-color:#7C3AED!important;
-box-shadow:0 0 0 3px rgba(124,58,237,.15),0 4px 14px rgba(124,58,237,.15);
-}
-.customer-type-select.type-payment:focus{
-border-color:#DC2626!important;
-box-shadow:0 0 0 3px rgba(220,38,38,.15),0 4px 14px rgba(220,38,38,.15);
+/* ★ Customer Select — hidden native ★ */
+#customerSelect{
+position:absolute;opacity:0;pointer-events:none;
+width:1px;height:1px;left:-9999px;
 }
 
 .desc-field{margin-top:6px;margin-bottom:10px}
@@ -832,6 +806,128 @@ box-shadow:0 8px 30px rgba(0,0,0,.06)}
 .loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
 
 /* =========================================================
+   ★ CUSTOMER DROPDOWN — Soft Neumorphism ★
+========================================================= */
+.customer-dd-wrap{position:relative;width:100%}
+
+.customer-dd-trigger{
+width:100%;height:47px;border:0;border-radius:10px;
+background:#e8ecf3;padding:0 14px;
+display:flex;align-items:center;justify-content:space-between;
+cursor:pointer;font-size:14px;font-weight:600;color:#334155;
+font-family:inherit;transition:all .2s ease;
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff;
+-webkit-user-select:none;user-select:none;
+}
+.customer-dd-trigger:active{
+box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #ffffff;
+}
+.customer-dd-trigger .cd-left{
+display:flex;align-items:center;gap:9px;
+min-width:0;flex:1;
+}
+.customer-dd-trigger .cd-icon{
+font-size:15px;flex-shrink:0;
+transition:color .25s ease;
+}
+.customer-dd-trigger .cd-text{
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+transition:color .25s ease;
+}
+.customer-dd-trigger .cd-chevron{
+color:#94a3b8;font-size:10px;
+transition:transform .2s;flex-shrink:0;margin-left:6px;
+}
+.customer-dd-trigger.open .cd-chevron{transform:rotate(180deg)}
+
+.customer-dd-trigger.type-due{
+background:linear-gradient(145deg,#eef7f0,#e4f2e8);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(22,163,74,.06);
+}
+.customer-dd-trigger.type-due .cd-text{color:#16A34A;font-weight:800}
+.customer-dd-trigger.type-due .cd-icon{color:#16A34A}
+
+.customer-dd-trigger.type-cash{
+background:linear-gradient(145deg,#f0edfa,#eae6f5);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(124,58,237,.06);
+}
+.customer-dd-trigger.type-cash .cd-text{color:#7C3AED;font-weight:800}
+.customer-dd-trigger.type-cash .cd-icon{color:#7C3AED}
+
+.customer-dd-trigger.type-payment{
+background:linear-gradient(145deg,#faeeee,#f5e6e6);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(220,38,38,.06);
+}
+.customer-dd-trigger.type-payment .cd-text{color:#DC2626;font-weight:800}
+.customer-dd-trigger.type-payment .cd-icon{color:#DC2626}
+
+.customer-dd-trigger.empty .cd-text{
+color:#94a3b8!important;font-weight:500;
+}
+
+.customer-dd-pop{
+position:absolute;top:calc(100% + 8px);left:0;right:0;
+background:#e8ecf3;border-radius:14px;padding:6px;
+box-shadow:6px 6px 18px #c5cad3,-6px -6px 18px #ffffff;
+opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);
+transition:all .22s cubic-bezier(.34,1.56,.64,1);
+z-index:200;max-height:340px;overflow:hidden;
+display:flex;flex-direction:column;
+}
+.customer-dd-pop.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+
+.customer-dd-search{
+width:100%;height:36px;
+border:0;border-radius:8px;
+background:#e8ecf3;padding:0 12px;
+font-size:12px;font-family:inherit;outline:0;
+box-shadow:inset 2px 2px 4px #c5cad3,inset -2px -2px 4px #fff;
+margin-bottom:6px;
+flex-shrink:0;
+}
+.customer-dd-search::placeholder{color:#94a3b8;font-size:11px}
+
+.customer-dd-list{
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+flex:1;
+padding-right:2px;
+}
+
+.customer-dd-opt{
+display:flex;align-items:center;justify-content:space-between;
+padding:11px 12px;
+font-size:13px;font-weight:600;color:#334155;
+cursor:pointer;border-radius:8px;
+transition:all .15s ease;
+margin-bottom:3px;
+}
+.customer-dd-opt:last-child{margin-bottom:0}
+.customer-dd-opt:active{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+}
+.customer-dd-opt.selected{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+font-weight:800;
+}
+.customer-dd-opt.selected.type-due{color:#15803D}
+.customer-dd-opt.selected.type-cash{color:#6D28D9}
+.customer-dd-opt.selected.type-payment{color:#B91C1C}
+.customer-dd-opt .cd-check{
+opacity:0;font-size:12px;font-weight:900;color:currentColor;
+transition:all .15s ease;
+}
+.customer-dd-opt.selected .cd-check{opacity:1}
+
+.customer-dd-empty{
+padding:22px 14px;text-align:center;
+color:#94a3b8;font-size:12px;
+}
+
+/* =========================================================
    ★ CUSTOM NOTE / AGENT OPTION DROPDOWN ★
 ========================================================= */
 .note-dd-wrap{position:relative;width:100%}
@@ -852,11 +948,30 @@ box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #ffffff;
 .note-dd-trigger .nd-chevron{color:#94a3b8;font-size:10px;transition:transform .2s;flex-shrink:0;margin-left:4px}
 .note-dd-trigger.open .nd-chevron{transform:rotate(180deg)}
 
-.note-dd-trigger.type-due .nd-text{color:#16A34A}
-.note-dd-trigger.type-cash .nd-text{color:#7C3AED}
-.note-dd-trigger.type-payment .nd-text{color:#DC2626}
+/* Note / Agent Option — Customer-এর মতো background tint + glow shadow */
+
+.note-dd-trigger.type-due{
+background:linear-gradient(145deg,#eef7f0,#e4f2e8);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(22,163,74,.06);
+}
+.note-dd-trigger.type-due .nd-text{color:#16A34A;font-weight:800}
 .note-dd-trigger.type-due .nd-icon{color:#16A34A}
+
+.note-dd-trigger.type-cash{
+background:linear-gradient(145deg,#f0edfa,#eae6f5);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(124,58,237,.06);
+}
+.note-dd-trigger.type-cash .nd-text{color:#7C3AED;font-weight:800}
 .note-dd-trigger.type-cash .nd-icon{color:#7C3AED}
+
+.note-dd-trigger.type-payment{
+background:linear-gradient(145deg,#faeeee,#f5e6e6);
+box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
+           inset 0 0 0 1px rgba(220,38,38,.06);
+}
+.note-dd-trigger.type-payment .nd-text{color:#DC2626;font-weight:800}
 .note-dd-trigger.type-payment .nd-icon{color:#DC2626}
 
 .note-dd-pop{
@@ -1039,7 +1154,20 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 <div class="field" style="margin-bottom:6px">
 <label class="label">🤝 Customer</label>
-<select id="customerSelect" class="customer-type-select type-due">
+<div class="customer-dd-wrap" id="customerDropdownWrap">
+<button type="button" class="customer-dd-trigger empty type-due" id="customerTrigger">
+<span class="cd-left">
+<span class="cd-icon">🤝</span>
+<span class="cd-text" id="customerTriggerText">Select Customer</span>
+</span>
+<span class="cd-chevron">▼</span>
+</button>
+<div class="customer-dd-pop" id="customerPop">
+<input class="customer-dd-search" type="text" placeholder="🔍 Search customer..." id="customerSearchInput" autocomplete="off">
+<div class="customer-dd-list" id="customerListDropdown"></div>
+</div>
+</div>
+<select id="customerSelect" style="display:none">
 <option value="">Select Customer</option>
 </select>
 </div>
@@ -1506,7 +1634,7 @@ f.appendChild(o)
 select.appendChild(f);
 if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldValue;
 select.classList.toggle('has-value',select.value!=='');
-refreshCustomerSelectColor();
+if(typeof refreshCustomerCustomUI==='function')refreshCustomerCustomUI();
 }
 function updateCustomerDropdown(){
 const select=$('customerPageSelect');
@@ -1843,6 +1971,7 @@ setNotes(type==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNote
 refreshAllDropdownColors();
 setTimeout(()=>{
 updateAgentOptionDropdown();
+refreshCustomerCustomUI();
 },0);
 }
 
@@ -3458,7 +3587,7 @@ b.classList.toggle('active',b.dataset.agentId===savedAgentId)
 }
 $('customerSelect').value='';
 $('customerSelect').classList.remove('has-value');
-refreshCustomerSelectColor();
+refreshCustomerCustomUI();
 if(savedCustomerPageId&&[...$('customerPageSelect').options].some(o=>o.value===savedCustomerPageId)){
 $('customerPageSelect').value=savedCustomerPageId;
 if(savedCustomerPageId==='ALL_TRANSACTIONS'){renderAllCustomerTransactions()}
@@ -3586,11 +3715,11 @@ if(e.key==='Enter')login()
 
 $('customerSelect').addEventListener('change',function(){
 this.classList.toggle('has-value',this.value!=='');
-refreshCustomerSelectColor();
+refreshCustomerCustomUI();
 });
 
 /* =========================================================
-   ★ CUSTOM NOTE / AGENT OPTION DROPDOWN ★
+   ★ CUSTOM DROPDOWN LOGIC ★
 ========================================================= */
 function getTypeClass(){
 if(transactionType==='পেমেন্ট')return 'type-payment';
@@ -3598,16 +3727,74 @@ if(transactionType==='নগদ')return 'type-cash';
 return 'type-due';
 }
 
-function refreshCustomerSelectColor(){
+function refreshCustomerCustomUI(){
 const select=$('customerSelect');
-if(!select)return;
-select.classList.remove('type-due','type-cash','type-payment');
-select.classList.add(getTypeClass());
+const trigger=$('customerTrigger');
+const triggerText=$('customerTriggerText');
+if(!select||!trigger||!triggerText)return;
+const selOpt=select.options[select.selectedIndex];
+const hasValue=!!(selOpt&&selOpt.value);
+triggerText.textContent=hasValue?selOpt.textContent:'Select Customer';
+trigger.classList.toggle('empty',!hasValue);
+}
+
+function refreshCustomerSelectColor(){
+const trigger=$('customerTrigger');
+const pop=$('customerPop');
+if(!trigger)return;
+trigger.classList.remove('type-due','type-cash','type-payment');
+trigger.classList.add(getTypeClass());
+if(pop){
+pop.classList.remove('type-cash','type-payment');
+if(transactionType==='পেমেন্ট')pop.classList.add('type-payment');
+else if(transactionType==='নগদ')pop.classList.add('type-cash');
+}
+}
+
+function renderCustomerDropdownList(filter=''){
+const list=$('customerListDropdown');
+const select=$('customerSelect');
+if(!list||!select)return;
+list.innerHTML='';
+const tc=getTypeClass();
+const currentVal=select.value;
+const q=filter.trim().toLowerCase();
+let count=0;
+Array.from(select.options).forEach(opt=>{
+if(!opt.value)return;
+if(q&&!opt.textContent.toLowerCase().includes(q))return;
+count++;
+const item=document.createElement('div');
+item.className='customer-dd-opt '+tc;
+if(opt.value===currentVal)item.classList.add('selected');
+item.dataset.val=opt.value;
+const nameSpan=document.createElement('span');
+nameSpan.textContent=opt.textContent;
+const check=document.createElement('span');
+check.className='cd-check';
+check.textContent='✓';
+item.appendChild(nameSpan);
+item.appendChild(check);
+item.addEventListener('click',function(e){
+e.stopPropagation();
+select.value=this.dataset.val;
+select.dispatchEvent(new Event('change',{bubbles:true}));
+refreshCustomerCustomUI();
+closeAllNoteDropdowns();
+});
+list.appendChild(item);
+});
+if(!count){
+const empty=document.createElement('div');
+empty.className='customer-dd-empty';
+empty.textContent='No customer found';
+list.appendChild(empty);
+}
 }
 
 function refreshAllDropdownColors(){
-const triggers=['noteTrigger','agentOptionTrigger'];
-const pops=['notePop','agentOptionPop'];
+const triggers=['noteTrigger','agentOptionTrigger','customerTrigger'];
+const pops=['notePop','agentOptionPop','customerPop'];
 const typeClass=getTypeClass();
 triggers.forEach(id=>{
 const el=$(id);
@@ -3622,7 +3809,6 @@ el.classList.remove('type-cash','type-payment');
 if(transactionType==='পেমেন্ট')el.classList.add('type-payment');
 else if(transactionType==='নগদ')el.classList.add('type-cash');
 });
-refreshCustomerSelectColor();
 }
 
 function buildCustomDropdown(popEl, selectEl, onSelect){
@@ -3682,10 +3868,10 @@ refreshAllDropdownColors();
 }
 
 function closeAllNoteDropdowns(){
-['notePop','agentOptionPop'].forEach(id=>{
+['notePop','agentOptionPop','customerPop'].forEach(id=>{
 const el=$(id);if(el)el.classList.remove('show')
 });
-['noteTrigger','agentOptionTrigger'].forEach(id=>{
+['noteTrigger','agentOptionTrigger','customerTrigger'].forEach(id=>{
 const el=$(id);if(el)el.classList.remove('open')
 });
 }
@@ -3695,7 +3881,26 @@ const noteTrigger=$('noteTrigger');
 const notePop=$('notePop');
 const agentOptionTrigger=$('agentOptionTrigger');
 const agentOptionPop=$('agentOptionPop');
+const customerTrigger=$('customerTrigger');
+const customerPop=$('customerPop');
 
+/* Customer */
+if(customerTrigger&&customerPop){
+customerTrigger.addEventListener('click',e=>{
+e.stopPropagation();
+const wasOpen=customerPop.classList.contains('show');
+closeAllNoteDropdowns();
+if(!wasOpen){
+refreshCustomerCustomUI();
+renderCustomerDropdownList('');
+customerPop.classList.add('show');
+customerTrigger.classList.add('open');
+/* ⚠️ focus করবো না — কীবোর্ড খুলবে না */
+}
+});
+}
+
+/* Note */
 if(noteTrigger&&notePop){
 noteTrigger.addEventListener('click',e=>{
 e.stopPropagation();
@@ -3709,6 +3914,7 @@ noteTrigger.classList.add('open');
 });
 }
 
+/* Agent Option */
 if(agentOptionTrigger&&agentOptionPop){
 agentOptionTrigger.addEventListener('click',e=>{
 e.stopPropagation();
@@ -3722,12 +3928,24 @@ agentOptionTrigger.classList.add('open');
 });
 }
 
+/* Search input click — popover বন্ধ হবে না */
+const customerSearchInput=$('customerSearchInput');
+if(customerSearchInput){
+customerSearchInput.addEventListener('click',e=>e.stopPropagation());
+customerSearchInput.addEventListener('input',function(){
+renderCustomerDropdownList(this.value);
+});
+}
+
+/* Outside click */
 document.addEventListener('click',e=>{
 const nw=$('noteDropdownWrap');
 const aw=$('agentOptionDropdownWrap');
+const cw=$('customerDropdownWrap');
 const insideN=nw&&nw.contains(e.target);
 const insideA=aw&&aw.contains(e.target);
-if(!insideN&&!insideA){
+const insideC=cw&&cw.contains(e.target);
+if(!insideN&&!insideA&&!insideC){
 closeAllNoteDropdowns();
 }
 });
@@ -3747,7 +3965,8 @@ setupCustomNoteDropdowns();
 setTimeout(()=>{
 refreshNoteCustomUI();
 refreshAgentOptionCustomUI();
-refreshCustomerSelectColor();
+refreshCustomerCustomUI();
+refreshAllDropdownColors();
 },100);
 
 /* =========================================================
