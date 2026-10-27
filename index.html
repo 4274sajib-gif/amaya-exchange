@@ -806,7 +806,7 @@ box-shadow:0 8px 30px rgba(0,0,0,.06)}
 .loading,.empty{padding:22px 10px;text-align:center;color:#8992a0;font-size:11px}
 
 /* =========================================================
-   ★ CUSTOMER DROPDOWN — Soft Neumorphism ★
+   ★ CUSTOMER TRIGGER — Soft Neumorphism ★
 ========================================================= */
 .customer-dd-wrap{position:relative;width:100%}
 
@@ -833,6 +833,7 @@ transition:color .25s ease;
 .customer-dd-trigger .cd-text{
 white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 transition:color .25s ease;
+font-size:15px;
 }
 .customer-dd-trigger .cd-chevron{
 color:#94a3b8;font-size:10px;
@@ -868,64 +869,107 @@ box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
 color:#94a3b8!important;font-weight:500;
 }
 
-.customer-dd-pop{
-position:absolute;top:calc(100% + 8px);left:-16px;right:-16px;
-background:#e8ecf3;border-radius:18px;padding:10px;
-box-shadow:10px 10px 28px #c5cad3,-10px -10px 28px #ffffff;
-opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);
-transition:all .22s cubic-bezier(.34,1.56,.64,1);
-z-index:200;max-height:520px;overflow:hidden;
+/* =========================================================
+   ★ CUSTOMER FULL-SCREEN SHEET ★
+========================================================= */
+.customer-fs-backdrop{
+position:fixed;inset:0;
+background:rgba(15,23,42,.5);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+opacity:0;visibility:hidden;
+transition:all .25s ease;
+z-index:9998;
+}
+.customer-fs-backdrop.show{opacity:1;visibility:visible}
+
+.customer-fs-sheet{
+position:fixed;inset:0;
+background:#e8ecf3;
+opacity:0;visibility:hidden;
+transform:translateY(100%);
+transition:all .3s cubic-bezier(.32,.72,0,1);
+z-index:9999;
 display:flex;flex-direction:column;
 }
-.customer-dd-pop.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.customer-fs-sheet.show{opacity:1;visibility:visible;transform:translateY(0)}
 
-.customer-dd-search{
-width:100%;height:46px;
-border:0;border-radius:10px;
-background:#e8ecf3;padding:0 14px;
-font-size:14px;font-family:inherit;outline:0;
-box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #fff;
-margin-bottom:8px;
+.customer-fs-search-wrap{
+padding:max(14px,env(safe-area-inset-top)) 16px 14px;
 flex-shrink:0;
+background:#e8ecf3;
+border-bottom:1px solid rgba(197,202,211,.5);
 }
-.customer-dd-search::placeholder{color:#94a3b8;font-size:13px}
 
-.customer-dd-list{
+.customer-fs-search-box{
+position:relative;
+display:flex;
+align-items:center;
+width:100%;
+}
+
+.customer-fs-search{
+width:100%;height:46px;
+border:0;border-radius:11px;
+background:#e8ecf3;padding:0 48px 0 16px;
+font-size:14px;font-family:inherit;outline:0;
+box-shadow:inset 3px 3px 7px #c5cad3,inset -3px -3px 7px #fff;
+color:#172033;
+}
+.customer-fs-search::placeholder{color:#94a3b8;font-size:13px}
+
+.customer-fs-close{
+position:absolute;
+right:6px;top:50%;transform:translateY(-50%);
+width:34px;height:34px;border:0;border-radius:9px;
+background:#e8ecf3;color:#475569;font-size:14px;font-weight:900;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;padding:0;
+box-shadow:2px 2px 5px #c5cad3,-2px -2px 5px #fff;
+z-index:2;
+}
+.customer-fs-close:active{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+}
+
+.customer-fs-list{
+flex:1;
 overflow-y:auto;
 -webkit-overflow-scrolling:touch;
-flex:1;
-padding-right:2px;
+padding:0 18px max(20px,env(safe-area-inset-bottom));
 }
 
-.customer-dd-opt{
-display:flex;align-items:center;justify-content:space-between;
-padding:16px 16px;
-font-size:15px;font-weight:600;color:#334155;
-cursor:pointer;border-radius:10px;
-transition:all .15s ease;
-margin-bottom:3px;
+.customer-fs-list .customer-dd-opt{
+padding:18px 16px;
+font-size:17px;
+font-weight:700;
+margin-bottom:4px;
+border-radius:10px;
 }
-.customer-dd-opt:last-child{margin-bottom:0}
-.customer-dd-opt:active{
+
+.customer-fs-list .customer-dd-opt:active{
 box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
 }
-.customer-dd-opt.selected{
+
+.customer-fs-list .customer-dd-opt.selected{
 box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
 font-weight:800;
+}
+
+/* Customer option base */
+.customer-dd-opt{
+display:flex;align-items:center;justify-content:space-between;
+font-weight:600;color:#334155;
+cursor:pointer;transition:all .15s ease;
 }
 .customer-dd-opt.selected.type-due{color:#15803D}
 .customer-dd-opt.selected.type-cash{color:#6D28D9}
 .customer-dd-opt.selected.type-payment{color:#B91C1C}
 .customer-dd-opt .cd-check{
-opacity:0;font-size:12px;font-weight:900;color:currentColor;
+opacity:0;font-size:15px;font-weight:900;color:currentColor;
 transition:all .15s ease;
 }
 .customer-dd-opt.selected .cd-check{opacity:1}
-
-.customer-dd-empty{
-padding:22px 14px;text-align:center;
-color:#94a3b8;font-size:12px;
-}
 
 /* =========================================================
    ★ CUSTOM NOTE / AGENT OPTION DROPDOWN ★
@@ -949,7 +993,6 @@ box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #ffffff;
 .note-dd-trigger.open .nd-chevron{transform:rotate(180deg)}
 
 /* Note / Agent Option — Customer-এর মতো background tint + glow shadow */
-
 .note-dd-trigger.type-due{
 background:linear-gradient(145deg,#eef7f0,#e4f2e8);
 box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
@@ -1162,10 +1205,6 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </span>
 <span class="cd-chevron">▼</span>
 </button>
-<div class="customer-dd-pop" id="customerPop">
-<input class="customer-dd-search" type="text" placeholder="🔍 Search customer..." id="customerSearchInput" autocomplete="off">
-<div class="customer-dd-list" id="customerListDropdown"></div>
-</div>
 </div>
 <select id="customerSelect" style="display:none">
 <option value="">Select Customer</option>
@@ -1198,7 +1237,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <div class="note-dd-wrap" id="noteDropdownWrap">
 <button type="button" class="note-dd-trigger type-due" id="noteTrigger">
 <span class="nd-left">
-<span class="nd-icon">🏷️</span>
+<span class="nd-icon">💳</span>
 <span class="nd-text" id="noteTriggerText">Select Note</span>
 </span>
 <span class="nd-chevron">▼</span>
@@ -1214,7 +1253,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <div class="note-dd-wrap" id="agentOptionDropdownWrap">
 <button type="button" class="note-dd-trigger type-due" id="agentOptionTrigger">
 <span class="nd-left">
-<span class="nd-icon">💳</span>
+<span class="nd-icon">🏷️</span>
 <span class="nd-text" id="agentOptionTriggerText">Select Option</span>
 </span>
 <span class="nd-chevron">▼</span>
@@ -1327,6 +1366,18 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <button id="typeConfirmOkBtn" class="type-confirm-btn ok" onclick="confirmTypeChange()">হ্যাঁ</button>
 </div>
 </div>
+</div>
+
+<!-- Full-Screen Customer Sheet -->
+<div class="customer-fs-backdrop" id="customerFsBackdrop"></div>
+<div class="customer-fs-sheet" id="customerFsSheet">
+<div class="customer-fs-search-wrap">
+<div class="customer-fs-search-box">
+<input class="customer-fs-search" type="text" placeholder="🔍 Search customer..." id="customerSearchInput" autocomplete="off">
+<button class="customer-fs-close" id="customerFsClose" type="button">✕</button>
+</div>
+</div>
+<div class="customer-fs-list" id="customerListDropdown"></div>
 </div>
 
 <script>
@@ -3122,6 +3173,7 @@ $('agentSelect').value='';
 $('description').value='';
 $('descClear').classList.remove('show');
 closeAllNoteDropdowns();
+closeCustomerSheet();
 setCustomerToday()
 }
 
@@ -3736,30 +3788,57 @@ const selOpt=select.options[select.selectedIndex];
 const hasValue=!!(selOpt&&selOpt.value);
 triggerText.textContent=hasValue?selOpt.textContent:'Select Customer';
 trigger.classList.toggle('empty',!hasValue);
+/* Sheet খোলা থাকলে লিস্ট আপডেট */
+const sheet=$('customerFsSheet');
+if(sheet&&sheet.classList.contains('show')){
+const search=$('customerSearchInput');
+renderCustomerSheetList(search?search.value:'');
+}
 }
 
 function refreshCustomerSelectColor(){
 const trigger=$('customerTrigger');
-const pop=$('customerPop');
 if(!trigger)return;
 trigger.classList.remove('type-due','type-cash','type-payment');
 trigger.classList.add(getTypeClass());
-if(pop){
-pop.classList.remove('type-cash','type-payment');
-if(transactionType==='পেমেন্ট')pop.classList.add('type-payment');
-else if(transactionType==='নগদ')pop.classList.add('type-cash');
-}
 }
 
-function renderCustomerDropdownList(filter=''){
+/* =========================================================
+   ★ CUSTOMER FULL-SCREEN SHEET LOGIC ★
+========================================================= */
+function openCustomerSheet(){
+const backdrop=$('customerFsBackdrop');
+const sheet=$('customerFsSheet');
+const search=$('customerSearchInput');
+if(!backdrop||!sheet||!search)return;
+search.value='';
+renderCustomerSheetList('');
+backdrop.classList.add('show');
+sheet.classList.add('show');
+document.body.style.overflow='hidden';
+/* কীবোর্ড auto-open হবে না — focus() নেই */
+}
+
+function closeCustomerSheet(){
+const backdrop=$('customerFsBackdrop');
+const sheet=$('customerFsSheet');
+if(backdrop)backdrop.classList.remove('show');
+if(sheet)sheet.classList.remove('show');
+document.body.style.overflow='';
+const trigger=$('customerTrigger');
+if(trigger)trigger.classList.remove('open');
+}
+
+function renderCustomerSheetList(filter){
 const list=$('customerListDropdown');
 const select=$('customerSelect');
 if(!list||!select)return;
 list.innerHTML='';
 const tc=getTypeClass();
 const currentVal=select.value;
-const q=filter.trim().toLowerCase();
+const q=(filter||'').trim().toLowerCase();
 let count=0;
+
 Array.from(select.options).forEach(opt=>{
 if(!opt.value)return;
 if(q&&!opt.textContent.toLowerCase().includes(q))return;
@@ -3780,21 +3859,37 @@ e.stopPropagation();
 select.value=this.dataset.val;
 select.dispatchEvent(new Event('change',{bubbles:true}));
 refreshCustomerCustomUI();
-closeAllNoteDropdowns();
+closeCustomerSheet();
 });
 list.appendChild(item);
 });
+
 if(!count){
 const empty=document.createElement('div');
 empty.className='customer-dd-empty';
+empty.style.padding='30px 14px';
+empty.style.textAlign='center';
 empty.textContent='No customer found';
 list.appendChild(empty);
 }
 }
 
+function setupCustomerSheet(){
+const backdrop=$('customerFsBackdrop');
+const closeBtn=$('customerFsClose');
+const search=$('customerSearchInput');
+if(backdrop)backdrop.addEventListener('click',closeCustomerSheet);
+if(closeBtn)closeBtn.addEventListener('click',closeCustomerSheet);
+if(search){
+search.addEventListener('input',function(){
+renderCustomerSheetList(this.value);
+});
+}
+}
+
 function refreshAllDropdownColors(){
 const triggers=['noteTrigger','agentOptionTrigger','customerTrigger'];
-const pops=['notePop','agentOptionPop','customerPop'];
+const pops=['notePop','agentOptionPop'];
 const typeClass=getTypeClass();
 triggers.forEach(id=>{
 const el=$(id);
@@ -3809,6 +3904,12 @@ el.classList.remove('type-cash','type-payment');
 if(transactionType==='পেমেন্ট')el.classList.add('type-payment');
 else if(transactionType==='নগদ')el.classList.add('type-cash');
 });
+/* Sheet খোলা থাকলে আবার render */
+const sheet=$('customerFsSheet');
+if(sheet&&sheet.classList.contains('show')){
+const search=$('customerSearchInput');
+renderCustomerSheetList(search?search.value:'');
+}
 }
 
 function buildCustomDropdown(popEl, selectEl, onSelect){
@@ -3868,10 +3969,10 @@ refreshAllDropdownColors();
 }
 
 function closeAllNoteDropdowns(){
-['notePop','agentOptionPop','customerPop'].forEach(id=>{
+['notePop','agentOptionPop'].forEach(id=>{
 const el=$(id);if(el)el.classList.remove('show')
 });
-['noteTrigger','agentOptionTrigger','customerTrigger'].forEach(id=>{
+['noteTrigger','agentOptionTrigger'].forEach(id=>{
 const el=$(id);if(el)el.classList.remove('open')
 });
 }
@@ -3882,21 +3983,13 @@ const notePop=$('notePop');
 const agentOptionTrigger=$('agentOptionTrigger');
 const agentOptionPop=$('agentOptionPop');
 const customerTrigger=$('customerTrigger');
-const customerPop=$('customerPop');
 
-/* Customer */
-if(customerTrigger&&customerPop){
+/* Customer — Full-Screen Sheet */
+if(customerTrigger){
 customerTrigger.addEventListener('click',e=>{
 e.stopPropagation();
-const wasOpen=customerPop.classList.contains('show');
 closeAllNoteDropdowns();
-if(!wasOpen){
-refreshCustomerCustomUI();
-renderCustomerDropdownList('');
-customerPop.classList.add('show');
-customerTrigger.classList.add('open');
-/* ⚠️ focus করবো না — কীবোর্ড খুলবে না */
-}
+openCustomerSheet();
 });
 }
 
@@ -3928,24 +4021,13 @@ agentOptionTrigger.classList.add('open');
 });
 }
 
-/* Search input click — popover বন্ধ হবে না */
-const customerSearchInput=$('customerSearchInput');
-if(customerSearchInput){
-customerSearchInput.addEventListener('click',e=>e.stopPropagation());
-customerSearchInput.addEventListener('input',function(){
-renderCustomerDropdownList(this.value);
-});
-}
-
 /* Outside click */
 document.addEventListener('click',e=>{
 const nw=$('noteDropdownWrap');
 const aw=$('agentOptionDropdownWrap');
-const cw=$('customerDropdownWrap');
 const insideN=nw&&nw.contains(e.target);
 const insideA=aw&&aw.contains(e.target);
-const insideC=cw&&cw.contains(e.target);
-if(!insideN&&!insideA&&!insideC){
+if(!insideN&&!insideA){
 closeAllNoteDropdowns();
 }
 });
@@ -3962,6 +4044,7 @@ refreshAgentOptionCustomUI();
 });
 
 setupCustomNoteDropdowns();
+setupCustomerSheet();
 setTimeout(()=>{
 refreshNoteCustomUI();
 refreshAgentOptionCustomUI();
