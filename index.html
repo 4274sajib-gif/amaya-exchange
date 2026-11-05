@@ -143,10 +143,12 @@ flex-shrink:0;
 .sync-status.error{background:#d33131}
 .sync-status.synced{background:#16824c}
 
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);
-gap:7px;padding:11px 14px 5px}
+/* ★ Tabs — ৪টি (Profit যোগ) ★ */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);
+gap:6px;padding:11px 14px 5px}
 .tab{border:0;height:43px;border-radius:11px;
-background:#e7ebf0;color:#687284;font-size:12px;font-weight:800}
+background:#e7ebf0;color:#687284;font-size:11px;font-weight:800;
+padding:0 4px;line-height:1.1}
 .tab.active{background:#111827;color:#fff}
 
 .content{padding:10px 14px 5px}
@@ -219,6 +221,43 @@ user-select:none;-webkit-user-select:none}
 background:#111827;color:#fff;font-size:13px;font-weight:800;letter-spacing:.2px}
 .save:active{transform:scale(.98)}
 .save:disabled{opacity:.55;cursor:not-allowed}
+
+/* ===== ★ Save Button — Type Color Sync ★ ===== */
+#saveBtn{
+transition:background .25s ease, box-shadow .25s ease, transform .15s ease;
+}
+#saveBtn.type-due{
+background:linear-gradient(135deg,#16A34A 0%,#15803D 100%);
+box-shadow:
+  0 4px 14px rgba(22,163,74,.35),
+  inset 0 1px 0 rgba(255,255,255,.15);
+}
+#saveBtn.type-due:active{
+background:linear-gradient(135deg,#15803D 0%,#166534 100%);
+}
+#saveBtn.type-cash{
+background:linear-gradient(135deg,#7C3AED 0%,#6D28D9 100%);
+box-shadow:
+  0 4px 14px rgba(124,58,237,.35),
+  inset 0 1px 0 rgba(255,255,255,.15);
+}
+#saveBtn.type-cash:active{
+background:linear-gradient(135deg,#6D28D9 0%,#5B21B6 100%);
+}
+#saveBtn.type-payment{
+background:linear-gradient(135deg,#DC2626 0%,#B91C1C 100%);
+box-shadow:
+  0 4px 14px rgba(220,38,38,.35),
+  inset 0 1px 0 rgba(255,255,255,.15);
+}
+#saveBtn.type-payment:active{
+background:linear-gradient(135deg,#B91C1C 0%,#991B1B 100%);
+}
+#saveBtn:disabled{
+opacity:.55;
+box-shadow:none;
+}
+/* ===== ★ Save Button CSS শেষ ★ ===== */
 
 .msg{font-size:12px;margin-top:9px;text-align:center;transition:opacity .3s ease}
 .error{color:#d33131}
@@ -526,6 +565,228 @@ color:#fff;font-variant-numeric:tabular-nums}
 .agent-sales{text-align:right}
 #agentList{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
+/* =========================================================
+   ★ PROFIT TAB ★
+========================================================= */
+.profit-filter-row{
+display:grid;grid-template-columns:1fr 1fr 1.25fr;
+gap:5px;margin-bottom:8px
+}
+.profit-filter-row select{
+height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0
+}
+
+.profit-cards{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:6px;
+margin-bottom:8px
+}
+.profit-card{
+border-radius:10px;
+padding:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+position:relative;
+overflow:hidden
+}
+.profit-card.sales{
+background:linear-gradient(135deg,#16A34A 0%,#15803D 100%);
+color:#fff
+}
+.profit-card.cost{
+background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%);
+color:#fff
+}
+.profit-card.profit-total{
+grid-column:1 / -1;
+background:linear-gradient(135deg,#111827 0%,#0F172A 100%);
+color:#fff;
+padding:14px 12px;
+text-align:center
+}
+.profit-card-label{
+font-size:9px;
+font-weight:800;
+letter-spacing:.3px;
+text-transform:uppercase;
+margin-bottom:4px;
+opacity:.9
+}
+.profit-card-value{
+font-size:16px;
+font-weight:900;
+line-height:1.1;
+font-variant-numeric:tabular-nums;
+white-space:nowrap
+}
+.profit-card-value span{
+font-size:9px;
+font-weight:700;
+margin-left:2px;
+opacity:.85
+}
+.profit-card.profit-total .profit-card-label{
+font-size:10px;
+margin-bottom:6px
+}
+.profit-card.profit-total .profit-card-value{
+font-size:26px;
+letter-spacing:-.5px
+}
+.profit-card.profit-total .profit-card-value.negative{
+color:#FCA5A5
+}
+.profit-card.profit-total .profit-card-value.positive{
+color:#4ADE80
+}
+
+/* =========================================================
+   ★ PROFIT LIST — Customer/Agent-এর মতো ট্রানজেকশন কার্ড ★
+========================================================= */
+#profitList{
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-right:1px
+}
+
+.tl-profit{
+background:#fff;
+border-radius:12px;
+padding:10px 12px;
+border:1px solid #eef1f4;
+border-left:4px solid #16A34A;
+margin-bottom:6px;
+box-shadow:0 1px 3px rgba(0,0,0,.02);
+display:grid;
+grid-template-columns:auto 1px 1fr auto;
+gap:11px;
+align-items:center;
+position:relative;
+transition:all .15s ease;
+}
+.tl-profit:active{transform:scale(.99)}
+
+.tl-profit.cash-type{
+background:#F5F3FF;
+border-color:#E9D5FF;
+border-left-color:#7C3AED;
+}
+
+.tl-profit-date{
+display:flex;flex-direction:column;align-items:center;
+justify-content:center;text-align:center;line-height:1;
+min-width:56px;padding:2px 0;
+}
+.tl-profit-date .d{
+font-size:16px;font-weight:900;color:#166534;
+letter-spacing:-.3px;line-height:1;display:block;
+}
+.tl-profit-date .m{
+font-size:9px;font-weight:800;color:#16A34A;
+letter-spacing:.5px;margin-top:3px;text-transform:uppercase;
+line-height:1;display:block;
+}
+.tl-profit-date .y{
+font-size:7.5px;font-weight:800;color:#6B7280;
+letter-spacing:.4px;margin-top:2px;line-height:1;display:block;
+}
+.tl-profit.cash-type .tl-profit-date .d{color:#6D28D9}
+.tl-profit.cash-type .tl-profit-date .m{color:#7C3AED}
+.tl-profit.cash-type .tl-profit-date .y{color:#a78bfa}
+
+.tl-profit-line{
+width:1px;height:36px;
+background:linear-gradient(180deg,transparent 0%,#e5e7eb 20%,#e5e7eb 80%,transparent 100%);
+align-self:center;
+}
+
+.tl-profit-mid{
+display:flex;flex-direction:column;gap:3px;min-width:0;
+}
+.tl-profit-kd{
+font-size:14px;font-weight:900;color:#166534;
+letter-spacing:-.2px;white-space:nowrap;line-height:1;display:block;
+}
+.tl-profit.cash-type .tl-profit-kd{color:#7C3AED}
+
+.tl-profit-bd{
+font-size:10px;color:#6B7280;font-weight:600;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
+}
+
+.tl-profit-profit-pill{
+font-size:9.5px;font-weight:800;
+background:#DCFCE7;color:#166534;
+border-radius:5px;padding:2px 6px;
+display:inline-block;line-height:1;width:fit-content;
+letter-spacing:.1px;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap;
+max-width:100%;flex-shrink:0;
+margin-top:2px;
+}
+.tl-profit.cash-type .tl-profit-profit-pill{
+background:#EDE9FE;color:#6D28D9;
+}
+.tl-profit-profit-pill.negative{
+background:#FEE2E2;color:#991B1B;
+}
+.tl-profit.cash-type .tl-profit-profit-pill.negative{
+background:#FEE2E2;color:#991B1B;
+}
+
+.tl-profit-right{
+text-align:right;display:flex;flex-direction:column;
+gap:3px;align-items:flex-end;
+}
+
+.tl-profit-cust{
+font-size:12.5px;font-weight:800;color:#0F172A;
+letter-spacing:-.15px;white-space:nowrap;overflow:hidden;
+text-overflow:ellipsis;max-width:150px;
+padding:1px 4px;border-radius:5px;
+display:inline-flex;align-items:center;gap:6px;
+}
+
+.tl-profit-type{
+display:inline-flex;align-items:center;gap:3px;
+font-size:9px;font-weight:800;color:#166534;white-space:nowrap;
+}
+.tl-profit-type:before{
+content:"";width:5px;height:5px;border-radius:50%;
+background:#16A34A;box-shadow:0 0 0 2px rgba(22,163,74,.15);
+flex-shrink:0;
+}
+.tl-profit-type.cash{color:#7C3AED}
+.tl-profit-type.cash:before{
+background:#7C3AED;box-shadow:0 0 0 2px rgba(124,58,237,.15);
+}
+
+.tl-profit-agent{
+font-size:9.5px;font-weight:800;color:#4B5563;
+background:#F3F4F6;border-radius:999px;padding:1.5px 7px 1.5px 5px;
+display:inline-flex;align-items:center;gap:3px;
+white-space:nowrap;max-width:110px;
+overflow:hidden;text-overflow:ellipsis;
+}
+.tl-profit-agent:before{
+content:"🏷️";font-size:7.5px;opacity:.65;flex-shrink:0;
+}
+
+@media(max-width:400px){
+.tl-profit-cust{font-size:11.5px;max-width:110px}
+}
+@media(max-width:360px){
+.tl-profit{padding:9px 10px;gap:9px}
+.tl-profit-date{min-width:50px}
+.tl-profit-date .d{font-size:15px}
+.tl-profit-date .m{font-size:8.5px}
+.tl-profit-date .y{font-size:7px}
+.tl-profit-kd{font-size:13px}
+.tl-profit-cust{font-size:11px;max-width:100px}
+.tl-profit-agent{font-size:9px;padding:1.5px 6px 1.5px 4px}
+}
+
+/* ===== TYPE TOGGLE POPUP ===== */
 .type-toggle-popup{position:fixed;background:#111827;color:#fff;
 border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:4px;
 box-shadow:0 8px 24px rgba(0,0,0,.28);z-index:9999;
@@ -544,6 +805,7 @@ cursor:pointer;transition:background .12s ease}
 border-radius:50%;background:#16A34A;flex-shrink:0}
 .type-toggle-popup button.cash-btn:before{background:#7C3AED}
 
+/* TYPE CONFIRM POPUP */
 .type-confirm-overlay{
 position:fixed;inset:0;
 background:rgba(15,23,42,.6);
@@ -969,7 +1231,6 @@ box-shadow:
 font-weight:800;
 }
 
-/* Customer option base */
 .customer-dd-opt{
 display:flex;align-items:center;justify-content:space-between;
 font-weight:600;color:#334155;
@@ -1005,7 +1266,6 @@ box-shadow:inset 3px 3px 6px #c5cad3,inset -3px -3px 6px #ffffff;
 .note-dd-trigger .nd-chevron{color:#94a3b8;font-size:10px;transition:transform .2s;flex-shrink:0;margin-left:4px}
 .note-dd-trigger.open .nd-chevron{transform:rotate(180deg)}
 
-/* Note / Agent Option — Customer-এর মতো background tint + glow shadow */
 .note-dd-trigger.type-due{
 background:linear-gradient(145deg,#eef7f0,#e4f2e8);
 box-shadow:3px 3px 6px #c5cad3,-3px -3px 6px #ffffff,
@@ -1084,11 +1344,12 @@ width:1px;height:1px;left:-9999px;
 .header-rate-input{font-size:11px;padding:0 10px;height:28px}
 .logout{padding:5px 7px;font-size:9px}
 input[type="date"],select{-webkit-appearance:auto;appearance:auto}
+.tab{font-size:10px}
 }
 
 @media(max-width:360px){
-.tabs{gap:5px}
-.tab{font-size:11px}
+.tabs{gap:4px}
+.tab{font-size:9.5px;height:40px}
 .amount-row{gap:6px}
 .customer-filter-row{gap:5px}
 .customer-filter-row input,
@@ -1126,6 +1387,9 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .tl-agent-right{font-size:9px;padding:1.5px 6px 1.5px 4px}
 .tl-type-inline{font-size:8.5px}
 .type-btn{font-size:12px;height:42px}
+.profit-filter-row select{font-size:9px;padding:0 4px}
+.profit-card-value{font-size:14px}
+.profit-card.profit-total .profit-card-value{font-size:22px}
 }
 
 @media(max-width:420px){
@@ -1199,6 +1463,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <button class="tab active" onclick="openTab('transaction',this)">Add Transaction</button>
 <button class="tab" onclick="openTab('customer',this)">Customer</button>
 <button class="tab" onclick="openTab('agent',this)">Agent</button>
+<button id="profitTabBtn" class="tab" onclick="openTab('profit',this)"> Profit</button>
 </div>
 
 <div class="content">
@@ -1346,6 +1611,52 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 </section>
 
+<!-- ★ PROFIT PANEL ★ -->
+<section id="panelProfit" class="panel">
+
+<div class="profit-filter-row">
+<select id="profitYear" onchange="renderProfitPage()"></select>
+<select id="profitMonth" onchange="renderProfitPage()">
+<option value="all">All Transaction</option>
+<option value="0">January</option>
+<option value="1">February</option>
+<option value="2">March</option>
+<option value="3">April</option>
+<option value="4">May</option>
+<option value="5">June</option>
+<option value="6">July</option>
+<option value="7">August</option>
+<option value="8">September</option>
+<option value="9">October</option>
+<option value="10">November</option>
+<option value="11">December</option>
+</select>
+<select id="profitAgent" onchange="renderProfitPage()">
+<option value="">All Agent</option>
+</select>
+</div>
+
+<div class="profit-cards">
+<div class="profit-card sales">
+<div class="profit-card-label">📈 মোট বিক্রয় (KD)</div>
+<div id="profitTotalKD" class="profit-card-value">0.000 <span>KD</span></div>
+</div>
+<div class="profit-card cost">
+<div class="profit-card-label">💸 মোট খরচ (BD)</div>
+<div id="profitTotalBD" class="profit-card-value">0 <span>TK</span></div>
+</div>
+<div class="profit-card profit-total">
+<div class="profit-card-label">💰 মোট লাভ</div>
+<div id="profitTotal" class="profit-card-value positive">0 <span>TK</span></div>
+</div>
+</div>
+
+<div id="profitList" class="list">
+<div class="empty">Loading...</div>
+</div>
+
+</section>
+
 </div>
 </div>
 
@@ -1415,6 +1726,8 @@ const DUE_NOTES=['Bkash','Nagad','Recharge','Dollar Card','Internet','Minutes','
 const PAYMENT_NOTES=['Bank','Cash'];
 const AGENT_OPTIONS={'harun':['7449','7448'],'sajib':['1208','Bank','PINless']};
 
+const PROFIT_RATE_PER_KD=400;
+
 let currentUser=null,
 transactionType='বাকি',
 customerData=[],
@@ -1441,6 +1754,8 @@ let typeHoldTimer=null;
 const TYPE_HOLD_DURATION=2000;
 let pendingTypeTransaction=null;
 let pendingNewType=null;
+
+let syncPaused=false;
 
 /* =========================================================
    DESCRIPTION HELPERS
@@ -1855,6 +2170,9 @@ const c=findCustomer(selected);
 if(c){renderCustomerInfo(c);renderCustomerTransactionsLocal(c.customerId)}
 }
 if(getRole()==='agent'&&$('agentView').value){agentChanged()}
+if(activePanel==='panelProfit'){
+renderProfitPage();
+}
 setTimeout(adjustListHeights,50)
 }
 
@@ -2039,10 +2357,25 @@ $('paymentBtn').classList.toggle('active',type==='পেমেন্ট');
 $('cashBtn').classList.toggle('active',type==='নগদ');
 setNotes(type==='পেমেন্ট'?notesData.paymentNotes:notesData.dueNotes);
 refreshAllDropdownColors();
+updateSaveButtonColor();
 setTimeout(()=>{
 updateAgentOptionDropdown();
 refreshCustomerCustomUI();
 },0);
+}
+
+/* ★ Save বাটনের রঙ type অনুযায়ী বদলায় ★ */
+function updateSaveButtonColor(){
+const btn=$('saveBtn');
+if(!btn)return;
+btn.classList.remove('type-due','type-cash','type-payment');
+if(transactionType==='পেমেন্ট'){
+btn.classList.add('type-payment');
+}else if(transactionType==='নগদ'){
+btn.classList.add('type-cash');
+}else{
+btn.classList.add('type-due');
+}
 }
 
 function updateAgentOptionDropdown(){
@@ -2679,6 +3012,202 @@ showToast('⚠️ '+(e.message||e));
 }
 }
 
+/* =========================================================
+   ★ PROFIT PAGE (LOCAL ONLY — No API call) ★
+========================================================= */
+function renderProfitPage(){
+if(!allTransactionsData) return;
+
+const profitYear = $('profitYear');
+const profitMonth = $('profitMonth');
+const profitAgent = $('profitAgent');
+
+/* Build year options */
+const yearsSet = new Set();
+allTransactionsData.forEach(t=>{
+const d = getFullTransactionDate(t.date||t.Date||t.transactionDate||t.TransactionDate||'');
+if(d) yearsSet.add(d.getFullYear());
+});
+const sortedYears = Array.from(yearsSet).sort((a,b)=>b-a);
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth();
+
+if(profitYear.options.length === 0 || profitYear.options.length !== sortedYears.length + 1){
+const prevYear = profitYear.value || String(currentYear);
+profitYear.innerHTML = '';
+const allYearOpt = document.createElement('option');
+allYearOpt.value = 'all';
+allYearOpt.textContent = 'All Year';
+profitYear.appendChild(allYearOpt);
+sortedYears.forEach(y=>{
+const o = document.createElement('option');
+o.value = String(y);
+o.textContent = String(y);
+profitYear.appendChild(o);
+});
+if([...profitYear.options].some(o=>o.value===prevYear)){
+profitYear.value = prevYear;
+}else if(sortedYears.includes(currentYear)){
+profitYear.value = String(currentYear);
+}else{
+profitYear.value = 'all';
+}
+}
+
+/* Build agent options (only once) */
+if(profitAgent.options.length === 1){
+agentData.filter(isActiveAgent).forEach(a=>{
+const o = document.createElement('option');
+o.value = a.agentName;
+o.textContent = a.agentName;
+profitAgent.appendChild(o);
+});
+}
+
+/* Set default month to current if not all */
+if(!profitMonth.dataset.initialized){
+profitMonth.value = String(currentMonth);
+profitMonth.dataset.initialized = '1';
+}
+
+const selYear = profitYear.value;
+const selMonth = profitMonth.value;
+const selAgent = profitAgent.value;
+
+/* Filter transactions — Due + Cash, শুধু KD > 0 */
+const filtered = allTransactionsData.filter(t=>{
+if(!isDueTransaction(t) && !isCashTransaction(t)) return false;
+if(number(t.kdAmount) <= 0) return false;
+
+const d = getFullTransactionDate(t.date||t.Date||t.transactionDate||t.TransactionDate||'');
+if(!d) return false;
+
+if(selYear !== 'all' && d.getFullYear() !== Number(selYear)) return false;
+if(selMonth !== 'all' && d.getMonth() !== Number(selMonth)) return false;
+
+if(selAgent){
+const agentName = String(t.agentName||'').trim();
+if(agentName !== selAgent) return false;
+}
+
+return true;
+});
+
+sortTransactionsNewestFirst(filtered);
+
+/* Calculate totals */
+let totalKD = 0;
+let totalBD = 0;
+const listItems = [];
+
+filtered.forEach(t=>{
+const kd = number(t.kdAmount);
+const bd = number(t.bdAmount);
+const profit = (kd * PROFIT_RATE_PER_KD) - bd;
+totalKD += kd;
+totalBD += bd;
+listItems.push({ transaction:t, kd, bd, profit });
+});
+
+const totalProfit = (totalKD * PROFIT_RATE_PER_KD) - totalBD;
+
+/* Update cards */
+$('profitTotalKD').innerHTML = fmtKD(totalKD) + ' <span>KD</span>';
+$('profitTotalBD').innerHTML = fmtIndian(totalBD) + ' <span>TK</span>';
+
+const totalProfitEl = $('profitTotal');
+totalProfitEl.className = 'profit-card-value ' + (totalProfit >= 0 ? 'positive' : 'negative');
+totalProfitEl.innerHTML = (totalProfit >= 0 ? '+' : '−') + fmtIndian(Math.abs(totalProfit)) + ' <span>TK</span>';
+
+/* Render list — Customer/Agent-এর মতো */
+const list = $('profitList');
+list.innerHTML = '';
+
+if(!listItems.length){
+list.innerHTML = '<div class="empty">এই সময়ে কোনো লেনদেন নেই</div>';
+return;
+}
+
+const f = document.createDocumentFragment();
+
+listItems.forEach(({transaction:t, kd, bd, profit})=>{
+const isCash = isCashTransaction(t);
+const isLoss = profit < 0;
+const parsedDate = parseDateParts(t.date||t.Date||t.transactionDate||t.TransactionDate||'');
+const profitSign = isLoss ? '−' : '+';
+
+let custName = String(t.customerName || '').trim();
+if(!custName && t.customerId){
+const found = customerData.find(c => String(c.customerId) === String(t.customerId));
+if(found) custName = found.customerName;
+}
+
+const card = document.createElement('div');
+card.className = 'tl-profit' + (isCash ? ' cash-type' : '');
+
+const dateEl = document.createElement('div');
+dateEl.className = 'tl-profit-date';
+const dEl = document.createElement('span'); dEl.className = 'd'; dEl.textContent = parsedDate.day;
+const mEl = document.createElement('span'); mEl.className = 'm'; mEl.textContent = parsedDate.month;
+const yEl = document.createElement('span'); yEl.className = 'y'; yEl.textContent = parsedDate.year;
+dateEl.appendChild(dEl); dateEl.appendChild(mEl); dateEl.appendChild(yEl);
+card.appendChild(dateEl);
+
+const dividerEl = document.createElement('div');
+dividerEl.className = 'tl-profit-line';
+card.appendChild(dividerEl);
+
+const midEl = document.createElement('div');
+midEl.className = 'tl-profit-mid';
+
+const kdEl = document.createElement('span');
+kdEl.className = 'tl-profit-kd';
+kdEl.textContent = fmtKD(kd) + ' KD';
+midEl.appendChild(kdEl);
+
+const bdEl = document.createElement('span');
+bdEl.className = 'tl-profit-bd';
+bdEl.textContent = bd > 0 ? 'BD: ' + fmtIndian(bd) + ' TK' : 'BD: —';
+midEl.appendChild(bdEl);
+
+const profitPillEl = document.createElement('span');
+profitPillEl.className = 'tl-profit-profit-pill' + (isLoss ? ' negative' : '');
+profitPillEl.textContent = 'লাভ: ' + profitSign + fmtIndian(Math.abs(profit)) + ' TK';
+midEl.appendChild(profitPillEl);
+
+card.appendChild(midEl);
+
+const rightEl = document.createElement('div');
+rightEl.className = 'tl-profit-right';
+
+const custEl = document.createElement('div');
+custEl.className = 'tl-profit-cust';
+custEl.textContent = custName || '(No Customer)';
+rightEl.appendChild(custEl);
+
+const typeEl = document.createElement('span');
+typeEl.className = 'tl-profit-type' + (isCash ? ' cash' : '');
+typeEl.textContent = isCash ? 'নগদ' : 'বিক্রয়';
+rightEl.appendChild(typeEl);
+
+if(t.agentName){
+const agentEl = document.createElement('span');
+agentEl.className = 'tl-profit-agent';
+agentEl.textContent = t.agentName;
+rightEl.appendChild(agentEl);
+}
+
+card.appendChild(rightEl);
+f.appendChild(card);
+});
+
+list.appendChild(f);
+setTimeout(adjustListHeights, 30);
+}
+
+/* =========================================================
+   ★ TOAST ★
+========================================================= */
 function showToast(msg){
 const t=document.createElement('div');
 t.textContent=msg;
@@ -2694,6 +3223,9 @@ requestAnimationFrame(()=>{t.style.opacity='1'});
 setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),220)},2200);
 }
 
+/* =========================================================
+   ★ DATE / TYPE HELPERS ★
+========================================================= */
 function transactionMatchesDate(transaction,selectedDate){
 if(!selectedDate)return true;
 const td=getFullTransactionDate(transaction.date||transaction.Date||transaction.transactionDate||transaction.TransactionDate||'');
@@ -2701,6 +3233,7 @@ const sd=getFullTransactionDate(selectedDate);
 if(!td||!sd)return false;
 return td.getFullYear()===sd.getFullYear()&&td.getMonth()===sd.getMonth()&&td.getDate()===sd.getDate()
 }
+
 function getFullTransactionDate(value){
 if(!value)return null;
 const str=String(value).trim();
@@ -2975,6 +3508,17 @@ const available=appBottom-summaryBottom-8-6;
 if(available>100)agentList.style.maxHeight=available+'px';
 else agentList.style.maxHeight='';
 }
+const profitPanel=$('panelProfit');
+const profitList=$('profitList');
+if(profitPanel&&profitList&&profitPanel.classList.contains('active')){
+const filterRow=profitPanel.querySelector('.profit-filter-row');
+const cards=profitPanel.querySelector('.profit-cards');
+const bottomEl=cards||filterRow;
+const bottom=bottomEl?bottomEl.getBoundingClientRect().bottom:profitPanel.getBoundingClientRect().top;
+const available=appBottom-bottom-8-6;
+if(available>100)profitList.style.maxHeight=available+'px';
+else profitList.style.maxHeight='';
+}
 }
 window.addEventListener('resize',()=>adjustListHeights());
 window.addEventListener('orientationchange',()=>{setTimeout(adjustListHeights,250)});
@@ -3015,64 +3559,118 @@ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
 const panel=$('panel'+tab.charAt(0).toUpperCase()+tab.slice(1));
 if(panel&&!panel.classList.contains('hidden'))panel.classList.add('active');
 if(button&&!button.classList.contains('hidden'))button.classList.add('active');
+
+if(tab==='profit'){
+pauseSyncForProfit();
+renderProfitPage();
+}else{
+resumeSyncAfterProfit();
+}
+
 setTimeout(adjustListHeights,50)
 }
+
+function pauseSyncForProfit(){
+if(syncPaused) return;
+syncPaused = true;
+if(syncTimer){
+clearInterval(syncTimer);
+syncTimer = null;
+}
+}
+function resumeSyncAfterProfit(){
+if(!syncPaused) return;
+syncPaused = false;
+if(currentUser && navigator.onLine && !syncTimer){
+startBackgroundSync();
+}
+}
+
 function getRole(){return String(currentUser?.role||'').trim().toLowerCase()}
 function applyRoleAccess(preferredPanel=''){
 const role=getRole();
 const rateBox=$('adminRateBox');
 if(rateBox)rateBox.classList.toggle('hidden',role!=='admin');
+
 const tabs=document.querySelectorAll('.tab');
 const transactionTab=tabs[0];
 const customerTab=tabs[1];
 const agentTab=tabs[2];
+const profitTab=tabs[3];
+
 const transactionPanel=$('panelTransaction');
 const customerPanel=$('panelCustomer');
 const agentPanel=$('panelAgent');
-[transactionTab,customerTab,agentTab].forEach(x=>x.classList.remove('hidden'));
-[transactionPanel,customerPanel,agentPanel].forEach(x=>x.classList.remove('hidden'));
+const profitPanel=$('panelProfit');
+
+[transactionTab,customerTab,agentTab,profitTab].forEach(x=>{
+if(x) x.classList.remove('hidden');
+});
+[transactionPanel,customerPanel,agentPanel,profitPanel].forEach(x=>{
+if(x) x.classList.remove('hidden');
+});
+
 if(role==='admin'){
-const wanted=preferredPanel==='panelCustomer'?'customer':preferredPanel==='panelAgent'?'agent':'transaction';
-openTab(wanted,wanted==='customer'?customerTab:wanted==='agent'?agentTab:transactionTab);
+const wanted=preferredPanel==='panelCustomer'?'customer':
+preferredPanel==='panelAgent'?'agent':
+preferredPanel==='panelProfit'?'profit':'transaction';
+openTab(wanted,
+wanted==='customer'?customerTab:
+wanted==='agent'?agentTab:
+wanted==='profit'?profitTab:transactionTab);
 return
 }
 if(role==='agent'){
 transactionTab.classList.add('hidden');
 customerTab.classList.add('hidden');
 agentTab.classList.add('hidden');
+if(profitTab) profitTab.classList.add('hidden');
+
 transactionPanel.classList.add('hidden');
 customerPanel.classList.add('hidden');
+if(profitPanel) profitPanel.classList.add('hidden');
 agentPanel.classList.remove('hidden');
 agentPanel.classList.add('active');
+
 const s=$('agentView');
 const id=String(currentUser.linkedId||'');
 const found=agentData.find(a=>String(a.agentId)===id);
+
 s.innerHTML='';
 const o=document.createElement('option');
 o.value=id;
 o.textContent=found?found.agentName:(currentUser.agentName||currentUser.name||'My Agent');
 s.appendChild(o);
 s.value=id;s.disabled=true;
+
 if(dataLoaded&&id)agentChanged();
 setTimeout(adjustListHeights,50);return
 }
 if(role==='viewer'||role==='viewar'){
 transactionTab.classList.add('hidden');
 transactionPanel.classList.add('hidden');
+
 customerTab.classList.remove('hidden');
 agentTab.classList.remove('hidden');
+if(profitTab) profitTab.classList.remove('hidden');
+
 customerPanel.classList.remove('hidden');
 agentPanel.classList.remove('hidden');
+if(profitPanel) profitPanel.classList.remove('hidden');
+
 $('customerPageSelect').value='';
 $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
 $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
 $('customerList').innerHTML='<div class="empty">Select a customer</div>';
+
 updateTotalDue();
+
 $('agentView').disabled=false;
 $('agentView').value='';
 currentAgentTransactions=[];
 setAgentNumbers(0,0);
 $('agentList').innerHTML='<div class="empty">Select an agent</div>';
+
 openTab('customer',customerTab)
 }
 }
@@ -3251,7 +3849,7 @@ const kd=number($('kdAmount').value);
 const bd=number($('bdAmount').value);
 const popup=$('profitPopup');
 if(kd<=0||bd<=0){popup.classList.remove('show');return}
-const profit=kd*400-bd;
+const profit=kd*PROFIT_RATE_PER_KD-bd;
 popup.textContent='Profit '+(profit<0?'-':'')+Number(Math.abs(profit.toFixed(3))).toLocaleString('en-IN')+' Tk';
 popup.classList.add('show')
 }
@@ -3507,6 +4105,7 @@ return false
 
 async function syncData(force=false){
 if(syncRunning||!currentUser)return false;
+if(syncPaused) return false;
 syncRunning=true;
 try{
 await openDB();
@@ -3542,21 +4141,22 @@ return false
 
 function startBackgroundSync(){
 stopBackgroundSync();
+if(syncPaused) return;
 syncData();
 syncTimer=setInterval(()=>{
-if(currentUser&&navigator.onLine)syncData()
+if(currentUser&&navigator.onLine&&!syncPaused)syncData()
 },SYNC_INTERVAL)
 }
 function stopBackgroundSync(){
 if(syncTimer){clearInterval(syncTimer);syncTimer=null}
 }
 document.addEventListener('visibilitychange',()=>{
-if(document.visibilityState==='visible'&&currentUser){
+if(document.visibilityState==='visible'&&currentUser&&!syncPaused){
 syncData();
 if(!syncTimer)startBackgroundSync()
 }
 });
-window.addEventListener('online',()=>{if(currentUser)syncData()});
+window.addEventListener('online',()=>{if(currentUser&&!syncPaused)syncData()});
 window.addEventListener('offline',()=>{showSync('Offline','pending')});
 
 $('kdAmount').addEventListener('blur',function(){
@@ -3807,7 +4407,6 @@ const selOpt=select.options[select.selectedIndex];
 const hasValue=!!(selOpt&&selOpt.value);
 triggerText.textContent=hasValue?selOpt.textContent:'Select Customer';
 trigger.classList.toggle('empty',!hasValue);
-/* Sheet খোলা থাকলে লিস্ট আপডেট */
 const sheet=$('customerFsSheet');
 if(sheet&&sheet.classList.contains('show')){
 const search=$('customerSearchInput');
@@ -3835,7 +4434,6 @@ renderCustomerSheetList('');
 backdrop.classList.add('show');
 sheet.classList.add('show');
 document.body.style.overflow='hidden';
-/* কীবোর্ড auto-open হবে না — focus() নেই */
 }
 
 function closeCustomerSheet(){
@@ -3923,7 +4521,6 @@ el.classList.remove('type-cash','type-payment');
 if(transactionType==='পেমেন্ট')el.classList.add('type-payment');
 else if(transactionType==='নগদ')el.classList.add('type-cash');
 });
-/* Sheet খোলা থাকলে আবার render */
 const sheet=$('customerFsSheet');
 if(sheet&&sheet.classList.contains('show')){
 const search=$('customerSearchInput');
@@ -4003,7 +4600,6 @@ const agentOptionTrigger=$('agentOptionTrigger');
 const agentOptionPop=$('agentOptionPop');
 const customerTrigger=$('customerTrigger');
 
-/* Customer — Full-Screen Sheet */
 if(customerTrigger){
 customerTrigger.addEventListener('click',e=>{
 e.stopPropagation();
@@ -4012,7 +4608,6 @@ openCustomerSheet();
 });
 }
 
-/* Note */
 if(noteTrigger&&notePop){
 noteTrigger.addEventListener('click',e=>{
 e.stopPropagation();
@@ -4026,7 +4621,6 @@ noteTrigger.classList.add('open');
 });
 }
 
-/* Agent Option */
 if(agentOptionTrigger&&agentOptionPop){
 agentOptionTrigger.addEventListener('click',e=>{
 e.stopPropagation();
@@ -4040,7 +4634,6 @@ agentOptionTrigger.classList.add('open');
 });
 }
 
-/* Outside click */
 document.addEventListener('click',e=>{
 const nw=$('noteDropdownWrap');
 const aw=$('agentOptionDropdownWrap');
@@ -4077,6 +4670,7 @@ refreshAllDropdownColors();
 setupSafeSelectRefresh();
 disableAutofill();
 setupKeyboardSaveButton();
+updateSaveButtonColor();
 restoreLogin();
 </script>
 <script>
