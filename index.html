@@ -1552,22 +1552,160 @@ padding:10px;
 text-align:center;
 cursor:pointer;
 transition:all .18s ease;
-position:relative;overflow:hidden;
+position:relative;
+overflow:hidden;
+width:100%;
+height:140px;
+min-height:140px;
+max-height:140px;
+flex-shrink:0;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 .cd-idcard-wrap:active{background:#F1F5F9;transform:scale(.99)}
 .cd-idcard-wrap img{
-width:100%;max-width:100%;
-border-radius:8px;display:block;margin:0 auto;
+width:100%;
+height:100%;
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+border-radius:8px;
+display:block;
+margin:0 auto;
 box-shadow:0 4px 12px rgba(0,0,0,.08);
+pointer-events:none;
 }
 .cd-idcard-zoom{
 position:absolute;
-bottom:14px;right:14px;
-font-size:8.5px;font-weight:900;
-background:#0F172A;color:#fff;
+bottom:8px;right:8px;
+font-size:8px;font-weight:900;
+background:rgba(15,23,42,.85);
+color:#fff;
 padding:4px 9px;border-radius:6px;
 display:inline-flex;align-items:center;gap:3px;
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+letter-spacing:.3px;
+pointer-events:none;
 }
+
+/* =========================================================
+   ★ ID CARD FULLSCREEN ZOOM VIEWER ★
+========================================================= */
+.id-zoom-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.94);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+z-index:99999;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:16px;
+opacity:0;
+visibility:hidden;
+transition:opacity .28s ease, visibility .28s ease;
+overflow:hidden;
+touch-action:none;
+}
+.id-zoom-overlay.show{
+opacity:1;
+visibility:visible;
+}
+
+.id-zoom-img{
+max-width:100%;
+max-height:100%;
+border-radius:12px;
+box-shadow:0 30px 80px rgba(0,0,0,.6);
+transform:scale(.7);
+opacity:0;
+transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+touch-action:none;
+user-select:none;
+-webkit-user-select:none;
+-webkit-user-drag:none;
+pointer-events:none;
+will-change:transform;
+}
+.id-zoom-overlay.show .id-zoom-img{
+transform:scale(1);
+opacity:1;
+}
+
+.id-zoom-close{
+position:absolute;
+top:max(16px, env(safe-area-inset-top));
+right:16px;
+width:44px;height:44px;
+border:0;
+border-radius:50%;
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+color:#fff;
+font-size:18px;
+font-weight:900;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+z-index:10;
+box-shadow:0 4px 16px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.2);
+transition:all .15s ease;
+padding:0;
+line-height:1;
+}
+.id-zoom-close:active{
+transform:scale(.9);
+background:rgba(255,255,255,.25);
+}
+
+.id-zoom-hint{
+position:absolute;
+bottom:max(20px, env(safe-area-inset-bottom));
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+color:#fff;
+padding:8px 16px;
+border-radius:99px;
+font-size:11px;
+font-weight:700;
+white-space:nowrap;
+box-shadow:0 4px 16px rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.15);
+animation:hintFade 4s ease-in-out infinite;
+letter-spacing:.2px;
+}
+@keyframes hintFade{
+0%,100%{opacity:.85}
+50%{opacity:.5}
+}
+
+.id-zoom-scale{
+position:absolute;
+top:max(16px, env(safe-area-inset-top));
+left:16px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+color:#fff;
+padding:8px 14px;
+border-radius:99px;
+font-size:11px;
+font-weight:800;
+letter-spacing:.4px;
+box-shadow:0 4px 16px rgba(0,0,0,.3), inset 0 0 0 1px rgba(255,255,255,.15);
+opacity:0;
+transition:opacity .2s ease;
+pointer-events:none;
+font-variant-numeric:tabular-nums;
+}
+.id-zoom-scale.show{opacity:1}
 
 /* Toast */
 .call-toast{
@@ -1614,6 +1752,7 @@ opacity:1;
 .logout{padding:5px 7px;font-size:9px}
 input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .tab{font-size:10px}
+.cd-idcard-wrap{height:120px;min-height:120px;max-height:120px;padding:8px}
 }
 
 @media(max-width:360px){
@@ -1659,6 +1798,7 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .profit-filter-row select{font-size:9px;padding:0 4px}
 .profit-card-value{font-size:14px}
 .profit-card.profit-total .profit-card-value{font-size:22px}
+.cd-idcard-wrap{height:105px;min-height:105px;max-height:105px}
 }
 
 @media(max-width:420px){
@@ -2027,6 +2167,16 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 
 </div>
 </div>
+</div>
+
+<!-- =========================================================
+     ★ ID CARD FULLSCREEN ZOOM VIEWER ★
+========================================================= -->
+<div class="id-zoom-overlay" id="idZoomOverlay">
+  <div class="id-zoom-scale" id="idZoomScale">1.0×</div>
+  <button class="id-zoom-close" id="idZoomClose" type="button" aria-label="Close">✕</button>
+  <img class="id-zoom-img" id="idZoomImg" src="" alt="ID Card Zoom">
+  <div class="id-zoom-hint">🔍 পিঞ্চ করুন • ডাবল ট্যাপ করুন</div>
 </div>
 
 <div class="call-toast" id="callToast"></div>
@@ -3185,7 +3335,7 @@ async function openCustomerDetails(customerId){
       idImg.src = imgLink;
     }
   } else {
-    idImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect width="400" height="250" fill="%23F8FAFC"/><rect x="15" y="15" width="370" height="220" rx="8" fill="%23FFFFFF" stroke="%23E2E8F0" stroke-width="2"/><circle cx="80" cy="90" r="35" fill="%23CBD5E1"/><circle cx="80" cy="82" r="14" fill="%23FFFFFF"/><path d="M80 100 Q60 105 60 125 Q80 135 100 125 Q100 105 80 100Z" fill="%23FFFFFF"/><rect x="135" y="60" width="180" height="10" rx="5" fill="%230F172A"/><rect x="135" y="80" width="140" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="100" width="160" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="120" width="120" height="8" rx="4" fill="%23E2E8F0"/><text x="200" y="175" font-family="Arial" font-size="16" font-weight="bold" fill="%230F172A" text-anchor="middle">CIVIL ID CARD</text><rect x="135" y="185" width="130" height="30" rx="6" fill="%23F8FAFC"/><text x="200" y="205" font-family="Arial" font-size="12" font-weight="bold" fill="%230F172A" text-anchor="middle">K U W A I T</text></svg>';
+    idImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect width="400" height="250" fill="%23F8FAFC"/><rect x="15" y="15" width="370" height="220" rx="8" fill="%23FFFFFF" stroke="%23E2E8F0" stroke-width="2"/><circle cx="80" cy="90" r="35" fill="%23CBD5E1"/><circle cx="80" cy="82" r="14" fill="%23FFFFFF"/><path d="M80 100 Q60 105 60 125 Q80 135 100 125 Q100 105 80 100Z" fill="%23FFFFFF"/><rect x="135" y="60" width="180" height="10" rx="5" fill="%230F172A"/><rect x="135" y="80" width="140" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="100" width="160" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="120" width="120" height="8" rx="4" fill="%23E2E8F0"/><text x="200" y="175" font-family="Arial" font-size="15" font-weight="bold" fill="%230F172A" text-anchor="middle">ID CARD INFORMATION</text><rect x="115" y="185" width="170" height="32" rx="6" fill="%23F8FAFC"/><text x="200" y="206" font-family="Arial" font-size="13" font-weight="bold" fill="%230F172A" text-anchor="middle">BANGLADESH</text></svg>';
   }
   
   $('cdOverlay').classList.add('show');
@@ -3195,6 +3345,11 @@ async function openCustomerDetails(customerId){
 function closeCustomerDetails(){
   $('cdOverlay').classList.remove('show');
   document.body.style.overflow = '';
+  // ★ Zoom overlay-ও বন্ধ করুন ★
+  const zoomOverlay = $('idZoomOverlay');
+  if(zoomOverlay && zoomOverlay.classList.contains('show')){
+    closeIdZoom();
+  }
 }
 
 function cleanPhoneNumber(raw){
@@ -3224,14 +3379,235 @@ function callBackupNumber(){
   }
 }
 
-function openCdZoom(){
-  const img = $('cdIdImage').src;
+/* =========================================================
+   ★ ID CARD FULLSCREEN ZOOM VIEWER ★
+========================================================= */
+let idZoomScale = 1;
+let idZoomTranslateX = 0;
+let idZoomTranslateY = 0;
+let idZoomDragging = false;
+let idZoomStartX = 0, idZoomStartY = 0;
+let idZoomStartTX = 0, idZoomStartTY = 0;
+let idZoomPinchDist = 0;
+let idZoomPinchScale = 1;
+let idZoomLastTap = 0;
+let idZoomInitialized = false;
+const ID_ZOOM_MIN = 1;
+const ID_ZOOM_MAX = 4;
+
+function applyIdZoomTransform(){
+  const img = $('idZoomImg');
+  const scaleEl = $('idZoomScale');
   if(!img) return;
-  const w = window.open('', '_blank');
-  if(w){
-    w.document.write('<html><head><title>ID Card</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh}</style></head><body><img src="'+img+'"></body></html>');
-    w.document.close();
+  img.style.transform = `scale(${idZoomScale}) translate(${idZoomTranslateX / idZoomScale}px, ${idZoomTranslateY / idZoomScale}px)`;
+  if(scaleEl) scaleEl.textContent = idZoomScale.toFixed(1) + '×';
+}
+
+function clampIdZoomTranslate(){
+  if(idZoomScale <= 1){
+    idZoomTranslateX = 0;
+    idZoomTranslateY = 0;
+    return;
   }
+  const maxX = (window.innerWidth * (idZoomScale - 1)) / (2 * idZoomScale);
+  const maxY = (window.innerHeight * (idZoomScale - 1)) / (2 * idZoomScale);
+  idZoomTranslateX = Math.max(-maxX, Math.min(maxX, idZoomTranslateX));
+  idZoomTranslateY = Math.max(-maxY, Math.min(maxY, idZoomTranslateY));
+}
+
+function resetIdZoom(){
+  idZoomScale = 1;
+  idZoomTranslateX = 0;
+  idZoomTranslateY = 0;
+  applyIdZoomTransform();
+  const s = $('idZoomScale');
+  if(s) s.classList.remove('show');
+}
+
+function openCdZoom(){
+  const img = $('cdIdImage');
+  const overlay = $('idZoomOverlay');
+  const zoomImg = $('idZoomImg');
+  const scaleEl = $('idZoomScale');
+  if(!img || !overlay || !zoomImg) return;
+  const src = img.src;
+  if(!src) return;
+
+  zoomImg.src = src;
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  resetIdZoom();
+
+  if(scaleEl){
+    scaleEl.classList.add('show');
+    setTimeout(() => scaleEl.classList.remove('show'), 1500);
+  }
+
+  if(!idZoomInitialized){
+    setupIdZoomGestures();
+    idZoomInitialized = true;
+  }
+}
+
+function closeIdZoom(){
+  const overlay = $('idZoomOverlay');
+  if(!overlay) return;
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+  resetIdZoom();
+}
+
+function setupIdZoomGestures(){
+  const overlay = $('idZoomOverlay');
+  const zoomImg = $('idZoomImg');
+  const closeBtn = $('idZoomClose');
+  const scaleEl = $('idZoomScale');
+  if(!overlay || !zoomImg) return;
+
+  if(closeBtn){
+    closeBtn.addEventListener('click', closeIdZoom);
+  }
+
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) closeIdZoom();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && overlay.classList.contains('show')) closeIdZoom();
+  });
+
+  overlay.addEventListener('touchstart', function(e){
+    if(e.touches.length === 2){
+      e.preventDefault();
+      idZoomDragging = false;
+      const t1 = e.touches[0], t2 = e.touches[1];
+      idZoomPinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      idZoomPinchScale = idZoomScale;
+    } else if(e.touches.length === 1){
+      const now = Date.now();
+      if(now - idZoomLastTap < 300){
+        e.preventDefault();
+        if(idZoomScale > 1.1){
+          resetIdZoom();
+        } else {
+          idZoomScale = 2.5;
+          idZoomTranslateX = 0;
+          idZoomTranslateY = 0;
+          applyIdZoomTransform();
+        }
+        if(scaleEl){
+          scaleEl.classList.add('show');
+          setTimeout(() => scaleEl.classList.remove('show'), 1200);
+        }
+        idZoomLastTap = 0;
+        return;
+      }
+      idZoomLastTap = now;
+      idZoomDragging = true;
+      idZoomStartX = e.touches[0].clientX;
+      idZoomStartY = e.touches[0].clientY;
+      idZoomStartTX = idZoomTranslateX;
+      idZoomStartTY = idZoomTranslateY;
+    }
+  }, { passive: false });
+
+  overlay.addEventListener('touchmove', function(e){
+    if(e.touches.length === 2){
+      e.preventDefault();
+      const t1 = e.touches[0], t2 = e.touches[1];
+      const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      if(idZoomPinchDist > 0){
+        let newScale = idZoomPinchScale * (dist / idZoomPinchDist);
+        newScale = Math.max(ID_ZOOM_MIN, Math.min(ID_ZOOM_MAX, newScale));
+        idZoomScale = newScale;
+        if(idZoomScale <= 1){
+          idZoomTranslateX = 0;
+          idZoomTranslateY = 0;
+        }
+        clampIdZoomTranslate();
+        applyIdZoomTransform();
+        if(scaleEl) scaleEl.classList.add('show');
+      }
+    } else if(e.touches.length === 1 && idZoomDragging && idZoomScale > 1){
+      e.preventDefault();
+      const dx = e.touches[0].clientX - idZoomStartX;
+      const dy = e.touches[0].clientY - idZoomStartY;
+      idZoomTranslateX = idZoomStartTX + dx;
+      idZoomTranslateY = idZoomStartTY + dy;
+      clampIdZoomTranslate();
+      applyIdZoomTransform();
+    }
+  }, { passive: false });
+
+  overlay.addEventListener('touchend', function(e){
+    if(e.touches.length === 0){
+      idZoomDragging = false;
+      idZoomPinchDist = 0;
+      if(idZoomScale <= 1){
+        idZoomTranslateX = 0;
+        idZoomTranslateY = 0;
+        applyIdZoomTransform();
+      }
+      setTimeout(() => {
+        if(!idZoomDragging && scaleEl) scaleEl.classList.remove('show');
+      }, 1200);
+    }
+  });
+
+  overlay.addEventListener('mousedown', function(e){
+    if(idZoomScale <= 1) return;
+    idZoomDragging = true;
+    idZoomStartX = e.clientX;
+    idZoomStartY = e.clientY;
+    idZoomStartTX = idZoomTranslateX;
+    idZoomStartTY = idZoomTranslateY;
+    e.preventDefault();
+  });
+  overlay.addEventListener('mousemove', function(e){
+    if(!idZoomDragging || idZoomScale <= 1) return;
+    const dx = e.clientX - idZoomStartX;
+    const dy = e.clientY - idZoomStartY;
+    idZoomTranslateX = idZoomStartTX + dx;
+    idZoomTranslateY = idZoomStartTY + dy;
+    clampIdZoomTranslate();
+    applyIdZoomTransform();
+  });
+  overlay.addEventListener('mouseup', function(){ idZoomDragging = false; });
+  overlay.addEventListener('mouseleave', function(){ idZoomDragging = false; });
+
+  overlay.addEventListener('wheel', function(e){
+    if(!overlay.classList.contains('show')) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.15 : 0.15;
+    idZoomScale = Math.max(ID_ZOOM_MIN, Math.min(ID_ZOOM_MAX, idZoomScale + delta));
+    if(idZoomScale <= 1){
+      idZoomTranslateX = 0;
+      idZoomTranslateY = 0;
+    }
+    clampIdZoomTranslate();
+    applyIdZoomTransform();
+    if(scaleEl){
+      scaleEl.classList.add('show');
+      clearTimeout(overlay._wheelTimer);
+      overlay._wheelTimer = setTimeout(() => scaleEl.classList.remove('show'), 1200);
+    }
+  }, { passive: false });
+
+  zoomImg.addEventListener('dblclick', function(e){
+    e.preventDefault();
+    if(idZoomScale > 1.1){
+      resetIdZoom();
+    } else {
+      idZoomScale = 2.5;
+      idZoomTranslateX = 0;
+      idZoomTranslateY = 0;
+      applyIdZoomTransform();
+    }
+    if(scaleEl){
+      scaleEl.classList.add('show');
+      setTimeout(() => scaleEl.classList.remove('show'), 1200);
+    }
+  });
 }
 
 function showCallToast(msg){
