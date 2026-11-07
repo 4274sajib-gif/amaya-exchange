@@ -3936,7 +3936,7 @@ $('profitTotalBD').innerHTML = fmtIndian(totalBD) + ' <span>TK</span>';
 
 const totalProfitEl = $('profitTotal');
 totalProfitEl.className = 'profit-card-value ' + (totalProfit >= 0 ? 'positive' : 'negative');
-totalProfitEl.innerHTML = (totalProfit >= 0 ? '+' : '−') + fmtIndian(Math.abs(totalProfit)) + ' <span>TK</span>';
+totalProfitEl.innerHTML = (totalProfit < 0 ? '−' : '') + fmtIndian(Math.abs(totalProfit)) + ' <span>TK</span>';
 
 /* Render list — Customer/Agent-এর মতো */
 const list = $('profitList');
