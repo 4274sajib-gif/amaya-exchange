@@ -574,7 +574,7 @@ color:#fff;font-variant-numeric:tabular-nums}
 #agentList{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
 /* =========================================================
-   ★ PROFIT TAB ★
+   ★ PROFIT TAB — Premium Neumorphism ★
 ========================================================= */
 .profit-filter-row{
 display:grid;grid-template-columns:1fr 1fr 1.25fr;
@@ -584,69 +584,165 @@ gap:5px;margin-bottom:8px
 height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0
 }
 
+/* ★ কার্ড গ্রিড ★ */
 .profit-cards{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:6px;
-margin-bottom:8px
+gap:10px;
+margin-bottom:10px;
 }
+
 .profit-card{
-border-radius:10px;
-padding:10px;
-box-shadow:0 2px 8px rgba(0,0,0,.08);
+border-radius:16px;
+padding:12px;
+background:#e8ecf3;
 position:relative;
-overflow:hidden
+overflow:hidden;
+box-shadow:
+  5px 5px 12px #c5cad3,
+  -5px -5px 12px #ffffff;
+transition:all .2s ease;
 }
-.profit-card.sales{
-background:linear-gradient(135deg,#16A34A 0%,#15803D 100%);
-color:#fff
+.profit-card:active{
+box-shadow:
+  inset 3px 3px 8px #c5cad3,
+  inset -3px -3px 8px #ffffff;
+transform:scale(.98);
 }
-.profit-card.cost{
-background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%);
-color:#fff
+
+/* ★ সূক্ষ্ম রেডিয়াল গ্লো ★ */
+.profit-card::after{
+content:"";
+position:absolute;
+top:-40px;right:-40px;
+width:120px;height:120px;
+border-radius:50%;
+pointer-events:none;
+filter:blur(40px);
+opacity:.45;
 }
+.profit-card.sales::after{
+background:radial-gradient(circle,#22C55E 0%,transparent 70%);
+}
+.profit-card.cost::after{
+background:radial-gradient(circle,#EF4444 0%,transparent 70%);
+}
+.profit-card.profit-total::after{
+background:radial-gradient(circle,#FBBF24 0%,transparent 70%);
+top:-60px;right:-60px;
+width:180px;height:180px;
+opacity:.55;
+}
+
 .profit-card.profit-total{
 grid-column:1 / -1;
-background:linear-gradient(135deg,#111827 0%,#0F172A 100%);
-color:#fff;
-padding:14px 12px;
-text-align:center
+padding:20px 16px 18px;
+text-align:center;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:2px;
+box-shadow:
+  8px 8px 20px #c5cad3,
+  -8px -8px 20px #ffffff;
 }
+
+/* ★ লেবেল ★ */
 .profit-card-label{
-font-size:9px;
-font-weight:800;
-letter-spacing:.3px;
+font-size:9.5px;
+font-weight:900;
+letter-spacing:.6px;
 text-transform:uppercase;
-margin-bottom:4px;
-opacity:.9
+color:#64748B;
+margin-bottom:8px;
+position:relative;
+z-index:2;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:4px;
 }
+.profit-card.sales .profit-card-label{color:#15803D}
+.profit-card.cost .profit-card-label{color:#B91C1C}
+.profit-card.profit-total .profit-card-label{
+color:#92400E;
+font-size:10px;
+margin-bottom:10px;
+}
+
+/* ★ ভ্যালু (দিনার & খরচ) ★ */
 .profit-card-value{
 font-size:16px;
 font-weight:900;
-line-height:1.1;
+line-height:1.15;
 font-variant-numeric:tabular-nums;
-white-space:nowrap
+white-space:nowrap;
+color:#0F172A;
+position:relative;
+z-index:2;
 }
+.profit-card.sales .profit-card-value{color:#15803D}
+.profit-card.cost .profit-card-value{color:#B91C1C}
+
 .profit-card-value span{
 font-size:9px;
-font-weight:700;
+font-weight:800;
 margin-left:2px;
-opacity:.85
+opacity:.7;
 }
-.profit-card.profit-total .profit-card-label{
-font-size:10px;
-margin-bottom:6px
-}
+
+/* ★ মোট প্রফিট — TK ডানে ★ */
 .profit-card.profit-total .profit-card-value{
-font-size:26px;
-letter-spacing:-.5px
+font-size:30px;
+letter-spacing:-.7px;
+display:inline-flex;
+flex-direction:row;
+align-items:baseline;
+justify-content:center;
+gap:4px;
+color:#0F172A;
+line-height:1;
+text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+.profit-card.profit-total .profit-card-value span{
+order:1;
+font-size:13px;
+font-weight:900;
+margin:0;
+color:inherit;
+opacity:1;
+letter-spacing:.3px;
+}
+
+/* =========================================================
+   ★ SCHEME 3: GRADIENT GOLD ★
+   লাভ = সোনালি গ্রেডিয়েন্ট | লোকসান = লাল
+========================================================= */
+.profit-card.profit-total .profit-card-value.positive{
+background:linear-gradient(135deg,#D97706 0%,#F59E0B 50%,#B45309 100%);
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
+color:transparent;
+text-shadow:none;
+filter:drop-shadow(0 1px 0 rgba(255,255,255,.7));
+}
+.profit-card.profit-total .profit-card-value.positive span{
+background:linear-gradient(135deg,#D97706 0%,#F59E0B 50%,#B45309 100%);
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
+color:transparent;
 }
 .profit-card.profit-total .profit-card-value.negative{
-color:#FCA5A5
+color:#B91C1C;
+text-shadow:0 1px 0 rgba(255,255,255,.6);
 }
-.profit-card.profit-total .profit-card-value.positive{
-color:#4ADE80
+.profit-card.profit-total .profit-card-value.negative span{
+color:#B91C1C;
 }
+
 
 /* =========================================================
    ★ PROFIT LIST — Customer/Agent-এর মতো ট্রানজেকশন কার্ড ★
