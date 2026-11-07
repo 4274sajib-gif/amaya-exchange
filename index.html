@@ -2040,7 +2040,7 @@ const HEADER_RATE_1=333.333333,
 HEADER_RATE_2=363.636363,
 HEADER_RATE_3=357.142857;
 const DB_NAME='AmayaExchangeDB',
-DB_VERSION=5,
+DB_VERSION=4,
 SYNC_INTERVAL=2500,
 $=id=>document.getElementById(id);
 const DUE_NOTES=['Bkash','Nagad','Recharge','Dollar Card','Internet','Minutes','Electricity','Overdue Charge'];
@@ -3138,55 +3138,58 @@ async function openCustomerDetails(customerId){
     return;
   }
   currentDetailsCustomer = customer;
-
+  
   const name = customer.customerName || '(No Name)';
   $('cdAvatar').textContent = name.charAt(0);
   $('cdHeaderName').textContent = name;
   $('cdHeaderPhone').textContent = '📱 ' + (customer.phone || '(No Phone)');
-
+  
   $('cdBackupName').textContent = customer.backupName || '—';
   $('cdBackupRelation').textContent = customer.backupRelation || '—';
   $('cdBackupNumber').textContent = customer.backupPhone || '—';
   $('cdAddress').textContent = customer.address || '—';
-
+  
+  // ★★★ এখান থেকে ছবি লোড ও সেভ করার নতুন সিস্টেম শুরু ★★★
   const idImg = $('cdIdImage');
-  const cid = customer.customerId;
-
-  try {
-    const cached = await dbGet('imageCache', cid);
-
-    if(cached && cached.dataUrl){
-      idImg.src = cached.dataUrl;
-    } else {
-      const url = API + '?action=customerPhoto&customerId=' + encodeURIComponent(cid);
-
-      fetch(url)
-        .then(r => r.json())
-        .then(async res => {
-          if(res && res.success && res.data && res.data.found && res.data.base64){
-            const dataUrl = 'data:' + res.data.mimeType + ';base64,' + res.data.base64;
-            idImg.src = dataUrl;
-            await dbPut('imageCache', {
-              id: cid,
-              dataUrl: dataUrl,
-              savedAt: Date.now()
-            });
-          } else {
-            showNoIdCard(idImg);
+  const imgLink = String(customer.idCardImage || '').trim();
+  const cacheKey = customer.customerId;
+  
+  if(imgLink){
+    try {
+      const cached = await dbGet('imageCache', cacheKey);
+      
+      if(cached && cached.url === imgLink && cached.dataUrl) {
+        idImg.src = cached.dataUrl;
+      } else {
+        idImg.src = imgLink;
+        
+        idImg.onload = async () => {
+          try {
+            const response = await fetch(imgLink);
+            const blob = await response.blob();
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              await dbPut('imageCache', { 
+                id: cacheKey, 
+                url: imgLink, 
+                dataUrl: reader.result 
+              });
+            };
+            reader.readAsDataURL(blob);
+          } catch (e) {
+            console.warn("Image cache save failed:", e);
           }
-        })
-        .catch(() => showNoIdCard(idImg));
+        };
+      }
+    } catch (e) {
+      idImg.src = imgLink;
     }
-  } catch(e){
-    showNoIdCard(idImg);
+  } else {
+    idImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect width="400" height="250" fill="%23F8FAFC"/><rect x="15" y="15" width="370" height="220" rx="8" fill="%23FFFFFF" stroke="%23E2E8F0" stroke-width="2"/><circle cx="80" cy="90" r="35" fill="%23CBD5E1"/><circle cx="80" cy="82" r="14" fill="%23FFFFFF"/><path d="M80 100 Q60 105 60 125 Q80 135 100 125 Q100 105 80 100Z" fill="%23FFFFFF"/><rect x="135" y="60" width="180" height="10" rx="5" fill="%230F172A"/><rect x="135" y="80" width="140" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="100" width="160" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="120" width="120" height="8" rx="4" fill="%23E2E8F0"/><text x="200" y="175" font-family="Arial" font-size="16" font-weight="bold" fill="%230F172A" text-anchor="middle">CIVIL ID CARD</text><rect x="135" y="185" width="130" height="30" rx="6" fill="%23F8FAFC"/><text x="200" y="205" font-family="Arial" font-size="12" font-weight="bold" fill="%230F172A" text-anchor="middle">K U W A I T</text></svg>';
   }
-
+  
   $('cdOverlay').classList.add('show');
   document.body.style.overflow = 'hidden';
-}
-
-function showNoIdCard(idImg){
-  idImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect width="400" height="250" fill="%23F8FAFC"/><rect x="15" y="15" width="370" height="220" rx="8" fill="%23FFFFFF" stroke="%23E2E8F0" stroke-width="2"/><circle cx="80" cy="90" r="35" fill="%23CBD5E1"/><circle cx="80" cy="82" r="14" fill="%23FFFFFF"/><path d="M80 100 Q60 105 60 125 Q80 135 100 125 Q100 105 80 100Z" fill="%23FFFFFF"/><rect x="135" y="60" width="180" height="10" rx="5" fill="%230F172A"/><rect x="135" y="80" width="140" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="100" width="160" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="120" width="120" height="8" rx="4" fill="%23E2E8F0"/><text x="200" y="175" font-family="Arial" font-size="16" font-weight="bold" fill="%230F172A" text-anchor="middle">CIVIL ID CARD</text><rect x="135" y="185" width="130" height="30" rx="6" fill="%23F8FAFC"/><text x="200" y="205" font-family="Arial" font-size="12" font-weight="bold" fill="%230F172A" text-anchor="middle">K U W A I T</text></svg>';
 }
 
 function closeCustomerDetails(){
