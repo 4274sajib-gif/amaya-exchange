@@ -1907,15 +1907,15 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 
 <div class="profit-cards">
 <div class="profit-card sales">
-<div class="profit-card-label">📈 মোট বিক্রয় (দিনার)</div>
+<div class="profit-card-label">📈 মাসিক মোট বিক্রয় (দিনার)</div>
 <div id="profitTotalKD" class="profit-card-value">0.000 <span>KD</span></div>
 </div>
 <div class="profit-card cost">
-<div class="profit-card-label">💸 মোট খরচ (টাকা)</div>
+<div class="profit-card-label">💸 মাসিক মোট বিক্রয় (টাকা)</div>
 <div id="profitTotalBD" class="profit-card-value">0 <span>TK</span></div>
 </div>
 <div class="profit-card profit-total">
-<div class="profit-card-label">💰 মোট প্রফিট</div>
+<div class="profit-card-label">💰 মাসিক মোট প্রফিট</div>
 <div id="profitTotal" class="profit-card-value positive">0 <span>TK</span></div>
 </div>
 </div>
@@ -2040,7 +2040,7 @@ const HEADER_RATE_1=333.333333,
 HEADER_RATE_2=363.636363,
 HEADER_RATE_3=357.142857;
 const DB_NAME='AmayaExchangeDB',
-DB_VERSION=3,
+DB_VERSION=4,
 SYNC_INTERVAL=2500,
 $=id=>document.getElementById(id);
 const DUE_NOTES=['Bkash','Nagad','Recharge','Dollar Card','Internet','Minutes','Electricity','Overdue Charge'];
@@ -2157,6 +2157,11 @@ if(!d.objectStoreNames.contains('customers'))
 d.createObjectStore('customers',{keyPath:'customerId'});
 if(!d.objectStoreNames.contains('agents'))
 d.createObjectStore('agents',{keyPath:'agentId'});
+
+// ★★★ এই নতুন ২ লাইন যোগ হবে ছবি সেভ করার জন্য ★★★
+if(!d.objectStoreNames.contains('imageCache'))
+d.createObjectStore('imageCache',{keyPath:'id'});
+
 if(!d.objectStoreNames.contains('transactions')){
 const s=d.createObjectStore('transactions',{keyPath:'key'});
 s.createIndex('rowNumber','rowNumber',{unique:false});
@@ -3126,7 +3131,7 @@ return txn
 }
 
 /* ★ CUSTOMER DETAILS POPUP LOGIC ★ */
-function openCustomerDetails(customerId){
+async function openCustomerDetails(customerId){
   const customer = findCustomer(customerId);
   if(!customer){
     showToast('⚠️ Customer not found');
@@ -3139,19 +3144,46 @@ function openCustomerDetails(customerId){
   $('cdHeaderName').textContent = name;
   $('cdHeaderPhone').textContent = '📱 ' + (customer.phone || '(No Phone)');
   
-  const backupName = customer.backupName || '—';
-  const backupRelation = customer.backupRelation || '—';
-  const backupPhone = customer.backupPhone || '—';
-  
-  $('cdBackupName').textContent = backupName;
-  $('cdBackupRelation').textContent = backupRelation;
-  $('cdBackupNumber').textContent = backupPhone;
-  
+  $('cdBackupName').textContent = customer.backupName || '—';
+  $('cdBackupRelation').textContent = customer.backupRelation || '—';
+  $('cdBackupNumber').textContent = customer.backupPhone || '—';
   $('cdAddress').textContent = customer.address || '—';
   
+  // ★★★ এখান থেকে ছবি লোড ও সেভ করার নতুন সিস্টেম শুরু ★★★
   const idImg = $('cdIdImage');
-  if(customer.idCardImage){
-    idImg.src = customer.idCardImage;
+  const imgLink = String(customer.idCardImage || '').trim();
+  const cacheKey = customer.customerId;
+  
+  if(imgLink){
+    try {
+      const cached = await dbGet('imageCache', cacheKey);
+      
+      if(cached && cached.url === imgLink && cached.dataUrl) {
+        idImg.src = cached.dataUrl;
+      } else {
+        idImg.src = imgLink;
+        
+        idImg.onload = async () => {
+          try {
+            const response = await fetch(imgLink);
+            const blob = await response.blob();
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              await dbPut('imageCache', { 
+                id: cacheKey, 
+                url: imgLink, 
+                dataUrl: reader.result 
+              });
+            };
+            reader.readAsDataURL(blob);
+          } catch (e) {
+            console.warn("Image cache save failed:", e);
+          }
+        };
+      }
+    } catch (e) {
+      idImg.src = imgLink;
+    }
   } else {
     idImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250"><rect width="400" height="250" fill="%23F8FAFC"/><rect x="15" y="15" width="370" height="220" rx="8" fill="%23FFFFFF" stroke="%23E2E8F0" stroke-width="2"/><circle cx="80" cy="90" r="35" fill="%23CBD5E1"/><circle cx="80" cy="82" r="14" fill="%23FFFFFF"/><path d="M80 100 Q60 105 60 125 Q80 135 100 125 Q100 105 80 100Z" fill="%23FFFFFF"/><rect x="135" y="60" width="180" height="10" rx="5" fill="%230F172A"/><rect x="135" y="80" width="140" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="100" width="160" height="8" rx="4" fill="%23E2E8F0"/><rect x="135" y="120" width="120" height="8" rx="4" fill="%23E2E8F0"/><text x="200" y="175" font-family="Arial" font-size="16" font-weight="bold" fill="%230F172A" text-anchor="middle">CIVIL ID CARD</text><rect x="135" y="185" width="130" height="30" rx="6" fill="%23F8FAFC"/><text x="200" y="205" font-family="Arial" font-size="12" font-weight="bold" fill="%230F172A" text-anchor="middle">K U W A I T</text></svg>';
   }
