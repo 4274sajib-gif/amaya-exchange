@@ -278,7 +278,8 @@ width:10px;height:10px;background:#111827;transform:rotate(45deg)}
    CUSTOMER FILTER
 ========================================================= */
 .customer-filter-card{background:#fff;border-radius:14px;padding:10px;
-margin-bottom:6px;box-shadow:0 2px 10px rgba(0,0,0,.035)}
+margin-bottom:6px;box-shadow:0 2px 10px rgba(0,0,0,.035);
+position:relative;z-index:10;}
 .customer-filter-row{display:grid;grid-template-columns:1fr 105px 1.25fr;
 gap:6px;align-items:center;margin-bottom:7px}
 .customer-filter-row input,
@@ -320,7 +321,7 @@ opacity:0;cursor:pointer;z-index:4}
 
 .customer-selected-row{display:grid;grid-template-columns:1fr auto auto;
 align-items:center;gap:7px;min-height:38px}
-.selected-customer{min-width:0}
+.selected-customer{min-width:0;position:relative}
 .selected-name{font-size:14px;font-weight:800;
 white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 cursor:pointer;
@@ -349,7 +350,8 @@ transition:all .15s ease;margin-right:6px}
 .wa-c svg{width:16px;height:16px;display:block;fill:currentColor}
 
 .due-amount-box{background:#f1f3f6;border-radius:9px;
-padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0}
+padding:6px 8px;min-width:82px;text-align:center;flex-shrink:0;cursor:pointer;position:relative;transition:all .15s ease;}
+.due-amount-box:active{transform:scale(.96);}
 .due-amount-label{font-size:10px;color:#858e9d;margin-bottom:1px}
 .due-amount-value{font-size:13px;font-weight:800;color:#172033;
 line-height:1.1;white-space:nowrap}
@@ -574,7 +576,7 @@ color:#fff;font-variant-numeric:tabular-nums}
 #agentList{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:1px}
 
 /* =========================================================
-   ★ PROFIT TAB — White + Dark Green Floating ★
+   ★ PROFIT TAB ★
 ========================================================= */
 .profit-filter-row{
 display:grid;grid-template-columns:1fr 1fr 1.25fr;
@@ -583,16 +585,12 @@ gap:5px;margin-bottom:8px
 .profit-filter-row select{
 height:34px;font-size:10px;padding:0 6px;border-radius:8px;min-width:0
 }
-
-/* ★ PROFIT CARDS — সাদা ব্যাকগ্রাউন্ড ★ */
 .profit-cards{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:6px;
 margin-bottom:8px;
 }
-
-/* ------ সাধারণ কার্ড (বিক্রয় × ২) ------ */
 .profit-card.sales,
 .profit-card.cost{
 border-radius:10px;
@@ -644,9 +642,6 @@ color:#6B7280;
 margin-left:2px;
 }
 
-/* =========================================================
-   ★ মোট প্রফিট — সাদা ব্যাকগ্রাউন্ড ★
-========================================================= */
 .profit-card.profit-total{
 grid-column:1 / -1;
 border-radius:12px;
@@ -668,7 +663,6 @@ transition:all .18s ease;
 }
 .profit-card.profit-total:active{transform:scale(.98)}
 
-/* সূক্ষ্ম সবুজ কর্নার গ্লো */
 .profit-card.profit-total::before{
 content:"";
 position:absolute;
@@ -719,7 +713,6 @@ color:inherit;
 opacity:.85;
 }
 
-/* ★ লাভ = গাঢ় সবুজ গ্রেডিয়েন্ট + ভাসমান শ্যাডো ★ */
 .profit-card.profit-total .profit-card-value.positive{
 background:linear-gradient(135deg,#065F46 0%,#047857 50%,#065F46 100%);
 -webkit-background-clip:text;
@@ -738,8 +731,6 @@ background-clip:text;
 -webkit-text-fill-color:transparent;
 color:transparent;
 }
-
-/* লোকসান = লাল + ভাসমান শ্যাডো */
 .profit-card.profit-total .profit-card-value.negative{
 color:#DC2626;
 filter:
@@ -750,9 +741,6 @@ filter:
 color:#DC2626;
 }
 
-/* =========================================================
-   ★ PROFIT LIST — Customer/Agent-এর মতো ট্রানজেকশন কার্ড ★
-========================================================= */
 #profitList{
 overflow-y:auto;
 -webkit-overflow-scrolling:touch;
@@ -1922,6 +1910,202 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 .profit-card.profit-total .profit-card-value{font-size:23px}
 .profit-card.profit-total .profit-card-value span{font-size:10px}
 }
+
+/* =========================================================
+   ★★★ MONTHLY DUE CHARGE (10%) — FINAL V5 LOGIC ★★★
+========================================================= */
+
+/* ★ ছোট popup — রেট চেকের মতো ★ */
+.charge-mini-popup {
+position: absolute;
+left: 50%;
+top: calc(100% + 8px);
+transform: translateX(-50%) translateY(5px);
+background: #111827;
+color: #fff;
+border-radius: 10px;
+padding: 10px 12px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 16px;
+box-shadow: 0 5px 16px rgba(0,0,0,.18);
+opacity: 0;
+visibility: hidden;
+transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+z-index: 9999;
+cursor: pointer;
+white-space: nowrap;
+}
+.charge-mini-popup.show {
+opacity: 1;
+visibility: visible;
+transform: translateX(-50%) translateY(0);
+}
+.charge-mini-popup:active { transform: translateX(-50%) scale(.96); }
+.charge-mini-popup:after {
+content: "";
+position: absolute;
+left: 50%;
+top: -5px;
+transform: translateX(-50%) rotate(45deg);
+width: 10px;
+height: 10px;
+background: #111827;
+}
+.charge-mini-left { text-align: left; }
+.charge-mini-label { color: #aeb8c7; font-size: 9px; line-height: 1; margin-bottom: 3px; font-weight: 700; }
+.charge-mini-amount { font-size: 15px; font-weight: 900; color: #FCD34D; line-height: 1; }
+.charge-mini-arrow { color: #64748B; font-size: 16px; font-weight: 900; margin-left: 4px; }
+
+/* ★★ Full Details Sheet ★★ */
+.charge-details-backdrop{
+position:fixed;inset:0;
+background:rgba(15,23,42,.55);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+opacity:0;visibility:hidden;
+transition:all .25s ease;
+z-index:9998;
+}
+.charge-details-backdrop.show{opacity:1;visibility:visible}
+
+.charge-details-sheet{
+position:fixed;
+left:0;right:0;bottom:0;
+max-height:90vh;
+background:#e8ecf3;
+border-radius:22px 22px 0 0;
+opacity:0;visibility:hidden;
+transform:translateY(100%);
+transition:all .32s cubic-bezier(.32,.72,0,1);
+z-index:9999;
+display:flex;flex-direction:column;
+overflow:hidden;
+box-shadow:0 -10px 40px rgba(0,0,0,.25);
+}
+.charge-details-sheet.show{
+opacity:1;visibility:visible;
+transform:translateY(0);
+}
+
+.charge-details-header{
+background:#e8ecf3;
+padding:max(18px,env(safe-area-inset-top)) 16px 16px;
+flex-shrink:0;
+border-bottom:1px solid rgba(197,202,211,.5);
+display:grid;
+grid-template-columns:38px 1fr 38px;
+align-items:center;
+gap:10px;
+position:relative;
+}
+.charge-details-header:before{
+content:"";position:absolute;
+top:8px;left:50%;transform:translateX(-50%);
+width:38px;height:4px;border-radius:2px;
+background:#c5cad3;
+}
+.charge-details-back{
+width:38px;height:38px;border:0;border-radius:11px;
+background:#e8ecf3;color:#475569;font-size:18px;font-weight:900;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;padding:0;flex-shrink:0;
+box-shadow:2px 2px 5px #c5cad3,-2px -2px 5px #fff;
+transition:all .12s ease;
+}
+.charge-details-back:active{
+box-shadow:inset 2px 2px 5px #c5cad3,inset -2px -2px 5px #fff;
+transform:scale(.95);
+}
+.charge-details-month{
+text-align:center;
+font-size:15px;
+font-weight:900;
+color:#0F172A;
+letter-spacing:-.2px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+line-height:1.2;
+}
+.charge-details-content{
+flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+padding:18px 18px max(20px,env(safe-area-inset-bottom));
+}
+.charge-info-card{
+background:#e8ecf3;
+border-radius:16px;
+padding:18px 20px;
+margin-bottom:14px;
+box-shadow:
+  4px 4px 10px #c5cad3,
+  -4px -4px 10px #ffffff,
+  inset 0 0 0 1px rgba(255,255,255,.5);
+}
+.charge-info-row{
+display:flex;justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px dashed rgba(197,202,211,.7);
+}
+.charge-info-row:last-child{border-bottom:0;padding-bottom:0}
+.charge-info-row:first-child{padding-top:0}
+.charge-info-label{
+font-size:12.5px;font-weight:700;
+color:#64748B;
+display:flex;align-items:center;gap:8px;
+}
+.charge-info-label:before{
+content:"";width:5px;height:5px;
+border-radius:50%;background:#94A3B8;flex-shrink:0;
+}
+.charge-info-value{
+font-size:14.5px;font-weight:900;color:#0F172A;
+font-variant-numeric:tabular-nums;
+text-align:right;max-width:60%;
+overflow:hidden;text-overflow:ellipsis;
+}
+.charge-info-value.highlight{
+color:#B45309;
+background:rgba(245,158,11,.18);
+padding:6px 14px;border-radius:9px;
+font-size:16px;
+box-shadow:inset 0 0 0 1px rgba(245,158,11,.3);
+}
+.charge-close-btn{
+width:100%;height:52px;
+border:0;border-radius:14px;
+background:linear-gradient(135deg,#111827 0%,#1F2937 100%);
+color:#fff;
+font-size:13.5px;font-weight:900;
+letter-spacing:.3px;cursor:pointer;
+box-shadow:
+  0 6px 18px rgba(17,24,39,.3),
+  inset 0 1px 0 rgba(255,255,255,.1);
+transition:all .15s ease;
+font-family:inherit;
+display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.charge-close-btn:before{
+content:"✓";font-size:15px;font-weight:900;
+}
+.charge-close-btn:active{
+transform:scale(.97);
+background:linear-gradient(135deg,#0F172A 0%,#111827 100%);
+}
+
+@media(max-width:400px){
+.charge-details-content{padding:16px 14px 20px}
+.charge-info-card{padding:16px 18px;border-radius:14px}
+.charge-info-label{font-size:12px}
+.charge-info-value{font-size:14px}
+.charge-info-value.highlight{font-size:15px}
+.charge-details-month{font-size:14px}
+.charge-mini-amount{font-size:13px}
+}
+
+/* ★★★ NEW FEATURE CSS শেষ ★★★ */
 </style>
 </head>
 <body>
@@ -2094,9 +2278,19 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 <div id="selectedCustomerInfo" class="selected-customer">
 <div class="selected-empty">Select a customer</div>
 </div>
-<div class="due-amount-box">
+<!-- ★ বর্তমান বাকি কার্ড ★ -->
+<div class="due-amount-box" onclick="showMiniPopup(event)">
 <div class="due-amount-label">বর্তমান বাকি</div>
 <div id="selectedDueAmount" class="due-amount-value">0.000 <span>KD</span></div>
+
+<!-- ★ ছোট কালো পপআপ ★ -->
+<div class="charge-mini-popup" id="chargeMiniPopup" onclick="openDetailsPopup()">
+<div class="charge-mini-left">
+<div class="charge-mini-label">ওভার ডিউ চার্জ</div>
+<div class="charge-mini-amount" id="chargeMiniAmount">0.000 KD</div>
+</div>
+<div class="charge-mini-arrow">›</div>
+</div>
 </div>
 <div class="total-due-box">
 <div class="total-due-label">সর্বমোট বাকি</div>
@@ -2292,6 +2486,35 @@ input[type="date"],select{-webkit-appearance:auto;appearance:auto}
 </div>
 
 <div class="call-toast" id="callToast"></div>
+
+<!-- =========================================================
+   ★★★ CHARGE DETAILS SHEET — NEW FEATURE ★★★
+========================================================= -->
+<div class="charge-details-backdrop" id="chargeDetailsBackdrop" onclick="closeDetailsPopup()"></div>
+<div class="charge-details-sheet" id="chargeDetailsSheet">
+  <div class="charge-details-header">
+    <button class="charge-details-back" type="button" onclick="closeDetailsPopup()">‹</button>
+    <div class="charge-details-month" id="detailsMonth">—</div>
+    <div></div>
+  </div>
+  <div class="charge-details-content">
+    <div class="charge-info-card">
+      <div class="charge-info-row">
+        <div class="charge-info-label">কাস্টমার নাম</div>
+        <div class="charge-info-value" id="detailsCustomer">—</div>
+      </div>
+      <div class="charge-info-row">
+        <div class="charge-info-label">চার্জযোগ্য বাকি</div>
+        <div class="charge-info-value" id="detailsDue">0.000 KD</div>
+      </div>
+      <div class="charge-info-row">
+        <div class="charge-info-label">মোট চার্জ</div>
+        <div class="charge-info-value highlight" id="detailsCharge">0.000 KD</div>
+      </div>
+    </div>
+    <button class="charge-close-btn" type="button" onclick="closeDetailsPopup()">বন্ধ করুন</button>
+  </div>
+</div>
 
 <script>
 /* =========================================================
@@ -3088,6 +3311,167 @@ sortTransactionsNewestFirst(allTransactionsData)
 function getCustomerTransactions(customerId){
 return allTransactionsData.filter(t=>String(t.customerId||'')===String(customerId))
 }
+
+/* =========================================================
+   ★★★ MONTHLY DUE CHARGE (10%) — FINAL LOGIC ★★★
+========================================================= */
+const MONTHLY_CHARGE_RATE = 0.10; // ১০%
+
+function calculateMonthlyCharge(customerId) {
+  const id = String(customerId || '').trim();
+  if (!id) return null;
+
+  const custTxns = allTransactionsData.filter(
+    t => String(t.customerId || '').trim() === id
+  );
+  if (!custTxns.length) return null;
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth(); // 0-11
+
+  // ১. উইন্ডো স্টার্ট (গত মাসের শেষ দিন) এবং এন্ড (চলতি মাসের ১০ তারিখ)
+  const lastMonthDate = new Date(currentYear, currentMonth, 0);
+  const windowStart = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), lastMonthDate.getDate(), 23, 59, 59);
+  
+  // ★★★ এখানে ১০ তারিখ পর্যন্ত সেট করা হয়েছে ★★★
+  const windowEnd = new Date(currentYear, currentMonth, 10, 23, 59, 59);
+
+  let dueBeforeWindow = 0; // উইন্ডো শুরুর আগের মোট বাকি
+  let windowPayments = 0;  // ১-১০ তারিখের মধ্যে দেওয়া পেমেন্ট
+
+  custTxns.forEach(t => {
+    const d = getFullTransactionDate(t.date || t.Date || t.transactionDate || t.TransactionDate || '');
+    if (!d) return;
+
+    const kd = number(t.kdAmount !== undefined ? t.kdAmount : t.kd);
+    if (kd <= 0) return;
+
+    // উইন্ডো শুরুর আগের লেনদেন (গত মাসের শেষ দিন পর্যন্ত)
+    if (d < windowStart) {
+      if (isDueTransaction(t)) dueBeforeWindow += kd;
+      else if (isPaymentTransaction(t)) dueBeforeWindow -= kd;
+    } 
+    // উইন্ডোর ভেতরের লেনদেন (গত মাসের শেষ দিন থেকে ১০ তারিখ)
+    else if (d >= windowStart && d <= windowEnd) {
+      // ★★★ শুধুমাত্র পেমেন্ট বিয়োগ হবে, নতুন বাকি যোগ হবে না ★★★
+      if (isPaymentTransaction(t)) {
+        windowPayments += kd;
+      }
+    }
+  });
+
+  if (dueBeforeWindow < 0) dueBeforeWindow = 0;
+
+  // ২. মূল হিসাব: পূর্বের বাকি থেকে এই মাসের ১-১০ তারিখের পেমেন্ট বিয়োগ
+  let chargeableDue = dueBeforeWindow - windowPayments;
+  
+  // বাকি কখনো মাইনাস হবে না
+  if (chargeableDue < 0) chargeableDue = 0;
+
+  // ৩. চার্জ হিসাব (১০%)
+  const chargeKD = chargeableDue * MONTHLY_CHARGE_RATE;
+
+  const monthNames = [
+    'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+    'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+  ];
+
+  // ★★★ মাস এবং সাল ঠিক করার নতুন লজিক ★★★
+  const today = new Date();
+  const todayDate = today.getDate(); // আজকের তারিখ (১-৩১)
+  
+  let displayMonth = currentMonth;
+  let displayYear = currentYear;
+  
+  // যদি আজকের তারিখ ১ থেকে ১০ এর মধ্যে হয়, তবে আগের মাসের নাম ও সাল দেখাবে
+  if (todayDate >= 1 && todayDate <= 10) {
+    displayMonth = currentMonth - 1;
+    if (displayMonth < 0) {
+      displayMonth = 11; // ডিসেম্বর (11) হয়ে যাবে
+      displayYear = currentYear - 1; // আগের বছর
+    }
+  }
+  // ★★★ লজিক শেষ ★★★
+
+  return {
+    monthLabel: monthNames[displayMonth] + ' ' + displayYear,
+    dueKD: chargeableDue,
+    chargeKD: chargeKD
+  };
+}
+
+function showMiniPopup(event) {
+  if(event) event.stopPropagation();
+  const id = $('customerPageSelect')?.value;
+  if (!id || id === 'ALL_TRANSACTIONS') return;
+  
+  const customer = findCustomer(id);
+  if(!customer) return;
+  
+  const chargeData = calculateMonthlyCharge(customer.customerId);
+  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
+  
+  // যদি চার্জ না থাকে বা ০ হয়, তবে পপআপ দেখাবে না
+  if (!chargeData || chargeData.chargeKD <= 0) {
+    if(popup) popup.classList.remove('show');
+    return;
+  }
+  
+  // পপআপে চার্জের এমাউন্ট দেখাবে
+  $('chargeMiniAmount').textContent = fmtKD(chargeData.chargeKD) + ' KD';
+  
+  // ★ পপআপ দেখানোর আগে বাইরে ক্লিক লিসেনার রিমুভ করুন
+  document.removeEventListener('click', closeMiniPopup);
+  
+  if(popup) popup.classList.add('show');
+  
+  // ★ পপআপ ওপেন হওয়ার পর বাইরে ক্লিক করলে বন্ধ হবে
+  setTimeout(() => {
+    document.addEventListener('click', closeMiniPopup);
+  }, 50);
+}
+
+function closeMiniPopup(e) {
+  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
+  // ★ যদি পপআপের ভেতরে ক্লিক হয়, তবে বন্ধ হবে না
+  if (e && popup && popup.contains(e.target)) return;
+  
+  if(popup) popup.classList.remove('show');
+  document.removeEventListener('click', closeMiniPopup);
+}
+
+function openDetailsPopup() {
+  // ★ ছোট চার্জ পপআপ বন্ধ করুন
+  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
+  if(popup) popup.classList.remove('show');
+  document.removeEventListener('click', closeMiniPopup);
+
+  const id = $('customerPageSelect')?.value;
+  if (!id || id === 'ALL_TRANSACTIONS') return;
+  
+  const customer = findCustomer(id);
+  if(!customer) return;
+
+  const chargeData = calculateMonthlyCharge(customer.customerId);
+  if (!chargeData || chargeData.chargeKD <= 0) return;
+
+  $('detailsMonth').textContent = chargeData.monthLabel;
+  $('detailsCustomer').textContent = customer.customerName || '—';
+  $('detailsDue').textContent = fmtKD(chargeData.dueKD) + ' KD';
+  $('detailsCharge').textContent = fmtKD(chargeData.chargeKD) + ' KD';
+
+  $('chargeDetailsBackdrop').classList.add('show');
+  $('chargeDetailsSheet').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetailsPopup() {
+  $('chargeDetailsBackdrop').classList.remove('show');
+  $('chargeDetailsSheet').classList.remove('show');
+  document.body.style.overflow = '';
+}
+/* ★★★ MONTHLY DUE CHARGE LOGIC END ★★★ */
 
 /* CUSTOMER INFO */
 function renderCustomerInfo(customer){
