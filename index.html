@@ -2105,6 +2105,62 @@ background:linear-gradient(135deg,#0F172A 0%,#111827 100%);
 .charge-mini-amount{font-size:13px}
 }
 
+/* =========================================================
+   ★★★ PROFIT KD MINI POPUP — NEW FEATURE ★★★
+========================================================= */
+.kd-mini-popup{
+position:absolute;
+left:50%;
+top:calc(100% + 8px);
+transform:translateX(-50%) translateY(5px);
+background:#111827;
+color:#fff;
+border-radius:10px;
+padding:10px 16px;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 5px 16px rgba(0,0,0,.22);
+opacity:0;
+visibility:hidden;
+transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
+z-index:9999;
+cursor:pointer;
+white-space:nowrap;
+min-width:120px;
+}
+.kd-mini-popup.show{
+opacity:1;
+visibility:visible;
+transform:translateX(-50%) translateY(0);
+}
+.kd-mini-popup:active{transform:translateX(-50%) scale(.96)}
+.kd-mini-popup:after{
+content:"";
+position:absolute;
+left:50%;
+top:-5px;
+transform:translateX(-50%) rotate(45deg);
+width:10px;
+height:10px;
+background:#111827;
+}
+.kd-mini-kd{
+font-size:18px;
+font-weight:900;
+line-height:1;
+color:#4ADE80;
+white-space:nowrap;
+font-variant-numeric:tabular-nums;
+}
+.kd-mini-kd span{
+font-size:10px;
+font-weight:800;
+color:#4ADE80;
+opacity:.85;
+margin-left:3px;
+}
+
 /* ★★★ NEW FEATURE CSS শেষ ★★★ */
 </style>
 </head>
@@ -2365,7 +2421,10 @@ background:linear-gradient(135deg,#0F172A 0%,#111827 100%);
 <div id="profitTotal" class="profit-card-value positive">0 <span>TK</span></div>
 </div>
 </div>
-
+<!-- ★ PROFIT KD MINI POPUP ★ -->
+<div class="kd-mini-popup" id="kdMiniPopup">
+<div class="kd-mini-kd" id="kdMiniKD">0.000 <span>KD</span></div>
+</div>
 <div id="profitList" class="list">
 <div class="empty">Loading...</div>
 </div>
@@ -4328,6 +4387,44 @@ showToast('⚠️ '+(e.message||e));
 }
 
 /* =========================================================
+   ★ PROFIT KD MINI POPUP ★
+========================================================= */
+function openProfitKdPopup(event, profitTK){
+if(event) event.stopPropagation();
+
+const kd = number(profitTK) / PROFIT_RATE_PER_KD;
+const negative = kd < 0;
+const absKd = Math.abs(kd).toLocaleString('en-US',{
+minimumFractionDigits:3,
+maximumFractionDigits:3
+});
+
+const el = $('kdMiniKD');
+if(el){
+el.innerHTML = (negative?'−':'') + absKd + ' <span>KD</span>';
+el.style.color = negative ? '#FCA5A5' : '#4ADE80';
+}
+
+const popup = $('kdMiniPopup');
+if(!popup) return;
+
+document.removeEventListener('click', closeProfitKdPopup);
+popup.classList.add('show');
+
+setTimeout(()=>{
+document.addEventListener('click', closeProfitKdPopup);
+},50);
+}
+
+function closeProfitKdPopup(e){
+const popup = $('kdMiniPopup');
+if(e && popup && popup.contains(e.target)) return;
+if(popup) popup.classList.remove('show');
+document.removeEventListener('click', closeProfitKdPopup);
+}
+/* ★ PROFIT KD MINI POPUP END ★ */
+
+/* =========================================================
    ★ PROFIT PAGE (LOCAL ONLY — No API call) ★
 ========================================================= */
 function renderProfitPage(){
@@ -4433,7 +4530,12 @@ $('profitTotalBD').innerHTML = fmtIndian(totalBD) + ' <span>TK</span>';
 const totalProfitEl = $('profitTotal');
 totalProfitEl.className = 'profit-card-value ' + (totalProfit >= 0 ? 'positive' : 'negative');
 totalProfitEl.innerHTML = (totalProfit < 0 ? '−' : '') + fmtIndian(Math.abs(totalProfit)) + '<span>TK</span>';
-
+/* ★ নতুন ফিচার: প্রফিট কার্ডে ক্লিক করলে KD popup ★ */
+const profitCardTotal = totalProfitEl.closest('.profit-total');
+if(profitCardTotal){
+profitCardTotal.style.cursor = 'pointer';
+profitCardTotal.onclick = function(e){ openProfitKdPopup(e, totalProfit); };
+}
 /* Render list — Customer/Agent-এর মতো */
 const list = $('profitList');
 list.innerHTML = '';
