@@ -652,7 +652,7 @@ box-shadow:
   0 3px 10px rgba(0,0,0,.06),
   inset 0 1px 0 rgba(255,255,255,.9);
 position:relative;
-overflow:hidden;
+overflow:visible; /* ★ এটা ঠিক করা হয়েছে ★ */
 text-align:center;
 display:flex;
 flex-direction:column;
@@ -2104,15 +2104,14 @@ background:linear-gradient(135deg,#0F172A 0%,#111827 100%);
 .charge-details-month{font-size:14px}
 .charge-mini-amount{font-size:13px}
 }
-
 /* =========================================================
    ★★★ PROFIT KD MINI POPUP — NEW FEATURE ★★★
 ========================================================= */
 .kd-mini-popup{
 position:absolute;
 left:50%;
-top:calc(100% + 8px);
-transform:translateX(-50%) translateY(5px);
+bottom:calc(100% - 2px);
+transform:translateX(-50%) translateY(-5px);
 background:#111827;
 color:#fff;
 border-radius:10px;
@@ -2124,7 +2123,7 @@ box-shadow:0 5px 16px rgba(0,0,0,.22);
 opacity:0;
 visibility:hidden;
 transition:opacity .18s ease, transform .18s ease, visibility .18s ease;
-z-index:9999;
+z-index:99999;
 cursor:pointer;
 white-space:nowrap;
 min-width:120px;
@@ -2139,11 +2138,12 @@ transform:translateX(-50%) translateY(0);
 content:"";
 position:absolute;
 left:50%;
-top:-5px;
+bottom:-5px;
 transform:translateX(-50%) rotate(45deg);
 width:10px;
 height:10px;
 background:#111827;
+z-index:-1;
 }
 .kd-mini-kd{
 font-size:18px;
@@ -2160,6 +2160,32 @@ color:#4ADE80;
 opacity:.85;
 margin-left:3px;
 }
+/* ★★★ PROFIT KD MINI POPUP CSS শেষ ★★★ */
+
+/* =========================================================
+   ★ CUSTOMER PAGE DROPDOWN TRIGGER (নতুন ফিচার) ★
+========================================================= */
+.customer-page-dd-trigger{
+width:100%;height:36px;border-radius:9px;
+background:#fff;border:1px solid #dfe3e9;
+padding:0 28px 0 8px;
+display:flex;align-items:center;justify-content:space-between;
+font-size:11px;font-weight:600;color:#172033;
+cursor:pointer;font-family:inherit;
+transition:all .15s ease;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+-webkit-user-select:none;user-select:none;
+text-align:left;
+position:relative;
+}
+.customer-page-dd-trigger .txt{
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+flex:1;min-width:0;
+}
+.customer-page-dd-trigger .chev{
+color:#94a3b8;font-size:10px;flex-shrink:0;margin-left:4px;
+}
+.customer-page-dd-trigger:active{transform:scale(.98);background:#f8fafc}
 
 /* ★★★ NEW FEATURE CSS শেষ ★★★ */
 </style>
@@ -2325,11 +2351,18 @@ margin-left:3px;
 <input id="customerTransactionDate" class="customer-date" type="text" autocomplete="off" readonly>
 <input id="customerDatePicker" type="date" onchange="selectCustomerDate(this.value)">
 </div>
-<select id="customerPageSelect">
-<option value="">Select Customer</option>
+
+<!-- ★★★ নতুন ফিচার: কাস্টম ড্রপডাউন ট্রিগার (পুরনো select এর বদলে) ★★★ -->
+<button type="button" class="customer-page-dd-trigger" id="customerPageTrigger" onclick="openCustomerPageSheet()">
+<span class="txt" id="customerPageTriggerText">All Transaction</span>
+<span class="chev">▼</span>
+</button>
+<!-- পুরনো select লুকানো আছে, ভেতরের লজিক ঠিক রাখার জন্য -->
+<select id="customerPageSelect" style="display:none;">
 <option value="ALL_TRANSACTIONS">All Transaction</option>
 </select>
 </div>
+
 <div class="customer-selected-row">
 <div id="selectedCustomerInfo" class="selected-customer">
 <div class="selected-empty">Select a customer</div>
@@ -2416,15 +2449,17 @@ margin-left:3px;
 <div class="profit-card-label">মাসিক মোট বিক্রয় (টাকা)</div>
 <div id="profitTotalBD" class="profit-card-value">0 <span>TK</span></div>
 </div>
-<div class="profit-card profit-total">
+<!-- ★ PROFIT CARD — onclick সহ ★ -->
+<div class="profit-card profit-total" onclick="handleProfitCardClick(event)">
 <div class="profit-card-label">মাসিক মোট প্রফিট</div>
 <div id="profitTotal" class="profit-card-value positive">0 <span>TK</span></div>
-</div>
-</div>
-<!-- ★ PROFIT KD MINI POPUP ★ -->
-<div class="kd-mini-popup" id="kdMiniPopup">
+<!-- ★ পপআপ কার্ডের ভেতরেই ★ -->
+<div class="kd-mini-popup" id="kdMiniPopup" onclick="event.stopPropagation()">
 <div class="kd-mini-kd" id="kdMiniKD">0.000 <span>KD</span></div>
 </div>
+</div>
+</div>
+
 <div id="profitList" class="list">
 <div class="empty">Loading...</div>
 </div>
@@ -2472,7 +2507,7 @@ margin-left:3px;
 </div>
 </div>
 
-<!-- Full-Screen Customer Sheet -->
+<!-- Full-Screen Customer Sheet (Add Transaction-এর জন্য) -->
 <div class="customer-fs-backdrop" id="customerFsBackdrop"></div>
 <div class="customer-fs-sheet" id="customerFsSheet">
 <div class="customer-fs-search-wrap">
@@ -2482,6 +2517,18 @@ margin-left:3px;
 </div>
 </div>
 <div class="customer-fs-list" id="customerListDropdown"></div>
+</div>
+
+<!-- ★★★ NEW: Full-Screen Customer Sheet (Customer Page-এর জন্য) ★★★ -->
+<div class="customer-fs-backdrop" id="customerPageFsBackdrop" onclick="closeCustomerPageSheet()"></div>
+<div class="customer-fs-sheet" id="customerPageFsSheet">
+<div class="customer-fs-search-wrap">
+<div class="customer-fs-search-box">
+<input class="customer-fs-search" type="text" placeholder="🔍 Search customer..." id="customerPageSearchInput" autocomplete="off" oninput="renderCustomerPageSheetList(this.value)">
+<button class="customer-fs-close" type="button" onclick="closeCustomerPageSheet()">✕</button>
+</div>
+</div>
+<div class="customer-fs-list" id="customerPageListDropdown"></div>
 </div>
 
 <!-- =========================================================
@@ -2892,12 +2939,13 @@ if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldVal
 select.classList.toggle('has-value',select.value!=='');
 if(typeof refreshCustomerCustomUI==='function')refreshCustomerCustomUI();
 }
+
 function updateCustomerDropdown(){
 const select=$('customerPageSelect');
 if(!select)return;
 const search=$('customerSearch').value.trim().toLowerCase();
 const oldValue=select.value;
-select.innerHTML='<option value="">Select Customer</option>';
+select.innerHTML='';
 const all=document.createElement('option');
 all.value='ALL_TRANSACTIONS';
 all.textContent='All Transaction';
@@ -2916,6 +2964,26 @@ f.appendChild(o)
 select.appendChild(f);
 if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldValue;
 else select.value='ALL_TRANSACTIONS';
+// ★ নতুন ফিচার: ট্রিগার টেক্সট আপডেট ★
+updateCustomerPageTriggerText();
+}
+
+function updateCustomerPageTriggerText(){
+const select=$('customerPageSelect');
+const triggerText=$('customerPageTriggerText');
+if(!select||!triggerText)return;
+const val=select.value;
+if(val==='ALL_TRANSACTIONS'||!val){
+triggerText.textContent='All Transaction';
+return;
+}
+const cust=findCustomer(val);
+if(cust){
+triggerText.textContent=cust.customerName;
+}else{
+const opt=[...select.options].find(o=>o.value===val);
+triggerText.textContent=opt?opt.textContent.split(' • ')[0]:'Select Customer';
+}
 }
 
 function safeRefreshCustomerSelect(){
@@ -4387,8 +4455,24 @@ showToast('⚠️ '+(e.message||e));
 }
 
 /* =========================================================
-   ★ PROFIT KD MINI POPUP ★
+   ★ PROFIT CARD CLICK HANDLER (সরাসরি HTML onclick থেকে)
 ========================================================= */
+function handleProfitCardClick(event){
+    if(event) event.stopPropagation();
+    
+    // বর্তমানে দেখানো প্রফিট ভ্যালু বের করুন
+    const profitValEl = $('profitTotal');
+    if(!profitValEl) return;
+    
+    let rawText = profitValEl.textContent || '0';
+    let isNegative = rawText.includes('−') || rawText.includes('-');
+    let cleanNum = parseFloat(rawText.replace(/[^\d.]/g, '')) || 0;
+    let totalProfit = isNegative ? -cleanNum : cleanNum;
+    
+    // পপআপ ওপেন
+    openProfitKdPopup(event, totalProfit);
+}
+
 function openProfitKdPopup(event, profitTK){
 if(event) event.stopPropagation();
 
@@ -4530,12 +4614,7 @@ $('profitTotalBD').innerHTML = fmtIndian(totalBD) + ' <span>TK</span>';
 const totalProfitEl = $('profitTotal');
 totalProfitEl.className = 'profit-card-value ' + (totalProfit >= 0 ? 'positive' : 'negative');
 totalProfitEl.innerHTML = (totalProfit < 0 ? '−' : '') + fmtIndian(Math.abs(totalProfit)) + '<span>TK</span>';
-/* ★ নতুন ফিচার: প্রফিট কার্ডে ক্লিক করলে KD popup ★ */
-const profitCardTotal = totalProfitEl.closest('.profit-total');
-if(profitCardTotal){
-profitCardTotal.style.cursor = 'pointer';
-profitCardTotal.onclick = function(e){ openProfitKdPopup(e, totalProfit); };
-}
+
 /* Render list — Customer/Agent-এর মতো */
 const list = $('profitList');
 list.innerHTML = '';
@@ -5150,6 +5229,7 @@ const due=$('selectedDueAmount');
 if(due)due.innerHTML='All';
 renderAllCustomerTransactions()
 }
+updateCustomerPageTriggerText();
 },500)
 }
 try{
@@ -5208,7 +5288,8 @@ $('description').value='';
 $('descClear').classList.remove('show');
 closeAllNoteDropdowns();
 closeCustomerSheet();
-setCustomerToday()
+setCustomerToday();
+updateCustomerPageTriggerText();
 }
 
 function setupAgentDateFilters(){
@@ -5749,6 +5830,7 @@ selectMode=false;
 selectedKeys.clear();
 hideSelectPopup();
 updateSelectIcon();
+updateCustomerPageTriggerText();
 if(!id){
 $('selectedCustomerInfo').innerHTML='<div class="selected-empty">Select a customer</div>';
 $('selectedDueAmount').innerHTML='0.000 <span>KD</span>';
@@ -5839,7 +5921,7 @@ trigger.classList.add(getTypeClass());
 }
 
 /* =========================================================
-   ★ CUSTOMER FULL-SCREEN SHEET LOGIC ★
+   ★ CUSTOMER FULL-SCREEN SHEET LOGIC (Add Transaction)
 ========================================================= */
 function openCustomerSheet(){
 const backdrop=$('customerFsBackdrop');
@@ -5918,6 +6000,73 @@ if(search){
 search.addEventListener('input',function(){
 renderCustomerSheetList(this.value);
 });
+}
+}
+
+/* =========================================================
+   ★ CUSTOMER PAGE FULL-SCREEN SHEET (নতুন ফিচার)
+========================================================= */
+function openCustomerPageSheet(){
+const backdrop=$('customerPageFsBackdrop');
+const sheet=$('customerPageFsSheet');
+const search=$('customerPageSearchInput');
+if(!backdrop||!sheet||!search)return;
+search.value='';
+renderCustomerPageSheetList('');
+backdrop.classList.add('show');
+sheet.classList.add('show');
+document.body.style.overflow='hidden';
+}
+
+function closeCustomerPageSheet(){
+const backdrop=$('customerPageFsBackdrop');
+const sheet=$('customerPageFsSheet');
+if(backdrop)backdrop.classList.remove('show');
+if(sheet)sheet.classList.remove('show');
+document.body.style.overflow='';
+}
+
+function renderCustomerPageSheetList(filter){
+const list=$('customerPageListDropdown');
+const select=$('customerPageSelect');
+if(!list||!select)return;
+list.innerHTML='';
+const currentVal=select.value;
+const q=(filter||'').trim().toLowerCase();
+let count=0;
+
+Array.from(select.options).forEach(opt=>{
+if(!opt.value)return;
+if(q&&!opt.textContent.toLowerCase().includes(q))return;
+count++;
+const item=document.createElement('div');
+item.className='customer-dd-opt';
+if(opt.value===currentVal)item.classList.add('selected');
+item.dataset.val=opt.value;
+const nameSpan=document.createElement('span');
+nameSpan.textContent=opt.textContent;
+const check=document.createElement('span');
+check.className='cd-check';
+check.textContent='✓';
+item.appendChild(nameSpan);
+item.appendChild(check);
+item.addEventListener('click',function(e){
+e.stopPropagation();
+select.value=this.dataset.val;
+select.dispatchEvent(new Event('change',{bubbles:true}));
+updateCustomerPageTriggerText();
+closeCustomerPageSheet();
+});
+list.appendChild(item);
+});
+
+if(!count){
+const empty=document.createElement('div');
+empty.className='customer-dd-empty';
+empty.style.padding='30px 14px';
+empty.style.textAlign='center';
+empty.textContent='No customer found';
+list.appendChild(empty);
 }
 }
 
@@ -6079,6 +6228,7 @@ refreshNoteCustomUI();
 refreshAgentOptionCustomUI();
 refreshCustomerCustomUI();
 refreshAllDropdownColors();
+updateCustomerPageTriggerText();
 },100);
 
 /* =========================================================
