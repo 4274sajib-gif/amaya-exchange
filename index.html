@@ -3489,17 +3489,31 @@ function calculateMonthlyCharge(customerId) {
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); // 0-11
+  const currentMonth = now.getMonth();
+  const todayDate = now.getDate();
 
-  // ১. উইন্ডো স্টার্ট (গত মাসের শেষ দিন) এবং এন্ড (চলতি মাসের ১০ তারিখ)
+  const monthNames = [
+    'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+    'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+  ];
+
+  if (todayDate >= 11) {
+    const currentDue = calculateCustomerDueFromTransactions(id);
+    const chargeKD = currentDue * MONTHLY_CHARGE_RATE;
+
+    return {
+      monthLabel: monthNames[currentMonth] + ' ' + currentYear,
+      dueKD: currentDue,
+      chargeKD: chargeKD
+    };
+  }
+
   const lastMonthDate = new Date(currentYear, currentMonth, 0);
   const windowStart = new Date(lastMonthDate.getFullYear(), lastMonthDate.getMonth(), lastMonthDate.getDate(), 23, 59, 59);
-  
-  // ★★★ এখানে ১০ তারিখ পর্যন্ত সেট করা হয়েছে ★★★
   const windowEnd = new Date(currentYear, currentMonth, 10, 23, 59, 59);
 
-  let dueBeforeWindow = 0; // উইন্ডো শুরুর আগের মোট বাকি
-  let windowPayments = 0;  // ১-১০ তারিখের মধ্যে দেওয়া পেমেন্ট
+  let dueBeforeWindow = 0;
+  let windowPayments = 0;
 
   custTxns.forEach(t => {
     const d = getFullTransactionDate(t.date || t.Date || t.transactionDate || t.TransactionDate || '');
@@ -3508,14 +3522,10 @@ function calculateMonthlyCharge(customerId) {
     const kd = number(t.kdAmount !== undefined ? t.kdAmount : t.kd);
     if (kd <= 0) return;
 
-    // উইন্ডো শুরুর আগের লেনদেন (গত মাসের শেষ দিন পর্যন্ত)
     if (d < windowStart) {
       if (isDueTransaction(t)) dueBeforeWindow += kd;
       else if (isPaymentTransaction(t)) dueBeforeWindow -= kd;
-    } 
-    // উইন্ডোর ভেতরের লেনদেন (গত মাসের শেষ দিন থেকে ১০ তারিখ)
-    else if (d >= windowStart && d <= windowEnd) {
-      // ★★★ শুধুমাত্র পেমেন্ট বিয়োগ হবে, নতুন বাকি যোগ হবে না ★★★
+    } else if (d >= windowStart && d <= windowEnd) {
       if (isPaymentTransaction(t)) {
         windowPayments += kd;
       }
@@ -3524,36 +3534,17 @@ function calculateMonthlyCharge(customerId) {
 
   if (dueBeforeWindow < 0) dueBeforeWindow = 0;
 
-  // ২. মূল হিসাব: পূর্বের বাকি থেকে এই মাসের ১-১০ তারিখের পেমেন্ট বিয়োগ
   let chargeableDue = dueBeforeWindow - windowPayments;
-  
-  // বাকি কখনো মাইনাস হবে না
   if (chargeableDue < 0) chargeableDue = 0;
 
-  // ৩. চার্জ হিসাব (১০%)
   const chargeKD = chargeableDue * MONTHLY_CHARGE_RATE;
 
-  const monthNames = [
-    'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
-    'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
-  ];
-
-  // ★★★ মাস এবং সাল ঠিক করার নতুন লজিক ★★★
-  const today = new Date();
-  const todayDate = today.getDate(); // আজকের তারিখ (১-৩১)
-  
-  let displayMonth = currentMonth;
+  let displayMonth = currentMonth - 1;
   let displayYear = currentYear;
-  
-  // যদি আজকের তারিখ ১ থেকে ১০ এর মধ্যে হয়, তবে আগের মাসের নাম ও সাল দেখাবে
-  if (todayDate >= 1 && todayDate <= 10) {
-    displayMonth = currentMonth - 1;
-    if (displayMonth < 0) {
-      displayMonth = 11; // ডিসেম্বর (11) হয়ে যাবে
-      displayYear = currentYear - 1; // আগের বছর
-    }
+  if (displayMonth < 0) {
+    displayMonth = 11;
+    displayYear = currentYear - 1;
   }
-  // ★★★ লজিক শেষ ★★★
 
   return {
     monthLabel: monthNames[displayMonth] + ' ' + displayYear,
