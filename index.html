@@ -5251,7 +5251,13 @@ $('app').classList.remove('hidden');
 setToday();
 setCustomerToday();
 setupAgentDateFilters();
-applyRoleAccess();
+const savedPanel = sessionStorage.getItem('amaya_active_panel');
+let panelToOpen = 'transaction';
+if(savedPanel === 'panelCustomer') panelToOpen = 'customer';
+else if(savedPanel === 'panelAgent') panelToOpen = 'agent';
+else if(savedPanel === 'panelProfit') panelToOpen = 'profit';
+sessionStorage.removeItem('amaya_active_panel');
+applyRoleAccess('panel' + panelToOpen.charAt(0).toUpperCase() + panelToOpen.slice(1));
 if(getRole()==='admin'){
 setTimeout(()=>{
 const s=$('customerPageSelect');
@@ -5840,6 +5846,8 @@ if(btn)btn.classList.add('spinning');
 showSync('Refreshing...','syncing');
 savedAgentSelection='';
 savedAgentOptionSelection='';
+const activePanelId = document.querySelector('.panel.active')?.id || 'panelTransaction';
+sessionStorage.setItem('amaya_active_panel', activePanelId);
 setTimeout(()=>{location.reload()},400)
 }
 
