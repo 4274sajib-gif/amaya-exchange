@@ -2187,6 +2187,26 @@ color:#94a3b8;font-size:10px;flex-shrink:0;margin-left:4px;
 }
 .customer-page-dd-trigger:active{transform:scale(.98);background:#f8fafc}
 
+/* =========================================================
+   ★ CUSTOMER LIST GREEN PILL (নতুন ফিচার) ★
+========================================================= */
+.customer-opt-left{
+  display:flex;align-items:center;min-width:0;flex:1;
+}
+.customer-opt-name{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  margin-right:50px;
+}
+.customer-opt-pill{
+  background:#DCFCE7;color:#111827;
+  padding:4px 8px;border-radius:6px;
+  font-size:11px;font-weight:900;
+  white-space:nowrap;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:3px;
+  border:1px solid #bbf7d0;
+}
+.customer-opt-pill span{font-size:9px;opacity:.8;margin-left:2px;}
+
 /* ★★★ NEW FEATURE CSS শেষ ★★★ */
 </style>
 </head>
@@ -6026,6 +6046,12 @@ if(sheet)sheet.classList.remove('show');
 document.body.style.overflow='';
 }
 
+function normalizePhone(p){
+  return String(p || '')
+    .replace(/[০-৯]/g, d => '0123456789'['০১২৩৪৫৬৭৮৯'.indexOf(d)])
+    .replace(/[^\d]/g, '');
+}
+
 function renderCustomerPageSheetList(filter){
 const list=$('customerPageListDropdown');
 const select=$('customerPageSelect');
@@ -6033,23 +6059,64 @@ if(!list||!select)return;
 list.innerHTML='';
 const currentVal=select.value;
 const q=(filter||'').trim().toLowerCase();
+const qPhone = normalizePhone(q);
 let count=0;
 
 Array.from(select.options).forEach(opt=>{
 if(!opt.value)return;
-if(q&&!opt.textContent.toLowerCase().includes(q))return;
+
+// ★ নাম + নাম্বার দুটোই চেক ★
+if(q){
+  const nameMatch = opt.textContent.toLowerCase().includes(q);
+  const customerObj = customerData.find(c => String(c.customerId) === String(opt.value));
+  const phoneMatch = qPhone && customerObj && normalizePhone(customerObj.phone).includes(qPhone);
+  if(!nameMatch && !phoneMatch) return;
+}
+
 count++;
 const item=document.createElement('div');
 item.className='customer-dd-opt';
 if(opt.value===currentVal)item.classList.add('selected');
 item.dataset.val=opt.value;
-const nameSpan=document.createElement('span');
-nameSpan.textContent=opt.textContent;
+
+// ★ নাম এবং বাকি আলাদা করা (সুন্দর পিলের জন্য) ★
+let nameText = opt.textContent;
+let dueText = '';
+const parts = opt.textContent.split(' • ');
+if(parts.length > 1){
+  nameText = parts[0];
+  dueText = parts[1]; // যেমন: "250.000 KD"
+}
+
+const leftDiv = document.createElement('div');
+leftDiv.className = 'customer-opt-left';
+
+const nameSpan = document.createElement('span');
+nameSpan.className = 'customer-opt-name';
+nameSpan.textContent = nameText;
+leftDiv.appendChild(nameSpan);
+
+// বাকি থাকলে সুন্দর পিল দেখাবে
+if(dueText){
+  const pillSpan = document.createElement('span');
+  pillSpan.className = 'customer-opt-pill';
+  // "250.000 KD" থেকে "KD" আলাদা করা
+  const dueMatch = dueText.match(/^([\d.,]+)\s*(KD)?$/i);
+  if(dueMatch){
+    pillSpan.innerHTML = `${dueMatch[1]} <span>${dueMatch[2] || 'KD'}</span>`;
+  } else {
+    pillSpan.textContent = dueText;
+  }
+  leftDiv.appendChild(pillSpan);
+}
+
 const check=document.createElement('span');
 check.className='cd-check';
 check.textContent='✓';
-item.appendChild(nameSpan);
+
+item.appendChild(leftDiv);
 item.appendChild(check);
+
 item.addEventListener('click',function(e){
 e.stopPropagation();
 select.value=this.dataset.val;
