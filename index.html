@@ -2285,6 +2285,60 @@ font-weight:700;
 margin-right:8px;
 letter-spacing:.2px;
 }
+/* =========================================================
+   ★ CUSTOMER TRIGGER — DUE BADGE (নতুন ফিচার) ★
+========================================================= */
+.customer-dd-trigger{
+position:relative !important;
+}
+.customer-dd-trigger .cd-text{
+flex:1 !important;
+text-align:left !important;
+}
+.customer-dd-trigger .cd-due-badge{
+position:absolute !important;
+right:26px;
+top:50%;
+transform:translateY(-50%);
+margin:0 !important;
+padding:3px 8px;
+border-radius:6px;
+font-size:10.5px;
+font-weight:700;
+white-space:nowrap;
+display:inline-flex;
+align-items:center;
+gap:2px;
+letter-spacing:-.1px;
+transition:all .25s ease;
+opacity:.75;
+}
+.customer-dd-trigger .cd-due-badge span{
+font-size:8px;
+font-weight:600;
+opacity:.8;
+margin-left:1px;
+}
+.customer-dd-trigger .cd-chevron{
+position:absolute !important;
+right:12px;
+top:50%;
+transform:translateY(-50%);
+margin:0 !important;
+}
+.customer-dd-trigger.type-due .cd-due-badge{
+background:rgba(22,163,74,.10);
+color:#15803D;
+}
+.customer-dd-trigger.type-cash .cd-due-badge{
+background:rgba(124,58,237,.10);
+color:#6D28D9;
+}
+.customer-dd-trigger.type-payment .cd-due-badge{
+background:rgba(220,38,38,.10);
+color:#B91C1C;
+}
+.customer-dd-trigger.empty .cd-due-badge{display:none;}
 </style>
 </head>
 <body>
@@ -3020,7 +3074,8 @@ if(due>0)total+=due
 });
 totalDueKD=Math.max(0,total);
 const el=$('allCustomerDue');
-if(el)el.innerHTML=fmtKD(totalDueKD)+' <span>KD</span>'
+if(el)el.innerHTML=fmtKD(totalDueKD)+' <span>KD</span>';
+if(typeof refreshCustomerCustomUI === 'function') refreshCustomerCustomUI();
 }
 function renderTransactionCustomerDropdown(){
 const select=$('customerSelect');
@@ -6001,10 +6056,30 @@ const select=$('customerSelect');
 const trigger=$('customerTrigger');
 const triggerText=$('customerTriggerText');
 if(!select||!trigger||!triggerText)return;
+
+const oldBadge=trigger.querySelector('.cd-due-badge');
+if(oldBadge)oldBadge.remove();
+
 const selOpt=select.options[select.selectedIndex];
 const hasValue=!!(selOpt&&selOpt.value);
 triggerText.textContent=hasValue?selOpt.textContent:'Select Customer';
 trigger.classList.toggle('empty',!hasValue);
+
+if(hasValue){
+  const cust=findCustomer(select.value);
+  if(cust){
+    const due=getCustomerDue(cust);
+    if(due>0){
+      const badge=document.createElement('span');
+      badge.className='cd-due-badge';
+      badge.innerHTML=fmtKD(due)+'<span>KD</span>';
+      const chevron=trigger.querySelector('.cd-chevron');
+      if(chevron)trigger.insertBefore(badge,chevron);
+      else trigger.appendChild(badge);
+    }
+  }
+}
+
 const sheet=$('customerFsSheet');
 if(sheet&&sheet.classList.contains('show')){
 const search=$('customerSearchInput');
@@ -6414,6 +6489,8 @@ document.addEventListener('click', function(e){
     closeTotalDueMiniPopup();
   }
 });
+const _cs = $('customerSelect');
+if(_cs) _cs.addEventListener('change', refreshCustomerCustomUI);
 </script>
 <script>
 if('serviceWorker' in navigator){
