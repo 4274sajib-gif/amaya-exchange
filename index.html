@@ -6400,7 +6400,7 @@ function showTotalDueKdPopup(event){
   const tk = kd * 400;
   valueEl.innerHTML = fmtIndian(tk) + ' <span>TK</span>';
   popup.classList.add('show');
-  miniPopupHideTimer = setTimeout(() => popup.classList.remove('show'), 3000);
+  miniPopupHideTimer = setTimeout(() => popup.classList.remove('show'), 10000);
 }
 
 function closeTotalDueMiniPopup(){
