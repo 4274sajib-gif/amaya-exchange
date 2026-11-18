@@ -2526,7 +2526,7 @@ color:#B91C1C;
 <!-- ★ ছোট কালো পপআপ ★ -->
 <div class="charge-mini-popup" id="chargeMiniPopup" onclick="openDetailsPopup()">
 <div class="charge-mini-left">
-<div class="charge-mini-label">ওভার ডিউ চার্জ</div>
+<div class="charge-mini-label">ওভারডিউ চার্জ</div>
 <div class="charge-mini-amount" id="chargeMiniAmount">0.000 KD</div>
 </div>
 <div class="charge-mini-arrow">›</div>
@@ -6473,7 +6473,7 @@ function showTotalDueKdPopup(event){
   clearTimeout(miniPopupHideTimer);
   const kd = number(totalDueKD);
   const tk = kd * 400;
-  valueEl.innerHTML = fmtIndian(tk) + ' <span>TK</span>';
+  valueEl.innerHTML = Math.round(tk).toLocaleString('en-IN') + ' <span>TK</span>';
   popup.classList.add('show');
   miniPopupHideTimer = setTimeout(() => popup.classList.remove('show'), 10000);
 }
