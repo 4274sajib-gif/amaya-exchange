@@ -2339,6 +2339,12 @@ background:rgba(220,38,38,.10);
 color:#B91C1C;
 }
 .customer-dd-trigger.empty .cd-due-badge{display:none;}
+
+/* ★ Overdue Charge নোটের জন্য বিশেষ রঙ ★ */
+.tl-note.overdue-charge{
+color:#DC2626;
+font-weight:800;
+}
 </style>
 </head>
 <body>
@@ -3941,7 +3947,7 @@ let noteText=note;
 if(bdAmount){noteText+=(noteText?' • ':'')+fmtIndian(bdAmount)+' TK';}
 if(noteText){
 const noteEl=document.createElement('span');
-noteEl.className='tl-note';
+noteEl.className = (String(noteText).trim() === 'Overdue Charge') ? 'tl-note overdue-charge' : 'tl-note';
 noteEl.textContent=noteText;
 mid.appendChild(noteEl);
 }
