@@ -558,10 +558,39 @@ transition:background .12s ease,color .12s ease;
 -webkit-user-select:none;user-select:none}
 .ag-cust-line:hover{background:#EEF2FF;color:#4338CA}
 .ag-cust-line:active{background:#E0E7FF;transform:scale(.97)}
-.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1.25fr;
-gap:5px;margin-bottom:8px}
+
+/* ★ AGENT SELECT MODE (নতুন) ★ */
+.agent-filter-row{display:grid;grid-template-columns:.65fr .85fr 1fr 34px;
+gap:5px;margin-bottom:8px;align-items:center}
 .agent-filter-row select{height:34px;font-size:10px;
 padding:0 6px;border-radius:8px;min-width:0}
+.agent-select-btn{
+width:34px;height:34px;
+border:1px solid #dfe3e9;border-radius:8px;
+background:#eef2f6;color:#6B7280;
+font-size:14px;font-weight:900;
+display:flex;align-items:center;justify-content:center;
+padding:0;cursor:pointer;flex-shrink:0;
+transition:all .15s ease;
+}
+.agent-select-btn:active{transform:scale(.92)}
+.agent-select-btn.active{
+background:#3B82F6;color:#fff;border-color:#3B82F6;
+box-shadow:0 2px 8px rgba(59,130,246,.4);
+}
+.ag-card.selectable{cursor:pointer;padding-left:36px;position:relative}
+.ag-card.selectable .select-check{
+position:absolute;left:10px;top:50%;transform:translateY(-50%);
+width:18px;height:18px;border:2px solid #cbd5e1;border-radius:5px;
+background:#fff;display:flex;align-items:center;justify-content:center;
+font-size:11px;color:#fff;font-weight:900;line-height:1;
+}
+.ag-card.selectable.selected{background:#EFF6FF;border-color:#3B82F6;border-left-color:#3B82F6}
+.ag-card.selectable.selected .select-check{background:#3B82F6;border-color:#3B82F6}
+.ag-card.selectable.selected .select-check:after{content:"✓"}
+.ag-card.payment.selectable.selected{background:#FEE2E2;border-color:#3B82F6;border-left-color:#3B82F6}
+.ag-card.cash.selectable.selected{background:#E0E7FF;border-color:#3B82F6;border-left-color:#3B82F6}
+
 .agent-summary{display:grid;grid-template-columns:1fr 1fr;
 gap:6px;margin-bottom:8px}
 .agent-summary-box{background:#111827;color:#fff;
@@ -652,7 +681,7 @@ box-shadow:
   0 3px 10px rgba(0,0,0,.06),
   inset 0 1px 0 rgba(255,255,255,.9);
 position:relative;
-overflow:visible; /* ★ এটা ঠিক করা হয়েছে ★ */
+overflow:visible;
 text-align:center;
 display:flex;
 flex-direction:column;
@@ -2104,6 +2133,7 @@ background:linear-gradient(135deg,#0F172A 0%,#111827 100%);
 .charge-details-month{font-size:14px}
 .charge-mini-amount{font-size:13px}
 }
+
 /* =========================================================
    ★★★ PROFIT KD MINI POPUP — NEW FEATURE ★★★
 ========================================================= */
@@ -2160,7 +2190,6 @@ color:#4ADE80;
 opacity:.85;
 margin-left:3px;
 }
-/* ★★★ PROFIT KD MINI POPUP CSS শেষ ★★★ */
 
 /* =========================================================
    ★ CUSTOMER PAGE DROPDOWN TRIGGER (নতুন ফিচার) ★
@@ -2220,8 +2249,6 @@ color:#94a3b8;font-size:10px;flex-shrink:0;margin-left:4px;
   margin-left:2px;
   color:#111827;
 }
-
-/* ★★★ NEW FEATURE CSS শেষ ★★★ */
 
 /* =========================================================
    ★ TOTAL DUE MINI POPUP (নতুন ফিচার) ★
@@ -2285,6 +2312,7 @@ font-weight:700;
 margin-right:8px;
 letter-spacing:.2px;
 }
+
 /* =========================================================
    ★ CUSTOMER TRIGGER — DUE BADGE (নতুন ফিচার) ★
 ========================================================= */
@@ -2509,12 +2537,10 @@ font-weight:800;
 <input id="customerDatePicker" type="date" onchange="selectCustomerDate(this.value)">
 </div>
 
-<!-- ★★★ নতুন ফিচার: কাস্টম ড্রপডাউন ট্রিগার (পুরনো select এর বদলে) ★★★ -->
 <button type="button" class="customer-page-dd-trigger" id="customerPageTrigger" onclick="openCustomerPageSheet()">
 <span class="txt" id="customerPageTriggerText">All Transaction</span>
 <span class="chev">▼</span>
 </button>
-<!-- পুরনো select লুকানো আছে, ভেতরের লজিক ঠিক রাখার জন্য -->
 <select id="customerPageSelect" style="display:none;">
 <option value="ALL_TRANSACTIONS">All Transaction</option>
 </select>
@@ -2524,12 +2550,10 @@ font-weight:800;
 <div id="selectedCustomerInfo" class="selected-customer">
 <div class="selected-empty">Select a customer</div>
 </div>
-<!-- ★ বর্তমান বাকি কার্ড ★ -->
 <div class="due-amount-box" onclick="showMiniPopup(event)">
 <div class="due-amount-label">বর্তমান বাকি</div>
 <div id="selectedDueAmount" class="due-amount-value">0.000 <span>KD</span></div>
 
-<!-- ★ ছোট কালো পপআপ ★ -->
 <div class="charge-mini-popup" id="chargeMiniPopup" onclick="openDetailsPopup()">
 <div class="charge-mini-left">
 <div class="charge-mini-label">ওভারডিউ চার্জ</div>
@@ -2553,12 +2577,15 @@ font-weight:800;
 </section>
 
 <section id="panelAgent" class="panel">
-<div class="agent-filter-row">
+<div class="agent-filter-row" style="grid-template-columns:.65fr .85fr 1fr 34px">
 <select id="agentYear"></select>
 <select id="agentMonth"></select>
 <select id="agentView" onchange="agentChanged()">
 <option value="">Agent</option>
 </select>
+<button id="agentSelectBtn" class="agent-select-btn" onclick="toggleAgentSelectMode()" title="Select Mode">
+<span id="agentSelectIcon">⚡</span>
+</button>
 </div>
 <div class="agent-summary">
 <div class="agent-summary-box agent-balance">
@@ -2573,9 +2600,19 @@ font-weight:800;
 <div id="agentList" class="list">
 <div class="empty">Select an agent</div>
 </div>
+<div id="agentMiniPopup" class="mini-popup">
+<div class="popup-info">
+<div class="popup-left">
+<div class="popup-icon confirm">✓</div>
+<div class="popup-text">
+<div id="agentPopupTotal" class="popup-total confirm">0 <span>Tk</span></div>
+<div id="agentPopupCount" class="popup-count">0 টি নির্বাচিত</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 
-<!-- ★ PROFIT PANEL ★ -->
 <section id="panelProfit" class="panel">
 
 <div class="profit-filter-row">
@@ -2609,11 +2646,9 @@ font-weight:800;
 <div class="profit-card-label">মাসিক মোট বিক্রয় (টাকা)</div>
 <div id="profitTotalBD" class="profit-card-value">0 <span>TK</span></div>
 </div>
-<!-- ★ PROFIT CARD — onclick সহ ★ -->
 <div class="profit-card profit-total" onclick="handleProfitCardClick(event)">
 <div class="profit-card-label">মাসিক মোট প্রফিট</div>
 <div id="profitTotal" class="profit-card-value positive">0 <span>TK</span></div>
-<!-- ★ পপআপ কার্ডের ভেতরেই ★ -->
 <div class="kd-mini-popup" id="kdMiniPopup" onclick="event.stopPropagation()">
 <div class="kd-mini-kd" id="kdMiniKD">0.000 <span>KD</span></div>
 </div>
@@ -2667,7 +2702,6 @@ font-weight:800;
 </div>
 </div>
 
-<!-- Full-Screen Customer Sheet (Add Transaction-এর জন্য) -->
 <div class="customer-fs-backdrop" id="customerFsBackdrop"></div>
 <div class="customer-fs-sheet" id="customerFsSheet">
 <div class="customer-fs-search-wrap">
@@ -2679,7 +2713,6 @@ font-weight:800;
 <div class="customer-fs-list" id="customerListDropdown"></div>
 </div>
 
-<!-- ★★★ NEW: Full-Screen Customer Sheet (Customer Page-এর জন্য) ★★★ -->
 <div class="customer-fs-backdrop" id="customerPageFsBackdrop" onclick="closeCustomerPageSheet()"></div>
 <div class="customer-fs-sheet" id="customerPageFsSheet">
 <div class="customer-fs-search-wrap">
@@ -2691,9 +2724,6 @@ font-weight:800;
 <div class="customer-fs-list" id="customerPageListDropdown"></div>
 </div>
 
-<!-- =========================================================
-   ★ CUSTOMER DETAILS POPUP ★
-========================================================= -->
 <div class="cd-overlay" id="cdOverlay" onclick="if(event.target===this)closeCustomerDetails()">
 <div class="cd-popup" onclick="event.stopPropagation()">
 
@@ -2741,9 +2771,6 @@ font-weight:800;
 </div>
 </div>
 
-<!-- =========================================================
-     ★ ID CARD FULLSCREEN ZOOM VIEWER ★
-========================================================= -->
 <div class="id-zoom-overlay" id="idZoomOverlay">
   <div class="id-zoom-scale" id="idZoomScale">1.0×</div>
   <button class="id-zoom-close" id="idZoomClose" type="button" aria-label="Close">✕</button>
@@ -2753,9 +2780,6 @@ font-weight:800;
 
 <div class="call-toast" id="callToast"></div>
 
-<!-- =========================================================
-   ★★★ CHARGE DETAILS SHEET — NEW FEATURE ★★★
-========================================================= -->
 <div class="charge-details-backdrop" id="chargeDetailsBackdrop" onclick="closeDetailsPopup()"></div>
 <div class="charge-details-sheet" id="chargeDetailsSheet">
   <div class="charge-details-header">
@@ -2783,6 +2807,7 @@ font-weight:800;
 </div>
 
 <script>
+
 /* =========================================================
    CONFIG
 ========================================================= */
@@ -2908,11 +2933,8 @@ if(!d.objectStoreNames.contains('customers'))
 d.createObjectStore('customers',{keyPath:'customerId'});
 if(!d.objectStoreNames.contains('agents'))
 d.createObjectStore('agents',{keyPath:'agentId'});
-
-// ★★★ এই নতুন ২ লাইন যোগ হবে ছবি সেভ করার জন্য ★★★
 if(!d.objectStoreNames.contains('imageCache'))
 d.createObjectStore('imageCache',{keyPath:'id'});
-
 if(!d.objectStoreNames.contains('transactions')){
 const s=d.createObjectStore('transactions',{keyPath:'key'});
 s.createIndex('rowNumber','rowNumber',{unique:false});
@@ -3125,7 +3147,6 @@ f.appendChild(o)
 select.appendChild(f);
 if(oldValue&&[...select.options].some(o=>o.value===oldValue))select.value=oldValue;
 else select.value='ALL_TRANSACTIONS';
-// ★ নতুন ফিচার: ট্রিগার টেক্সট আপডেট ★
 updateCustomerPageTriggerText();
 }
 
@@ -3603,7 +3624,7 @@ return allTransactionsData.filter(t=>String(t.customerId||'')===String(customerI
 /* =========================================================
    ★★★ MONTHLY DUE CHARGE (10%) — FINAL LOGIC ★★★
 ========================================================= */
-const MONTHLY_CHARGE_RATE = 0.10; // ১০%
+const MONTHLY_CHARGE_RATE = 0.10;
 
 function calculateMonthlyCharge(customerId) {
   const id = String(customerId || '').trim();
@@ -3689,31 +3710,26 @@ function showMiniPopup(event) {
   if(!customer) return;
   
   const chargeData = calculateMonthlyCharge(customer.customerId);
-  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
+  const popup = $('chargeMiniPopup');
   
-  // যদি চার্জ না থাকে বা ০ হয়, তবে পপআপ দেখাবে না
   if (!chargeData || chargeData.chargeKD <= 0) {
     if(popup) popup.classList.remove('show');
     return;
   }
   
-  // পপআপে চার্জের এমাউন্ট দেখাবে
   $('chargeMiniAmount').textContent = fmtKD(chargeData.chargeKD) + ' KD';
   
-  // ★ পপআপ দেখানোর আগে বাইরে ক্লিক লিসেনার রিমুভ করুন
   document.removeEventListener('click', closeMiniPopup);
   
   if(popup) popup.classList.add('show');
   
-  // ★ পপআপ ওপেন হওয়ার পর বাইরে ক্লিক করলে বন্ধ হবে
   setTimeout(() => {
     document.addEventListener('click', closeMiniPopup);
   }, 50);
 }
 
 function closeMiniPopup(e) {
-  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
-  // ★ যদি পপআপের ভেতরে ক্লিক হয়, তবে বন্ধ হবে না
+  const popup = $('chargeMiniPopup');
   if (e && popup && popup.contains(e.target)) return;
   
   if(popup) popup.classList.remove('show');
@@ -3721,8 +3737,7 @@ function closeMiniPopup(e) {
 }
 
 function openDetailsPopup() {
-  // ★ ছোট চার্জ পপআপ বন্ধ করুন
-  const popup = $('chargeMiniPopup'); // ★ এখানে chargeMiniPopup
+  const popup = $('chargeMiniPopup');
   if(popup) popup.classList.remove('show');
   document.removeEventListener('click', closeMiniPopup);
 
@@ -3750,7 +3765,6 @@ function closeDetailsPopup() {
   $('chargeDetailsSheet').classList.remove('show');
   document.body.style.overflow = '';
 }
-/* ★★★ MONTHLY DUE CHARGE LOGIC END ★★★ */
 
 /* CUSTOMER INFO */
 function renderCustomerInfo(customer){
@@ -4074,7 +4088,6 @@ async function openCustomerDetails(customerId){
   $('cdBackupNumber').textContent = customer.backupPhone || '—';
   $('cdAddress').textContent = customer.address || '—';
   
-  // ★★★ এখান থেকে ছবি লোড ও সেভ করার নতুন সিস্টেম শুরু ★★★
   const idImg = $('cdIdImage');
   const imgLink = String(customer.idCardImage || '').trim();
   const cacheKey = customer.customerId;
@@ -4120,7 +4133,6 @@ async function openCustomerDetails(customerId){
 function closeCustomerDetails(){
   $('cdOverlay').classList.remove('show');
   document.body.style.overflow = '';
-  // ★ Zoom overlay-ও বন্ধ করুন ★
   const zoomOverlay = $('idZoomOverlay');
   if(zoomOverlay && zoomOverlay.classList.contains('show')){
     closeIdZoom();
@@ -4607,12 +4619,11 @@ showToast('⚠️ '+(e.message||e));
 }
 
 /* =========================================================
-   ★ PROFIT CARD CLICK HANDLER (সরাসরি HTML onclick থেকে)
+   ★ PROFIT CARD CLICK HANDLER
 ========================================================= */
 function handleProfitCardClick(event){
     if(event) event.stopPropagation();
     
-    // বর্তমানে দেখানো প্রফিট ভ্যালু বের করুন
     const profitValEl = $('profitTotal');
     if(!profitValEl) return;
     
@@ -4621,7 +4632,6 @@ function handleProfitCardClick(event){
     let cleanNum = parseFloat(rawText.replace(/[^\d.]/g, '')) || 0;
     let totalProfit = isNegative ? -cleanNum : cleanNum;
     
-    // পপআপ ওপেন
     openProfitKdPopup(event, totalProfit);
 }
 
@@ -4658,10 +4668,9 @@ if(e && popup && popup.contains(e.target)) return;
 if(popup) popup.classList.remove('show');
 document.removeEventListener('click', closeProfitKdPopup);
 }
-/* ★ PROFIT KD MINI POPUP END ★ */
 
 /* =========================================================
-   ★ PROFIT PAGE (LOCAL ONLY — No API call) ★
+   ★ PROFIT PAGE (LOCAL ONLY) ★
 ========================================================= */
 function renderProfitPage(){
 if(!allTransactionsData) return;
@@ -4670,7 +4679,6 @@ const profitYear = $('profitYear');
 const profitMonth = $('profitMonth');
 const profitAgent = $('profitAgent');
 
-/* Build year options */
 const yearsSet = new Set();
 allTransactionsData.forEach(t=>{
 const d = getFullTransactionDate(t.date||t.Date||t.transactionDate||t.TransactionDate||'');
@@ -4702,7 +4710,6 @@ profitYear.value = 'all';
 }
 }
 
-/* Build agent options (only once) */
 if(profitAgent.options.length === 1){
 agentData.filter(isActiveAgent).forEach(a=>{
 const o = document.createElement('option');
@@ -4712,7 +4719,6 @@ profitAgent.appendChild(o);
 });
 }
 
-/* Set default month to current if not all */
 if(!profitMonth.dataset.initialized){
 profitMonth.value = String(currentMonth);
 profitMonth.dataset.initialized = '1';
@@ -4722,7 +4728,6 @@ const selYear = profitYear.value;
 const selMonth = profitMonth.value;
 const selAgent = profitAgent.value;
 
-/* Filter transactions — Due + Cash, শুধু KD > 0 */
 const filtered = allTransactionsData.filter(t=>{
 if(!isDueTransaction(t) && !isCashTransaction(t)) return false;
 if(number(t.kdAmount) <= 0) return false;
@@ -4743,7 +4748,6 @@ return true;
 
 sortTransactionsNewestFirst(filtered);
 
-/* Calculate totals */
 let totalKD = 0;
 let totalBD = 0;
 const listItems = [];
@@ -4759,7 +4763,6 @@ listItems.push({ transaction:t, kd, bd, profit });
 
 const totalProfit = (totalKD * PROFIT_RATE_PER_KD) - totalBD;
 
-/* Update cards */
 $('profitTotalKD').innerHTML = fmtKD(totalKD) + ' <span>KD</span>';
 $('profitTotalBD').innerHTML = fmtIndian(totalBD) + ' <span>TK</span>';
 
@@ -4767,7 +4770,6 @@ const totalProfitEl = $('profitTotal');
 totalProfitEl.className = 'profit-card-value ' + (totalProfit >= 0 ? 'positive' : 'negative');
 totalProfitEl.innerHTML = (totalProfit < 0 ? '−' : '') + fmtIndian(Math.abs(totalProfit)) + '<span>TK</span>';
 
-/* Render list — Customer/Agent-এর মতো */
 const list = $('profitList');
 list.innerHTML = '';
 
@@ -5024,6 +5026,20 @@ const payment=isPaymentTransaction(t);
 const cash=isCashTransaction(t);
 const card=document.createElement('div');
 card.className='ag-card '+(sale?'sale':payment?'payment':cash?'cash':'');
+
+// ★ Agent Select Mode ★
+if(typeof agentSelectMode !== 'undefined' && agentSelectMode){
+  card.classList.add('selectable');
+  if(agentSelectedKeys.has(String(t.key || t.rowNumber || ''))) card.classList.add('selected');
+  const check = document.createElement('span');
+  check.className = 'select-check';
+  card.appendChild(check);
+  card.addEventListener('click', (e) => {
+    if(e.target.closest('.ag-cust-line')) return;
+    toggleAgentTransactionSelect(String(t.key || t.rowNumber || ''));
+  });
+}
+
 const date=document.createElement('div');
 date.className='ag-date';
 const dateStr=t.date||t.Date||t.transactionDate||t.TransactionDate||'';
@@ -6184,7 +6200,7 @@ renderCustomerSheetList(this.value);
 }
 
 /* =========================================================
-   ★ CUSTOMER PAGE FULL-SCREEN SHEET (নতুন ফিচার)
+   ★ CUSTOMER PAGE FULL-SCREEN SHEET
 ========================================================= */
 function openCustomerPageSheet(){
 const backdrop=$('customerPageFsBackdrop');
@@ -6225,7 +6241,6 @@ let count=0;
 Array.from(select.options).forEach(opt=>{
 if(!opt.value)return;
 
-// ★ নাম + নাম্বার দুটোই চেক ★
 if(q){
   const nameMatch = opt.textContent.toLowerCase().includes(q);
   const customerObj = customerData.find(c => String(c.customerId) === String(opt.value));
@@ -6239,13 +6254,12 @@ item.className='customer-dd-opt';
 if(opt.value===currentVal)item.classList.add('selected');
 item.dataset.val=opt.value;
 
-// ★ নাম এবং বাকি আলাদা করা (সুন্দর পিলের জন্য) ★
 let nameText = opt.textContent;
 let dueText = '';
 const parts = opt.textContent.split(' • ');
 if(parts.length > 1){
   nameText = parts[0];
-  dueText = parts[1]; // যেমন: "250.000 KD"
+  dueText = parts[1];
 }
 
 const leftDiv = document.createElement('div');
@@ -6256,11 +6270,9 @@ nameSpan.className = 'customer-opt-name';
 nameSpan.textContent = nameText;
 leftDiv.appendChild(nameSpan);
 
-// বাকি থাকলে সুন্দর পিল দেখাবে
 if(dueText){
   const pillSpan = document.createElement('span');
   pillSpan.className = 'customer-opt-pill';
-  // "250.000 KD" থেকে "KD" আলাদা করা
   const dueMatch = dueText.match(/^([\d.,]+)\s*(KD)?$/i);
   if(dueMatch){
     pillSpan.innerHTML = `${dueMatch[1]} <span>${dueMatch[2] || 'KD'}</span>`;
@@ -6466,6 +6478,7 @@ disableAutofill();
 setupKeyboardSaveButton();
 updateSaveButtonColor();
 restoreLogin();
+
 /* =========================================================
    ★ নতুন: Total Due Mini Popup
 ========================================================= */
@@ -6497,6 +6510,52 @@ document.addEventListener('click', function(e){
 });
 const _cs = $('customerSelect');
 if(_cs) _cs.addEventListener('change', refreshCustomerCustomUI);
+
+/* =========================================================
+   ★ Agent Select Mode
+========================================================= */
+let agentSelectMode = false;
+let agentSelectedKeys = new Set();
+
+function toggleAgentSelectMode(){
+  agentSelectMode = !agentSelectMode;
+  agentSelectedKeys.clear();
+  const btn = $('agentSelectBtn');
+  const icon = $('agentSelectIcon');
+  if(btn) btn.classList.toggle('active', agentSelectMode);
+  if(icon) icon.textContent = agentSelectMode ? '✓' : '⚡';
+  if(typeof agentChanged === 'function') agentChanged();
+  updateAgentMiniPopup();
+}
+
+function toggleAgentTransactionSelect(key){
+  if(!key) return;
+  if(agentSelectedKeys.has(key)) agentSelectedKeys.delete(key);
+  else agentSelectedKeys.add(key);
+  if(typeof agentChanged === 'function') agentChanged();
+  updateAgentMiniPopup();
+}
+
+function updateAgentMiniPopup(){
+  const popup = $('agentMiniPopup');
+  if(!popup) return;
+  if(!agentSelectMode || agentSelectedKeys.size === 0){
+    popup.classList.remove('show');
+    return;
+  }
+  popup.classList.add('show');
+  const totalEl = $('agentPopupTotal');
+  const countEl = $('agentPopupCount');
+  let total = 0;
+  (currentAgentTransactions || []).forEach(t => {
+    const k = String(t.key || t.rowNumber || '');
+    if(agentSelectedKeys.has(k)){
+      total += getBDAmount(t);
+    }
+  });
+  if(totalEl) totalEl.innerHTML = fmtIndian(total) + ' <span>Tk</span>';
+  if(countEl) countEl.textContent = agentSelectedKeys.size + ' টি নির্বাচিত';
+}
 </script>
 <script>
 if('serviceWorker' in navigator){
