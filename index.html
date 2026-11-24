@@ -2375,14 +2375,14 @@ font-weight:800;
 }
 
 /* =========================================================
-   ★ AGENT MINI POPUP — ছোট, শুধু Amount ★
+   ★ AGENT MINI POPUP — Dot Badge (top-left) ★
 ========================================================= */
 #agentMiniPopup{
   min-width: 0 !important;
   width: auto !important;
   max-width: calc(100vw - 40px) !important;
-  padding: 9px 16px !important;
-  border-radius: 12px !important;
+  padding: 10px 18px !important;
+  border-radius: 14px !important;
   bottom: 14px !important;
   display: inline-flex !important;
   align-items: center;
@@ -2403,8 +2403,27 @@ font-weight:800;
   gap: 0;
 }
 
+/* টিক আইকন → উপরের-বাম কোণে ছোট ডট ব্যাজ */
 #agentMiniPopup .popup-icon{
-  display: none !important;
+  position: absolute !important;
+  top: -7px !important;
+  left: -7px !important;
+  width: auto !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  padding: 0 6px !important;
+  border-radius: 11px !important;
+  background: linear-gradient(135deg,#4ADE80,#16A34A) !important;
+  color: #0F172A !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(74,222,128,.5),
+              0 0 0 2px #111827 !important;
+  z-index: 2;
 }
 
 #agentMiniPopup .popup-text{
@@ -2415,8 +2434,8 @@ font-weight:800;
 }
 
 #agentMiniPopup .popup-total{
-  font-size: 15px;
-  font-weight: 900;
+  font-size: 16px !important;
+  font-weight: 900 !important;
   line-height: 1;
   color: #4ADE80;
 }
@@ -2428,6 +2447,7 @@ font-weight:800;
   margin-left: 3px;
 }
 
+/* "৩ টি নির্বাচিত" লুকানো */
 #agentMiniPopup .popup-count{
   position: absolute !important;
   width: 1px !important;
@@ -6621,6 +6641,8 @@ function updateAgentMiniPopup(){
   });
   if(totalEl) totalEl.innerHTML = fmtIndian(total) + ' <span>Tk</span>';
   if(countEl) countEl.textContent = agentSelectedKeys.size + ' টি নির্বাচিত';
+  const iconEl = $('agentMiniPopup')?.querySelector('.popup-icon');
+  if(iconEl) iconEl.textContent = agentSelectedKeys.size;
 }
 </script>
 <script>
