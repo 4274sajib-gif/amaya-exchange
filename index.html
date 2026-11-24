@@ -2373,6 +2373,72 @@ color:#B91C1C;
 color:#DC2626;
 font-weight:800;
 }
+
+/* =========================================================
+   ★ AGENT MINI POPUP — ছোট, শুধু Amount ★
+========================================================= */
+#agentMiniPopup{
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: calc(100vw - 40px) !important;
+  padding: 9px 16px !important;
+  border-radius: 12px !important;
+  bottom: 14px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+}
+
+#agentMiniPopup .popup-info{
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+#agentMiniPopup .popup-left{
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0;
+}
+
+#agentMiniPopup .popup-icon{
+  display: none !important;
+}
+
+#agentMiniPopup .popup-text{
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+}
+
+#agentMiniPopup .popup-total{
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  color: #4ADE80;
+}
+
+#agentMiniPopup .popup-total span{
+  font-size: 9px;
+  font-weight: 700;
+  color: #94A3B8;
+  margin-left: 3px;
+}
+
+#agentMiniPopup .popup-count{
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 </style>
 </head>
 <body>
